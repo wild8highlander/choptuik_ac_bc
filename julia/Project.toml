@@ -18,5 +18,4 @@ JSON = "0.21"
 Plots = "1"
 DataFrames = "1"
 
-[targets]
-test = []
+

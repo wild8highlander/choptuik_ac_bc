@@ -8,12 +8,12 @@ All reports are saved as separate files in the output directory.
 """
 
 from __future__ import annotations
-import json
+
 import csv
-from pathlib import Path
-from typing import Dict, List, Optional
-from datetime import datetime
+import json
 import logging
+from datetime import datetime
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -22,16 +22,16 @@ class ReportWriter:
     """Generate reports in 7 formats with execution logs appended."""
 
     def __init__(self, output_dir: str = "output/reports",
-                 formats: Optional[List[str]] = None):
+                 formats: list[str] | None = None):
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.formats = formats or ["docx", "pdf", "txt", "md", "csv", "html", "json"]
         logger.info(f"ReportWriter: output={self.output_dir}, formats={self.formats}")
 
-    def generate_all(self, results: Dict, logs: str,
-                     title: str = "Choptyuk Spinor Corrections - Verification Report") -> Dict[str, str]:
+    def generate_all(self, results: dict, logs: str,
+                     title: str = "Choptyuk Spinor Corrections - Verification Report") -> dict[str, str]:
         """Generate reports in all configured formats."""
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now(tz=datetime.timezone.utc).strftime("%Y%m%d_%H%M%S")
         paths = {}
         for fmt in self.formats:
             try:
@@ -51,11 +51,11 @@ class ReportWriter:
                     paths[fmt] = self._write_pdf(results, logs, title, timestamp)
                 else:
                     logger.warning(f"Unknown format: {fmt}")
-            except Exception as e:
+            except OSError as e:
                 logger.error(f"Failed to generate {fmt} report: {e}")
         return paths
 
-    def _write_json(self, results: Dict, logs: str, timestamp: str) -> str:
+    def _write_json(self, results: dict, logs: str, timestamp: str) -> str:
         data = {
             "report_type": "choptyuk_verification",
             "timestamp": timestamp,
@@ -67,7 +67,7 @@ class ReportWriter:
             json.dump(data, f, ensure_ascii=False, indent=2, default=str)
         return str(path)
 
-    def _write_txt(self, results: Dict, logs: str, title: str, timestamp: str) -> str:
+    def _write_txt(self, results: dict, logs: str, title: str, timestamp: str) -> str:
         path = self.output_dir / f"report_{timestamp}.txt"
         with open(path, 'w', encoding='utf-8') as f:
             f.write(f"{'='*60}\n{title}\nGenerated: {timestamp}\n{'='*60}\n\n")
@@ -76,7 +76,7 @@ class ReportWriter:
             f.write(logs)
         return str(path)
 
-    def _format_dict(self, d: Dict, indent: int = 0) -> str:
+    def _format_dict(self, d: dict, indent: int = 0) -> str:
         lines = []
         prefix = "  " * indent
         for k, v in d.items():
@@ -92,7 +92,7 @@ class ReportWriter:
                     lines.append(f"{prefix}{k}: {v}")
         return "\n".join(lines)
 
-    def _write_md(self, results: Dict, logs: str, title: str, timestamp: str) -> str:
+    def _write_md(self, results: dict, logs: str, title: str, timestamp: str) -> str:
         path = self.output_dir / f"report_{timestamp}.md"
         ch = results.get("choptyuk", {})
         curve = results.get("curve", {})
@@ -114,7 +114,7 @@ class ReportWriter:
             f.write("## Execution Log\n\n```\n" + logs + "\n```\n")
         return str(path)
 
-    def _write_csv(self, results: Dict, logs: str, timestamp: str) -> str:
+    def _write_csv(self, results: dict, logs: str, timestamp: str) -> str:
         path = self.output_dir / f"report_{timestamp}.csv"
         ch = results.get("choptyuk", {})
         with open(path, 'w', newline='', encoding='utf-8') as f:
@@ -133,7 +133,7 @@ class ReportWriter:
                 w.writerow([line])
         return str(path)
 
-    def _write_html(self, results: Dict, logs: str, title: str, timestamp: str) -> str:
+    def _write_html(self, results: dict, logs: str, title: str, timestamp: str) -> str:
         path = self.output_dir / f"report_{timestamp}.html"
         ch = results.get("choptyuk", {})
         log_escaped = logs.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
@@ -161,7 +161,7 @@ pre{{background:#2c3e50;color:#ecf0f1;padding:15px;border-radius:5px;overflow-x:
             f.write(html)
         return str(path)
 
-    def _write_docx(self, results: Dict, logs: str, title: str, timestamp: str) -> str:
+    def _write_docx(self, results: dict, logs: str, title: str, timestamp: str) -> str:
         try:
             from docx import Document
         except ImportError:
@@ -192,12 +192,17 @@ pre{{background:#2c3e50;color:#ecf0f1;padding:15px;border-radius:5px;overflow-x:
         doc.save(str(path))
         return str(path)
 
-    def _write_pdf(self, results: Dict, logs: str, title: str, timestamp: str) -> str:
+    def _write_pdf(self, results: dict, logs: str, title: str, timestamp: str) -> str:
         try:
             from reportlab.lib.pagesizes import letter
-            from reportlab.lib.units import inch
-            from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Preformatted
             from reportlab.lib.styles import getSampleStyleSheet
+            from reportlab.lib.units import inch
+            from reportlab.platypus import (
+                Paragraph,
+                SimpleDocTemplate,
+                Spacer,
+                Table,
+            )
         except ImportError:
             logger.warning("reportlab not installed, skipping PDF")
             return ""

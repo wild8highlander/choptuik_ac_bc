@@ -13,16 +13,18 @@ permissions:
 
 jobs:
   label:
+    name: Label by changed paths
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Label by changed paths
-        if: github.event_name == 'pull_request'
+      - name: Apply path-based labels
         uses: actions/labeler@v5
         with:
           configuration-path: .github/labeler/config.yml
 
   label-by-title:
+    name: Label by title
     runs-on: ubuntu-latest
     steps:
       - name: Apply labels from title
@@ -30,5 +32,6 @@ jobs:
         with:
           configuration-path: .github/labeler/title-labels.yml
           include-title: true
+          enable-versioned-regex: 0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

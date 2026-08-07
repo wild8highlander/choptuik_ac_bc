@@ -5,10 +5,11 @@ automorphism group, first Laplacian eigenvalue, and maximal spinor phase.
 """
 
 from __future__ import annotations
-from dataclasses import dataclass
-from typing import List, Optional
-import numpy as np
+
 import logging
+from dataclasses import dataclass
+
+import numpy as np
 
 logger = logging.getLogger(__name__)
 

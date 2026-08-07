@@ -8,6 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Author:** Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович) — aslan08_05@mail.ru
 **Repository:** https://github.com/wild8highlander/choptuik_ac_bc
 
+## [1.1.0] - 2026-08-07
+
+### Changed
+- License changed from MIT to Isaev Proprietary License
+- Full authorship retention and attribution requirements
+- Commercial use and redistribution prohibited without written permission
+
+### Fixed
+- Julia Project.toml: removed deprecated [targets] section
+- Java SimulationService: added missing java.time.Instant import
+- Java PlotService: fixed ambiguous List import (java.awt.List vs java.util.List)
+- Python: fixed 157+ ruff linting errors (style, imports, type hints)
+- CI workflow: generated package-lock.json for npm caching
+- Greeting workflow: fixed actions/first-interaction version compatibility
+- Labeler workflow: added required enable-versioned-regex input
+- DOI badge: updated from pending placeholder to Zenodo search link
+- License badge: changed from MIT to Isaev Proprietary
+
 ## [1.0.0] - 2024-01-01
 
 ### Added

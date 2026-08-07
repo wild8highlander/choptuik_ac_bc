@@ -1,21 +1,183 @@
-MIT License
+ISAEV PROPRIETARY LICENSE
 
-Copyright (c) 2024 Ishak Khamzatovich Isaev
+Version 1.0
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Copyright (c) 2024-2026 Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович)
+All rights reserved.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+________________________________________________________________________________
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+TERMS AND CONDITIONS
+
+1. DEFINITIONS
+
+   "Author" means Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович),
+   residing in Nalchik, Kabardino-Balkarian Republic, Russian Federation.
+
+   "Work" means all software, source code, documentation, mathematical
+   computations, verification suites, simulation engines, visualization
+   components, and any other materials contained in this repository,
+   including but not limited to the Python, Julia, Java, and Next.js
+   implementations.
+
+   "You" means any individual or legal entity exercising permissions
+   granted by this License.
+
+   "Derivative Works" means any work that is based on the Work and for
+   which the editorial revisions, annotations, elaborations, or other
+   modifications represent, as a whole, an original work of authorship.
+
+2. GRANT OF LIMITED RIGHTS
+
+   Subject to the terms and conditions of this License, the Author
+   hereby grants You a limited, non-exclusive, non-transferable,
+   revocable license to:
+
+   a) VIEW and READ the Work for personal, academic, and research
+      reference purposes only;
+
+   b) CITE the Work in academic publications, provided that proper
+      attribution is given as specified in Section 3;
+
+   c) REPRODUCE limited excerpts of the Work (not exceeding 500 lines
+      of source code or 2 pages of documentation) solely for the
+      purpose of academic citation, review, or commentary, provided
+      that such reproduction includes the attribution notice specified
+      in Section 3.
+
+3. ATTRIBUTION REQUIREMENT
+
+   Any use, citation, or reference to the Work MUST include all of
+   the following:
+
+   a) The full name of the Author: Ishak Khamzatovich Isaev
+      (Исаев Исхак Хамзатович);
+
+   b) The title of the Work: "Spinor corrections b-C and a-C and the
+      solution of the Choptyuk problem";
+
+   c) A direct link to the original repository:
+      https://github.com/wild8highlander/choptuik_ac_bc;
+
+   d) The following notice:
+
+      "Based on work by Ishak Khamzatovich Isaev. Original source:
+       https://github.com/wild8highlander/choptuik_ac_bc"
+
+   For academic citations, use the following BibTeX entry:
+
+      @book{isaev2024spinor,
+        title     = {Spinor corrections b-C and a-C and the solution
+                     of the Choptyuk problem},
+        author    = {Isaev, Ishak Khamzatovich},
+        year      = {2024},
+        address   = {Nalchik, Kabardino-Balkarian Republic},
+        note      = {Monograph with verified computational
+                     implementations}
+      }
+
+4. RESTRICTIONS
+
+   You may NOT, without the prior written and signed consent of the
+   Author:
+
+   a) COPY, DOWNLOAD, or CLONE the Work or any substantial portion
+      thereof, except as expressly permitted in Section 2;
+
+   b) MODIFY, adapt, alter, or create Derivative Works based on the
+      Work;
+
+   c) DISTRIBUTE, publish, sublicense, rent, lease, lend, or
+      otherwise transfer or make available the Work or any Derivative
+      Works to any third party;
+
+   d) USE the Work or any part thereof for commercial purposes,
+      including but not limited to commercial products, services,
+      or revenue-generating activities;
+
+   e) INCORPORATE the Work or any part thereof into any other
+      software, system, or project;
+
+   f) REVERSE ENGINEER, decompile, disassemble, or otherwise attempt
+      to derive the source code or algorithms from any compiled or
+      obfuscated version of the Work;
+
+   g) REMOVE, alter, or obscure any copyright notices, attribution
+      requirements, or proprietary legends contained in the Work.
+
+5. INTELLECTUAL PROPERTY
+
+   The Author retains sole and exclusive ownership of all intellectual
+   property rights in and to the Work, including but not limited to:
+
+   a) Copyright in all source code, documentation, mathematical
+      formulations, and computational results;
+
+   b) All patent rights, trade secret rights, and any other
+      intellectual property rights, whether now existing or
+      hereafter arising;
+
+   c) All rights in the mathematical results, algorithms, and
+      computational methods described in the Work.
+
+   No intellectual property rights are transferred to You under
+   this License, except for the limited viewing and citation rights
+   expressly granted in Section 2.
+
+6. ACADEMIC INTEGRITY
+
+   The Work embodies original mathematical research by the Author.
+   Any presentation, publication, or communication that uses ideas,
+   methods, results, or formulations from the Work must:
+
+   a) Clearly attribute the Author as the originator;
+
+   b) Not present the Author's work as anyone else's original
+      contribution;
+
+   c) Not misrepresent the scope or nature of the Author's
+      contributions.
+
+7. TERMINATION
+
+   This License and the rights granted hereunder will terminate
+   automatically upon any breach by You of the terms of this License.
+   Upon termination, You shall immediately cease all use, viewing,
+   and citation activities not already incorporated into published
+   works, and destroy all copies of the Work in Your possession.
+
+   Sections 3, 5, 6, 7, and 8 shall survive termination.
+
+8. DISCLAIMER OF WARRANTIES
+
+   THE WORK IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+   NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+   CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+   CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN
+   CONNECTION WITH THE WORK OR THE USE OR OTHER DEALINGS IN THE WORK.
+
+9. GOVERNING LAW
+
+   This License shall be governed by and construed in accordance with
+   the laws of the Russian Federation. Any disputes arising under or
+   in connection with this License shall be subject to the exclusive
+   jurisdiction of the courts of the Kabardino-Balkarian Republic,
+   Russian Federation.
+
+10. CONTACT
+
+    For permissions beyond the scope of this License, contact the
+    Author:
+
+    Ishak Khamzatovich Isaev
+    Email: aslan08_05@mail.ru
+    GitHub: https://github.com/wild8highlander
+    Nalchik, Kabardino-Balkarian Republic, Russian Federation
+
+________________________________________________________________________________
+
+By accessing, viewing, or using the Work in any way, You acknowledge
+that You have read this License, understand it, and agree to be bound
+by its terms and conditions.

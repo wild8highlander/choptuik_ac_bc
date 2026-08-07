@@ -17,24 +17,26 @@ Plot types:
 """
 
 from __future__ import annotations
-import numpy as np
+
 import matplotlib
+import numpy as np
+
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-from pathlib import Path
-from typing import Dict, List, Optional, Any
 import logging
+from pathlib import Path
+
+import matplotlib.font_manager as fm
+import matplotlib.pyplot as plt
+
+logger = logging.getLogger(__name__)
 
 # Font setup for CJK + Latin
 try:
     fm.fontManager.addfont('/usr/share/fonts/truetype/chinese/NotoSansSC-Regular.ttf')
-except Exception:
-    pass
+except (OSError, ValueError):
+    logger.warning("Custom font not available, using default")
 plt.rcParams['font.sans-serif'] = ['Noto Sans SC', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
-
-logger = logging.getLogger(__name__)
 
 
 class PlotGenerator:
@@ -50,7 +52,7 @@ class PlotGenerator:
         self.fmt_vector = "pdf"
         logger.info(f"PlotGenerator: output={self.output_dir}, DPI={dpi}")
 
-    def _save(self, fig: plt.Figure, name: str) -> List[str]:
+    def _save(self, fig: plt.Figure, name: str) -> list[str]:
         """Save figure in PNG + PDF + SVG.
 
         Returns:
@@ -74,7 +76,7 @@ class PlotGenerator:
         return paths
 
     def spinor_phase_diagram(self, delta_A: float, delta_B: float,
-                              delta_C: float) -> List[str]:
+                              delta_C: float) -> list[str]:
         """Plot spinor phases on the unit circle."""
         fig, ax = plt.subplots(figsize=(8, 8))
         circle = plt.Circle((0, 0), 1, fill=False, color='gray', linewidth=1)
@@ -99,7 +101,7 @@ class PlotGenerator:
         ax.grid(True, alpha=0.3)
         return self._save(fig, 'spinor_phases')
 
-    def eigenvalue_landscape(self, sweep_data: Dict) -> List[str]:
+    def eigenvalue_landscape(self, sweep_data: dict) -> list[str]:
         """Plot delta_C sweep showing eigenvalue landscape."""
         dC = np.array(sweep_data["delta_C"])
         delta_bc = np.array(sweep_data["delta_bc"])
@@ -128,7 +130,7 @@ class PlotGenerator:
 
         return self._save(fig, 'eigenvalue_landscape')
 
-    def structure_heatmap(self, structures: List[Dict]) -> List[str]:
+    def structure_heatmap(self, structures: list[dict]) -> list[str]:
         """Plot 64 spinor structures as a heatmap of deviations."""
         n = len(structures)
         side = int(np.ceil(np.sqrt(n)))
@@ -143,10 +145,10 @@ class PlotGenerator:
         ax.set_title('64 Spinor Structures: Deviation from Observed (%)', fontsize=13)
         ax.set_xlabel('Structure Index (mod)', fontsize=11)
         ax.set_ylabel('Structure Index (div)', fontsize=11)
-        cbar = fig.colorbar(im, ax=ax, label='Deviation (%)')
+        fig.colorbar(im, ax=ax, label='Deviation (%)')
         return self._save(fig, 'structure_heatmap')
 
-    def qnm_comparison(self, predictions: List[Dict]) -> List[str]:
+    def qnm_comparison(self, predictions: list[dict]) -> list[str]:
         """Plot QNM frequency predictions vs observations."""
         names = [p["name"] for p in predictions]
         delta_f = [p["delta_f"] for p in predictions]
@@ -172,7 +174,7 @@ class PlotGenerator:
 
         return self._save(fig, 'qnm_comparison')
 
-    def deviation_analysis(self, choptyuk_data: Dict) -> List[str]:
+    def deviation_analysis(self, choptyuk_data: dict) -> list[str]:
         """Plot deviation analysis for b-C, base, full, b_Ch."""
         labels = [r'$\Delta_{bC}$', r'$\Delta_{Ch}^{(base)}$',
                   r'$\Delta_{Ch}^{(full)}$', r'$b_{Ch}$']
@@ -194,7 +196,7 @@ class PlotGenerator:
         ax.grid(True, alpha=0.3, axis='y')
         return self._save(fig, 'deviation_analysis')
 
-    def convergence_diagram(self, convergence_data: Dict) -> List[str]:
+    def convergence_diagram(self, convergence_data: dict) -> list[str]:
         """Plot convergence of the Choptyuk series."""
         sums = convergence_data["partial_sums"]
         orders = [s["order"] for s in sums]
@@ -219,7 +221,7 @@ class PlotGenerator:
 
         return self._save(fig, 'convergence')
 
-    def lambda_1_sweep(self, sweep_data: Dict) -> List[str]:
+    def lambda_1_sweep(self, sweep_data: dict) -> list[str]:
         """Plot lambda_1 sweep results."""
         lam = np.array(sweep_data["lambda_1"])
         delta_ch = np.array(sweep_data["delta_ch"])
@@ -244,7 +246,7 @@ class PlotGenerator:
 
         return self._save(fig, 'lambda_1_sweep')
 
-    def surface_comparison(self, surfaces_data: List[Dict]) -> List[str]:
+    def surface_comparison(self, surfaces_data: list[dict]) -> list[str]:
         """Plot comparison across different surfaces."""
         names = [s["name"] for s in surfaces_data]
         delta_bc = [s["delta_bc"] for s in surfaces_data]
@@ -264,7 +266,7 @@ class PlotGenerator:
         ax.grid(True, alpha=0.3, axis='y')
         return self._save(fig, 'surface_comparison')
 
-    def generate_all(self, results: Dict, sim_results: Dict = None) -> List[str]:
+    def generate_all(self, results: dict, sim_results: dict | None = None) -> list[str]:
         """Generate all plots from verification and simulation results.
 
         Returns:

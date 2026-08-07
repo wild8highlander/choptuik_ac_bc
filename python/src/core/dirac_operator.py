@@ -9,8 +9,7 @@ For the first eigenvalue on the trivial spinor bundle:
 """
 
 from __future__ import annotations
-import numpy as np
-from typing import Optional
+
 import logging
 
 logger = logging.getLogger(__name__)

@@ -9,7 +9,7 @@
     }
   ],
   "upload_type": "software",
-  "license": "MIT",
+  "license": "OTHER",
   "keywords": [
     "spinor correction",
     "Klein quartic",
@@ -32,7 +32,7 @@
       "scheme": "url"
     }
   ],
-  "access_right": "open",
+  "access_right": "restricted",
   "communities": [
     {"identifier": "mathematical-physics"},
     {"identifier": "gravitational-waves"}
