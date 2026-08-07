@@ -12,7 +12,7 @@ from __future__ import annotations
 import csv
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ class ReportWriter:
     def generate_all(self, results: dict, logs: str,
                      title: str = "Choptyuk Spinor Corrections - Verification Report") -> dict[str, str]:
         """Generate reports in all configured formats."""
-        timestamp = datetime.now(tz=datetime.timezone.utc).strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S")
         paths = {}
         for fmt in self.formats:
             try:
