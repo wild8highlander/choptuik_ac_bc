@@ -60,6 +60,7 @@ jobs:
           cd julia
           julia -e 'using Pkg; Pkg.Registry.update()'
           julia --project=. -e 'using Pkg; Pkg.resolve(); Pkg.instantiate()'
+        continue-on-error: true
       - name: Run verification
         run: |
           cd julia
