@@ -389,7 +389,7 @@ public class ReportService {
         doc.createParagraph().createRun().setText(text);
     }
 
-    private byte[] generatePdf(VerificationService.VerificationResult result) throws IOException {
+    private byte[] generatePdf(VerificationService.VerificationResult result) throws Exception {
         try (var out = new ByteArrayOutputStream()) {
             var document = new com.itextpdf.text.Document();
             com.itextpdf.text.pdf.PdfWriter.getInstance(document, out);

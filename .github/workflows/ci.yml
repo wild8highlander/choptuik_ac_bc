@@ -58,7 +58,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd julia
-          julia --project=. -e 'using Pkg; Pkg.instantiate()'
+          julia --project=. -e 'using Pkg; Pkg.Registry.update(); Pkg.instantiate()'
       - name: Run verification
         run: |
           cd julia
