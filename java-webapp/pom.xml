@@ -22,7 +22,7 @@
         <commons-math3.version>3.6.1</commons-math3.version>
         <jfreechart.version>1.5.4</jfreechart.version>
         <itextpdf.version>5.5.13.3</itextpdf.version>
-        <poi.version>5.2.5</poi.version>
+        <poi.version>5.5.1</poi.version>
     </properties>
 
     <dependencies>
