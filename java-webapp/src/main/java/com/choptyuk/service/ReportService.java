@@ -344,7 +344,7 @@ public class ReportService {
             var h2 = doc.createParagraph();
             h2.createRun().setBold(true);
             h2.createRun().setFontSize(14);
-            h2.getText().replace(0, h2.getText().length(), "Results Summary");
+            h2.createRun().setText("Results Summary");
 
             addDocxLine(doc, "Status: " + (result.allPassed() ? "ALL PASSED" : "FAILED"));
             addDocxLine(doc, "Checks: " + result.passedChecks() + "/" + result.totalChecks() + " passed");
@@ -359,7 +359,7 @@ public class ReportService {
             var h2b = doc.createParagraph();
             h2b.createRun().setBold(true);
             h2b.createRun().setFontSize(14);
-            h2b.getText().replace(0, h2b.getText().length(), "Verification Checks");
+            h2b.createRun().setText("Verification Checks");
 
             var table = doc.createTable();
             var headerRow = table.getRow(0);
