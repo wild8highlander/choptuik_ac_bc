@@ -39,7 +39,7 @@ jobs:
           NEXT_IGNORE_ESLINT=true npm run build
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: interactive-viz/out
 
