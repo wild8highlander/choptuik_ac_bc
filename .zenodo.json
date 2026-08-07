@@ -1,0 +1,48 @@
+{
+  "title": "Spinor Corrections b-C and a-C and the Choptyuk Problem",
+  "description": "Computational verification and simulation of spinor corrections b-C (Berry, 1st order) and a-C (braking, 2nd order) on the Klein quartic curve, with the unified Choptyuk formula. Includes enumeration of all 64 spinor structures, applications to Bolza/Bring surfaces, and LIGO/Virgo quasi-normal mode predictions. Four independent implementations: Python, Julia, Java Spring Boot, Next.js interactive visualization.",
+  "creators": [
+    {
+      "name": "Isaev, Ishak Khamzatovich",
+      "affiliation": "Nalchik, Kabardino-Balkarian Republic",
+      "orcid": ""
+    }
+  ],
+  "upload_type": "software",
+  "license": "MIT",
+  "keywords": [
+    "spinor correction",
+    "Klein quartic",
+    "Choptyuk formula",
+    "Dirac operator",
+    "Lichnerowicz formula",
+    "PSL(2,7)",
+    "quasi-normal modes",
+    "gravitational waves",
+    "Riemann surface",
+    "differential geometry",
+    "spectral geometry",
+    "LIGO",
+    "Berry phase"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/wild8highlander/choptuik_ac_bc",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "access_right": "open",
+  "communities": [
+    {"identifier": "mathematical-physics"},
+    {"identifier": "gravitational-waves"}
+  ],
+  "grants": [],
+  "journal": {
+    "title": "Monograph",
+    "year": "2024"
+  },
+  "version": "1.0.0",
+  "language": "eng",
+  "notes": "All verification results: Delta_bC = 3.438710 (dev 0.125%), Delta_Ch(full) = 3.447040 (dev 0.117%), b_Ch = 0.376510 (dev 0.130%)."
+}
