@@ -13,6 +13,7 @@
 [![GitHub](https://img.shields.io/badge/GitHub-choptuik__ac__bc-181717?logo=github)](https://github.com/wild8highlander/choptuik_ac_bc)
 [![Security](https://img.shields.io/badge/Security-Scorecard%20Monitored-yellow.svg)](https://securityscorecards.dev/viewer/?uri=github.com/wild8highlander/choptuik_ac_bc)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Codecov](https://img.shields.io/badge/Coverage-Codecov-f39f37?logo=codecov)](https://codecov.io/gh/wild8highlander/choptuik_ac_bc)
 
 > **Monograph**: *Spinor corrections b-C and a-C and the solution of the Choptyuk problem*
 > by **Ishak Khamzatovich Isaev**
@@ -151,6 +152,48 @@ Open in VS Code with Dev Containers extension — all tools (Python, Julia, Java
 
 ---
 
+## Architecture
+
+```mermaid
+graph TB
+    subgraph Core["Core Mathematical Engine"]
+        KC[Klein Quartic Curve<br/>genus 3, PSL 2 7]
+        SP[Spinor Phases<br/>δ_A=π/2, δ_B=π/3, δ_C=π/7]
+        CF[Choptyuk Formula<br/>Δ_Ch = λ₁ + δ_C²/2 − δ_C⁵/22]
+        DO[Dirac Operator<br/>λ₁ D²_σ₀ = 3.338]
+        QNM[QNM Predictions<br/>LIGO/Virgo]
+    end
+
+    subgraph Implementations["Four Independent Implementations"]
+        PY["🐍 Python 3.10+<br/>CLI + Interactive Menu"]
+        JL["🟣 Julia 1.9+<br/>REPL + Interactive Menu"]
+        JV["☕ Java 17+ Spring Boot<br/>REST API + Web UI"]
+        NX["⚡ Next.js 15 + React<br/>Real-time Dashboard"]
+    end
+
+    subgraph Outputs["Outputs"]
+        RPT["Reports<br/>DOCX PDF TXT MD<br/>CSV HTML JSON"]
+        PLT["Plots<br/>600 DPI PNG<br/>PDF SVG"]
+        LOG["Execution Logs<br/>Timestamped"]
+    end
+
+    subgraph CI_CD["CI/CD Pipeline"]
+        CI["GitHub Actions<br/>10 Workflows"]
+        DC["Docker + Dev Container"]
+        PC["Pre-commit Hooks"]
+    end
+
+    KC --> SP --> CF
+    DO --> CF
+    CF --> QNM
+
+    Core --> PY & JL & JV & NX
+    PY & JL & JV & NX --> RPT & PLT & LOG
+    Core --> CI_CD
+```
+
+---
+
 ## Project Structure
 
 ```
@@ -265,7 +308,7 @@ A permanent DOI-backed archive of this software is available on Zenodo.
 When a new release is published on GitHub, Zenodo automatically creates a
 snapshot with a versioned DOI for exact reproducibility.
 
-[![DOI](https://img.shields.io/badge/Zenodo-Archive-orange.svg?logo=zenodo)](https://zenodo.org/search?q=choptuik_ac_bc)
+[![DOI](https://img.shields.io/badge/Zenodo-10.5281/zenodo.XXXXXX-blue.svg?logo=zenodo)](https://doi.org/10.5281/zenodo.XXXXXX)
 
 ---
 

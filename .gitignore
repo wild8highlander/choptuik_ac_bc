@@ -64,6 +64,11 @@ Thumbs.db
 *.fls
 *.synctex.gz
 
+# Coverage
+coverage.xml
+.coverage
+htmlcov/
+
 # Temporary
 tmp/
 temp/

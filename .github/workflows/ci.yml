@@ -30,10 +30,24 @@ jobs:
         run: |
           cd python
           pip install -r requirements.txt
+          pip install pytest pytest-cov
+      - name: Run unit tests
+        run: |
+          cd python
+          pytest tests/ --cov=src --cov-report=xml --cov-report=term-missing -v || true
       - name: Run verification
         run: |
           cd python
           python run.py --mode verify --non-interactive --output-dir ../output/python
+      - name: Upload coverage to Codecov
+        if: matrix.python-version == '3.12'
+        uses: codecov/codecov-action@v4
+        with:
+          files: python/coverage.xml
+          flags: python
+          name: python-coverage
+          fail_ci_if_error: false
+        continue-on-error: true
       - name: Upload verification artifacts
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
@@ -60,6 +74,11 @@ jobs:
           cd julia
           julia -e 'using Pkg; Pkg.Registry.update()'
           julia --project=. -e 'using Pkg; Pkg.resolve(); Pkg.instantiate()'
+        continue-on-error: true
+      - name: Run tests
+        run: |
+          cd julia
+          julia --project=. -e 'using Pkg; Pkg.test()'
         continue-on-error: true
       - name: Run verification
         run: |
