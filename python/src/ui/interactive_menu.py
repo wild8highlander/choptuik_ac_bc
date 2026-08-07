@@ -12,25 +12,18 @@ Provides a full interactive menu with:
 """
 
 from __future__ import annotations
-import json
-import sys
-import os
-from pathlib import Path
-from typing import Dict, Optional
-import numpy as np
-import logging
 
-from ..core.klein_curve import KleinCurve
-from ..core.spinor_phases import SpinorPhases
-from ..core.dirac_operator import DiracOperator
-from ..core.choptyuk_formula import ChoptyukFormula
-from ..core.surfaces import SurfaceSpec, BOLZA, BRING, MACBEATH
-from ..core.qnm import QNMPredictor
-from ..core.hypothesis import HypothesisTester, HypothesisConfig
-from ..verification.verify_all import VerificationSuite
-from ..simulation.simulator import Simulator
-from ..visualization.plots import PlotGenerator
+import json
+import logging
+from pathlib import Path
+
+import numpy as np
+
+from ..core.hypothesis import HypothesisConfig, HypothesisTester
 from ..reporting.report_writer import ReportWriter
+from ..simulation.simulator import Simulator
+from ..verification.verify_all import VerificationSuite
+from ..visualization.plots import PlotGenerator
 
 logger = logging.getLogger(__name__)
 

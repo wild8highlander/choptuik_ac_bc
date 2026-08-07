@@ -21,10 +21,11 @@ The Choptyuk formula unifies two spinor corrections on the Klein quartic:
 """
 
 from __future__ import annotations
-import numpy as np
-from dataclasses import dataclass
-from typing import Optional
+
 import logging
+from dataclasses import dataclass
+
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -68,7 +69,7 @@ class ChoptyukFormula:
     """
 
     def __init__(self, lambda_D2_triv: float = 3.338,
-                 delta_C: Optional[float] = None,
+                 delta_C: float | None = None,
                  k_struct: int = 22,
                  c4: float = 0.125,
                  c6: float = 0.5,

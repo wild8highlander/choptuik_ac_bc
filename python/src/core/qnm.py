@@ -9,9 +9,9 @@ observatories.
 """
 
 from __future__ import annotations
-from dataclasses import dataclass
-from typing import List, Optional
+
 import logging
+from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
 
@@ -62,8 +62,8 @@ class QNMPredictor:
         M_sun: Solar mass in kg.
     """
 
-    def __init__(self, events: Optional[List[BHEvent]] = None,
-                 detectors: Optional[List[dict]] = None,
+    def __init__(self, events: list[BHEvent] | None = None,
+                 detectors: list[dict] | None = None,
                  G: float = 6.674e-11, c: float = 3e8,
                  M_sun: float = 1.989e30):
         self.events = events or DEFAULT_EVENTS
@@ -97,7 +97,7 @@ class QNMPredictor:
         logger.info(f"QNM {event.name}: Δf={delta_f:.2f} Hz, SNR={snr:.2f}")
         return result
 
-    def predict_all(self, scaling: float = 14.0) -> List[dict]:
+    def predict_all(self, scaling: float = 14.0) -> list[dict]:
         """Predict QNM shifts for all events.
 
         Returns:
@@ -106,7 +106,7 @@ class QNMPredictor:
         return [self.predict_shift(e, scaling) for e in self.events]
 
     def detectability(self, event_name: str = "GW150914",
-                       scaling: float = 14.0) -> List[dict]:
+                       scaling: float = 14.0) -> list[dict]:
         """Compute detectability for a given event across all future detectors.
 
         Args:

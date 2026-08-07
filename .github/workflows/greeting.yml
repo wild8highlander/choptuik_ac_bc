@@ -3,7 +3,7 @@ name: Greeting
 on:
   issues:
     types: [opened]
-  pull_request_target:
+  pull_request:
     types: [opened]
 
 permissions:
@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Greet new contributors
-        uses: actions/first-interaction@v3
+        uses: actions/first-interaction@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: |
-            Thank you for opening this issue! 🙏
+            Thank you for opening this issue!
 
             This repository covers the *Spinor corrections b-C and a-C* monograph
             by Ishak Khamzatovich Isaev. We appreciate your interest.
@@ -30,7 +30,7 @@ jobs:
             - Expected vs. observed behavior
 
           pr-message: |
-            Thank you for your contribution! 🎉
+            Thank you for your contribution!
 
             Please ensure:
             - All verification tests pass (CI will check)

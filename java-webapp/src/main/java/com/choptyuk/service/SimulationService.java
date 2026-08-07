@@ -5,6 +5,7 @@ import com.choptyuk.model.HypothesisConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -98,7 +99,7 @@ public class SimulationService {
         metadata.put("curvatureRange", List.of(curvatureMin, curvatureMax));
 
         return new SimulationResult(
-                java.time.Instant.now(),
+                Instant.now(),
                 deltaCSweep, lambda1Sweep, curvatureSweep,
                 convergence, sensitivity, metadata
         );

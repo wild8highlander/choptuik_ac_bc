@@ -13,16 +13,17 @@ Orchestrates the complete verification chain:
 """
 
 from __future__ import annotations
-import numpy as np
-from typing import Dict, List, Optional, Any
-from ..core.klein_curve import KleinCurve
-from ..core.spinor_phases import SpinorPhases
-from ..core.dirac_operator import DiracOperator
-from ..core.choptyuk_formula import ChoptyukFormula
-from ..core.surfaces import SurfaceSpec, DEFAULT_SURFACES
-from ..core.qnm import QNMPredictor, DEFAULT_EVENTS
+
 import logging
 import time
+from typing import Any
+
+from ..core.choptyuk_formula import ChoptyukFormula
+from ..core.dirac_operator import DiracOperator
+from ..core.klein_curve import KleinCurve
+from ..core.qnm import QNMPredictor
+from ..core.spinor_phases import SpinorPhases
+from ..core.surfaces import DEFAULT_SURFACES, SurfaceSpec
 
 logger = logging.getLogger(__name__)
 
@@ -37,15 +38,15 @@ class VerificationSuite:
     def __init__(self,
                  genus: int = 3, K: float = -1.0,
                  psl_order: int = 168, lambda_1: float = 3.838,
-                 delta_A: Optional[float] = None,
-                 delta_B: Optional[float] = None,
-                 delta_C: Optional[float] = None,
+                 delta_A: float | None = None,
+                 delta_B: float | None = None,
+                 delta_C: float | None = None,
                  k_struct: int = 22,
                  c4: float = 0.125, c6: float = 0.5,
                  delta_obs: float = 3.443,
                  b_ch_obs: float = 0.377,
-                 surfaces: Optional[List[SurfaceSpec]] = None,
-                 qnm_events: Optional[list] = None):
+                 surfaces: list[SurfaceSpec] | None = None,
+                 qnm_events: list | None = None):
         self.curve = KleinCurve(genus, K, psl_order, lambda_1)
         self.phases = SpinorPhases(delta_A, delta_B, delta_C)
         self.dirac = DiracOperator(lambda_1, self.curve.R)
@@ -56,8 +57,8 @@ class VerificationSuite:
         self.surfaces = surfaces or DEFAULT_SURFACES
         self.qnm = QNMPredictor(qnm_events)
         self.delta_obs = delta_obs
-        self.results: Dict[str, Any] = {}
-        self.logs: List[str] = []
+        self.results: dict[str, Any] = {}
+        self.logs: list[str] = []
         self._start_time = 0.0
 
     def run(self, include_structures: bool = True,

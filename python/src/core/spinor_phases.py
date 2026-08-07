@@ -11,10 +11,11 @@ generators carry an active spinor phase delta_C.
 """
 
 from __future__ import annotations
-import numpy as np
-from dataclasses import dataclass, field
-from typing import List, Optional
+
 import logging
+from dataclasses import dataclass
+
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +33,7 @@ class SpinorStructure:
         deviation: Percentage deviation from observed value.
     """
     id: int
-    bits: List[int]
+    bits: list[int]
     n_active: int
     delta_C: float
     Delta: float
@@ -48,9 +49,9 @@ class SpinorPhases:
         delta_C: Phase on C = pi/7.
     """
 
-    def __init__(self, delta_A: Optional[float] = None,
-                 delta_B: Optional[float] = None,
-                 delta_C: Optional[float] = None):
+    def __init__(self, delta_A: float | None = None,
+                 delta_B: float | None = None,
+                 delta_C: float | None = None):
         self.delta_A = delta_A if delta_A is not None else np.pi / 2
         self.delta_B = delta_B if delta_B is not None else np.pi / 3
         self.delta_C = delta_C if delta_C is not None else np.pi / 7
@@ -62,7 +63,7 @@ class SpinorPhases:
     def enumerate_structures(self, lambda_D2_triv: float,
                               delta_obs: float = 3.443,
                               n_structures: int = 64,
-                              n_generators: int = 6) -> List[SpinorStructure]:
+                              n_generators: int = 6) -> list[SpinorStructure]:
         """Enumerate all 2^n_generators spinor structures.
 
         For each structure, compute the spectral value:
@@ -98,7 +99,7 @@ class SpinorPhases:
         )
         return structures
 
-    def distribution(self, structures: List[SpinorStructure]) -> dict:
+    def distribution(self, structures: list[SpinorStructure]) -> dict:
         """Compute distribution of structures by number of active generators.
 
         Returns:

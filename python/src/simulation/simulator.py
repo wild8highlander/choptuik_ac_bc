@@ -8,10 +8,12 @@ Supports:
 """
 
 from __future__ import annotations
-import numpy as np
-from typing import Dict, List, Optional, Any, Tuple
+
 import logging
 import time
+from typing import Any
+
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -25,15 +27,15 @@ class Simulator:
 
     def __init__(self, delta_obs: float = 3.443):
         self.delta_obs = delta_obs
-        self.results: Dict[str, Any] = {}
-        self.logs: List[str] = []
+        self.results: dict[str, Any] = {}
+        self.logs: list[str] = []
 
-    def sweep_delta_C(self, delta_C_range: Optional[Tuple[float, float]] = None,
+    def sweep_delta_C(self, delta_C_range: tuple[float, float] | None = None,
                        n_points: int = 200,
                        lambda_D2: float = 3.338,
                        k: int = 22,
                        c4: float = 0.125,
-                       c6: float = 0.5) -> Dict:
+                       c6: float = 0.5) -> dict:
         """Sweep delta_C over a range and compute Choptyuk formula at each point.
 
         Args:
@@ -78,10 +80,10 @@ class Simulator:
         self.results["sweep_delta_C"] = result
         return result
 
-    def sweep_lambda_1(self, lam_range: Tuple[float, float] = (2.0, 6.0),
+    def sweep_lambda_1(self, lam_range: tuple[float, float] = (2.0, 6.0),
                         n_points: int = 200,
-                        delta_C: Optional[float] = None,
-                        R: float = -2.0, k: int = 22) -> Dict:
+                        delta_C: float | None = None,
+                        R: float = -2.0, k: int = 22) -> dict:
         """Sweep lambda_1 and observe its effect on the Choptyuk formula.
 
         Args:
@@ -116,8 +118,8 @@ class Simulator:
         return result
 
     def convergence_analysis(self, max_order: int = 10,
-                              delta_C: Optional[float] = None,
-                              lambda_D2: float = 3.338) -> Dict:
+                              delta_C: float | None = None,
+                              lambda_D2: float = 3.338) -> dict:
         """Analyze convergence of the Choptyuk series at increasing orders.
 
         The series is: Delta = lambda_D2 + sum_{n=1}^{max_order} c_n * delta_C^n

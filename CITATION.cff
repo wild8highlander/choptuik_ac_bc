@@ -24,7 +24,8 @@ keywords:
   - "PSL(2,7)"
   - "quasi-normal modes"
   - "gravitational waves"
-license: MIT
+license: OTHER
+license-url: LICENSE
 preferred-citation:
   type: book
   title: "Spinor corrections b-C and a-C and the solution of the Choptyuk problem"

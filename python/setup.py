@@ -8,6 +8,7 @@ setup(
     author="Ishak Khamzatovich Isaev",
     author_email="aslan08_05@mail.ru",
     url="https://github.com/wild8highlander/choptuik_ac_bc",
+    license="Isaev Proprietary License",
     description="Verification and simulation of spinor corrections b-C and a-C on the Klein quartic curve",
     long_description=open("README.md").read() if __import__("os").path.exists("README.md") else "",
     long_description_content_type="text/markdown",

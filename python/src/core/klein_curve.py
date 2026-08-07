@@ -6,9 +6,10 @@ PSL(2,7) of order 168. It is the quotient H/Gamma(2,3,7) where Gamma(2,3,7) is t
 """
 
 from __future__ import annotations
-import numpy as np
-from typing import Tuple
+
 import logging
+
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +41,7 @@ class KleinCurve:
             f"Area={self.area:.4f}, |PSL(2,7)|={psl_order}, λ₁={lambda_1}"
         )
 
-    def generators(self) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def generators(self) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Compute the Gamma(2,3,7) generators A, B, C in SL(2,R).
 
         A has order 4 in SL(2,R) (order 2 in PSL), B has order 6 in SL

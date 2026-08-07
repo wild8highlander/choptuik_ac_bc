@@ -6,10 +6,12 @@ correction formulas.
 """
 
 from __future__ import annotations
-import numpy as np
-from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Callable
+
 import logging
+from collections.abc import Callable
+from dataclasses import dataclass
+
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -32,14 +34,14 @@ class HypothesisConfig:
     """
     name: str
     description: str = ""
-    custom_delta_C: Optional[float] = None
-    custom_lambda_D2: Optional[float] = None
-    custom_k_struct: Optional[int] = None
-    custom_c4: Optional[float] = None
-    custom_c6: Optional[float] = None
-    custom_group_order: Optional[int] = None
-    custom_genus: Optional[int] = None
-    custom_correction_fn: Optional[Callable] = None
+    custom_delta_C: float | None = None
+    custom_lambda_D2: float | None = None
+    custom_k_struct: int | None = None
+    custom_c4: float | None = None
+    custom_c6: float | None = None
+    custom_group_order: int | None = None
+    custom_genus: int | None = None
+    custom_correction_fn: Callable | None = None
 
 
 @dataclass
@@ -127,8 +129,8 @@ class HypothesisTester:
         )
         return result
 
-    def parameter_sweep(self, param_name: str, values: List[float],
-                         base_config: Optional[HypothesisConfig] = None) -> List[HypothesisResult]:
+    def parameter_sweep(self, param_name: str, values: list[float],
+                         base_config: HypothesisConfig | None = None) -> list[HypothesisResult]:
         """Sweep a single parameter over a range of values.
 
         Args:
@@ -163,7 +165,7 @@ class HypothesisTester:
 
         return results
 
-    def compare_hypotheses(self, configs: List[HypothesisConfig]) -> List[HypothesisResult]:
+    def compare_hypotheses(self, configs: list[HypothesisConfig]) -> list[HypothesisResult]:
         """Compare multiple hypotheses side by side.
 
         Args:

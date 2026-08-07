@@ -1,6 +1,6 @@
 # Spinor Corrections b-C & a-C and the Choptyuk Problem
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: Proprietary](https://img.shields.io/badge/License-Isaev%20Proprietary-red.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![Julia 1.9+](https://img.shields.io/badge/Julia-1.9+-955880.svg)](https://julialang.org/)
 [![Java 17+](https://img.shields.io/badge/Java-17+-orange.svg)](https://openjdk.org/)
@@ -9,7 +9,7 @@
 [![Lint](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/lint.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/lint.yml)
 [![Pages](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/pages.yml/badge.svg)](https://wild8highlander.github.io/choptuik_ac_bc/)
 [![Release](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/release.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/releases/latest)
-[![DOI](https://img.shields.io/badge/Zenodo-10.5281/zenodo.pending-green.svg)](https://zenodo.org/record/)
+[![DOI](https://img.shields.io/badge/Zenodo-Archive-orange.svg?logo=zenodo)](https://zenodo.org/search?q=choptuik_ac_bc)
 [![GitHub](https://img.shields.io/badge/GitHub-choptuik__ac__bc-181717?logo=github)](https://github.com/wild8highlander/choptuik_ac_bc)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/wild8highlander/choptuik_ac_bc/badge)](https://securityscorecards.dev/viewer/?uri=github.com/wild8highlander/choptuik_ac_bc)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
@@ -156,7 +156,7 @@ Open in VS Code with Dev Containers extension — all tools (Python, Julia, Java
 ```
 choptuik_ac_bc/
 ├── README.md                    # This file
-├── LICENSE                      # MIT License
+├── LICENSE                      # Isaev Proprietary License
 ├── CITATION.cff                 # Citation metadata
 ├── CONTRIBUTING.md              # Contribution guidelines
 ├── CHANGELOG.md                 # Version history
@@ -265,7 +265,7 @@ A permanent DOI-backed archive of this software is available on Zenodo.
 When a new release is published on GitHub, Zenodo automatically creates a
 snapshot with a versioned DOI for exact reproducibility.
 
-[![DOI](https://img.shields.io/badge/Zenodo-10.5281/zenodo.pending-green.svg)](https://zenodo.org/record/)
+[![DOI](https://img.shields.io/badge/Zenodo-Archive-orange.svg?logo=zenodo)](https://zenodo.org/search?q=choptuik_ac_bc)
 
 ---
 
@@ -281,7 +281,12 @@ snapshot with a versioned DOI for exact reproducibility.
 
 ## License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **Isaev Proprietary License** — see the [LICENSE](LICENSE) file for details.
+
+**Summary:** This is a proprietary license. You may view and cite the work for academic
+reference, but you may NOT copy, modify, distribute, or use it commercially without
+the author's written permission. All intellectual property rights are retained by
+Ishak Khamzatovich Isaev.
 
 ---
 

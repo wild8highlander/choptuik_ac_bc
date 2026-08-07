@@ -59,4 +59,4 @@ Any change to core mathematical computations MUST:
 
 ## Code of Conduct
 
-Be respectful, constructive, and scientific in all interactions.
+All contributions become the intellectual property of Ishak Khamzatovich Isaev under the Isaev Proprietary License. By submitting a contribution, you agree that the Author retains all rights as specified in the LICENSE file.
