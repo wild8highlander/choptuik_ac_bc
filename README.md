@@ -11,7 +11,7 @@
 [![Release](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/release.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/releases/latest)
 [![DOI](https://img.shields.io/badge/Zenodo-Archive-orange.svg?logo=zenodo)](https://zenodo.org/search?q=choptuik_ac_bc)
 [![GitHub](https://img.shields.io/badge/GitHub-choptuik__ac__bc-181717?logo=github)](https://github.com/wild8highlander/choptuik_ac_bc)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/wild8highlander/choptuik_ac_bc/badge)](https://securityscorecards.dev/viewer/?uri=github.com/wild8highlander/choptuik_ac_bc)
+[![Security](https://img.shields.io/badge/Security-Scorecard%20Monitored-yellow.svg)](https://securityscorecards.dev/viewer/?uri=github.com/wild8highlander/choptuik_ac_bc)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 > **Monograph**: *Spinor corrections b-C and a-C and the solution of the Choptyuk problem*
