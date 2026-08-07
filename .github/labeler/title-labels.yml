@@ -1,0 +1,17 @@
+# Title-based auto-labeling
+'[BUG]': bug
+'[FEATURE]': enhancement
+'[VERIFICATION]': verification
+'[SURFACE]': mathematical
+'[WIP]': work-in-progress
+'[DOCS]': documentation
+'[CI]': ci
+'Python': python
+'Julia': julia
+'Java': java
+'Next.js': web-app
+'LIGO': ligo
+'QNM': ligo
+'Klein': math
+'Dirac': math
+'spinor': math

@@ -6,8 +6,13 @@
 [![Java 17+](https://img.shields.io/badge/Java-17+-orange.svg)](https://openjdk.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
 [![CI](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/ci.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/ci.yml)
+[![Lint](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/lint.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/lint.yml)
 [![Pages](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/pages.yml/badge.svg)](https://wild8highlander.github.io/choptuik_ac_bc/)
+[![Release](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/release.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/releases/latest)
+[![DOI](https://img.shields.io/badge/Zenodo-10.5281/zenodo.pending-green.svg)](https://zenodo.org/record/)
 [![GitHub](https://img.shields.io/badge/GitHub-choptuik__ac__bc-181717?logo=github)](https://github.com/wild8highlander/choptuik_ac_bc)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/wild8highlander/choptuik_ac_bc/badge)](https://securityscorecards.dev/viewer/?uri=github.com/wild8highlander/choptuik_ac_bc)
+[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 > **Monograph**: *Spinor corrections b-C and a-C and the solution of the Choptyuk problem*
 > by **Ishak Khamzatovich Isaev**
@@ -123,6 +128,27 @@ npm run dev
 
 **Online demo**: [https://wild8highlander.github.io/choptuik_ac_bc/](https://wild8highlander.github.io/choptuik_ac_bc/)
 
+### Using Makefile (One Command)
+
+```bash
+make all          # Run verification + simulation + plots + reports
+make verify       # Run verification only
+make viz-dev      # Start interactive visualization
+make setup        # Set up all environments
+make docker-run   # Run via Docker
+```
+
+### Using Docker
+
+```bash
+docker build -t choptyuk-verify -f docker/Dockerfile .
+docker run --rm -v $(pwd)/output:/app/output choptyuk-verify
+```
+
+### Using Dev Container
+
+Open in VS Code with Dev Containers extension — all tools (Python, Julia, Java, Node.js) pre-installed.
+
 ---
 
 ## Project Structure
@@ -233,6 +259,14 @@ If you use this code in your research, please cite:
 }
 ```
 
+### Zenodo Archive
+
+A permanent DOI-backed archive of this software is available on Zenodo.
+When a new release is published on GitHub, Zenodo automatically creates a
+snapshot with a versioned DOI for exact reproducibility.
+
+[![DOI](https://img.shields.io/badge/Zenodo-10.5281/zenodo.pending-green.svg)](https://zenodo.org/record/)
+
 ---
 
 ## Author
@@ -248,6 +282,33 @@ If you use this code in your research, please cite:
 ## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## Reproducibility
+
+This project is designed for **full computational reproducibility**:
+
+- **Docker**: One-command reproducible environment (`make docker-run`)
+- **Dev Containers**: VS Code one-click setup with all tools pre-installed
+- **Makefile**: Unified build system (`make all`)
+- **Pre-commit hooks**: Automated code quality enforcement
+- **CI/CD**: Every push is automatically verified across Python 3.10-3.12, Julia 1.9-1.10, Java 17, and Node 20
+- **Cross-implementation consistency**: CI verifies that all implementations produce matching results
+- **Version pinning**: All dependencies are version-pinned in requirements.txt, Project.toml, pom.xml, package.json
+- **Zenodo DOI**: Permanent archived snapshots for each release
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines. Quick workflow:
+
+1. Fork → Branch → Commit → PR
+2. CI runs automatically (Python + Julia + Java + Viz)
+3. All verification tests must pass
+4. Deviations from reference values must remain within tolerance
+5. New features require corresponding tests
 
 ---
 

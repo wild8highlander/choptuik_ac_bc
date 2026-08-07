@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  python-verify:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ../output:/app/output
+    command: python /app/python/run.py --mode verify --non-interactive --output-dir /app/output
+
+  interactive-viz:
+    image: node:20-slim
+    working_dir: /app
+    volumes:
+      - ../interactive-viz:/app
+      - viz-node-modules:/app/node_modules
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install && npm run dev"
+
+  java-webapp:
+    image: maven:3.9-eclipse-temurin-17
+    working_dir: /app
+    volumes:
+      - ../java-webapp:/app
+      - maven-repo:/root/.m2
+    ports:
+      - "8080:8080"
+    command: mvn spring-boot:run
+
+volumes:
+  viz-node-modules:
+  maven-repo:

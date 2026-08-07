@@ -1,0 +1,52 @@
+# Choptyuk Spinor Corrections - Dev Container
+# One-click development environment with all tools pre-installed
+
+name: "Choptyuk Spinor Corrections Dev"
+image: mcr.microsoft.com/devcontainers/base:ubuntu-22.04
+
+features:
+  - name: "./features/python"
+    options:
+      version: "3.12"
+  - name: "./features/julia"
+    options:
+      version: "1.10"
+  - name: "./features/java"
+    options:
+      version: "17"
+  - name: "./features/node"
+    options:
+      version: "20"
+
+postCreateCommand: |
+  pip install -r python/requirements.txt 2>/dev/null || true
+  cd julia && julia --project=. -e 'using Pkg; Pkg.instantiate()' 2>/dev/null || true
+  cd interactive-viz && npm install 2>/dev/null || true
+
+customizations:
+  vscode:
+    extensions:
+      - ms-python.python
+      - ms-toolsai.jupyter
+      - julialang.language-julia
+      - vscjava.vscode-java-pack
+      - bradlc.vscode-tailwindcss
+      - esbenp.prettier-vscode
+      - charliermarsh.ruff
+
+ports:
+  - port: 3000
+    onAutoForward: openBrowser
+    name: Interactive Visualization
+  - port: 8080
+    onAutoForward: openBrowser
+    name: Java Web App
+  - port: 8888
+    onAutoForward: openBrowser
+    name: Jupyter
+
+tasks:
+  - name: Python Verification
+    command: cd python && python run.py
+  - name: Interactive Visualization
+    command: cd interactive-viz && npm run dev

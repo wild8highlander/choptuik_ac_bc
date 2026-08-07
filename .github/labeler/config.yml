@@ -1,0 +1,49 @@
+# Auto-labeler configuration for pull requests and issues
+"math":
+  - python/src/core/**
+  - julia/src/**
+  - java-webapp/src/main/java/com/choptyuk/model/**
+  - interactive-viz/src/lib/compute.ts
+"visualization":
+  - python/src/visualization/**
+  - julia/src/visualization.jl
+  - java-webapp/src/main/java/com/choptyuk/service/PlotService.java
+  - interactive-viz/src/components/live-chart.tsx
+  - interactive-viz/src/app/simulate/**
+  - interactive-viz/src/app/structures/**
+  - interactive-viz/src/app/surfaces/**
+  - interactive-viz/src/app/qnm/**
+"reporting":
+  - python/src/reporting/**
+  - julia/src/reporting.jl
+  - java-webapp/src/main/java/com/choptyuk/service/ReportService.java
+  - interactive-viz/src/app/reports/**
+"ci":
+  - .github/workflows/**
+  - .github/labeler/**
+  - scripts/**
+"documentation":
+  - README.md
+  - CONTRIBUTING.md
+  - CHANGELOG.md
+  - CITATION.cff
+  - .zenodo.json
+  - docs/**
+"python":
+  - python/**
+"julia":
+  - julia/**
+"java":
+  - java-webapp/**
+"web-app":
+  - interactive-viz/**
+"ligo":
+  - python/src/core/qnm.py
+  - julia/src/qnm.jl
+  - java-webapp/src/main/java/com/choptyuk/model/QNMEvent.java
+  - interactive-viz/src/app/qnm/**
+"hypothesis-testing":
+  - python/src/core/hypothesis.py
+  - julia/src/hypothesis.jl
+  - java-webapp/src/main/java/com/choptyuk/model/HypothesisConfig.java
+  - interactive-viz/src/app/hypothesis/**

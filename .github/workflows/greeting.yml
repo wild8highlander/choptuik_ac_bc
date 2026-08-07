@@ -1,0 +1,38 @@
+name: Greeting
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Greet new contributors
+        uses: actions/first-interaction@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            Thank you for opening this issue! 🙏
+
+            This repository covers the *Spinor corrections b-C and a-C* monograph
+            by Ishak Khamzatovich Isaev. We appreciate your interest.
+
+            Please ensure you've included:
+            - Which implementation (Python/Julia/Java/Viz) you're using
+            - The relevant parameters or configuration
+            - Expected vs. observed behavior
+
+          pr-message: |
+            Thank you for your contribution! 🎉
+
+            Please ensure:
+            - All verification tests pass (CI will check)
+            - Mathematical constants remain within tolerance
+            - New features include appropriate tests

@@ -1,0 +1,18 @@
+{
+  "ignorePatterns": [
+    {"pattern": "^http://localhost"},
+    {"pattern": "^https://localhost"},
+    {"pattern": "^https://doi.org"},
+    {"pattern": "^https://zenodo.org"}
+  ],
+  "replacementPatterns": [
+    {"pattern": "^/", "replacement": "{{BASE_URL}}/"}
+  ],
+  "httpHeaders": [
+    {"urls": ["https://github.com"], "headers": {"Authorization": "Bearer $GITHUB_TOKEN"}}
+  ],
+  "timeout": "20s",
+  "retryOn429": true,
+  "retryCount": 3,
+  "fallbackRetryDelay": "30s"
+}

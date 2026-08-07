@@ -1,21 +1,56 @@
-dependencies:
-  - name: numpy
-    version: ">=1.24"
-    license: BSD-3-Clause
-    description: Numerical computing
-  - name: scipy
-    version: ">=1.10"
-    license: BSD-3-Clause
-    description: Scientific computing
-  - name: matplotlib
-    version: ">=3.7"
-    license: PSF-based
-    description: Plotting
-  - name: python-docx
-    version: ">=0.8.11"
-    license: MIT
-    description: DOCX report generation
-  - name: reportlab
-    version: ">=4.0"
-    license: BSD-3-Clause
-    description: PDF report generation
+version: 2
+
+updates:
+  - package-ecosystem: "pip"
+    directory: "/python"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "python"
+    commit-message:
+      prefix: "deps(python)"
+    reviewers:
+      - "wild8highlander"
+
+  - package-ecosystem: "npm"
+    directory: "/interactive-viz"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "web-app"
+    commit-message:
+      prefix: "deps(npm)"
+    reviewers:
+      - "wild8highlander"
+
+  - package-ecosystem: "maven"
+    directory: "/java-webapp"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "java"
+    commit-message:
+      prefix: "deps(maven)"
+    reviewers:
+      - "wild8highlander"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "ci"
+    commit-message:
+      prefix: "deps(actions)"
