@@ -18,7 +18,7 @@
     "next": "^15.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^2.15.0",
+    "recharts": "^3.10.1",
     "mathjs": "^13.2.0",
     "lucide-react": "^0.468.0",
     "class-variance-authority": "^0.7.1",
