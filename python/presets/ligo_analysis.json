@@ -1,0 +1,17 @@
+{
+  "name": "ligo_analysis",
+  "description": "LIGO/Virgo QNM focused analysis",
+  "precision": 15,
+  "include_higher_orders": true,
+  "enumerate_64_structures": false,
+  "compute_surfaces": false,
+  "compute_qnm": true,
+  "generate_plots": true,
+  "generate_reports": true,
+  "future_detectors": [
+    {"name": "LIGO O3", "sigma_hz": 5.5},
+    {"name": "LIGO A+ (2024-26)", "sigma_hz": 2.8},
+    {"name": "Einstein Telescope (2030+)", "sigma_hz": 0.5},
+    {"name": "Cosmic Explorer (2035+)", "sigma_hz": 0.1}
+  ]
+}

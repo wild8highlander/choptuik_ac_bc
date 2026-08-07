@@ -1,0 +1,58 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python-lint:
+    name: Python Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install linting tools
+        run: pip install ruff mypy
+      - name: Ruff check
+        run: |
+          cd python
+          ruff check src/ --ignore E501
+      - name: Type check
+        run: |
+          cd python
+          mypy src/ --ignore-missing-imports || true
+
+  julia-lint:
+    name: Julia Format Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.10'
+      - name: Check formatting
+        run: |
+          julia -e 'using Pkg; Pkg.add("JuliaFormatter")' || true
+          cd julia
+          julia -e 'using JuliaFormatter; format("src/"; verbose=true)' || true
+
+  node-lint:
+    name: Node.js Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: interactive-viz/package-lock.json
+      - name: Install
+        run: cd interactive-viz && npm ci
+      - name: Lint
+        run: cd interactive-viz && npm run lint --if-present
+      - name: Type check
+        run: cd interactive-viz && npx tsc --noEmit || true

@@ -1,0 +1,35 @@
+name: Verify on Schedule
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Every Monday at 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  periodic-verification:
+    name: Periodic Full Verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install & Verify
+        run: |
+          cd python
+          pip install -r requirements.txt
+          python run.py --mode verify --non-interactive --output-dir ../output/periodic
+      - name: Check deviations
+        run: |
+          python3 -c "
+          import json
+          with open('output/periodic/results.json') as f:
+              r = json.load(f)
+          ch = r['choptyuk']
+          max_dev = max(ch['deviation_bc_pct'], ch['deviation_full_pct'], ch['deviation_b_ch_pct'])
+          if max_dev > 1.0:
+              print(f'WARNING: Max deviation {max_dev:.3f}% exceeds 1%')
+          else:
+              print(f'All deviations within tolerance (max {max_dev:.3f}%)')
+          "

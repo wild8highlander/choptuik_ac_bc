@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Mathematical Discussion
+    url: https://github.com/wild8highlander/choptuik_ac_bc/discussions
+    about: Discuss the mathematics, spinor corrections, and Choptyuk formula
+  - name: Documentation
+    url: https://wild8highlander.github.io/choptuik_ac_bc/
+    about: Interactive visualization and documentation

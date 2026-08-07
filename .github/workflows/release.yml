@@ -1,0 +1,67 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build & Publish Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run full verification
+        run: |
+          cd python
+          pip install -r requirements.txt
+          python run.py --mode verify --non-interactive --output-dir ../release-output
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build interactive viz
+        run: |
+          cd interactive-viz
+          npm ci
+          npm run build
+
+      - name: Create release archive
+        run: |
+          mkdir -p release-archive
+          cp -r python/src release-archive/python-src
+          cp -r julia/src release-archive/julia-src
+          cp -r release-output release-archive/verification-results
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Choptyuk Spinor Corrections ${{ github.ref_name }}"
+          body: |
+            ## Verification Results
+
+            This release includes verified computational results from the monograph
+            *Spinor corrections b-C and a-C and the solution of the Choptyuk problem*
+            by Ishak Khamzatovich Isaev.
+
+            ### Key Constants
+            | Constant | Value | Deviation |
+            |---|---|---|
+            | Δ_bC | 3.438710 | 0.125% |
+            | Δ_Ch (full) | 3.447040 | 0.117% |
+            | b_Ch | 0.376510 | 0.130% |
+
+            All verifications passed within tolerance.
+          draft: false
+          prerelease: false

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Simulation</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" th:href="@{/}">Choptyuk</a>
+        <ul class="navbar-nav">
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/verify}">Verify</a></li>
+            <li><a th:href="@{/simulate}" class="active">Simulate</a></li>
+            <li><a th:href="@{/hypothesis}">Hypothesis</a></li>
+            <li><a th:href="@{/reports}">Reports</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Simulation &amp; Parameter Sweep</h1>
+            <p>Explore the Choptyuk formula response to parameter variations</p>
+        </div>
+
+        <div id="sim-alerts"></div>
+
+        <!-- Sweep Configuration -->
+        <section>
+            <div class="card">
+                <div class="card-title">Parameter Sweep Configuration</div>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label for="sim-dcMin">delta_C minimum</label>
+                        <input type="number" step="any" id="sim-dcMin" class="form-control" value="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="sim-dcMax">delta_C maximum</label>
+                        <input type="number" step="any" id="sim-dcMax" class="form-control" value="1.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="sim-l1Min">lambda_1 minimum</label>
+                        <input type="number" step="any" id="sim-l1Min" class="form-control" value="3.0">
+                    </div>
+                    <div class="form-group">
+                        <label for="sim-l1Max">lambda_1 maximum</label>
+                        <input type="number" step="any" id="sim-l1Max" class="form-control" value="5.0">
+                    </div>
+                    <div class="form-group">
+                        <label for="sim-rMin">Curvature minimum</label>
+                        <input type="number" step="any" id="sim-rMin" class="form-control" value="-4.0">
+                    </div>
+                    <div class="form-group">
+                        <label for="sim-rMax">Curvature maximum</label>
+                        <input type="number" step="any" id="sim-rMax" class="form-control" value="0.0">
+                    </div>
+                </div>
+                <div class="grid grid-2" style="margin-top: 1rem;">
+                    <div class="form-group">
+                        <label for="sim-nPts">Number of points per sweep</label>
+                        <input type="number" id="sim-nPts" class="form-control" value="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="sim-maxOrd">Maximum correction order</label>
+                        <input type="number" id="sim-maxOrd" class="form-control" value="8">
+                    </div>
+                </div>
+                <div class="btn-group" style="margin-top: 1rem;">
+                    <button class="btn btn-primary" onclick="SimulatePage.runSimulation()">Run Simulation</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Delta_C Sweep Results -->
+        <section>
+            <div class="results-panel">
+                <h3>delta_C Parameter Sweep</h3>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <div class="card-title">Range</div>
+                        <div class="card-value" th:text="${#numbers.formatDecimal(deltaCSweep.minValue, 1, 3)} + ' — ' + ${#numbers.formatDecimal(deltaCSweep.maxValue, 1, 3)}">0.5 — 1.5</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Optimal delta_C</div>
+                        <div class="card-value value-highlight" th:text="${#numbers.formatDecimal(deltaCSweep.optimalValue, 1, 6)}">0.448799</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Min Deviation</div>
+                        <div class="card-value" th:text="${#numbers.formatDecimal(deltaCSweep.minDeviation, 1, 8)}">0.00000512</div>
+                    </div>
+                </div>
+                <div class="formula" th:text="'Delta_Ch at optimal: ' + ${#numbers.formatDecimal(deltaCSweep.optimalDeltaCh, 1, 6)}">Delta_Ch at optimal: 3.437883</div>
+            </div>
+        </section>
+
+        <!-- Convergence Analysis -->
+        <section>
+            <div class="results-panel">
+                <h3>Convergence Analysis</h3>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <div class="card-title">Converged</div>
+                        <div class="card-value">
+                            <span th:if="${convergence.converged}" class="badge badge-success">YES</span>
+                            <span th:unless="${convergence.converged}" class="badge badge-danger">NO</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Convergence Rate</div>
+                        <div class="card-value mono" th:text="${#numbers.formatDecimal(convergence.convergenceRate, 1, 6)}">0.044900</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Limit Estimate</div>
+                        <div class="card-value value-highlight" th:text="${#numbers.formatDecimal(convergence.limitEstimate, 1, 6)}">3.437883</div>
+                    </div>
+                </div>
+                <div class="table-container" style="margin-top: 1rem;">
+                    <table>
+                        <thead>
+                            <tr><th>Order n</th><th>Delta_Ch(n)</th><th>|Delta_Ch(n) - Delta_Ch(n-1)|</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="i : ${#numbers.sequence(0, convergence.orders.size() - 1)}">
+                                <td class="mono" th:text="${convergence.orders[i]}">n</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(convergence.deltaValues[i], 1, 6)}">val</td>
+                                <td class="mono" th:text="${i > 0} ? ${#numbers.formatDecimal(convergence.differences[i - 1], 1, 10)} : '—'">diff</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sensitivity Analysis -->
+        <section>
+            <div class="results-panel">
+                <h3>Sensitivity Analysis</h3>
+                <p>Most sensitive parameter: <span class="value-highlight" th:text="${sensitivity.mostSensitiveParameter}">deltaC</span></p>
+                <div class="table-container" style="margin-top: 1rem;">
+                    <table>
+                        <thead>
+                            <tr><th>Parameter</th><th>Absolute Sensitivity</th><th>Relative Sensitivity</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="entry : ${sensitivity.sensitivities}">
+                                <td th:text="${entry.key}">param</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(entry.value, 1, 6)}">s</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(sensitivity.relativeSensitivities[entry.key], 1, 6)}">rs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <div id="sim-results"></div>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

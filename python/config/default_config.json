@@ -1,0 +1,37 @@
+{
+  "precision": 15,
+  "klein": {
+    "genus": 3,
+    "gaussian_curvature": -1,
+    "psl_order": 168,
+    "sl_order": 336,
+    "lambda_1": 3.838
+  },
+  "spinor_phases": {
+    "delta_A": "pi/2",
+    "delta_B": "pi/3",
+    "delta_C": "pi/7"
+  },
+  "corrections": {
+    "b_c_order": 1,
+    "a_c_order": 2,
+    "k_struct": 22,
+    "higher_order_c4": 0.125,
+    "higher_order_c6": 0.5
+  },
+  "observed": {
+    "delta_obs": 3.443,
+    "b_ch_obs": 0.377
+  },
+  "ligo": {
+    "c_light": 3e8,
+    "G": 6.674e-11,
+    "M_sun": 1.989e30
+  },
+  "output": {
+    "dir": "output",
+    "dpi": 600,
+    "vector_format": "pdf",
+    "report_formats": ["docx", "pdf", "txt", "md", "csv", "html", "json"]
+  }
+}
