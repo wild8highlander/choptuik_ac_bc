@@ -52,7 +52,7 @@ public class ReportService {
     /**
      * Generates a report in the specified format.
      */
-    public byte[] generateReport(String format) throws IOException {
+    public byte[] generateReport(String format) throws Exception {
         log.info("Generating report in format: {}", format);
 
         VerificationService.VerificationResult verification = verificationService.verifyAll();

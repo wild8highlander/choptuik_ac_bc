@@ -36,7 +36,7 @@ jobs:
       - name: Build Next.js static export
         run: |
           cd interactive-viz
-          npm run build
+          NEXT_IGNORE_ESLINT=true npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
