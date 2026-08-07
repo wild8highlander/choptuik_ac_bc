@@ -154,42 +154,88 @@ Open in VS Code with Dev Containers extension — all tools (Python, Julia, Java
 
 ## Architecture
 
+### Mathematical Pipeline
+
 ```mermaid
-graph TB
-    subgraph Core["Core Mathematical Engine"]
-        KC[Klein Quartic Curve<br/>genus 3, PSL 2 7]
-        SP[Spinor Phases<br/>δ_A=π/2, δ_B=π/3, δ_C=π/7]
-        CF[Choptyuk Formula<br/>Δ_Ch = λ₁ + δ_C²/2 − δ_C⁵/22]
-        DO[Dirac Operator<br/>λ₁ D²_σ₀ = 3.338]
-        QNM[QNM Predictions<br/>LIGO/Virgo]
+flowchart LR
+    subgraph Geometry["Riemannian Geometry"]
+        direction TB
+        KC["Klein Quartic<br/><b>x³y + y³z + z³x = 0</b><br/>genus 3, PSL(2,7)"]
+        LAP["Laplacian Δ<br/><b>λ₁(Δ) = 3.838</b><br/>Bourque–Strohmaier 2024"]
+        SC["Scalar Curvature<br/><b>R = −2</b><br/>hyperbolic metric"]
     end
 
-    subgraph Implementations["Four Independent Implementations"]
-        PY["🐍 Python 3.10+<br/>CLI + Interactive Menu"]
-        JL["🟣 Julia 1.9+<br/>REPL + Interactive Menu"]
-        JV["☕ Java 17+ Spring Boot<br/>REST API + Web UI"]
-        NX["⚡ Next.js 15 + React<br/>Real-time Dashboard"]
+    subgraph Spinors["Spinor Analysis"]
+        direction TB
+        PH["Spinor Phases<br/><b>δ_A=π/2  δ_B=π/3  δ_C=π/7</b>"]
+        DIR["Dirac Operator D<br/><b>λ₁(D²_σ₀) = 3.338</b><br/>Lichnerowicz: λ₁(Δ)+R/4"]
+        S64["64 Spinor Structures<br/><b>2^(2g) = 2⁶ = 64</b><br/>trivial σ₀ → minimum"]
     end
 
-    subgraph Outputs["Outputs"]
-        RPT["Reports<br/>DOCX PDF TXT MD<br/>CSV HTML JSON"]
-        PLT["Plots<br/>600 DPI PNG<br/>PDF SVG"]
-        LOG["Execution Logs<br/>Timestamped"]
+    subgraph Choptyuk["Choptyuk Formula"]
+        direction TB
+        BC["b-C Correction<br/><b>Δ_bC = 3.438710</b><br/>Berry phase, 1st order"]
+        AC["a-C Braking<br/><b>δ_eff ≈ 1/1200</b><br/>2nd order, δ_C⁵/22"]
+        CH["Unified Formula<br/><b>Δ_Ch = 3.447040</b><br/>base + δ_C⁴/8 + δ_C⁶/2"]
     end
 
-    subgraph CI_CD["CI/CD Pipeline"]
-        CI["GitHub Actions<br/>10 Workflows"]
-        DC["Docker + Dev Container"]
-        PC["Pre-commit Hooks"]
+    subgraph Physics["Physical Predictions"]
+        direction TB
+        BCH["Choptyuk Constant<br/><b>b_Ch = 0.376510</b><br/>1 − cos(2π/7)"]
+        QNM["QNM Frequencies<br/><b>LIGO/Virgo</b><br/>GW150914 GW170104<br/>GW170814 GW190521"]
     end
 
-    KC --> SP --> CF
-    DO --> CF
-    CF --> QNM
+    KC --> LAP & SC
+    LAP --> DIR
+    SC --> DIR
+    PH --> BC
+    DIR --> BC & AC
+    BC --> CH
+    AC --> CH
+    CH --> BCH --> QNM
+    KC -.-> S64
+    DIR -.-> S64
+```
 
-    Core --> PY & JL & JV & NX
+### Implementation & CI/CD
+
+```mermaid
+flowchart TB
+    subgraph Core["Mathematical Engine"]
+        M["Core computations<br/>Klein curve · Dirac · Choptyuk"]
+    end
+
+    subgraph Impl["Four Independent Implementations"]
+        direction LR
+        PY["<b>Python 3.10+</b><br/>CLI + Interactive Menu<br/>NumPy · SciPy · mpmath"]
+        JL["<b>Julia 1.9+</b><br/>REPL + Interactive Menu<br/>LinearAlgebra · Plots"]
+        JV["<b>Java 17+</b><br/>Spring Boot REST API<br/>Commons Math · JFreeChart"]
+        NX["<b>Next.js 15 + React 19</b><br/>Real-time Dashboard<br/>Recharts · MathJS · Tailwind"]
+    end
+
+    subgraph Out["Outputs"]
+        direction LR
+        RPT["<b>7 Report Formats</b><br/>DOCX · PDF · TXT · MD<br/>CSV · HTML · JSON"]
+        PLT["<b>Publication Plots</b><br/>600 DPI PNG<br/>PDF · SVG vectors"]
+        LOG["<b>Execution Logs</b><br/>Timestamped records<br/>Full provenance"]
+    end
+
+    subgraph CI["CI/CD & Reproducibility"]
+        direction LR
+        GHA["<b>GitHub Actions</b><br/>CI · Lint · Release<br/>Pages · Scorecard · Stale"]
+        DOC["<b>Docker + Dev Container</b><br/>One-command setup<br/>Full toolchain"]
+        HKS["<b>Pre-commit Hooks</b><br/>ruff · mypy · format<br/>YAML/JSON validation"]
+        ZEN["<b>Zenodo DOI</b><br/>Permanent archive<br/>Versioned snapshots"]
+    end
+
+    M --> PY & JL & JV & NX
     PY & JL & JV & NX --> RPT & PLT & LOG
-    Core --> CI_CD
+    M -.-> CI
+
+    style Core fill:#2c3e50,stroke:#1a252f,color:#fff
+    style Impl fill:#ecf0f1,stroke:#bdc3c7
+    style Out fill:#e8f8f5,stroke:#1abc9c
+    style CI fill:#fef9e7,stroke:#f1c40f
 ```
 
 ---
