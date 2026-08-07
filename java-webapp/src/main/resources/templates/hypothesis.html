@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Hypothesis Testing</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" th:href="@{/}">Choptyuk</a>
+        <ul class="navbar-nav">
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/verify}">Verify</a></li>
+            <li><a th:href="@{/simulate}">Simulate</a></li>
+            <li><a th:href="@{/hypothesis}" class="active">Hypothesis</a></li>
+            <li><a th:href="@{/reports}">Reports</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Custom Hypothesis Testing</h1>
+            <p>Test alternative parameter values against the canonical Choptyuk formula</p>
+        </div>
+
+        <div id="hyp-alerts"></div>
+
+        <!-- Canonical Reference -->
+        <section>
+            <div class="card">
+                <div class="card-title">Canonical Hypothesis (Reference)</div>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <div class="card-title">Delta_Ch</div>
+                        <div class="card-value value-highlight" th:text="${#numbers.formatDecimal(canonicalDeltaCh, 1, 6)}">3.437883</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Deviation</div>
+                        <div class="card-value" th:text="${#numbers.formatDecimal(canonicalDeviation, 1, 6)}">-0.005117</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Rel. Deviation</div>
+                        <div class="card-value" th:text="${#numbers.formatPercent(canonicalDeviation / 3.443, 4)}">0.15%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Custom Hypothesis Form -->
+        <section>
+            <div class="card">
+                <div class="card-title">Custom Hypothesis Parameters</div>
+                <div class="form-group">
+                    <label for="hyp-name">Hypothesis Name</label>
+                    <input type="text" id="hyp-name" class="form-control" value="Custom Hypothesis">
+                </div>
+                <div class="grid grid-3">
+                    <div class="form-group">
+                        <label for="hyp-deltaA">delta_A</label>
+                        <input type="number" step="any" id="hyp-deltaA" class="form-control"
+                               th:value="${#numbers.formatDecimal(canonical.deltaA, 1, 10)}">
+                    </div>
+                    <div class="form-group">
+                        <label for="hyp-deltaB">delta_B</label>
+                        <input type="number" step="any" id="hyp-deltaB" class="form-control"
+                               th:value="${#numbers.formatDecimal(canonical.deltaB, 1, 10)}">
+                    </div>
+                    <div class="form-group">
+                        <label for="hyp-deltaC">delta_C</label>
+                        <input type="number" step="any" id="hyp-deltaC" class="form-control"
+                               th:value="${#numbers.formatDecimal(canonical.deltaC, 1, 10)}">
+                    </div>
+                </div>
+                <div class="grid grid-3">
+                    <div class="form-group">
+                        <label for="hyp-lambda1">lambda_1</label>
+                        <input type="number" step="any" id="hyp-lambda1" class="form-control"
+                               th:value="${#numbers.formatDecimal(canonical.lambda1, 1, 6)}">
+                    </div>
+                    <div class="form-group">
+                        <label for="hyp-scalarCurvature">R (scalar curvature)</label>
+                        <input type="number" step="any" id="hyp-scalarCurvature" class="form-control"
+                               th:value="${#numbers.formatDecimal(canonical.scalarCurvature, 1, 6)}">
+                    </div>
+                    <div class="form-group">
+                        <label for="hyp-deltaObserved">Delta_observed</label>
+                        <input type="number" step="any" id="hyp-deltaObserved" class="form-control"
+                               th:value="${#numbers.formatDecimal(canonical.deltaObserved, 1, 6)}">
+                    </div>
+                </div>
+                <div class="grid grid-3">
+                    <div class="form-group">
+                        <label for="hyp-genus">Genus</label>
+                        <input type="number" id="hyp-genus" class="form-control"
+                               th:value="${canonical.genus}">
+                    </div>
+                    <div class="form-group">
+                        <label for="hyp-pslOrder">PSL(2,7) Order</label>
+                        <input type="number" id="hyp-pslOrder" class="form-control"
+                               th:value="${canonical.pslOrder}">
+                    </div>
+                    <div class="form-group">
+                        <label for="hyp-maxOrder">Max Correction Order</label>
+                        <input type="number" id="hyp-maxOrder" class="form-control"
+                               th:value="${canonical.maxOrder}">
+                    </div>
+                </div>
+                <div class="btn-group" style="margin-top: 1rem;">
+                    <button class="btn btn-primary" onclick="HypothesisPage.testHypothesis()">Test Hypothesis</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results (populated by JS) -->
+        <div id="hyp-results"></div>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

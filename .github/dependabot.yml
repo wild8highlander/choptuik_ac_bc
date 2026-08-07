@@ -1,0 +1,21 @@
+dependencies:
+  - name: numpy
+    version: ">=1.24"
+    license: BSD-3-Clause
+    description: Numerical computing
+  - name: scipy
+    version: ">=1.10"
+    license: BSD-3-Clause
+    description: Scientific computing
+  - name: matplotlib
+    version: ">=3.7"
+    license: PSF-based
+    description: Plotting
+  - name: python-docx
+    version: ">=0.8.11"
+    license: MIT
+    description: DOCX report generation
+  - name: reportlab
+    version: ">=4.0"
+    license: BSD-3-Clause
+    description: PDF report generation

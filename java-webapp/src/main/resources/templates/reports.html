@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Reports</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" th:href="@{/}">Choptyuk</a>
+        <ul class="navbar-nav">
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/verify}">Verify</a></li>
+            <li><a th:href="@{/simulate}">Simulate</a></li>
+            <li><a th:href="@{/hypothesis}">Hypothesis</a></li>
+            <li><a th:href="@{/reports}" class="active">Reports</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Reports &amp; Downloads</h1>
+            <p>Generate and download verification reports in multiple formats</p>
+        </div>
+
+        <!-- Generate Reports -->
+        <section>
+            <div class="card">
+                <div class="card-title">Generate Report</div>
+                <p style="margin-bottom: 1rem; color: var(--text-secondary);">
+                    Click a format button to generate and download a full verification report.
+                </p>
+                <div class="btn-group">
+                    <button th:each="fmt : ${formats}"
+                            class="btn btn-primary"
+                            th:onclick="'ReportsPage.download(\'' + ${fmt} + '\')'"
+                            th:text="'Download ' + ${fmt}">Download</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Format Descriptions -->
+        <section>
+            <div class="grid grid-4">
+                <div class="card">
+                    <div class="card-title">JSON</div>
+                    <p>Structured data for programmatic access. Includes all verification results, checks, and QNM data.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">HTML</div>
+                    <p>Formatted HTML report with tables, color-coded pass/fail status, and embedded styling.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">CSV</div>
+                    <p>Comma-separated values for spreadsheet import. All checks and QNM events included.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">TXT</div>
+                    <p>Plain text report. Human-readable, suitable for terminal output or log files.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">Markdown</div>
+                    <p>GitHub-flavored markdown with tables and emoji status indicators.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">DOCX</div>
+                    <p>Microsoft Word document via Apache POI. Professional formatting with tables.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title">PDF</div>
+                    <p>PDF document via iText. Publication-ready with monospace values and section headings.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Existing Reports -->
+        <section>
+            <div class="results-panel">
+                <h3>Previously Generated Reports</h3>
+                <div id="reports-list">
+                    <div th:if="${existingReports.isEmpty()}">
+                        <p style="color: var(--text-muted);">No reports generated yet. Click a format button above to generate one.</p>
+                    </div>
+                    <div th:unless="${existingReports.isEmpty()}">
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr><th>Filename</th><th>Format</th><th>Size</th><th>Created</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="report : ${existingReports}">
+                                        <td th:text="${report.filename}">file</td>
+                                        <td><span class="badge badge-info" th:text="${report.format}">FMT</span></td>
+                                        <td class="mono" th:text="${#numbers.formatDecimal(report.sizeBytes / 1024.0, 1, 1)} + ' KB'">0 KB</td>
+                                        <td th:text="${report.createdAt}">time</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REST API Reference -->
+        <section>
+            <div class="card">
+                <div class="card-title">REST API Endpoints</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><span class="badge badge-info">POST</span></td><td class="mono">/api/verify</td><td>Run verification with optional custom parameters</td></tr>
+                            <tr><td><span class="badge badge-info">POST</span></td><td class="mono">/api/simulate</td><td>Run parameter sweep simulation</td></tr>
+                            <tr><td><span class="badge badge-info">POST</span></td><td class="mono">/api/hypothesis</td><td>Test custom hypothesis</td></tr>
+                            <tr><td><span class="badge badge-success">GET</span></td><td class="mono">/api/reports/{format}</td><td>Download report (json, html, csv, txt, md, docx, pdf)</td></tr>
+                            <tr><td><span class="badge badge-success">GET</span></td><td class="mono">/api/reports/list</td><td>List previously generated reports</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

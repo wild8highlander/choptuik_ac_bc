@@ -1,0 +1,22 @@
+name = "ChoptyukSpinor"
+uuid = "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+version = "1.0.0"
+authors = ["Ishak Khamzatovich Isaev <aslan08_05@mail.ru>"]
+repository = "https://github.com/wild8highlander/choptuik_ac_bc"
+
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Printf = "de085821-7539-58de-a6c0-638f2599436f"
+JSON = "682c06d0-f43c-4c30-b111-5a9f5a44b905"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859dae80"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+
+[compat]
+LinearAlgebra = "1"
+Printf = "1"
+JSON = "0.21"
+Plots = "1"
+DataFrames = "1"
+
+[targets]
+test = []

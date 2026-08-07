@@ -1,0 +1,11 @@
+{
+  "name": "high_precision",
+  "description": "High precision computation with mpmath (50 decimal digits)",
+  "precision": 50,
+  "include_higher_orders": true,
+  "enumerate_64_structures": true,
+  "compute_surfaces": true,
+  "compute_qnm": false,
+  "generate_plots": true,
+  "generate_reports": true
+}

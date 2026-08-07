@@ -1,0 +1,19 @@
+{
+  "name": "standard",
+  "description": "Standard preset with canonical Klein curve values from the Choptyuk monograph",
+  "lambda_D2_triv": 3.338,
+  "lambda_1": 3.838,
+  "delta_C": 0.4487989505128276,
+  "R": -2.0,
+  "observed_delta": 3.443,
+  "tolerance": 0.01,
+  "n_sweep": 100,
+  "notes": {
+    "delta_C_value": "π/7 ≈ 0.4487989505128276",
+    "delta_A": "π/2 = 1.5707963267948966",
+    "delta_B": "π/3 = 1.0471975511965976",
+    "b_Ch": "1 - cos(2π/7) ≈ 0.377",
+    "aC_braking": "δ_C^5/22 ≈ 1/1200",
+    "formula": "Δ_Ch = λ_{D²,triv} + δ_C²/2 + δ_C⁴/8 - δ_C⁵/22 + δ_C⁶/2"
+  }
+}

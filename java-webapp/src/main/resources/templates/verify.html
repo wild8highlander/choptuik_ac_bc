@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Verification</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" th:href="@{/}">Choptyuk</a>
+        <ul class="navbar-nav">
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/verify}" class="active">Verify</a></li>
+            <li><a th:href="@{/simulate}">Simulate</a></li>
+            <li><a th:href="@{/hypothesis}">Hypothesis</a></li>
+            <li><a th:href="@{/reports}">Reports</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Verification Results</h1>
+            <p>Full verification of Choptyuk monograph claims with customizable parameters</p>
+        </div>
+
+        <div id="verify-alerts"></div>
+
+        <!-- Parameter Configuration -->
+        <section>
+            <div class="card">
+                <div class="card-title">Parameter Configuration</div>
+                <div class="grid grid-3">
+                    <div class="form-group">
+                        <label for="input-deltaA">delta_A (spinor phase A)</label>
+                        <input type="number" step="any" id="input-deltaA" class="form-control"
+                               th:value="${#numbers.formatDecimal(inputDeltaA, 1, 10)}">
+                    </div>
+                    <div class="form-group">
+                        <label for="input-deltaB">delta_B (spinor phase B)</label>
+                        <input type="number" step="any" id="input-deltaB" class="form-control"
+                               th:value="${#numbers.formatDecimal(inputDeltaB, 1, 10)}">
+                    </div>
+                    <div class="form-group">
+                        <label for="input-deltaC">delta_C (spinor phase C)</label>
+                        <input type="number" step="any" id="input-deltaC" class="form-control"
+                               th:value="${#numbers.formatDecimal(inputDeltaC, 1, 10)}">
+                    </div>
+                </div>
+                <div class="grid grid-3">
+                    <div class="form-group">
+                        <label for="input-lambda1">lambda_1 (Laplacian eigenvalue)</label>
+                        <input type="number" step="any" id="input-lambda1" class="form-control"
+                               th:value="${inputLambda1}">
+                    </div>
+                    <div class="form-group">
+                        <label for="input-scalarCurvature">R (scalar curvature)</label>
+                        <input type="number" step="any" id="input-scalarCurvature" class="form-control"
+                               th:value="${inputR}">
+                    </div>
+                    <div class="form-group">
+                        <label for="input-deltaObserved">Delta_observed</label>
+                        <input type="number" step="any" id="input-deltaObserved" class="form-control"
+                               th:value="${inputDeltaObs}">
+                    </div>
+                </div>
+                <div class="btn-group" style="margin-top: 1rem;">
+                    <button class="btn btn-primary" onclick="VerifyPage.runVerification()">Run Verification</button>
+                    <button class="btn btn-outline" onclick="VerifyPage.resetToCanonical()">Reset to Canonical</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Summary -->
+        <section>
+            <div class="results-panel">
+                <h3>Summary</h3>
+                <div style="margin-bottom:1rem;">
+                    <span th:if="${result.allPassed}" class="badge badge-success">ALL PASSED</span>
+                    <span th:unless="${result.allPassed}" class="badge badge-danger">FAILED</span>
+                    <span th:text="${result.passedChecks} + '/' + ${result.totalChecks} + ' checks passed'"></span>
+                </div>
+                <div class="grid grid-4">
+                    <div class="card">
+                        <div class="card-title">Delta_Ch (base)</div>
+                        <div class="card-value value-highlight" th:text="${#numbers.formatDecimal(result.choptyukFormula.deltaChBase, 1, 6)}">3.437883</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Delta_Ch (higher)</div>
+                        <div class="card-value value-highlight" th:text="${#numbers.formatDecimal(result.choptyukFormula.deltaChHigher, 1, 6)}">3.447040</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Delta_obs</div>
+                        <div class="card-value" th:text="${#numbers.formatDecimal(result.choptyukFormula.deltaObserved, 1, 6)}">3.443000</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Deviation</div>
+                        <div class="card-value" th:text="${#numbers.formatDecimal(result.choptyukFormula.deviationBase, 1, 6)}">-0.005117</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Verification Checks Table -->
+        <section>
+            <div class="results-panel">
+                <h3>Verification Checks</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Check</th><th>Expected</th><th>Actual</th><th>Status</th><th>Message</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="check : ${checks}">
+                                <td th:text="${check.name}">Check name</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(check.expected, 1, 6)}">0.0</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(check.actual, 1, 6)}">0.0</td>
+                                <td>
+                                    <span th:if="${check.passed}" class="badge badge-success">PASS</span>
+                                    <span th:unless="${check.passed}" class="badge badge-danger">FAIL</span>
+                                </td>
+                                <td th:text="${check.message}">Message</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Surface Specifications -->
+        <section>
+            <div class="results-panel">
+                <h3>Surface Specifications</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Surface</th><th>Genus</th><th>|Aut|</th><th>Group</th><th>λ₁</th><th>λ_D² (triv)</th><th>Hurwitz?</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="s : ${surfaces}">
+                                <td th:text="${s.name}">Name</td>
+                                <td class="mono" th:text="${s.genus}">g</td>
+                                <td class="mono" th:text="${s.automorphismOrder}">order</td>
+                                <td th:text="${s.automorphismGroup}">group</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(s.lambda1, 1, 3)}">λ₁</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(s.lambda1 + s.scalarCurvature / 4, 1, 6)}">λ_D²</td>
+                                <td>
+                                    <span th:if="${s.hurwitzCurve}" class="badge badge-success">YES</span>
+                                    <span th:unless="${s.hurwitzCurve}" class="badge badge-info">NO</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIGO QNM Predictions -->
+        <section>
+            <div class="results-panel">
+                <h3>LIGO QNM Predictions</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Event</th><th>Date</th><th>Mass (M☉)</th><th>Final Spin</th><th>f_obs (Hz)</th><th>f_pred (Hz)</th><th>Rel. Error</th><th>SNR</th><th>Confidence</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="evt : ${qnmEvents}">
+                                <td th:text="${evt.eventName}">GW</td>
+                                <td th:text="${evt.date}">Date</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(evt.remnantMassSolar, 1, 1)}">62.0</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(evt.finalSpin, 1, 2)}">0.67</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(evt.observedFreqHz, 1, 1)}">251.0</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(evt.predictedFreqHz, 1, 1)}">248.7</td>
+                                <td class="mono" th:text="${#numbers.formatPercent(evt.relativeError, 2)}">0.9%</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(evt.snr, 1, 1)}">23.7</td>
+                                <td class="mono" th:text="${#numbers.formatDecimal(evt.confidence, 1, 3)}">0.997</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <div id="verify-results"></div>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

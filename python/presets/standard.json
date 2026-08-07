@@ -1,0 +1,11 @@
+{
+  "name": "standard",
+  "description": "Standard verification with default parameters",
+  "precision": 15,
+  "include_higher_orders": true,
+  "enumerate_64_structures": true,
+  "compute_surfaces": true,
+  "compute_qnm": true,
+  "generate_plots": true,
+  "generate_reports": true
+}

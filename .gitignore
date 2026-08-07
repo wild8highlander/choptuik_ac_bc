@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+
+# Julia
+julia/Manifest.toml
+julia/.julia/
+*.jl.cov
+*.jl.mem
+
+# Java
+java-webapp/target/
+*.class
+*.jar
+*.war
+.mvn/wrapper/maven-wrapper.jar
+
+# Node.js / Next.js
+interactive-viz/node_modules/
+interactive-viz/.next/
+interactive-viz/out/
+interactive-viz/.env
+interactive-viz/.env.local
+interactive-viz/.env.production
+
+# Output artifacts (generated at runtime)
+output/
+results/
+plots/
+reports/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# OS
+.directory
+.Trash-*
+
+# Logs
+*.log
+
+# LaTeX
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+
+# Temporary
+tmp/
+temp/
