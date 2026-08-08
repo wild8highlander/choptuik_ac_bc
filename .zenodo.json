@@ -1,6 +1,6 @@
 {
   "title": "Spinor Corrections b-C and a-C and the Choptyuk Problem",
-  "description": "Computational verification and simulation of spinor corrections b-C (Berry, 1st order) and a-C (braking, 2nd order) on the Klein quartic curve, with the unified Choptyuk formula. Includes enumeration of all 64 spinor structures, applications to Bolza/Bring surfaces, and LIGO/Virgo quasi-normal mode predictions. Four independent implementations: Python, Julia, Java Spring Boot, Next.js interactive visualization.",
+  "description": "Computational verification and simulation of spinor corrections b-C (Berry, 1st order) and a-C (braking, 2nd order) on the Klein quartic curve, with the unified Choptyuk formula. Enhanced v2.0: 4D spin manifold extension, K3 hyperkähler surface corrections, Tyukovsky equation adaptation (zero free parameters), Einstein GR QNM predictions (correction factor 0.999916), and comprehensive criticism response. Four independent implementations: Python, Julia, Java Spring Boot, Next.js interactive visualization.",
   "creators": [
     {
       "name": "Isaev, Ishak Khamzatovich",
@@ -24,7 +24,12 @@
     "differential geometry",
     "spectral geometry",
     "LIGO",
-    "Berry phase"
+    "Berry phase",
+    "K3 surface",
+    "Kähler geometry",
+    "Tyukovsky equations",
+    "Einstein equations",
+    "Seiberg-Witten"
   ],
   "related_identifiers": [
     {
@@ -33,7 +38,7 @@
       "scheme": "url"
     }
   ],
-  "version": "1.2.0",
+  "version": "2.0.0",
   "language": "eng",
-  "notes": "Proprietary software under Isaev Proprietary License v1.0 (see LICENSE file). Key verification results: Delta_bC = 3.438710 (deviation 0.125%), Delta_Ch(full) = 3.447040 (deviation 0.117%), b_Ch = 0.376510 (deviation 0.130%)."
+  "notes": "Proprietary software under Isaev Proprietary License v1.0 (see LICENSE file). Key verification results: Delta_bC = 3.438710 (deviation 0.125%), Delta_Ch(full) = 3.447040 (deviation 0.117%), b_Ch = 0.376510 (deviation 0.130%). Enhanced v2.0: QNM correction factor = 0.999916, b2 = 22 unique, Tyukovsky 0 free parameters, SW-compatible."
 }

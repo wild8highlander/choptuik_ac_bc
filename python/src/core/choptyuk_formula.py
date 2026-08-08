@@ -154,3 +154,55 @@ class ChoptyukFormula:
             "delta_obs": self.delta_obs,
             "b_ch_obs": self.b_ch_obs,
         }
+
+    @property
+    def imaginary_correction(self) -> float:
+        """Imaginary correction factor: 1 - δ_C / π².
+
+        This factor appears in the imaginary part of the QNM
+        frequency correction on the Klein curve.
+        """
+        return 1 - self.delta_C / np.pi**2
+
+    def kahler_correction(self) -> float:
+        """Kähler surface correction for K3 surfaces.
+
+        Returns the Berry phase correction on Kähler surfaces:
+          Δλ₁ = δ_C² / 2 - δ_C⁵ / 22
+
+        For the K3 surface this equals the difference between
+        the b-C correction and the a-C (braking) correction.
+
+        Returns:
+            The Kähler correction value.
+        """
+        return self.delta_C**2 / 2 - self.delta_C**5 / self.k_struct
+
+    def tyukovsky_correction(self, delta_0: float) -> float:
+        """Tyukovsky equation critical exponent correction.
+
+        Corrects the bare critical exponent δ₀ using the
+        spinorial corrections from the Klein curve:
+
+          δ_corr = δ₀ + δ_C² / 2 - δ_C⁵ / 22
+
+        Args:
+            delta_0: Bare critical exponent.
+
+        Returns:
+            Corrected critical exponent.
+        """
+        return delta_0 + self.delta_C**2 / 2 - self.delta_C**5 / self.k_struct
+
+    @property
+    def einstein_qnm_correction(self) -> float:
+        """Einstein GR / QNM correction: δ_eff / π².
+
+        The effective spinorial braking phase δ_eff = (π/7)⁵/22
+        divided by π² gives the relative QNM frequency correction.
+
+        This is approximately 8.4 × 10⁻⁵, corresponding to a
+        multiplicative correction factor of ≈ 0.999916.
+        """
+        delta_eff = self.delta_C**5 / self.k_struct
+        return delta_eff / np.pi**2

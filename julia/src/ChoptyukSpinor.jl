@@ -82,6 +82,7 @@ include("surfaces.jl")
 include("qnm.jl")
 include("hypothesis.jl")
 include("simulation.jl")
+include("enhanced_verification.jl")
 
 # Submodules (must come after main includes)
 include("visualization.jl")
@@ -97,6 +98,7 @@ export SurfaceSpec, BOLZA, BRING, MACBEATH, KLEIN, ALL_SURFACES
 export QNMPredictor, LIGOEvent, LIGO_EVENTS
 export HypothesisConfig, HypothesisResult, HypothesisTester
 export Simulator
+export K3Surface, TyukovskyAdapter
 
 # Export Klein curve functions
 export klein_generators, mat_power_mod, mat_eq_projective
@@ -111,18 +113,22 @@ export lichnerowicz, dirac_spectrum, verify_dirac_relations
 # Export Choptyuk formula functions
 export bC_correction, aC_braking, aC_correction
 export choptyuk_formula, choptyuk_constant, verify_choptyuk_formula
+export imaginary_correction, kahler_correction, tyukovsky_correction
+export einstein_qnm_correction, einstein_qnm_factor, corrected_qnm_frequency
 
 # Export surface functions
 export surface_choptyuk, hurwitz_achieved, verify_surface, compare_surfaces
 
 # Export QNM functions
 export qnm_frequency, predict_shift, detectability, verify_qnm
+export qnm_braking_correction, qnm_braking_factor
 
 # Export hypothesis functions
 export test_hypothesis, parameter_sweep, sensitivity_analysis
 
 # Export simulation functions
 export sweep_delta_C, sweep_lambda_1, convergence_analysis, run_full_simulation
+export verify_k3, tyukovsky_corrected_exponent, verify_b2_uniqueness, verify_enhanced_all
 
 # Export submodules
 export Visualization, Reporting, InteractiveMenu

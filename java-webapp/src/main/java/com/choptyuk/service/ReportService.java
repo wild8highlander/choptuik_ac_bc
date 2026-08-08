@@ -103,7 +103,7 @@ public class ReportService {
     /**
      * Saves a report to disk and returns the file path.
      */
-    public String saveReport(String format) throws IOException {
+    public String saveReport(String format) throws Exception {
         byte[] content = generateReport(format);
         Path dir = Paths.get(reportDir);
         Files.createDirectories(dir);

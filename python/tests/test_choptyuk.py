@@ -12,6 +12,13 @@ from src.core.spinor_phases import SpinorPhases
 from src.core.choptyuk_formula import ChoptyukFormula
 from src.core.dirac_operator import DiracOperator
 from src.core.qnm import QNMCalculator
+from src.core.enhanced_verification import (
+    KleinQuartic,
+    K3Surface,
+    QNMPredictor as EnhancedQNMPredictor,
+    TyukovskyAdapter,
+    CriticismResponse,
+)
 
 
 # ──────────────────────────────────────────────
@@ -211,3 +218,83 @@ class TestMathIdentities:
         delta_c = math.pi / 7
         delta_eff = delta_c ** 5 / 22
         assert abs(delta_eff - 1 / 1200) < 1e-4
+
+
+# ──────────────────────────────────────────────
+# Enhanced Verification Module Tests
+# ──────────────────────────────────────────────
+class TestEnhancedVerificationModule:
+    """Tests for the enhanced verification module integration."""
+
+    def test_enhanced_verification_module(self):
+        """Enhanced verification module imports and verify_all() runs correctly."""
+        from src.core.enhanced_verification import verify_all
+        results = verify_all()
+        assert "klein" in results
+        assert "k3" in results
+        assert "qnm" in results
+        assert "tyukovsky" in results
+        assert "criticism" in results
+        # Check Klein results
+        assert abs(results["klein"]["effective_phase"] - 1/1200) / (1/1200) < 0.01
+        # Check QNM results
+        assert abs(results["qnm"]["factor"] - 0.999916) < 1e-3
+
+    def test_k3_surface(self):
+        """K3 surface invariants are correct."""
+        k3 = K3Surface()
+        assert k3.b2 == 22
+        assert k3.b2_check == 22
+        assert k3.b2_over_index == 11.0
+        assert k3.is_hyperkahler is True
+        assert k3.sw_compatible is True
+        assert k3.dirac_index == 2
+        assert k3.b2_plus == 3
+
+    def test_qnm_einstein_correction(self):
+        """QNM Einstein GR correction from enhanced module."""
+        qnm = EnhancedQNMPredictor()
+        # qnm_correction = delta_eff / pi^2
+        delta_eff = (math.pi / 7)**5 / 22
+        expected_correction = delta_eff / math.pi**2
+        assert abs(qnm.qnm_correction - expected_correction) < TOLERANCE_STRICT
+        # qnm_factor ≈ 0.999916
+        assert abs(qnm.qnm_factor - (1 - expected_correction)) < TOLERANCE_STRICT
+        assert abs(qnm.qnm_factor - 0.999916) < 1e-4
+        # corrected_frequency(omega) = omega * qnm_factor
+        omega = 251.0
+        assert abs(qnm.corrected_frequency(omega) - omega * qnm.qnm_factor) < TOLERANCE_STRICT
+
+    def test_tyukovsky_adapter(self):
+        """Tyukovsky adapter critical exponent correction."""
+        tyuk = TyukovskyAdapter()
+        delta_0 = 0.36
+        delta_C = math.pi / 7
+        expected = delta_0 + delta_C**2 / 2 - delta_C**5 / 22
+        assert abs(tyuk.corrected_critical_exponent(delta_0) - expected) < TOLERANCE_STRICT
+        # Free parameters must be zero
+        assert tyuk.free_parameters == 0
+        # GCT equation is symbolic
+        assert "L_gCT" in tyuk.gct_equation
+
+    def test_criticism_response(self):
+        """Criticism response verification checks."""
+        criticism = CriticismResponse()
+        # Non-coincidental check
+        nc = criticism.check_non_coincidental()
+        assert "best_approx" in nc
+        assert "best_dev_pct" in nc
+        assert nc["best_dev_pct"] >= 0
+        # b₂ uniqueness
+        b2u = criticism.check_b2_uniqueness()
+        assert 22 in b2u
+        assert b2u[22]["compatible"] is True
+        # Stability
+        stab = criticism.check_stability(epsilon=0.001)
+        assert "deviation_pct" in stab
+        assert "stable" in stab
+        # Spin structures
+        ss = criticism.check_spin_structures()
+        assert ss["total"] == 64
+        assert ss["even_Arf0"] == 28
+        assert ss["odd_Arf1"] == 36

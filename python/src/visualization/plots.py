@@ -316,3 +316,111 @@ class PlotGenerator:
 
         logger.info(f"Generated {len(all_paths)} plot files")
         return all_paths
+
+    def generate_enhanced_plots(self, enhanced_results: dict | None = None) -> list[str]:
+        """Generate all enhanced visualization figures.
+
+        Produces plots for the enhanced verification module including:
+          - QNM correction factor diagram
+          - K3 surface Betti number comparison
+          - Tyukovsky echo period shift
+          - Criticism response (b₂ uniqueness) bar chart
+          - Spin structure distribution pie chart
+
+        Args:
+            enhanced_results: Dict from enhanced_verification.verify_all().
+                If None, runs verification automatically.
+
+        Returns:
+            List of all saved file paths.
+        """
+        if enhanced_results is None:
+            from src.core.enhanced_verification import verify_all
+            enhanced_results = verify_all()
+
+        all_paths = []
+
+        # 1. QNM correction factor diagram
+        qnm = enhanced_results.get("qnm", {})
+        if qnm:
+            fig, ax = plt.subplots(figsize=(8, 5))
+            events = qnm.get("events", [])
+            if events:
+                names = [e["event"] for e in events]
+                shifts = [e["shift_Hz"] for e in events]
+                colors = ['#e74c3c' if s < 0 else '#2ecc71' for s in shifts]
+                ax.bar(names, shifts, color=colors, alpha=0.8, width=0.5)
+                ax.set_ylabel('Frequency Shift (Hz)', fontsize=11)
+                ax.set_title('Enhanced QNM Frequency Shifts (Spinorial Braking)', fontsize=13)
+                ax.grid(True, alpha=0.3, axis='y')
+                ax.tick_params(axis='x', rotation=15)
+            all_paths.extend(self._save(fig, 'enhanced_qnm_shifts'))
+
+        # 2. K3 surface Betti numbers
+        k3 = enhanced_results.get("k3", {})
+        if k3:
+            fig, ax = plt.subplots(figsize=(8, 5))
+            betti_labels = [r'$b_0$', r'$b_1$', r'$b_2$', r'$b_3$', r'$b_4$']
+            betti_vals = [1, 0, 22, 0, 1]
+            colors = ['#3498db', '#95a5a6', '#e74c3c', '#95a5a6', '#3498db']
+            ax.bar(betti_labels, betti_vals, color=colors, alpha=0.8, width=0.5)
+            ax.set_ylabel('Betti Number', fontsize=11)
+            ax.set_title('K3 Surface Betti Numbers', fontsize=13)
+            for i, v in enumerate(betti_vals):
+                if v > 0:
+                    ax.text(i, v + 0.3, str(v), ha='center', fontsize=12, fontweight='bold')
+            ax.grid(True, alpha=0.3, axis='y')
+            all_paths.extend(self._save(fig, 'enhanced_k3_betti'))
+
+        # 3. Tyukovsky echo period shift
+        tyuk = enhanced_results.get("tyukovsky", {})
+        if tyuk:
+            fig, ax = plt.subplots(figsize=(8, 5))
+            delta_corr = tyuk.get("delta_corr", 0)
+            delta_0 = 0.36
+            if delta_corr > 0:
+                T_0 = 1.0 / delta_0
+                T_corr = 1.0 / delta_corr
+                ax.bar([r'$T_0$', r'$T_{\mathrm{corr}}$'], [T_0, T_corr],
+                       color=['#3498db', '#e74c3c'], alpha=0.8, width=0.4)
+                ax.set_ylabel('Echo Period', fontsize=11)
+                ax.set_title('Tyukovsky Echo Period: Original vs Corrected', fontsize=13)
+                shift_pct = (T_corr - T_0) / T_0 * 100
+                ax.annotate(f'Shift: {shift_pct:.2f}%', xy=(1, T_corr),
+                           xytext=(1.3, T_corr), fontsize=11, color='#e74c3c',
+                           arrowprops=dict(arrowstyle='->', color='#e74c3c'))
+            ax.grid(True, alpha=0.3, axis='y')
+            all_paths.extend(self._save(fig, 'enhanced_tyukovsky_echo'))
+
+        # 4. b₂ uniqueness (criticism response)
+        criticism = enhanced_results.get("criticism", {})
+        if criticism:
+            b2_uniq = criticism.get("b2_uniqueness", {})
+            if b2_uniq:
+                fig, ax = plt.subplots(figsize=(8, 5))
+                ks = sorted(b2_uniq.keys())
+                devs = [b2_uniq[k]["deviation_pct"] for k in ks]
+                colors = ['#2ecc71' if b2_uniq[k]["compatible"] else '#e74c3c' for k in ks]
+                labels = [f'$b_2={k}$' for k in ks]
+                ax.bar(labels, devs, color=colors, alpha=0.8, width=0.5)
+                ax.axhline(y=1.0, color='gray', linestyle='--', label='1% threshold')
+                ax.set_ylabel('Deviation from 1/1200 (%)', fontsize=11)
+                ax.set_title('Uniqueness of $b_2 = 22$ for $\\delta_{eff} \\approx 1/1200$', fontsize=13)
+                ax.legend(fontsize=10)
+                ax.grid(True, alpha=0.3, axis='y')
+                all_paths.extend(self._save(fig, 'enhanced_b2_uniqueness'))
+
+        # 5. Spin structure distribution
+        spin_struct = criticism.get("spin_structures", {})
+        if spin_struct:
+            fig, ax = plt.subplots(figsize=(7, 7))
+            even = spin_struct.get("even_Arf0", 28)
+            odd = spin_struct.get("odd_Arf1", 36)
+            ax.pie([even, odd], labels=[f'Even (Arf=0): {even}', f'Odd (Arf=1): {odd}'],
+                   colors=['#2ecc71', '#e74c3c'], autopct='%1.1f%%', startangle=90,
+                   textprops={'fontsize': 12})
+            ax.set_title('64 Spinor Structures on Klein Quartic', fontsize=13)
+            all_paths.extend(self._save(fig, 'enhanced_spin_structures'))
+
+        logger.info(f"Generated {len(all_paths)} enhanced plot files")
+        return all_paths

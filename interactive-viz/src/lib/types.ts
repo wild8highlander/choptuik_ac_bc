@@ -124,5 +124,49 @@ export interface VerificationEntry {
   deviation: number;
 }
 
+/** K3 Surface data */
+export interface K3SurfaceData {
+  b0: number;     // 1
+  b1: number;     // 0
+  b2: number;     // 22
+  b3: number;     // 0
+  b4: number;     // 1
+  hodge11: number; // 20
+  hodge20: number; // 1
+  diracIndex: number; // 2
+  b2Plus: number; // 3
+  b2DecompositionValid: boolean;
+  swCompatible: boolean;
+}
+
+/** Tyukovsky equation data */
+export interface TyukovskyData {
+  delta0: number;
+  deltaC: number;
+  deltaCorrected: number;
+  echoPeriod: number;
+  echoShiftPct: number;
+  freeParameters: number;
+}
+
+/** Einstein GR QNM correction */
+export interface EinsteinQNMData {
+  deltaEff: number;
+  qnmCorrection: number;
+  qnmFactor: number;
+  correctionPct: number;
+}
+
+/** Enhanced verification results */
+export interface EnhancedVerificationResult {
+  k3Surface: K3SurfaceData;
+  tyukovsky: TyukovskyData;
+  einsteinQNM: EinsteinQNMData;
+  imaginaryCorrection: number;
+  kahlerCorrection: number;
+  b2Uniqueness: Record<string, {deviationPct: number; compatible: boolean}>;
+  spinStructureDistribution: {total: number; even: number; odd: number; goodPct: number};
+}
+
 /** Report format */
 export type ReportFormat = "json" | "html" | "csv" | "txt" | "md";
