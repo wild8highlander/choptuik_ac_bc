@@ -44,9 +44,13 @@ jobs:
           cache: pip
           cache-dependency-path: docs-site/requirements.txt
 
-      - name: Install MkDocs and plugins
+      - name: Install Python package
         run: |
           pip install --upgrade pip
+          pip install -e python/
+
+      - name: Install MkDocs and plugins
+        run: |
           pip install -r docs-site/requirements.txt
 
       - name: Build documentation site
