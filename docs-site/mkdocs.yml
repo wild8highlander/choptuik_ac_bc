@@ -160,7 +160,7 @@ plugins:
   - mkdocstrings:             # Auto-generate API docs from docstrings
       handlers:
         python:
-          paths: [../python/src]
+          paths: [../python]
           options:
             docstring_style: google
             docstring_options:
