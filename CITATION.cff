@@ -10,6 +10,7 @@ authors:
 version: 2.0.0
 date-released: 2026-08-08
 repository-code: "https://github.com/wild8highlander/choptuik_ac_bc"
+url: "https://wild8highlander.github.io/choptuik_ac_bc/"
 abstract: >
   Computational verification and simulation of spinor corrections b-C (Berry, 1st order)
   and a-C (braking, 2nd order) on the Klein quartic curve, with the unified Choptyuk

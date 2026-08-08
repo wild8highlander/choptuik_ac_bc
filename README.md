@@ -9,7 +9,7 @@
 [![Lint](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/lint.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/lint.yml)
 [![Pages](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/pages.yml/badge.svg)](https://wild8highlander.github.io/choptuik_ac_bc/)
 [![Release](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/release.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/releases/latest)
-[![DOI](https://img.shields.io/badge/Zenodo-Archive-orange.svg?logo=zenodo)](https://zenodo.org/search?q=choptuik_ac_bc)
+[![DOI](https://img.shields.io/badge/Zenodo-10.5281/zenodo.15152720-blue.svg?logo=zenodo)](https://doi.org/10.5281/zenodo.15152720)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--7299--0701-a6ce39?logo=orcid&logoColor=white)](https://orcid.org/0009-0003-7299-0701)
 [![GitHub](https://img.shields.io/badge/GitHub-choptuik__ac__bc-181717?logo=github)](https://github.com/wild8highlander/choptuik_ac_bc)
 [![Security](https://img.shields.io/badge/Security-Scorecard%20Monitored-yellow.svg)](https://securityscorecards.dev/viewer/?uri=github.com/wild8highlander/choptuik_ac_bc)
@@ -385,7 +385,7 @@ A permanent DOI-backed archive of this software is available on Zenodo.
 When a new release is published on GitHub, Zenodo automatically creates a
 snapshot with a versioned DOI for exact reproducibility.
 
-[![DOI](https://img.shields.io/badge/Zenodo-10.5281/zenodo.XXXXXX-blue.svg?logo=zenodo)](https://doi.org/10.5281/zenodo.XXXXXX)
+[![DOI](https://img.shields.io/badge/Zenodo-10.5281/zenodo.15152720-blue.svg?logo=zenodo)](https://doi.org/10.5281/zenodo.15152720)
 
 ---
 

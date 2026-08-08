@@ -55,4 +55,7 @@ jobs:
       - name: Lint
         run: cd interactive-viz && npm run lint --if-present
       - name: Type check
-        run: cd interactive-viz && npx tsc --noEmit || true
+        run: cd interactive-viz && npm run typecheck --if-present
+      - name: Check all
+        run: cd interactive-viz && npm run check-all --if-present
+        continue-on-error: true

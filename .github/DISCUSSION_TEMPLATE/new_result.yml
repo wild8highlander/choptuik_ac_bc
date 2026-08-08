@@ -1,0 +1,39 @@
+title: "New Mathematical Result / Extension"
+body:
+  - type: textarea
+    id: result
+    attributes:
+      label: Proposed Result
+      description: "Describe the new mathematical result, extension, or conjecture."
+      placeholder: "e.g., The braking correction extends to the Fermat curve xⁿ + yⁿ + zⁿ = 0 with δ_eff = δ_C⁵/b₂ where b₂ = ..."
+    validations:
+      required: true
+  - type: dropdown
+    id: extension_type
+    attributes:
+      label: Type of Extension
+      options:
+        - New surface (beyond Klein/Bolza/Bring/Macbeath)
+        - Higher-dimensional manifold
+        - New equation system (beyond Tyukovsky/Einstein)
+        - Improved numerical bound
+        - Conjecture / hypothesis
+        - Correction to existing result
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Computational Verification
+      description: "Describe how the result was or can be verified computationally."
+      placeholder: "Verified with mpmath at 50 decimal places: δ_eff = 0.000828..."
+    validations:
+      required: false
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: "Academic references, prior work, or monograph sections."
+    validations:
+      required: false
