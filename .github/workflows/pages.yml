@@ -1,50 +1,65 @@
-name: Deploy to GitHub Pages
+# Deploy MkDocs Material documentation to GitHub Pages
+# Triggered on pushes to main that affect docs-site/ or this workflow
+# Also supports manual dispatch for on-demand rebuilds
+
+name: Pages
 
 on:
   push:
     branches: [main]
-  workflow_dispatch:
+    paths:
+      - 'docs-site/**'
+      - 'python/src/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:  # Allow manual trigger
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
+env:
+  PYTHON_VERSION: '3.12'
+
 jobs:
+  # ── Build job ──────────────────────────────────────────────
   build:
-    name: Build Interactive Visualization
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: interactive-viz/package-lock.json
+          fetch-depth: 0  # Full history for mike versioning
 
-      - name: Install dependencies
-        run: |
-          cd interactive-viz
-          npm ci
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: docs-site/requirements.txt
 
-      - name: Build Next.js static export
+      - name: Install MkDocs and plugins
         run: |
-          cd interactive-viz
-          NEXT_IGNORE_ESLINT=true npm run build
+          pip install --upgrade pip
+          pip install -r docs-site/requirements.txt
+
+      - name: Build documentation site
+        working-directory: docs-site
+        run: mkdocs build --strict
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: interactive-viz/out
+          path: docs-site/site
 
+  # ── Deploy job ─────────────────────────────────────────────
   deploy:
-    name: Deploy to Pages
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

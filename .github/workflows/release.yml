@@ -1,3 +1,6 @@
+# Release: Build, sign with sigstore, and create GitHub Release
+# Triggered on push of tags matching v* (e.g., v2.0.0)
+
 name: Release
 
 on:
@@ -6,62 +9,205 @@ on:
       - 'v*'
 
 permissions:
-  contents: write
+  contents: write       # Create release + upload assets
+  id-token: write       # Sigstore signing (OIDC)
+
+env:
+  PYTHON_VERSION: '3.12'
 
 jobs:
-  build-and-release:
-    name: Build & Publish Release
+  # ── Build Python distribution ──────────────────────────────
+  build:
+    name: Build distribution
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: python/requirements.txt
 
-      - name: Run full verification
-        run: |
-          cd python
-          pip install -r requirements.txt
-          python run.py --mode verify --non-interactive --output-dir ../release-output
+      - name: Install build tools
+        run: pip install build twine
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Build sdist and wheel
+        working-directory: python
+        run: python -m build --outdir dist/
+
+      - name: Verify distribution
+        working-directory: python
+        run: twine check dist/*
+
+      - name: Upload dist artifacts
+        uses: actions/upload-artifact@v4
         with:
-          node-version: '20'
+          name: python-dist
+          path: python/dist/
+          retention-days: 5
 
-      - name: Build interactive viz
-        run: |
-          cd interactive-viz
-          npm ci
-          npm run build
+  # ── Run full test suite before release ─────────────────────
+  test:
+    name: Test before release
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Create release archive
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: python/requirements.txt
+
+      - name: Install dependencies
+        working-directory: python
         run: |
-          mkdir -p release-archive
-          cp -r python/src release-archive/python-src
-          cp -r julia/src release-archive/julia-src
-          cp -r release-output release-archive/verification-results
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Run full test suite
+        working-directory: python
+        run: python -m pytest tests/ -v --tb=short -x
+
+      - name: Run verification
+        working-directory: python
+        run: python run.py --mode verify --non-interactive
+
+  # ── Sign with sigstore ─────────────────────────────────────
+  sign:
+    name: Sign with sigstore
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    steps:
+      - name: Download dist artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: python-dist
+          path: dist/
+
+      - name: Install sigstore
+        run: pip install sigstore
+
+      - name: Sign all distribution artifacts
+        run: |
+          for artifact in dist/*; do
+            echo "Signing: $artifact"
+            sigstore sign "$artifact" --bundle "${artifact}.sigstore"
+          done
+
+      - name: Upload signed artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-dist
+          path: |
+            dist/*
+          retention-days: 5
+
+  # ── Create GitHub Release ──────────────────────────────────
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [build, test, sign]
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download signed artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: signed-dist
+          path: dist/
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Generate release notes
+        id: notes
+        run: |
+          # Extract changelog section for this version
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          if [ -f CHANGELOG.md ]; then
+            # Try to extract section from CHANGELOG.md
+            NOTES=$(sed -n "/## \[${VERSION#v}\]/,/## \[/p" CHANGELOG.md | head -n -1)
+            if [ -z "$NOTES" ]; then
+              NOTES="Release ${VERSION}. See [CHANGELOG.md](https://github.com/wild8highlander/choptuik_ac_bc/blob/main/CHANGELOG.md) for details."
+            fi
+          else
+            NOTES="Release ${VERSION}."
+          fi
+          echo "NOTES<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "Choptyuk Spinor Corrections ${{ github.ref_name }}"
+          tag_name: ${{ steps.version.outputs.VERSION }}
+          name: Choptyuk Spinor Corrections ${{ steps.version.outputs.VERSION }}
           body: |
-            ## Verification Results
+            ${{ steps.notes.outputs.NOTES }}
 
-            This release includes verified computational results from the monograph
-            *Spinor corrections b-C and a-C and the solution of the Choptyuk problem*
-            by Ishak Khamzatovich Isaev.
+            ---
 
-            ### Key Constants
-            | Constant | Value | Deviation |
-            |---|---|---|
-            | Δ_bC | 3.438710 | 0.125% |
-            | Δ_Ch (full) | 3.447040 | 0.117% |
-            | b_Ch | 0.376510 | 0.130% |
+            ## Sigstore Verification
 
-            All verifications passed within tolerance.
+            Release artifacts are signed with [sigstore](https://sigstore.dev/).
+            Verify with:
+
+            ```bash
+            pip install sigstore
+            sigstore verify \
+              --certificate-identity=aslan08_05@mail.ru \
+              --certificate-oidc-issuer=https://github.com/login/oauth \
+              <artifact> \
+              --bundle <artifact>.sigstore
+            ```
           draft: false
-          prerelease: false
+          prerelease: ${{ contains(steps.version.outputs.VERSION, '-') }}
+          files: |
+            dist/*
+          generate_release_notes: false
+
+  # ── Deploy documentation for release ───────────────────────
+  deploy-docs:
+    name: Deploy docs for release
+    runs-on: ubuntu-latest
+    needs: [release]
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: docs-site/requirements.txt
+
+      - name: Install MkDocs
+        run: pip install -r docs-site/requirements.txt
+
+      - name: Deploy documentation (mike)
+        working-directory: docs-site
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/}"
+          mike deploy --push --update-aliases "${VERSION#v}" latest

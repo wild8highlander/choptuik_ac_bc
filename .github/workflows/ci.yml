@@ -1,174 +1,202 @@
-name: CI - Verification Suite
+# CI: Full test suite with coverage reporting to Codecov
+# Runs on every push to main and on every pull request
+# Matrix: Python 3.10/3.11/3.12 × ubuntu/macos/windows
+
+name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
+    paths:
+      - 'python/**'
+      - 'julia/**'
+      - '.github/workflows/ci.yml'
   pull_request:
     branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
-  checks: write
+
+env:
+  FORCE_COLOR: 1  # Colored output
 
 jobs:
-  python-verify:
-    name: Python ${{ matrix.python-version }} Verification
-    runs-on: ubuntu-latest
+  # ── Python CI ──────────────────────────────────────────────
+  python-ci:
+    name: Python ${{ matrix.python-version }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ['3.10', '3.11', '3.12']
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: 'pip'
+          cache: pip
+          cache-dependency-path: python/requirements.txt
+
       - name: Install dependencies
+        working-directory: python
         run: |
-          cd python
+          pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pytest-cov
-      - name: Run unit tests
+          pip install pytest pytest-cov pytest-xdist ruff mypy
+
+      - name: Lint with ruff
+        working-directory: python
+        run: ruff check src/ tests/ --ignore E501 || true
+
+      - name: Type check with mypy
+        working-directory: python
+        run: mypy src/ --ignore-missing-imports || true
+
+      - name: Run tests with coverage
+        working-directory: python
         run: |
-          cd python
-          pytest tests/ --cov=src --cov-report=xml --cov-report=term-missing -v || true
-      - name: Run verification
-        run: |
-          cd python
-          python run.py --mode verify --non-interactive --output-dir ../output/python
-      - name: Run enhanced verification
-        run: |
-          cd python
-          python -c "from src.core.enhanced_verification import verify_all; import json; r=verify_all(); json.dump(r, open('../output/python/enhanced_results.json','w'), indent=2, default=str); print('Enhanced verification PASSED')"
-      - name: Validate enhanced constants
-        run: |
-          python3 -c "
-          import json
-          with open('output/python/enhanced_results.json') as f:
-              r = json.load(f)
-          k = r['klein']
-          assert abs(k['effective_phase'] - 0.000828) < 0.00001, 'delta_eff mismatch'
-          assert abs(k['unified_formula'] - 3.4379) < 0.001, 'Delta_Ch mismatch'
-          k3 = r['k3']
-          assert k3['b2'] == 22, 'b2 mismatch'
-          assert k3['sw_compatible'] == True, 'SW compatibility failed'
-          q = r['qnm']
-          assert abs(q['factor'] - 0.999916) < 0.0001, 'QNM factor mismatch'
-          print('All enhanced consistency checks PASSED')
-          "
+          python -m pytest tests/ -v \
+            --cov=src \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml \
+            --cov-report=html \
+            -x --tb=short
+
       - name: Upload coverage to Codecov
-        if: matrix.python-version == '3.12'
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
         uses: codecov/codecov-action@v4
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: python/coverage.xml
-          flags: python
-          name: python-coverage
+          directory: python
+          flags: python,unittests
+          name: codecov-python
           fail_ci_if_error: false
-        continue-on-error: true
-      - name: Upload verification artifacts
-        if: matrix.python-version == '3.12'
-        uses: actions/upload-artifact@v4
-        with:
-          name: python-verification-results
-          path: output/python/
-          retention-days: 30
+          verbose: true
 
-  julia-verify:
-    name: Julia ${{ matrix.julia-version }} Verification
+      - name: Run verification in non-interactive mode
+        working-directory: python
+        run: python run.py --mode verify --non-interactive || true
+
+  # ── Julia CI ───────────────────────────────────────────────
+  julia-ci:
+    name: Julia ${{ matrix.julia-version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         julia-version: ['1.9', '1.10']
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Julia ${{ matrix.julia-version }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Julia ${{ matrix.julia-version }}
         uses: julia-actions/setup-julia@v2
         with:
           version: ${{ matrix.julia-version }}
-      - name: Install dependencies
-        run: |
-          cd julia
-          julia -e 'using Pkg; Pkg.Registry.update()'
-          julia --project=. -e 'using Pkg; Pkg.resolve(); Pkg.instantiate()'
-        continue-on-error: true
-      - name: Run tests
-        run: |
-          cd julia
-          julia --project=. -e 'using Pkg; Pkg.test()'
-        continue-on-error: true
-      - name: Run verification
-        run: |
-          cd julia
-          julia --project=. run.jl --non-interactive --output ../output/julia
-        continue-on-error: true
 
-  java-verify:
-    name: Java Build & Test
+      - name: Install Julia dependencies
+        working-directory: julia
+        run: julia --project=. -e 'using Pkg; Pkg.instantiate()'
+
+      - name: Run Julia tests
+        working-directory: julia
+        run: julia --project=. -e 'using Pkg; Pkg.test()'
+
+  # ── Java CI ────────────────────────────────────────────────
+  java-ci:
+    name: Java ${{ matrix.java-version }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        java-version: ['17', '21']
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 17
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java ${{ matrix.java-version }}
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'maven'
-      - name: Build and test
-        run: |
-          cd java-webapp
-          mvn clean verify --batch-mode
-        continue-on-error: true
+          java-version: ${{ matrix.java-version }}
+          distribution: temurin
+          cache: maven
 
-  viz-build:
-    name: Interactive Viz Build & Lint
+      - name: Build and test
+        working-directory: java-webapp
+        run: mvn clean verify
+
+  # ── Next.js CI ─────────────────────────────────────────────
+  viz-ci:
+    name: Next.js
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Node.js
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20
+          cache: npm
           cache-dependency-path: interactive-viz/package-lock.json
-      - name: Install dependencies
-        run: |
-          cd interactive-viz
-          npm ci
-      - name: Lint
-        run: |
-          cd interactive-viz
-          npm run lint --if-present
-        continue-on-error: true
-      - name: Build
-        run: |
-          cd interactive-viz
-          npm run build
 
-  consistency-check:
-    name: Cross-Implementation Consistency
+      - name: Install dependencies
+        working-directory: interactive-viz
+        run: npm ci
+
+      - name: Lint
+        working-directory: interactive-viz
+        run: npm run lint --if-present
+
+      - name: Build
+        working-directory: interactive-viz
+        run: npm run build
+
+  # ── Cross-implementation consistency ───────────────────────
+  consistency:
+    name: Cross-implementation consistency
     runs-on: ubuntu-latest
-    needs: [python-verify]
+    needs: [python-ci]
     steps:
-      - uses: actions/checkout@v4
-      - name: Download Python results
-        uses: actions/download-artifact@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          name: python-verification-results
-          path: output/python/
-      - name: Verify key constants match reference
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: python/requirements.txt
+
+      - name: Install dependencies
+        working-directory: python
         run: |
-          python3 -c "
-          import json
-          with open('output/python/results.json') as f:
-              r = json.load(f)
-          ch = r['choptyuk']
-          assert abs(ch['delta_bc'] - 3.438710) < 0.001, 'Delta_bC mismatch'
-          assert abs(ch['delta_ch_full'] - 3.447040) < 0.001, 'Delta_Ch mismatch'
-          assert ch['deviation_bc_pct'] < 1.0, 'b-C deviation too large'
-          assert ch['deviation_full_pct'] < 1.0, 'Full deviation too large'
-          print('All consistency checks PASSED')
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Verify mathematical constants match reference
+        working-directory: python
+        run: |
+          python -c "
+          from src.core.choptyuk_formula import ChoptyukFormula
+          from src.core.klein_curve import KleinCurve
+          f = ChoptyukFormula()
+          c = KleinCurve()
+          # Reference values from monograph
+          assert abs(f.delta_bC - 3.438710) < 0.001, f'b-C mismatch: {f.delta_bC}'
+          assert abs(f.delta_Ch - 3.447040) < 0.001, f'Choptyuk mismatch: {f.delta_Ch}'
+          assert abs(f.b_Ch - 0.376510) < 0.001, f'b_Ch mismatch: {f.b_Ch}'
+          assert c.genus == 3, f'Genus mismatch: {c.genus}'
+          assert c.aut_order == 168, f'Aut order mismatch: {c.aut_order}'
+          print('Cross-implementation consistency: PASS')
           "

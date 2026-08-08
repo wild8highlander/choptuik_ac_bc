@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="choptyuk-spinor",
-    version="1.0.0",
+    version="2.0.0",
     author="Ishak Khamzatovich Isaev",
     author_email="aslan08_05@mail.ru",
     url="https://github.com/wild8highlander/choptuik_ac_bc",

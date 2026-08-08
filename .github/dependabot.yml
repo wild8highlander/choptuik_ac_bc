@@ -1,56 +1,79 @@
+# Dependabot: automated dependency updates
+# https://docs.github.com/en/code-security/dependabot/configuration-options-for-dependency-file
+
 version: 2
 
 updates:
-  - package-ecosystem: "pip"
-    directory: "/python"
+  # ── Python (pip) ───────────────────────────────────────────
+  - package-ecosystem: pip
+    directory: /python
     schedule:
-      interval: "weekly"
-      day: "monday"
-    open-pull-requests-limit: 10
-    labels:
-      - "dependencies"
-      - "python"
-    commit-message:
-      prefix: "deps(python)"
-    reviewers:
-      - "wild8highlander"
-
-  - package-ecosystem: "npm"
-    directory: "/interactive-viz"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    open-pull-requests-limit: 10
-    labels:
-      - "dependencies"
-      - "web-app"
-    commit-message:
-      prefix: "deps(npm)"
-    reviewers:
-      - "wild8highlander"
-
-  - package-ecosystem: "maven"
-    directory: "/java-webapp"
-    schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: weekly
+      day: monday
     open-pull-requests-limit: 5
     labels:
-      - "dependencies"
-      - "java"
-    commit-message:
-      prefix: "deps(maven)"
+      - dependencies
+      - python
     reviewers:
-      - "wild8highlander"
+      - wild8highlander
+    commit-message:
+      prefix: chore
+      include: scope
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  # ── Python (pip) for docs-site ─────────────────────────────
+  - package-ecosystem: pip
+    directory: /docs-site
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: monthly
+    labels:
+      - dependencies
+      - docs
+    commit-message:
+      prefix: chore
+
+  # ── npm (Next.js) ──────────────────────────────────────────
+  - package-ecosystem: npm
+    directory: /interactive-viz
+    schedule:
+      interval: weekly
+      day: tuesday
     open-pull-requests-limit: 5
     labels:
-      - "dependencies"
-      - "ci"
+      - dependencies
+      - nextjs
+    reviewers:
+      - wild8highlander
     commit-message:
-      prefix: "deps(actions)"
+      prefix: chore
+      include: scope
+
+  # ── Maven (Java) ───────────────────────────────────────────
+  - package-ecosystem: maven
+    directory: /java-webapp
+    schedule:
+      interval: weekly
+      day: wednesday
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - java
+    reviewers:
+      - wild8highlander
+    commit-message:
+      prefix: chore
+      include: scope
+
+  # ── GitHub Actions ─────────────────────────────────────────
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    labels:
+      - dependencies
+      - ci
+    commit-message:
+      prefix: chore
+
+  # ── Julia ──────────────────────────────────────────────────
+  # Note: Dependabot doesn't natively support Julia, but we track
+  # Project.toml for manual review via the schedule

@@ -1,0 +1,35 @@
+name: Research Question
+description: Questions about mathematical results, methodology, or physics
+labels: [question, research]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: Your research question
+      placeholder: "How does the Choptyuk correction relate to..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context / Background
+      description: Relevant background, references, or prior work
+
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Topic area
+      options:
+        - Klein quartic / Riemann surfaces
+        - Spinor structures / Berry phases
+        - Dirac operator / Spectral geometry
+        - Choptyuk formula
+        - K3 / Kähler surfaces
+        - QNM / Gravitational waves
+        - Seiberg-Witten
+        - Enhanced verification (v2.0)
+        - Other
+    validations:
+      required: true

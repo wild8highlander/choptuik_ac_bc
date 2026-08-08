@@ -2,12 +2,14 @@
 # Usage: make <target>
 
 .PHONY: all verify simulate plots reports clean python-verify julia-verify java-build viz-build \
-       viz-dev test lint docker-build docker-run install setup
+       viz-dev test lint docker-build docker-run install setup docs docs-build docs-serve \
+       docs-deploy coverage sign-release
 
 PYTHON_DIR  = python
 JULIA_DIR   = julia
 JAVA_DIR    = java-webapp
 VIZ_DIR     = interactive-viz
+DOCS_DIR    = docs-site
 OUTPUT_DIR  = output
 
 # ═══════════════════════════════════════════════
@@ -15,122 +17,151 @@ OUTPUT_DIR  = output
 # ═══════════════════════════════════════════════
 
 all: verify simulate plots reports
-	@echo "✅ All computations complete. Results in $(OUTPUT_DIR)/"
+        @echo "✅ All computations complete. Results in $(OUTPUT_DIR)/"
 
 verify: python-verify
-	@echo "✅ Verification complete"
+        @echo "✅ Verification complete"
 
 simulate: python-simulate
-	@echo "✅ Simulations complete"
+        @echo "✅ Simulations complete"
 
 plots: python-plots
-	@echo "✅ Plots generated"
+        @echo "✅ Plots generated"
 
 reports: python-reports
-	@echo "✅ Reports generated"
+        @echo "✅ Reports generated"
 
 # ═══════════════════════════════════════════════
 # Python
 # ═══════════════════════════════════════════════
 
 python-install:
-	cd $(PYTHON_DIR) && pip install -r requirements.txt
+        cd $(PYTHON_DIR) && pip install -r requirements.txt
 
 python-verify: python-install
-	cd $(PYTHON_DIR) && python run.py --mode verify --non-interactive --output-dir ../$(OUTPUT_DIR)/python
+        cd $(PYTHON_DIR) && python run.py --mode verify --non-interactive --output-dir ../$(OUTPUT_DIR)/python
 
 python-simulate: python-install
-	cd $(PYTHON_DIR) && python -c "from src.simulation.simulator import Simulator; s=Simulator(); s.sweep_delta_C(); s.sweep_lambda_1(); s.convergence_analysis(); print('Simulations complete')"
+        cd $(PYTHON_DIR) && python -c "from src.simulation.simulator import Simulator; s=Simulator(); s.sweep_delta_C(); s.sweep_lambda_1(); s.convergence_analysis(); print('Simulations complete')"
 
 python-plots: python-verify
-	@echo "Plots saved to $(OUTPUT_DIR)/python/plots/"
+        @echo "Plots saved to $(OUTPUT_DIR)/python/plots/"
 
 python-reports: python-verify
-	@echo "Reports saved to $(OUTPUT_DIR)/python/reports/"
+        @echo "Reports saved to $(OUTPUT_DIR)/python/reports/"
 
 # ═══════════════════════════════════════════════
 # Julia
 # ═══════════════════════════════════════════════
 
 julia-install:
-	cd $(JULIA_DIR) && julia --project=. -e 'using Pkg; Pkg.instantiate()'
+        cd $(JULIA_DIR) && julia --project=. -e 'using Pkg; Pkg.instantiate()'
 
 julia-verify: julia-install
-	cd $(JULIA_DIR) && julia --project=. run.jl --non-interactive --output ../$(OUTPUT_DIR)/julia
+        cd $(JULIA_DIR) && julia --project=. run.jl --non-interactive --output ../$(OUTPUT_DIR)/julia
 
 # ═══════════════════════════════════════════════
 # Java
 # ═══════════════════════════════════════════════
 
 java-build:
-	cd $(JAVA_DIR) && mvn clean package -DskipTests
+        cd $(JAVA_DIR) && mvn clean package -DskipTests
 
 java-run: java-build
-	cd $(JAVA_DIR) && java -jar target/choptyuk-webapp.jar
+        cd $(JAVA_DIR) && java -jar target/choptyuk-webapp.jar
 
 # ═══════════════════════════════════════════════
 # Next.js Interactive Visualization
 # ═══════════════════════════════════════════════
 
 viz-install:
-	cd $(VIZ_DIR) && npm install
+        cd $(VIZ_DIR) && npm install
 
 viz-build: viz-install
-	cd $(VIZ_DIR) && npm run build
+        cd $(VIZ_DIR) && npm run build
 
 viz-dev: viz-install
-	cd $(VIZ_DIR) && npm run dev
+        cd $(VIZ_DIR) && npm run dev
 
 # ═══════════════════════════════════════════════
 # Docker
 # ═══════════════════════════════════════════════
 
 docker-build:
-	docker build -t choptyuk-verify -f docker/Dockerfile .
+        docker build -t choptyuk-verify -f docker/Dockerfile .
 
 docker-run:
-	docker run --rm -v $(PWD)/$(OUTPUT_DIR):/app/output choptyuk-verify
+        docker run --rm -v $(PWD)/$(OUTPUT_DIR):/app/output choptyuk-verify
 
 docker-up:
-	cd docker && docker-compose up -d
+        cd docker && docker-compose up -d
 
 docker-down:
-	cd docker && docker-compose down
+        cd docker && docker-compose down
 
 # ═══════════════════════════════════════════════
 # Quality & Testing
 # ═══════════════════════════════════════════════
 
 lint:
-	cd $(PYTHON_DIR) && ruff check src/ --ignore E501 || true
-	cd $(PYTHON_DIR) && mypy src/ --ignore-missing-imports || true
-	cd $(VIZ_DIR) && npm run lint --if-present || true
+        cd $(PYTHON_DIR) && ruff check src/ --ignore E501 || true
+        cd $(PYTHON_DIR) && mypy src/ --ignore-missing-imports || true
+        cd $(VIZ_DIR) && npm run lint --if-present || true
 
 test:
-	cd $(PYTHON_DIR) && python -m pytest tests/ -v || true
+        cd $(PYTHON_DIR) && python -m pytest tests/ -v || true
+
+coverage:
+        cd $(PYTHON_DIR) && python -m pytest tests/ -v --cov=src --cov-report=term-missing --cov-report=xml --cov-report=html || true
+        @echo "Coverage report: python/htmlcov/index.html"
 
 pre-commit:
-	pre-commit run --all-files
+        pre-commit run --all-files
+
+# ═══════════════════════════════════════════════
+# Documentation (MkDocs Material)
+# ═══════════════════════════════════════════════
+
+docs-install:
+        cd $(DOCS_DIR) && pip install -r requirements.txt
+
+docs-build: docs-install
+        cd $(DOCS_DIR) && mkdocs build --strict
+
+docs-serve: docs-install
+        cd $(DOCS_DIR) && mkdocs serve
+
+docs-deploy: docs-install
+        cd $(DOCS_DIR) && mike deploy --push latest
+
+docs: docs-serve
 
 # ═══════════════════════════════════════════════
 # Setup & Cleanup
 # ═══════════════════════════════════════════════
 
 setup: python-install julia-install viz-install
-	@echo "✅ All environments set up"
+        @echo "✅ All environments set up"
 
 clean:
-	rm -rf $(OUTPUT_DIR)
-	rm -rf $(VIZ_DIR)/.next $(VIZ_DIR)/node_modules
-	rm -rf $(JAVA_DIR)/target
-	find . -type d -name __pycache__ -exec rm -rf {} +
-	find . -type f -name "*.pyc" -delete
+        rm -rf $(OUTPUT_DIR)
+        rm -rf $(VIZ_DIR)/.next $(VIZ_DIR)/node_modules
+        rm -rf $(JAVA_DIR)/target
+        rm -rf $(DOCS_DIR)/site
+        find . -type d -name __pycache__ -exec rm -rf {} +
+        find . -type f -name "*.pyc" -delete
 
 # ═══════════════════════════════════════════════
 # Git helpers
 # ═══════════════════════════════════════════════
 
 release:
-	@read -p "Version (e.g., v1.1.0): " ver; \
-	git tag -a $$ver -m "Release $$ver"; \
-	git push origin $$ver
+        @read -p "Version (e.g., v2.1.0): " ver; \
+        git tag -a $$ver -m "Release $$ver"; \
+        git push origin $$ver
+
+sign-release:
+        @echo "Signing release artifacts with sigstore..."
+        cd $(PYTHON_DIR) && pip install build sigstore && python -m build --outdir dist/
+        cd $(PYTHON_DIR)/dist && for f in *; do sigstore sign "$$f" --bundle "$$f.sigstore"; done
+        @echo "Signed artifacts in python/dist/"
