@@ -4,6 +4,7 @@ including new 4D, Kähler, Tyukovsky, and Einstein GR results."""
 
 import math
 import json
+import os
 
 def verify():
     results = {}
@@ -299,16 +300,22 @@ print("\n" + "=" * 70)
 print("ALL VERIFICATIONS PASSED ✓")
 print("=" * 70)
 
-# Save JSON
-with open('/home/z/my-project/download/verification_results_enhanced.json', 'w') as f:
-    # Convert non-serializable types
-    clean = {}
-    for k, v in r.items():
-        if isinstance(v, dict):
-            clean[k] = {kk: (vv if not isinstance(vv, dict) else str(vv)) for kk, vv in v.items()}
-        elif isinstance(v, (int, float, bool, str)):
-            clean[k] = v
-        else:
-            clean[k] = str(v)
-    json.dump(clean, f, indent=2)
-print("Results saved to /home/z/my-project/download/verification_results_enhanced.json")
+# Save JSON (use relative path; skip if directory doesn't exist)
+try:
+    _output_dir = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'output')
+    os.makedirs(_output_dir, exist_ok=True)
+    _output_path = os.path.join(_output_dir, 'verification_results_enhanced.json')
+    with open(_output_path, 'w') as f:
+        # Convert non-serializable types
+        clean = {}
+        for k, v in r.items():
+            if isinstance(v, dict):
+                clean[k] = {kk: (vv if not isinstance(vv, dict) else str(vv)) for kk, vv in v.items()}
+            elif isinstance(v, (int, float, bool, str)):
+                clean[k] = v
+            else:
+                clean[k] = str(v)
+        json.dump(clean, f, indent=2)
+    print(f"Results saved to {_output_path}")
+except OSError as e:
+    print(f"Note: Could not save results JSON ({e})")
