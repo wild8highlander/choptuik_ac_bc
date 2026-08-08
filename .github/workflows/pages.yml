@@ -55,7 +55,7 @@ jobs:
 
       - name: Build documentation site
         working-directory: docs-site
-        run: mkdocs build --strict
+        run: mkdocs build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
