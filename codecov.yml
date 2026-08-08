@@ -1,0 +1,70 @@
+# Codecov configuration for choptuik_ac_bc
+# https://docs.codecov.com/docs/codecovyml-reference
+
+codecov:
+  require_ci_to_pass: true
+  notify:
+    wait_for_ci: true
+  token: ${{ secrets.CODECOV_TOKEN }}
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 2%
+        if_ci_failed: error
+        if_not_found: success
+        only_pulls: false
+    patch:
+      default:
+        target: 80%
+        threshold: 5%
+        if_ci_failed: error
+        if_not_found: success
+
+ignore:
+  - "python/tests/.*"
+  - "python/src/__init__.py"
+  - "python/setup.py"
+  - "scripts/.*"
+  - "docs/.*"
+  - "docs-site/.*"
+
+component_management:
+  individual_components:
+    - component_id: core
+      name: Core mathematical engine
+      paths:
+        - python/src/core/
+    - component_id: verification
+      name: Verification suite
+      paths:
+        - python/src/verification/
+    - component_id: simulation
+      name: Simulation engine
+      paths:
+        - python/src/simulation/
+    - component_id: visualization
+      name: Visualization module
+      paths:
+        - python/src/visualization/
+    - component_id: reporting
+      name: Report generation
+      paths:
+        - python/src/reporting/
+
+comment:
+  layout: "header, diff, components, files, footer"
+  behavior: default
+  require_changes: true
+  require_base: false
+  require_head: true
+  hide_comment_details: false
+  show_critical_path: true
+
+github_checks:
+  annotations: true

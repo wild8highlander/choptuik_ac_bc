@@ -1,0 +1,230 @@
+# MkDocs Material configuration for choptuik_ac_bc
+# Deploys to: https://wild8highlander.github.io/choptuik_ac_bc/
+
+site_name: Choptyuk Spinor Corrections
+site_description: >-
+  Verification, simulation, and visualization of spinor corrections b-C and a-C
+  on the Klein quartic curve — API documentation & mathematical background.
+site_author: Ishak Khamzatovich Isaev
+site_url: https://wild8highlander.github.io/choptuik_ac_bc/
+
+# Repository
+repo_name: wild8highlander/choptuik_ac_bc
+repo_url: https://github.com/wild8highlander/choptuik_ac_bc
+edit_uri: edit/main/docs-site/docs/
+
+# Copyright
+copyright: >-
+  Copyright &copy; 2024–2026 Ishak Khamzatovich Isaev &mdash;
+  Isaev Proprietary License
+
+# Theme
+theme:
+  name: material
+  language: en
+  custom_dir: overrides
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.instant        # Instant navigation (no full page reloads)
+    - navigation.tracking       # Anchor tracking in URL
+    - navigation.tabs           # Top-level sections as tabs
+    - navigation.tabs.sticky    # Sticky tabs on scroll
+    - navigation.sections       # Section headings in nav
+    - navigation.expand         # Expand all sections by default
+    - navigation.indexes        # Attach index pages to sections
+    - navigation.top            # Back-to-top button
+    - search.suggest            # Search suggestions
+    - search.highlight          # Highlight search results
+    - search.share              # Shareable search links
+    - toc.follow                # Follow TOC on scroll
+    - content.code.copy         # Copy button on code blocks
+    - content.code.annotate     # Code annotations
+    - content.tabs.link         # Link tabbed content
+    - content.tooltips          # Tooltip support
+    - header.autohide           # Auto-hide header on scroll
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/function-variant
+
+# Extensions
+markdown_extensions:
+  - abbr                        # Abbreviations with <abbr> tags
+  - admonition                  # Callout blocks (!!!, ???, +++)
+  - attr_list                   # HTML attribute lists {: ...}
+  - def_list                    # Definition lists
+  - footnotes                   # Footnotes [^1]
+  - md_in_html                  # Markdown inside HTML blocks
+  - toc:
+      permalink: true           # Permanent links to headings
+      toc_depth: 4
+  - tables                      # Tables
+  - pymdownx.arithmatex:        # Math rendering ($...$, $$...$$)
+      generic: true
+  - pymdownx.betterem:          # Better emphasis handling
+  - pymdownx.caret              # ^superscript^
+  - pymdownx.mark               # ==highlighted==
+  - pymdownx.tilde              # ~~subscript~~
+  - pymdownx.critic             # Critic markup {++add++}, {--del--}
+  - pymdownx.details            # Collapsible details blocks
+  - pymdownx.emoji:             # Emoji :smile:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:         # Code highlighting
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite       # Inline code highlighting
+  - pymdownx.keys               # Keyboard keys ++ctrl+c++
+  - pymdownx.magiclink:         # Auto-link URLs, issues, commits
+      repo_url_shorthand: true
+      user: wild8highlander
+      repo: choptuik_ac_bc
+  - pymdownx.saneheaders        # ATX headers require space after #
+  - pymdownx.snippets:          # Include snippets from other files
+      check_paths: true
+  - pymdownx.superfences:       # Fenced code blocks with features
+      custom_fences:
+        - name: mermaid          # Mermaid diagram support
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:            # Tabbed content
+      alternate: true
+  - pymdownx.tasklist:          # Task lists with checkboxes
+      custom_checkbox: true
+
+# MathJax configuration
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - stylesheets/extra.css
+
+# Extra variables for templates
+extra:
+  version:
+    provider: mike              # Version switching via mike
+  analytics:
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/thumb-up-outline
+          name: This page was helpful
+          data: 1
+          note: Thanks for your feedback!
+        - icon: material/thumb-down-outline
+          name: This page could be improved
+          data: 0
+          note: Thanks for your feedback! Help us improve by opening an issue.
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/wild8highlander/choptuik_ac_bc
+      name: GitHub Repository
+    - icon: fontawesome/brands/orcid
+      link: https://orcid.org/0009-0003-7299-0701
+      name: ORCID Profile
+    - icon: fontawesome/solid/envelope
+      link: mailto:aslan08_05@mail.ru
+      name: Email
+  choptyuk:
+    version: "2.0.0"
+    doi: "10.5281/zenodo.15152720"
+
+# Plugins
+plugins:
+  - search:
+      separator: '[\s\-\.]+'
+      pipeline:
+        - stemmer
+        - stopWordFilter
+        - trimmer
+  - autorefs                  # Auto-reference links to headings
+  - mkdocstrings:             # Auto-generate API docs from docstrings
+      handlers:
+        python:
+          paths: [../python/src]
+          options:
+            docstring_style: google
+            docstring_options:
+              ignore_init_summary: true
+            merge_init_into_class: true
+            show_submodules: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_object_full_path: false
+            show_signature_annotations: true
+            signature_crossrefs: true
+            separate_signature: true
+            heading_level: 3
+            members_order: source
+            filters:
+              - "!^_"
+              - "!^__"
+          inventories:
+            - url: https://docs.python.org/3/objects.inv
+              domains: [py, std]
+
+# Navigation structure
+nav:
+  - Home: index.md
+  - Tutorials:
+      - tutorials/index.md
+      - Quick Start: tutorials/quick-start.md
+      - Running Verification: tutorials/verification.md
+      - Interactive Menu: tutorials/interactive-menu.md
+      - Custom Parameters: tutorials/custom-parameters.md
+      - LIGO QNM Analysis: tutorials/ligo-analysis.md
+  - Mathematics:
+      - mathematics/index.md
+      - Klein Quartic Curve: mathematics/klein-quartic.md
+      - Spinor Phases & Structures: mathematics/spinor-phases.md
+      - Dirac Operator: mathematics/dirac-operator.md
+      - Choptyuk Formula: mathematics/choptyuk-formula.md
+      - Enhanced Verification (v2.0): mathematics/enhanced-verification.md
+      - K3 & Kähler Surfaces: mathematics/k3-surfaces.md
+  - API Reference:
+      - api/index.md
+      - Core:
+          - api/core/choptyuk-formula.md
+          - api/core/dirac-operator.md
+          - api/core/klein-curve.md
+          - api/core/spinor-phases.md
+          - api/core/qnm.md
+          - api/core/hypothesis.md
+          - api/core/surfaces.md
+          - api/core/enhanced-verification.md
+      - Verification:
+          - api/verification/verify-all.md
+          - api/verification/verify-enhanced.md
+      - Simulation:
+          - api/simulation/simulator.md
+      - Visualization:
+          - api/visualization/plots.md
+      - Reporting:
+          - api/reporting/report-writer.md
+  - Development:
+      - development/index.md
+      - Contributing: development/contributing.md
+      - Testing & Coverage: development/testing.md
+      - CI/CD Pipelines: development/ci-cd.md
+      - Release Process: development/release.md
+  - Changelog: changelog.md

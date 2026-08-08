@@ -1,0 +1,58 @@
+/* Extra styles for MkDocs Material documentation site */
+
+/* Math blocks: add horizontal scroll for long equations */
+.md-typeset .arithmatex {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Code blocks: slightly larger font for readability */
+.md-typeset code {
+  font-size: 0.85em;
+}
+
+/* Admonition colors for mathematical results */
+.md-typeset .admonition.theorem,
+.md-typeset details.theorem {
+  border-color: rgb(43, 155, 70);
+}
+.md-typeset .admonition.theorem > .admonition-title,
+.md-typeset details.theorem > .admonition-title {
+  background-color: rgb(43, 155, 70, 0.1);
+  border-color: rgb(43, 155, 70);
+}
+.md-typeset .admonition.theorem > .admonition-title::before {
+  background-color: rgb(43, 155, 70);
+  -webkit-mask-image: var(--md-admonition-icon--theorem);
+  mask-image: var(--md-admonition-icon--theorem);
+}
+
+.md-typeset .admonition.definition,
+.md-typeset details.definition {
+  border-color: rgb(98, 0, 234);
+}
+.md-typeset .admonition.definition > .admonition-title,
+.md-typeset details.definition > .admonition-title {
+  background-color: rgb(98, 0, 234, 0.1);
+  border-color: rgb(98, 0, 234);
+}
+
+/* Verification status badges */
+.verified {
+  color: #2e7d32;
+  font-weight: bold;
+}
+.pending {
+  color: #ed6c02;
+  font-weight: bold;
+}
+
+/* Table of contents: indent sub-items */
+.md-nav__list .md-nav__list {
+  margin-left: 0.4em;
+}
+
+/* Mermaid diagrams: center them */
+.mermaid {
+  text-align: center;
+}

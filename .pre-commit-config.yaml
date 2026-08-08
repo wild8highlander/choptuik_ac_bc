@@ -1,34 +1,81 @@
+# .pre-commit-config.yaml for choptuik_ac_bc
+# Install: pip install pre-commit && pre-commit install
+# Run:     pre-commit run --all-files
+
+minimum_pre_commit_version: '3.0.0'
+
 repos:
+  # ── Ruff: linter + formatter ───────────────────────────────
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.7
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+        name: Ruff linter
+      - id: ruff-format
+        name: Ruff formatter
+
+  # ── MyPy: type checking ────────────────────────────────────
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.11.0
+    hooks:
+      - id: mypy
+        name: MyPy type check
+        args: [--ignore-missing-imports, --no-error-summary]
+        files: ^python/src/
+
+  # ── Pre-commit hooks: misc quality checks ──────────────────
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
       - id: trailing-whitespace
+        name: Trim trailing whitespace
       - id: end-of-file-fixer
+        name: Fix end of files
       - id: check-yaml
+        name: Check YAML syntax
       - id: check-json
+        name: Check JSON syntax
+      - id: check-toml
+        name: Check TOML syntax
       - id: check-merge-conflict
-      - id: check-case-conflict
+        name: Check merge conflicts
+      - id: check-added-large-files
+        name: Check large files
+        args: [--maxkb=1024]
       - id: detect-private-key
+        name: Detect private keys
       - id: no-commit-to-branch
-        args: ['--branch', 'main']
+        name: Prevent commits to main
+        args: [--branch, main]
 
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.0
+  # ── Prettier: JS/TS/CSS formatting ─────────────────────────
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0
     hooks:
-      - id: ruff
-        args: ['--ignore', 'E501']
-        files: ^python/
+      - id: prettier
+        name: Prettier (TS/TSX/CSS)
+        types_or: [javascript, tsx, css]
+        files: ^interactive-viz/
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.10.1
+  # ── Markdown lint ──────────────────────────────────────────
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.41.0
     hooks:
-      - id: mypy
-        args: ['--ignore-missing-imports']
-        files: ^python/
+      - id: markdownlint
+        name: Markdown lint
+        args: [--fix]
+        files: \.md$
 
-  - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: v2.14.0
+  # ── ShellCheck ─────────────────────────────────────────────
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0
     hooks:
-      - id: pretty-format-toml
-        args: ['--autofix']
-        files: ^julia/Project\.toml$
+      - id: shellcheck
+        name: ShellCheck
+        files: ^scripts/.*\.sh$
+
+ci:
+  autofix_commit_msg: 'chore: auto-fix via pre-commit'
+  autoupdate_commit_msg: 'chore: update pre-commit hooks'
+  autoupdate_schedule: weekly
