@@ -11,7 +11,7 @@ from src.core.klein_curve import KleinCurve
 from src.core.spinor_phases import SpinorPhases
 from src.core.choptyuk_formula import ChoptyukFormula
 from src.core.dirac_operator import DiracOperator
-from src.core.qnm import QNMCalculator
+from src.core.qnm import QNMPredictor
 from src.core.enhanced_verification import (
     KleinQuartic,
     K3Surface,
@@ -73,15 +73,19 @@ class TestKleinCurve:
 
     def test_aut_group_order(self, klein):
         """Automorphism group PSL(2,7) has order 168."""
-        assert klein.automorphism_group_order == REF_AUT_GROUP_ORDER
+        assert klein.psl_order == REF_AUT_GROUP_ORDER
 
     def test_euler_characteristic(self, klein):
-        """Euler characteristic χ = 2 - 2g = -4 for genus 3."""
-        assert klein.euler_characteristic == 2 - 2 * REF_GENUS
+        """Euler characteristic chi = 2 - 2g = -4 for genus 3."""
+        assert 2 - 2 * klein.genus == -4
 
     def test_scalar_curvature(self, klein):
         """Scalar curvature R = -2 for genus 3 hyperbolic surface."""
-        assert abs(klein.scalar_curvature - (-2)) < TOLERANCE_STRICT
+        assert abs(klein.R - (-2)) < TOLERANCE_STRICT
+
+    def test_first_laplacian_eigenvalue(self, klein):
+        """First Laplacian eigenvalue lambda_1(Delta) = 3.838."""
+        assert abs(klein.lambda_1 - REF_LAMBDA1_DELTA) < TOLERANCE_LOOSE
 
 
 # ──────────────────────────────────────────────
@@ -91,20 +95,20 @@ class TestSpinorPhases:
     """Tests for spinor phase values."""
 
     def test_delta_a(self, spinor):
-        """Phase δ_A = π/2."""
-        assert abs(spinor.delta_a - math.pi / 2) < TOLERANCE_STRICT
+        """Phase delta_A = pi/2."""
+        assert abs(spinor.delta_A - math.pi / 2) < TOLERANCE_STRICT
 
     def test_delta_b(self, spinor):
-        """Phase δ_B = π/3."""
-        assert abs(spinor.delta_b - math.pi / 3) < TOLERANCE_STRICT
+        """Phase delta_B = pi/3."""
+        assert abs(spinor.delta_B - math.pi / 3) < TOLERANCE_STRICT
 
     def test_delta_c(self, spinor):
-        """Phase δ_C = π/7."""
-        assert abs(spinor.delta_c - math.pi / 7) < TOLERANCE_STRICT
+        """Phase delta_C = pi/7."""
+        assert abs(spinor.delta_C - math.pi / 7) < TOLERANCE_STRICT
 
     def test_phase_ordering(self, spinor):
-        """Phases satisfy δ_A > δ_B > δ_C."""
-        assert spinor.delta_a > spinor.delta_b > spinor.delta_c
+        """Phases satisfy delta_A > delta_B > delta_C."""
+        assert spinor.delta_A > spinor.delta_B > spinor.delta_C
 
 
 # ──────────────────────────────────────────────
@@ -114,14 +118,17 @@ class TestDiracOperator:
     """Tests for the Dirac operator spectral values."""
 
     def test_trivial_dirac_eigenvalue(self, dirac):
-        """Trivial Dirac: λ₁(D²_σ₀) = λ₁(Δ) + R/4 = 3.338."""
-        computed = dirac.trivial_eigenvalue
-        assert abs(computed - REF_LAMBDA1_DIRAC) < TOLERANCE_LOOSE
+        """Trivial Dirac: lambda_1(D^2_sigma_0) = lambda_1(Delta) + R/4 = 3.338."""
+        assert abs(dirac.lambda_D2_triv - REF_LAMBDA1_DIRAC) < TOLERANCE_LOOSE
 
-    def test_lichnerowicz_formula(self, dirac, klein):
-        """Lichnerowicz: λ₁(D²) ≥ λ₁(Δ) + R/4 (verification)."""
-        lower_bound = REF_LAMBDA1_DELTA + klein.scalar_curvature / 4
-        assert dirac.trivial_eigenvalue >= lower_bound - TOLERANCE_LOOSE
+    def test_lichnerowicz_formula(self, dirac):
+        """Lichnerowicz: lambda_1(D^2) = lambda_1(Delta) + R/4."""
+        expected = REF_LAMBDA1_DELTA + (-2) / 4
+        assert abs(dirac.lambda_D2_triv - expected) < TOLERANCE_STRICT
+
+    def test_spectral_gap(self, dirac):
+        """Spectral gap equals lambda_D2_triv."""
+        assert abs(dirac.gap() - dirac.lambda_D2_triv) < TOLERANCE_STRICT
 
 
 # ──────────────────────────────────────────────
@@ -131,41 +138,44 @@ class TestChoptyukFormula:
     """Tests for the unified Choptyuk formula."""
 
     def test_bc_correction(self, choptyuk):
-        """b-C correction: Δ_bC = λ₁(D²_σ₀) + δ_C²/2 = 3.438710."""
-        computed = choptyuk.delta_bc
-        assert abs(computed - REF_DELTA_BC) < TOLERANCE_LOOSE
+        """b-C correction: Delta_bC = lambda_1(D^2) + delta_C^2/2 = 3.438710."""
+        result = choptyuk.compute()
+        assert abs(result.delta_bc - REF_DELTA_BC) < TOLERANCE_LOOSE
 
     def test_choptyuk_base(self, choptyuk):
-        """Base Choptyuk: Δ_Ch = λ₁(D²_σ₀) + δ_C²/2 − δ_C⁵/22 = 3.437883."""
-        computed = choptyuk.delta_ch_base
-        assert abs(computed - REF_DELTA_CH_BASE) < TOLERANCE_LOOSE
+        """Base Choptyuk: Delta_Ch = lambda_1(D^2) + delta_C^2/2 - delta_C^5/22 = 3.437883."""
+        result = choptyuk.compute()
+        assert abs(result.delta_ch_base - REF_DELTA_CH_BASE) < TOLERANCE_LOOSE
 
     def test_choptyuk_full(self, choptyuk):
-        """Full Choptyuk with higher orders: Δ_Ch = 3.447040."""
-        computed = choptyuk.delta_ch_full
-        assert abs(computed - REF_DELTA_CH_FULL) < TOLERANCE_LOOSE
+        """Full Choptyuk with higher orders: Delta_Ch = 3.447040."""
+        result = choptyuk.compute()
+        assert abs(result.delta_ch_full - REF_DELTA_CH_FULL) < TOLERANCE_LOOSE
 
     def test_choptyuk_constant(self, choptyuk):
-        """Choptyuk constant: b_Ch = 1 − cos(2π/7) ≈ 0.376510."""
-        computed = choptyuk.b_choptyuk
-        assert abs(computed - REF_B_CH) < TOLERANCE_LOOSE
+        """Choptyuk constant: b_Ch = 1 - cos(2pi/7) ~ 0.376510."""
+        result = choptyuk.compute()
+        assert abs(result.b_ch - REF_B_CH) < TOLERANCE_LOOSE
 
     def test_braking_correction(self, choptyuk):
-        """a-C braking: δ_eff = δ_C⁵/22 ≈ 1/1200."""
+        """a-C braking: delta_eff = delta_C^5/22 ~ 1/1200."""
+        result = choptyuk.compute()
         delta_c = REF_DELTA_C
         expected_eff = delta_c ** 5 / 22
-        assert abs(choptyuk.braking_correction - expected_eff) < TOLERANCE_STRICT
+        assert abs(result.delta_eff - expected_eff) < TOLERANCE_STRICT
 
     def test_bc_deviation_within_tolerance(self, choptyuk):
-        """Δ_bC deviation from observed (3.443) must be < 0.2%."""
+        """Delta_bC deviation from observed (3.443) must be < 0.2%."""
+        result = choptyuk.compute()
         observed = 3.443
-        deviation_pct = abs(choptyuk.delta_bc - observed) / observed * 100
+        deviation_pct = abs(result.delta_bc - observed) / observed * 100
         assert deviation_pct < 0.2
 
     def test_full_deviation_within_tolerance(self, choptyuk):
-        """Δ_Ch(full) deviation from observed (3.443) must be < 0.2%."""
+        """Delta_Ch(full) deviation from observed (3.443) must be < 0.2%."""
+        result = choptyuk.compute()
         observed = 3.443
-        deviation_pct = abs(choptyuk.delta_ch_full - observed) / observed * 100
+        deviation_pct = abs(result.delta_ch_full - observed) / observed * 100
         assert deviation_pct < 0.2
 
 
@@ -176,14 +186,14 @@ class TestConsistency:
     """Cross-reference checks between computed values."""
 
     def test_choptyuk_constant_formula(self):
-        """b_Ch = 1 - cos(2π/7) = 2·sin²(π/7)."""
+        """b_Ch = 1 - cos(2pi/7) = 2*sin^2(pi/7)."""
         val1 = 1 - math.cos(2 * math.pi / 7)
         val2 = 2 * math.sin(math.pi / 7) ** 2
         assert abs(val1 - val2) < TOLERANCE_STRICT
         assert abs(val1 - REF_B_CH) < TOLERANCE_LOOSE
 
     def test_delta_c_squared_half(self):
-        """δ_C²/2 component of b-C correction."""
+        """delta_C^2/2 component of b-C correction."""
         component = (math.pi / 7) ** 2 / 2
         expected_diff = REF_DELTA_BC - REF_LAMBDA1_DIRAC
         assert abs(component - expected_diff) < TOLERANCE_LOOSE
@@ -202,7 +212,7 @@ class TestMathIdentities:
 
     @pytest.mark.math
     def test_psl27_order(self):
-        """|PSL(2,7)| = (7²-1)·7/2 = 168."""
+        """|PSL(2,7)| = (7^2-1)*7/2 = 168."""
         order = (7**2 - 1) * 7 // 2
         assert order == 168
 
@@ -214,7 +224,7 @@ class TestMathIdentities:
 
     @pytest.mark.math
     def test_braking_magnitude(self):
-        """δ_eff ≈ 1/1200 (a-C braking is very small)."""
+        """delta_eff ~ 1/1200 (a-C braking is very small)."""
         delta_c = math.pi / 7
         delta_eff = delta_c ** 5 / 22
         assert abs(delta_eff - 1 / 1200) < 1e-4
@@ -258,7 +268,7 @@ class TestEnhancedVerificationModule:
         delta_eff = (math.pi / 7)**5 / 22
         expected_correction = delta_eff / math.pi**2
         assert abs(qnm.qnm_correction - expected_correction) < TOLERANCE_STRICT
-        # qnm_factor ≈ 0.999916
+        # qnm_factor ~ 0.999916
         assert abs(qnm.qnm_factor - (1 - expected_correction)) < TOLERANCE_STRICT
         assert abs(qnm.qnm_factor - 0.999916) < 1e-4
         # corrected_frequency(omega) = omega * qnm_factor
@@ -285,7 +295,7 @@ class TestEnhancedVerificationModule:
         assert "best_approx" in nc
         assert "best_dev_pct" in nc
         assert nc["best_dev_pct"] >= 0
-        # b₂ uniqueness
+        # b2 uniqueness
         b2u = criticism.check_b2_uniqueness()
         assert 22 in b2u
         assert b2u[22]["compatible"] is True
