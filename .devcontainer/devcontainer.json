@@ -1,52 +1,62 @@
-# Choptyuk Spinor Corrections - Dev Container
-# One-click development environment with all tools pre-installed
+{
+  "name": "Choptyuk Spinor Corrections Dev",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
 
-name: "Choptyuk Spinor Corrections Dev"
-image: mcr.microsoft.com/devcontainers/base:ubuntu-22.04
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12",
+      "installJupyterlab": true
+    },
+    "ghcr.io/devcontainers/features/julia:1": {
+      "version": "1.10"
+    },
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    }
+  },
 
-features:
-  - name: "./features/python"
-    options:
-      version: "3.12"
-  - name: "./features/julia"
-    options:
-      version: "1.10"
-  - name: "./features/java"
-    options:
-      version: "17"
-  - name: "./features/node"
-    options:
-      version: "20"
+  "postCreateCommand": {
+    "python": "pip install -r python/requirements.txt 2>/dev/null || true",
+    "julia": "cd julia && julia --project=. -e 'using Pkg; Pkg.instantiate()' 2>/dev/null || true",
+    "node": "cd interactive-viz && npm install 2>/dev/null || true"
+  },
 
-postCreateCommand: |
-  pip install -r python/requirements.txt 2>/dev/null || true
-  cd julia && julia --project=. -e 'using Pkg; Pkg.instantiate()' 2>/dev/null || true
-  cd interactive-viz && npm install 2>/dev/null || true
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "julialang.language-julia",
+        "vscjava.vscode-java-pack",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "charliermarsh.ruff",
+        " biomejs.biome",
+        " davidanson.vscode-markdownlint"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "ruff.enable": true,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      }
+    }
+  },
 
-customizations:
-  vscode:
-    extensions:
-      - ms-python.python
-      - ms-toolsai.jupyter
-      - julialang.language-julia
-      - vscjava.vscode-java-pack
-      - bradlc.vscode-tailwindcss
-      - esbenp.prettier-vscode
-      - charliermarsh.ruff
+  "ports": [
+    { "port": 3000, "onAutoForward": "openBrowser", "label": "Interactive Visualization" },
+    { "port": 8080, "onAutoForward": "openBrowser", "label": "Java Web App" },
+    { "port": 8888, "onAutoForward": "openBrowser", "label": "Jupyter" }
+  ],
 
-ports:
-  - port: 3000
-    onAutoForward: openBrowser
-    name: Interactive Visualization
-  - port: 8080
-    onAutoForward: openBrowser
-    name: Java Web App
-  - port: 8888
-    onAutoForward: openBrowser
-    name: Jupyter
+  "forwardPorts": [3000, 8080, 8888],
 
-tasks:
-  - name: Python Verification
-    command: cd python && python run.py
-  - name: Interactive Visualization
-    command: cd interactive-viz && npm run dev
+  "remoteEnv": {
+    "PYTHONPATH": "${containerWorkspaceFolder}/python/src:${containerWorkspaceFolder}",
+    "JULIA_PROJECT": "${containerWorkspaceFolder}/julia"
+  }
+}

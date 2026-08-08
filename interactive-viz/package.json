@@ -1,6 +1,6 @@
 {
   "name": "choptyuk-spinor-monograph",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Ishak Khamzatovich Isaev <aslan08_05@mail.ru> (https://github.com/wild8highlander)",
   "repository": {
     "type": "git",
@@ -12,7 +12,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "echo 'Info: No test framework configured yet. Run typecheck instead.' && tsc --noEmit",
+    "check-all": "npm run lint && npm run typecheck && npm run build",
+    "clean": "rm -rf .next node_modules/.cache"
   },
   "dependencies": {
     "next": "^15.3.0",

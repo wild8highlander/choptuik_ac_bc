@@ -1,0 +1,33 @@
+title: "Q&A — Mathematical & Technical Questions"
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: "Ask about the mathematical theory, computational methods, or implementation details."
+      placeholder: "e.g., How does the braking coefficient γ = δ_C⁴/22 arise from the spinor holonomy?"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Mathematical theory (spinor corrections, Dirac operator, Choptyuk formula)
+        - Computational methods (numerical verification, arbitrary precision)
+        -> Implementation (Python/Julia/Java/TypeScript)
+        - 4D/Kähler extension (K3 surface, Seiberg-Witten)
+        - Tyukovsky equations
+        - Einstein GR / QNM predictions
+        - Reproducibility (Docker, CI/CD, dev container)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context / References
+      description: "Relevant monograph section, equation number, or external reference."
+      placeholder: "§4.2 of the monograph, or Bourque–Strohmaier (2024)"
+    validations:
+      required: false

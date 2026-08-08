@@ -1,0 +1,37 @@
+title: "Verification Discrepancy Report"
+body:
+  - type: textarea
+    id: discrepancy
+    attributes:
+      label: Observed Discrepancy
+      description: "What numerical discrepancy did you observe? Include computed and expected values."
+      placeholder: "Delta_Ch computed = 3.4379, expected = 3.443, deviation = 0.15%"
+    validations:
+      required: true
+  - type: dropdown
+    id: implementation
+    attributes:
+      label: Implementation
+      options:
+        - Python
+        - Julia
+        - Java
+        - TypeScript/Next.js
+        - Cross-implementation
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: "Python/Julia/Java version, OS, precision settings."
+      placeholder: "Python 3.12, numpy 1.26, mpmath dps=50"
+    validations:
+      required: false
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: "Command or code to reproduce the discrepancy."
+    validations:
+      required: true
