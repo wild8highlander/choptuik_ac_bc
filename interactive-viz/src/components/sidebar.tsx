@@ -11,12 +11,14 @@ import {
   Radio,
   FlaskConical,
   FileText,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { href: "/", label: "Dashboard", icon: Home },
   { href: "/verify", label: "Verification", icon: CheckCircle2 },
+  { href: "/enhanced", label: "Enhanced (4D)", icon: Sparkles },
   { href: "/simulate", label: "Simulation", icon: SlidersHorizontal },
   { href: "/structures", label: "Structures", icon: Grid3X3 },
   { href: "/surfaces", label: "Surfaces", icon: Layers },

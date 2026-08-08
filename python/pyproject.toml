@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "choptyuk-spinor"
-version = "1.1.0"
+version = "2.0.0"
 description = "Verification and simulation of spinor corrections b-C and a-C on the Klein quartic curve"
 readme = "README.md"
 license = {text = "Isaev Proprietary License"}

@@ -168,6 +168,60 @@ function detectability(pred::QNMPredictor, events::Vector{LIGOEvent} = LIGO_EVEN
 end
 
 """
+    qnm_braking_correction(delta_C::Float64=π/7) -> Float64
+
+Compute the QNM braking correction: δ_C⁵ / (22·π²).
+
+This is the fractional correction to QNM frequencies from the
+Choptyuk spinorial braking in the Einstein GR framework.
+
+# Arguments
+- `delta_C`: The fundamental spinor phase δ_C (default: π/7)
+
+# Returns
+The QNM braking correction factor.
+"""
+function qnm_braking_correction(delta_C::Float64 = π / 7)
+    return delta_C^5 / (22 * π^2)
+end
+
+"""
+    qnm_braking_factor(delta_C::Float64=π/7) -> Float64
+
+Compute the QNM braking factor: 1 - δ_C⁵ / (22·π²).
+
+This is the multiplicative factor applied to observed QNM frequencies
+to account for the spinorial braking correction.
+
+# Arguments
+- `delta_C`: The fundamental spinor phase δ_C (default: π/7)
+
+# Returns
+The QNM braking factor (≈ 0.999916).
+"""
+function qnm_braking_factor(delta_C::Float64 = π / 7)
+    return 1 - qnm_braking_correction(delta_C)
+end
+
+"""
+    corrected_qnm_frequency(f_obs::Float64, delta_C::Float64=π/7) -> Float64
+
+Apply the QNM braking correction to an observed frequency.
+
+Computes f_corr = f_obs × (1 - δ_C⁵ / (22·π²)).
+
+# Arguments
+- `f_obs`: The observed QNM frequency
+- `delta_C`: The fundamental spinor phase δ_C (default: π/7)
+
+# Returns
+The corrected QNM frequency.
+"""
+function corrected_qnm_frequency(f_obs::Float64, delta_C::Float64 = π / 7)
+    return f_obs * qnm_braking_factor(delta_C)
+end
+
+"""
     verify_qnm(pred::QNMPredictor=QNMPredictor()) -> Dict{String, Bool}
 
 Verify QNM predictions against known event parameters.

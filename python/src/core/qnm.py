@@ -13,6 +13,8 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 
+import numpy as np
+
 logger = logging.getLogger(__name__)
 
 
@@ -71,7 +73,38 @@ class QNMPredictor:
         self.G = G
         self.c = c
         self.M_sun = M_sun
+        # Enhanced: effective phase from spinorial braking
+        self._delta_eff = (np.pi / 7)**5 / 22
         logger.info(f"QNM predictor initialized with {len(self.events)} events")
+
+    @property
+    def qnm_correction(self) -> float:
+        """Enhanced QNM correction: δ_eff / π².
+
+        Derived from the spinorial braking correction where
+        δ_eff = (π/7)^5 / 22 ≈ 1/1200.
+        """
+        return self._delta_eff / np.pi**2
+
+    @property
+    def qnm_factor(self) -> float:
+        """Enhanced QNM factor: 1 - δ_eff/π² ≈ 0.999916.
+
+        This factor multiplicatively corrects QNM frequencies
+        for the spinorial braking effect.
+        """
+        return 1 - self.qnm_correction
+
+    def corrected_frequency(self, omega: float) -> float:
+        """Apply enhanced QNM correction to a frequency.
+
+        Args:
+            omega: Uncorrected QNM frequency.
+
+        Returns:
+            Corrected frequency: ω · (1 - δ_eff/π²).
+        """
+        return omega * self.qnm_factor
 
     def predict_shift(self, event: BHEvent, scaling: float = 14.0) -> dict:
         """Predict QNM frequency shift for a single event.

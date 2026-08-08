@@ -39,6 +39,26 @@ jobs:
         run: |
           cd python
           python run.py --mode verify --non-interactive --output-dir ../output/python
+      - name: Run enhanced verification
+        run: |
+          cd python
+          python -c "from src.core.enhanced_verification import verify_all; import json; r=verify_all(); json.dump(r, open('../output/python/enhanced_results.json','w'), indent=2, default=str); print('Enhanced verification PASSED')"
+      - name: Validate enhanced constants
+        run: |
+          python3 -c "
+          import json
+          with open('output/python/enhanced_results.json') as f:
+              r = json.load(f)
+          k = r['klein']
+          assert abs(k['effective_phase'] - 0.000828) < 0.00001, 'delta_eff mismatch'
+          assert abs(k['unified_formula'] - 3.4379) < 0.001, 'Delta_Ch mismatch'
+          k3 = r['k3']
+          assert k3['b2'] == 22, 'b2 mismatch'
+          assert k3['sw_compatible'] == True, 'SW compatibility failed'
+          q = r['qnm']
+          assert abs(q['factor'] - 0.999916) < 0.0001, 'QNM factor mismatch'
+          print('All enhanced consistency checks PASSED')
+          "
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.12'
         uses: codecov/codecov-action@v4

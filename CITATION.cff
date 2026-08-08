@@ -7,14 +7,16 @@ authors:
     given-names: "Ishak Khamzatovich"
     email: "aslan08_05@mail.ru"
     orcid: "https://orcid.org/0009-0003-7299-0701"
-version: 1.2.0
-date-released: 2026-08-07
+version: 2.0.0
+date-released: 2026-08-08
 repository-code: "https://github.com/wild8highlander/choptuik_ac_bc"
 abstract: >
   Computational verification and simulation of spinor corrections b-C (Berry, 1st order)
   and a-C (braking, 2nd order) on the Klein quartic curve, with the unified Choptyuk
-  formula. Includes enumeration of all 64 spinor structures, applications to Bolza/Bring
-  surfaces, and LIGO/Virgo quasi-normal mode predictions.
+  formula. Enhanced v2.0 includes: 4D spin manifold extension, Kähler surface corrections
+  (K3 hyperkähler, Dolbeault correspondence), Tyukovsky equation adaptation (zero free
+  parameters), Einstein GR QNM predictions (correction factor ≈ 0.999916), and comprehensive
+  criticism response (b₂=22 uniqueness, stability, universality).
 keywords:
   - "spinor correction"
   - "Klein quartic"
@@ -24,6 +26,11 @@ keywords:
   - "PSL(2,7)"
   - "quasi-normal modes"
   - "gravitational waves"
+  - "K3 surface"
+  - "Kähler geometry"
+  - "Tyukovsky equations"
+  - "Einstein equations"
+  - "Seiberg-Witten"
 license: OTHER
 license-url: LICENSE
 preferred-citation:

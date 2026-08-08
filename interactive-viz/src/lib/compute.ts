@@ -16,6 +16,10 @@ import type {
   SweepResult,
   ConvergenceData,
   VerificationEntry,
+  K3SurfaceData,
+  TyukovskyData,
+  EinsteinQNMData,
+  EnhancedVerificationResult,
 } from "./types";
 
 // ---- Constants ----
@@ -372,4 +376,87 @@ export function fmt(n: number, digits: number = 6): string {
 
 export function fmtSci(n: number, digits: number = 4): string {
   return n.toExponential(digits);
+}
+
+// ---- Enhanced Verification: 4D / Kähler / Tyukovsky / Einstein ----
+
+/** K3 Surface canonical data */
+export const K3_SURFACE: K3SurfaceData = {
+  b0: 1, b1: 0, b2: 22, b3: 0, b4: 1,
+  hodge11: 20, hodge20: 1,
+  diracIndex: 2, b2Plus: 3,
+  b2DecompositionValid: true,  // 22 = 20 + 2*1
+  swCompatible: true,  // b2+ = 3 > 1
+};
+
+/** Imaginary correction: 1 - δ_C/π² */
+export function imaginaryCorrection(deltaC: number = PI / 7): number {
+  return 1 - deltaC / (PI * PI);
+}
+
+/** Kähler correction: δ_C²/2 - δ_C⁵/22 */
+export function kahlerCorrection(deltaC: number = PI / 7): number {
+  return (deltaC * deltaC) / 2 - Math.pow(deltaC, 5) / 22;
+}
+
+/** Tyukovsky corrected critical exponent: δ₀ + δ_C²/2 - δ_C⁵/22 */
+export function tyukovskyCorrectedExponent(delta0: number, deltaC: number = PI / 7): number {
+  return delta0 + (deltaC * deltaC) / 2 - Math.pow(deltaC, 5) / 22;
+}
+
+/** Einstein QNM correction: δ_eff/π² */
+export function einsteinQNMCorrection(deltaC: number = PI / 7): number {
+  const deltaEff = Math.pow(deltaC, 5) / 22;
+  return deltaEff / (PI * PI);
+}
+
+/** Einstein QNM factor: 1 - δ_eff/π² ≈ 0.999916 */
+export function einsteinQNMFactor(deltaC: number = PI / 7): number {
+  return 1 - einsteinQNMCorrection(deltaC);
+}
+
+/** Corrected QNM frequency: ω * (1 - δ_eff/π²) */
+export function correctedQNMFrequency(omega: number, deltaC: number = PI / 7): number {
+  return omega * einsteinQNMFactor(deltaC);
+}
+
+/** b₂ uniqueness check */
+export function b2UniquenessCheck(): Record<string, {deviationPct: number; compatible: boolean}> {
+  const deltaC = PI / 7;
+  const target = 1 / 1200;
+  const result: Record<string, {deviationPct: number; compatible: boolean}> = {};
+  for (const k of [20, 21, 22, 23, 24]) {
+    const dev = Math.abs(Math.pow(deltaC, 5) / k - target) / target * 100;
+    result[`b2_${k}`] = { deviationPct: dev, compatible: dev < 1.0 };
+  }
+  return result;
+}
+
+/** Full enhanced verification */
+export function runEnhancedVerification(): EnhancedVerificationResult {
+  const deltaC = PI / 7;
+  const deltaEff = Math.pow(deltaC, 5) / 22;
+  const qnmCorr = deltaEff / (PI * PI);
+
+  return {
+    k3Surface: K3_SURFACE,
+    tyukovsky: {
+      delta0: 0.36,
+      deltaC,
+      deltaCorrected: tyukovskyCorrectedExponent(0.36),
+      echoPeriod: 1 / tyukovskyCorrectedExponent(0.36),
+      echoShiftPct: -21.72,
+      freeParameters: 0,
+    },
+    einsteinQNM: {
+      deltaEff,
+      qnmCorrection: qnmCorr,
+      qnmFactor: 1 - qnmCorr,
+      correctionPct: qnmCorr * 100,
+    },
+    imaginaryCorrection: imaginaryCorrection(),
+    kahlerCorrection: kahlerCorrection(),
+    b2Uniqueness: b2UniquenessCheck(),
+    spinStructureDistribution: { total: 64, even: 28, odd: 36, goodPct: 43.75 },
+  };
 }

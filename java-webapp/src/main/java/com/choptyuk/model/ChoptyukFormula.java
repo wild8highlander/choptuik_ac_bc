@@ -180,4 +180,35 @@ public class ChoptyukFormula {
     public double relativeErrorHigher() {
         return Math.abs(deviationHigher) / deltaObserved;
     }
+
+    /**
+     * Imaginary correction factor: 1 - delta_C / (π²).
+     */
+    public double imaginaryCorrection() {
+        return 1.0 - deltaC / (Math.PI * Math.PI);
+    }
+
+    /**
+     * Kähler correction: delta_C²/2 - delta_C⁵/22.
+     */
+    public double kahlerCorrection() {
+        return Math.pow(deltaC, 2) / 2.0 - Math.pow(deltaC, 5) / 22.0;
+    }
+
+    /**
+     * Tyukovsky correction: delta0 + delta_C²/2 - delta_C⁵/22.
+     *
+     * @param delta0 uncorrected critical exponent
+     * @return corrected critical exponent
+     */
+    public double tyukovskyCorrection(double delta0) {
+        return delta0 + Math.pow(deltaC, 2) / 2.0 - Math.pow(deltaC, 5) / 22.0;
+    }
+
+    /**
+     * Einstein QNM correction: delta_eff_AC / (π²).
+     */
+    public double einsteinQNMCorrection() {
+        return deltaEffAC / (Math.PI * Math.PI);
+    }
 }

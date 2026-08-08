@@ -137,6 +137,117 @@ function choptyuk_constant(cf::ChoptyukFormula = ChoptyukFormula())
 end
 
 """
+    imaginary_correction(delta_C::Float64) -> Float64
+
+Compute the imaginary correction factor: 1 - δ_C / π².
+
+This arises from the 4D spin manifold extension of the Choptyuk formula,
+accounting for the imaginary part of the spinorial phase.
+
+# Arguments
+- `delta_C`: The fundamental spinor phase δ_C
+
+# Returns
+The imaginary correction factor.
+"""
+function imaginary_correction(delta_C::Float64)
+    return 1 - delta_C / π^2
+end
+
+"""
+    kahler_correction(delta_C::Float64) -> Float64
+
+Compute the Kähler surface correction: δ_C²/2 - δ_C⁵/22.
+
+This is the combined b-C and a-C correction on a Kähler surface,
+representing the leading spinor correction minus the braking term.
+
+# Arguments
+- `delta_C`: The fundamental spinor phase δ_C
+
+# Returns
+The Kähler correction value.
+"""
+function kahler_correction(delta_C::Float64)
+    return delta_C^2 / 2 - delta_C^5 / 22
+end
+
+"""
+    tyukovsky_correction(delta_0::Float64, delta_C::Float64) -> Float64
+
+Compute the Tyukovsky-corrected exponent: δ₀ + δ_C²/2 - δ_C⁵/22.
+
+This adapts the Choptyuk spinorial corrections to the Tyukovsky critical
+exponent, adding the Kähler correction to the bare critical exponent δ₀.
+
+# Arguments
+- `delta_0`: The bare critical exponent
+- `delta_C`: The fundamental spinor phase δ_C
+
+# Returns
+The corrected critical exponent.
+"""
+function tyukovsky_correction(delta_0::Float64, delta_C::Float64)
+    return delta_0 + delta_C^2 / 2 - delta_C^5 / 22
+end
+
+"""
+    einstein_qnm_correction(delta_C::Float64) -> Float64
+
+Compute the Einstein GR / QNM correction: δ_C⁵ / (22·π²).
+
+This correction arises from the interplay between the Choptyuk spinorial
+braking (δ_C⁵/22) and the Einstein GR framework, producing a small
+correction to quasi-normal mode frequencies.
+
+# Arguments
+- `delta_C`: The fundamental spinor phase δ_C
+
+# Returns
+The Einstein QNM correction factor.
+"""
+function einstein_qnm_correction(delta_C::Float64)
+    return delta_C^5 / (22 * π^2)
+end
+
+"""
+    einstein_qnm_factor(delta_C::Float64) -> Float64
+
+Compute the Einstein QNM frequency factor: 1 - δ_C⁵ / (22·π²).
+
+This is the multiplicative factor applied to QNM frequencies to
+account for the spinorial braking correction in the Einstein GR framework.
+
+# Arguments
+- `delta_C`: The fundamental spinor phase δ_C
+
+# Returns
+The Einstein QNM frequency factor (≈ 0.999916).
+"""
+function einstein_qnm_factor(delta_C::Float64)
+    return 1 - einstein_qnm_correction(delta_C)
+end
+
+"""
+    corrected_qnm_frequency(omega::Float64, delta_C::Float64) -> Float64
+
+Compute the corrected QNM frequency: ω · (1 - δ_C⁵ / (22·π²)).
+
+Applies the Einstein QNM braking factor to an observed or computed
+QNM frequency.
+
+# Arguments
+- `omega`: The uncorrected QNM frequency
+- `delta_C`: The fundamental spinor phase δ_C
+
+# Returns
+The spinorially-corrected QNM frequency.
+"""
+function corrected_qnm_frequency(omega::Float64, delta_C::Float64)
+    return omega * einstein_qnm_factor(delta_C)
+end
+
+"""
     verify_choptyuk_formula(cf::ChoptyukFormula=ChoptyukFormula(); observed::Float64=3.443) -> Dict{String, Any}
 
 Verify all relations of the Choptyuk formula and compare with observation.

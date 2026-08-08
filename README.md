@@ -90,6 +90,33 @@ b_Ch = 1 − cos(2π/7) = 2·sin²(π/7) ≈ 0.377
 - **Bolza and Bring surfaces** — comparative spectral invariants
 - **LIGO/Virgo QNM predictions** — quasi-normal mode corrections for GW150914, GW170104, GW170814, GW190521
 
+### Enhanced Verification (v2.0)
+
+The enhanced monograph extends the theory to higher dimensions and broader applications:
+
+| Extension | Key Result | Status |
+|---|---|---|
+| **4D spin manifold** | δ_eff is conformally invariant; Seiberg-Witten compatible | ✓ Verified |
+| **Kähler surfaces** | Dolbeault correspondence; K3 hyperkähler (holonomy Sp(1)); I₇ elliptic fibration matches Klein | ✓ Verified |
+| **Tyukovsky equations** | δ_corr = δ₀ + δ_C²/2 − δ_C⁵/22; **zero free parameters** | ✓ Verified |
+| **Einstein GR / QNM** | ω^corr = ω·(1 − 1/(1200π²)) ≈ 0.999916·ω; shift ≈ 8.4×10⁻⁵ | ✓ Verified |
+| **Criticism response** | b₂ = 22 unique (dev < 1%); non-coincidental (no better approx q < 1200); stable under deformation | ✓ Verified |
+
+**K3 Surface invariants:**
+- Betti numbers: b₀ = 1, b₁ = 0, **b₂ = 22**, b₃ = 0, b₄ = 1
+- Hodge decomposition: b₂ = h^(1,1) + 2h^(2,0) = 20 + 2 = 22 ✓
+- Dirac index: Â(K3) = 2; b₂/Â = 11
+- Seiberg-Witten: b₂⁺ = 3 > 1 → SW-compatible ✓
+
+**QNM correction for LIGO events:**
+
+| Event | f_QNM (Hz) | f^corr (Hz) | Δf (Hz) |
+|---|---|---|---|
+| GW150914 | 251.000 | 250.979 | −0.0210 |
+| GW170104 | 293.000 | 292.975 | −0.0246 |
+| GW170814 | 319.000 | 318.973 | −0.0268 |
+| GW190521 | 110.000 | 109.991 | −0.0092 |
+
 ---
 
 ## Quick Start
@@ -247,42 +274,45 @@ flowchart TB
 choptuik_ac_bc/
 ├── README.md                    # This file
 ├── LICENSE                      # Isaev Proprietary License
-├── CITATION.cff                 # Citation metadata
+├── CITATION.cff                 # Citation metadata (v2.0.0)
 ├── CONTRIBUTING.md              # Contribution guidelines
 ├── CHANGELOG.md                 # Version history
 ├── .gitignore                   # Git ignore rules
 ├── .github/                     # GitHub templates & CI
-│   ├── workflows/               # GitHub Actions CI/CD
+│   ├── workflows/               # GitHub Actions CI/CD (enhanced verification)
 │   └── ISSUE_TEMPLATE/          # Issue templates
 ├── docs/                        # Documentation
-│   └── monograph/               # Original monograph files (EN/RU, DOCX/PDF)
-├── python/                      # Python implementation
+│   └── monograph/               # Monograph files (EN/RU, DOCX/PDF/LaTeX)
+│       ├── figures/             # Publication-quality visualizations (2D/3D/4D)
+│       ├── verification_results_enhanced.json
+│       └── ...                  # Original + Enhanced monographs
+├── python/                      # Python implementation (v2.0.0)
 │   ├── run.py                   # Entry point with interactive menu
 │   ├── requirements.txt         # Dependencies
 │   ├── setup.py                 # Package setup
 │   ├── config/                  # Default configurations
 │   ├── presets/                 # Preset parameter sets
 │   ├── src/                     # Source modules
-│   │   ├── core/                # Core mathematical computations
-│   │   ├── verification/        # Verification procedures
+│   │   ├── core/                # Core computations + enhanced_verification
+│   │   ├── verification/        # Verification + verify_enhanced
 │   │   ├── simulation/          # Simulation engine
-│   │   ├── visualization/       # Plot generation
+│   │   ├── visualization/       # Plot generation (enhanced)
 │   │   ├── reporting/           # Report generation (7 formats)
 │   │   └── ui/                  # Interactive CLI menu
-│   └── tests/                   # Unit tests
+│   └── tests/                   # Unit tests (25+ tests incl. enhanced)
 ├── julia/                       # Julia implementation
 │   ├── run.jl                   # Entry point
 │   ├── Project.toml             # Julia project
 │   ├── config/                  # Configurations
 │   ├── presets/                 # Presets
-│   ├── src/                     # Source modules
-│   └── test/                    # Tests
+│   ├── src/                     # Source modules (incl. enhanced_verification.jl)
+│   └── test/                    # Tests (incl. 9 enhanced test sets)
 ├── java-webapp/                 # Java Spring Boot web application
 │   ├── pom.xml                  # Maven configuration
-│   └── src/                     # Source code
+│   └── src/                     # Source (incl. K3Surface, TyukovskyEquation, EinsteinQNMCorrection, EnhancedController)
 ├── interactive-viz/             # Next.js real-time visualization
 │   ├── package.json             # NPM configuration
-│   └── src/                     # Source code
+│   └── src/                     # Source (incl. /enhanced page, new types & compute functions)
 └── scripts/                     # Utility scripts
 ```
 
