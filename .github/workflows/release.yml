@@ -1,0 +1,156 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Extract version
+        id: version
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build distributions
+        run: |
+          pip install build
+          python -m build python/ --sdist --wheel
+
+      - name: Check distributions
+        run: |
+          pip install twine
+          twine check python/dist/*
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: python/dist/
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install from wheel
+        run: |
+          pip install dist/*.whl
+
+      - name: Run verification
+        run: |
+          python -m choptuik_ac_bc.verify_all
+
+  sign:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Install sigstore
+        run: pip install sigstore
+
+      - name: Sign artifacts with sigstore
+        run: |
+          for artifact in dist/*; do
+            sigstore sign --bundle "${artifact}.sigstore" "${artifact}"
+          done
+
+      - name: Upload sigstore bundles
+        uses: actions/upload-artifact@v4
+        with:
+          name: sigstore-bundles
+          path: dist/*.sigstore
+
+  release:
+    needs: [build, test, sign]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            ## Release ${{ github.ref_name }}
+
+            ### Artifacts
+            - **sdist**: `choptuik_ac_bc-${{ needs.build.outputs.version }}.tar.gz`
+            - **wheel**: `choptuik_ac_bc-${{ needs.build.outputs.version }}-py3-none-any.whl`
+
+            ### Sigstore Verification
+            Verify authenticity of the release artifacts:
+            ```bash
+            pip install sigstore
+            sigstore verify github \
+              --certificate-identity "https://github.com/${{ github.repository }}/.github/workflows/release.yml@refs/tags/${{ github.ref_name }}" \
+              --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+              --bundle choptuik_ac_bc-${{ needs.build.outputs.version }}-py3-none-any.whl.sigstore \
+              choptuik_ac_bc-${{ needs.build.outputs.version }}-py3-none-any.whl
+            ```
+          files: |
+            release-artifacts/dist/*
+            release-artifacts/sigstore-bundles/*
+          draft: false
+          prerelease: false
+
+  deploy-docs:
+    needs: [build, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install docs dependencies
+        run: |
+          pip install -r docs-site/requirements.txt
+          pip install -e python/
+
+      - name: Configure git for mike
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Deploy versioned docs
+        working-directory: docs-site
+        run: |
+          mike deploy --push --update-aliases ${{ needs.build.outputs.version }} latest

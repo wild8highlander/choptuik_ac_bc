@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python-ci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.10', '3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -e python/[dev]
+
+      - name: Lint with ruff
+        run: ruff check python/
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+
+      - name: Type check with mypy
+        run: mypy python/src/
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+
+      - name: Test with pytest
+        run: pytest python/tests/ --cov=choptuik_ac_bc --cov-report=xml -v
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          fail_ci_if_error: false
+          verbose: true
+
+  consistency-check:
+    runs-on: ubuntu-latest
+    needs: python-ci
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Cross-implementation consistency
+        run: |
+          pip install -e python/
+          python -m choptuik_ac_bc.verify_all --consistency-check

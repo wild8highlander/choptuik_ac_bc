@@ -1,0 +1,49 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 2%
+    patch:
+      default:
+        target: 80%
+
+component_management:
+  individual_components:
+    - component_id: core
+      name: Core
+      paths:
+        - python/src/choptuik_ac_bc/choptyuk_formula.py
+        - python/src/choptuik_ac_bc/dirac_operator.py
+        - python/src/choptuik_ac_bc/klein_curve.py
+        - python/src/choptuik_ac_bc/spinor_phases.py
+        - python/src/choptuik_ac_bc/qnm.py
+        - python/src/choptuik_ac_bc/hypothesis.py
+        - python/src/choptuik_ac_bc/surfaces.py
+
+    - component_id: verification
+      name: Verification
+      paths:
+        - python/src/choptuik_ac_bc/enhanced_verification.py
+        - python/src/choptuik_ac_bc/verify_all.py
+        - python/src/choptuik_ac_bc/verify_enhanced.py
+
+    - component_id: simulation
+      name: Simulation
+      paths:
+        - python/src/choptuik_ac_bc/simulator.py
+
+    - component_id: visualization
+      name: Visualization
+      paths:
+        - python/src/choptuik_ac_bc/plots.py
+
+    - component_id: reporting
+      name: Reporting
+      paths:
+        - python/src/choptuik_ac_bc/report_writer.py
+
+comment:
+  layout: diff, files, components
+  behavior: default
+  require_changes: false

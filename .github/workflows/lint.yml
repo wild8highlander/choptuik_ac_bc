@@ -1,0 +1,39 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install tools
+        run: pip install ruff black mypy
+      - name: Ruff check
+        run: ruff check python/
+      - name: Black check
+        run: black --check python/
+      - name: Mypy check
+        run: mypy python/src/
+
+  docs-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install mkdocs
+        run: pip install -r docs-site/requirements.txt
+      - name: Validate mkdocs config
+        working-directory: docs-site
+        run: mkdocs build --strict

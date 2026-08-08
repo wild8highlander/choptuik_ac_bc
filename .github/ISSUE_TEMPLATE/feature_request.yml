@@ -1,0 +1,30 @@
+name: Feature Request
+description: Suggest a feature for choptuik_ac_bc
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: Is this feature related to a problem?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - Core (Klein/Dirac/Choptuik)
+        - Verification
+        - Simulation
+        - Visualization
+        - Reporting
+        - Documentation
+        - CI/CD
