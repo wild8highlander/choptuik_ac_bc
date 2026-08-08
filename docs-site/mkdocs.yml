@@ -106,8 +106,7 @@ markdown_extensions:
         - name: mermaid          # Mermaid diagram support
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-  - pymdownx.tabbed:            # Tabbed content
-      style: pills
+  - pymdownx.tabbed              # Tabbed content
   - pymdownx.tasklist:          # Task lists with checkboxes
       custom_checkbox: true
 
