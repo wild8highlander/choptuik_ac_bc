@@ -498,6 +498,7 @@ class TestQCDBridgeVerification:
         assert "mercury_paradox_resolution" in results
         assert "lattice_theta_dependence" in results
         assert "PQ_axion_with_residual" in results
+        assert "wave_function_bridge" in results
         assert "monte_carlo_uncertainty" in results
         assert "falsifiability_timeline" in results
         assert "verdict" in results
@@ -509,3 +510,72 @@ class TestQCDBridgeVerification:
         assert abs(b["a_C"] - (math.pi / 7) ** 5 / 22) < 1e-15
         assert abs(b["theta_Ch"] - 8.46e-11) < 1e-12
         assert abs(b["exponent"] - 2.5) < 1e-9
+
+    # ----- Stage 4: Wave-function bridge tests -----
+
+    def test_wave_function_bridge_axion_mass(self):
+        """m_a ~ 5.7 ueV at f_a = 1e12 GeV."""
+        from src.core.qcd_bridge_verification import WaveFunctionBridge
+        wfb = WaveFunctionBridge()
+        assert 5.0e-6 < wfb.axion_mass_eV < 7.0e-6
+
+    def test_wave_function_bridge_theta_Ch_much_larger_than_quantum(self):
+        """theta_Ch / sigma_theta ~ 1e16 (CLASSICAL tilt, not quantum)."""
+        from src.core.qcd_bridge_verification import WaveFunctionBridge
+        wfb = WaveFunctionBridge()
+        # theta_Ch is at least 10^10 times larger than the quantum fluctuation
+        assert wfb.ratio_theta_Ch_to_sigma > 1e10
+
+    def test_wave_function_bridge_classical_theta_eff_matches_theta_Ch(self):
+        """Classical theta_eff = arcsin(theta_Ch) ~ theta_Ch for small theta_Ch."""
+        from src.core.qcd_bridge_verification import WaveFunctionBridge
+        wfb = WaveFunctionBridge()
+        # arcsin(theta_Ch) should be very close to theta_Ch for theta_Ch ~ 1e-10
+        assert abs(wfb.classical_theta_eff - wfb.theta_Ch) / wfb.theta_Ch < 1e-10
+
+    def test_wave_function_bridge_T_osc_reasonable(self):
+        """T_osc should be in the electroweak range (1-1000 GeV)."""
+        from src.core.qcd_bridge_verification import WaveFunctionBridge
+        wfb = WaveFunctionBridge()
+        assert 1.0 < wfb.hubble_oscillation_temperature_GeV < 1000.0
+
+    def test_wave_function_bridge_instanton_action_dimensionless(self):
+        """S_inst = 8 exactly (analytic result for V = 1 - cos q)."""
+        from src.core.qcd_bridge_verification import WaveFunctionBridge
+        wfb = WaveFunctionBridge()
+        assert abs(wfb.instanton_action_dimensionless - 8.0) < 1e-10
+
+    def test_wave_function_bridge_instanton_action_physical_large(self):
+        """S_phys should be > 10^10 (exponentially suppressed tunneling)."""
+        from src.core.qcd_bridge_verification import WaveFunctionBridge
+        wfb = WaveFunctionBridge()
+        assert wfb.instanton_action_physical > 1e10
+
+    def test_wave_function_bridge_tunneling_splitting_tiny(self):
+        """Tunneling splitting < 10^-8 GeV (axion is classical)."""
+        from src.core.qcd_bridge_verification import WaveFunctionBridge
+        wfb = WaveFunctionBridge()
+        assert wfb.tunneling_splitting_GeV < 1e-8
+
+    def test_wave_function_bridge_summary_has_required_keys(self):
+        """Summary dictionary contains all required fields."""
+        from src.core.qcd_bridge_verification import WaveFunctionBridge
+        wfb = WaveFunctionBridge()
+        s = wfb.summary
+        required = [
+            "f_a_GeV", "axion_mass_eV", "theta_Ch",
+            "classical_theta_eff", "quantum_fluctuation_sigma_theta",
+            "ratio_theta_Ch_to_sigma", "hubble_T_osc_GeV",
+            "instanton_action_dimensionless", "instanton_action_physical",
+            "tunneling_splitting_GeV", "verdict",
+        ]
+        for k in required:
+            assert k in s, f"Missing key: {k}"
+
+    def test_wave_function_bridge_in_verify_all(self):
+        """verify_all() includes wave_function_bridge section."""
+        results = qcd_verify_all()
+        assert "wave_function_bridge" in results
+        wfb = results["wave_function_bridge"]
+        assert wfb["ratio_theta_Ch_to_sigma"] > 1e10
+        assert wfb["hubble_T_osc_GeV"] > 1.0

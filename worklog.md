@@ -201,3 +201,77 @@ Stage Summary:
   * docs/monograph/qcd_bridge/choptyuk_qcd_bridge.tex (MODIFIED, \input{abd_section})
   * docs/monograph/qcd_bridge/choptyuk_qcd_bridge.pdf (RECOMPILED, 28 pages)
   * docs/monograph/qcd_bridge/README.md (MODIFIED, stage 3 added)
+
+---
+Task ID: 9
+Agent: main
+Task: Stage 4 — Wave-function bridge: a_C as axion ground state (new theoretical tool)
+
+Work Log:
+- User asked for "other tools" to solve the strong CP puzzle, hypothesizing that
+  a_C might be the axion wrapped in a wave function (weak interaction, slowing
+  particles, shifting energy to small values).
+- Created scripts/qcd_bridge/axion_wavefunction_bridge.py (1034 lines):
+  * Numerov-method Schroedinger solver for the Choptyuk-augmented PQ potential
+    V(q) = 1 - cos(q + theta_bare) + theta_Ch * q (dimensionless units)
+  * Solves on a single cosine well with Dirichlet BCs at the barriers (N=8001)
+  * Ground state energy E_0 = 0.652 chi_t (harmonic 0.5, +30% anharmonic correction)
+  * Quantum width sigma_q = 0.888 (harmonic 0.707, +25%)
+  * WKB instanton splitting: S_inst = 8 (analytic), S_phys = 10^10.7
+    Delta E ~ 10^-8.5 GeV (exponentially suppressed)
+  * Quantum-fluctuation consistency check:
+    sigma_theta^qm = sqrt(chi_t / (2 f_a^4)) ~ 10^-26.4
+    theta_Ch / sigma_theta^qm ~ 2*10^16 LARGER
+    ==> theta_Ch is a CLASSICAL tilt, not a quantum fluctuation
+  * Hubble-friction relaxation (analytic frozen+oscillation, Wantz-Aliaga 2010):
+    T_osc = sqrt(m_a M_Pl / (1.66 sqrt(g_*))) = 68.6 GeV
+    theta(t) frozen for T > T_osc, oscillates for T < T_osc
+    amplitude decays as (T/T_osc)^(3/2); <theta> -> theta_Ch at late times
+  * Witten-Veneziano cross-check (chi_t_YM ~ (200 MeV)^4 vs chi_t_QCD ~ (76 MeV)^4)
+  * 4 figures: PQ potential + psi_0, relaxation history, instanton, theta hierarchy
+- Added WaveFunctionBridge dataclass to python/src/core/qcd_bridge_verification.py:
+  * 8 properties: axion_mass_eV, quantum_fluctuation_sigma_theta, ratio_theta_Ch_to_sigma,
+    classical_theta_eff, hubble_T_osc, instanton_action, tunneling_splitting, verdict
+  * Integrated into verify_all() with summary print
+- Added 9 new tests in TestQCDBridgeVerification (total 67 tests, all pass in 0.48s)
+- Added WaveFunctionBridge to __init__.py exports
+- Created docs/monograph/qcd_bridge/wavefunction_section.tex (210 lines, § IX):
+  * Subsection on Choptyuk-augmented PQ potential
+  * Quantization: axion as quantum oscillator
+  * Ground-state results (table + Figure 1)
+  * Consistency check: quantum fluctuations vs classical tilt
+  * Hubble-friction relaxation (Figure 2)
+  * WKB instanton splitting (Figure 3)
+  * Hierarchy of theta scales (Figure 4)
+  * Honest verdict: what the bridge does and does NOT prove
+- Updated choptyuk_qcd_bridge.tex to \input{wavefunction_section}
+- Added 5 new bibliography entries (BMW 2015, DFSZ 1981, Wantz-Aliaga 2010,
+  Hiramatsu 2012, Witten 1979)
+- Compiled monograph: 34 pages PDF (was 28), 1.28 MB
+- Copied 4 new figures into docs/monograph/qcd_bridge/figures/
+- Updated README.md with Stage 4 description and 67-test count
+
+Stage Summary:
+- KEY FINDING: theta_Ch ~ 10^-10 is a CLASSICAL tilt of the PQ potential,
+  NOT a quantum fluctuation.  Quantum zero-point fluctuations are ~10^16
+  times smaller (sigma_theta ~ 10^-26).
+- The physical "slowing" mechanism the user identified is Hubble-friction
+  relaxation: the damping term 3H dot theta in the cosmological axion
+  equation converts kinetic energy into cosmic expansion, relaxing theta
+  to the Choptyuk-shifted minimum theta_Ch.
+- The axion is a classical coherent field at f_a = 1e12 GeV (tunneling
+  splitting ~10^-8.5 GeV, exponentially suppressed vs E_0 ~ 10^-5 GeV).
+- Honest caveat: the wave-function analysis does NOT derive the 5/2
+  exponent; it only confirms consistency IF the Higgs-bridge tilt is accepted.
+- Files added/modified:
+  * scripts/qcd_bridge/axion_wavefunction_bridge.py (NEW, 1034 lines)
+  * scripts/qcd_bridge/figures_v3/ (NEW, 4 PNG figures)
+  * scripts/qcd_bridge/wavefunction_bridge_results.json (NEW)
+  * python/src/core/qcd_bridge_verification.py (MODIFIED, +WaveFunctionBridge, ~100 lines)
+  * python/src/core/__init__.py (MODIFIED, +WaveFunctionBridge export)
+  * python/tests/test_choptyuk.py (MODIFIED, +9 tests, total 67)
+  * docs/monograph/qcd_bridge/wavefunction_section.tex (NEW, 210 lines)
+  * docs/monograph/qcd_bridge/choptyuk_qcd_bridge.tex (MODIFIED, +\input{wavefunction_section}, +5 bib)
+  * docs/monograph/qcd_bridge/choptyuk_qcd_bridge.pdf (RECOMPILED, 34 pages)
+  * docs/monograph/qcd_bridge/figures/ (4 new PNG files added)
+  * docs/monograph/qcd_bridge/README.md (MODIFIED, +Stage 4 description)

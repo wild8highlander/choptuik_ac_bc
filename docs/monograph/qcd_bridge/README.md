@@ -9,21 +9,24 @@ angle θ whose experimental bound from the neutron EDM is |θ| < 10⁻¹⁰.
 
 | File | Purpose |
 |------|---------|
-| `choptyuk_qcd_bridge.pdf` | Final research monograph (28 pages, arXiv-style) |
+| `choptyuk_qcd_bridge.pdf` | Final research monograph (34 pages, arXiv-style) |
 | `choptyuk_qcd_bridge.tex` | LaTeX source |
 | `v2_section.tex` | § VII — Higgs-scale bridge derivation + phenomenology |
 | `abd_section.tex` | § VIII — Mercury paradox + lattice θ-dep + PQ residual |
+| `wavefunction_section.tex` | § IX — Wave-function bridge: a_C as axion ground state |
 | `qcd_bridge.bib` | Bibliography |
 | `qcd_bridge_results.json` | Numerical results of original E1–E5 experiments |
 | `qcd_observables_results.json` | v2 CP-odd observables + Monte Carlo |
+| `wavefunction_bridge_results.json` | v3 wave-function analysis results |
 | `figures/` | Publication-quality figures (PNG, 110–220 dpi) |
 
 The companion Jupyter notebook is at
 [`../../notebooks/qcd_bridge_experiments.ipynb`](../../notebooks/qcd_bridge_experiments.ipynb),
 and the reproducible Python scripts at
-[`../../scripts/qcd_bridge/qcd_bridge_experiments.py`](../../scripts/qcd_bridge/qcd_bridge_experiments.py)
+[`../../scripts/qcd_bridge/qcd_bridge_experiments.py`](../../scripts/qcd_bridge/qcd_bridge_experiments.py),
+[`../../scripts/qcd_bridge/qcd_observables_with_aC.py`](../../scripts/qcd_bridge/qcd_observables_with_aC.py),
 and
-[`../../scripts/qcd_bridge/qcd_observables_with_aC.py`](../../scripts/qcd_bridge/qcd_observables_with_aC.py).
+[`../../scripts/qcd_bridge/axion_wavefunction_bridge.py`](../../scripts/qcd_bridge/axion_wavefunction_bridge.py).
 
 The verification module for the bridge is at
 [`../../python/src/core/qcd_bridge_verification.py`](../../python/src/core/qcd_bridge_verification.py)
@@ -31,7 +34,7 @@ and is integrated into the test suite:
 ```bash
 cd python/
 python -m pytest tests/test_choptyuk.py -v
-# 58 passed in <1 second
+# 67 passed in <1 second
 ```
 
 ## Headline findings
@@ -110,12 +113,54 @@ Section VIII consolidates directions (A), (B), (D):
   2009, Pospelov-Ritz 2005, Dmitriev-Flambaum 2005, de Vries 2018,
   nEDM Collaboration 2024).
 
+### Stage 4 — Wave-function bridge: a_C as axion ground state (§ IX)
+
+Section IX explores a new theoretical tool: the **quantum-mechanical
+wave function** of the PQ axion field.  Instead of treating θ_Ch as a
+fitted constant, we quantize the PQ axion in the Choptyuk-augmented
+potential V_PQ^Ch(q) = 1 - cos(q + θ_bare) + θ_Ch · q (in dimensionless
+units q = a/f_a) and study the ground-state wave function ψ_0(q).
+
+- **Numerov solver** for the stationary Schrödinger equation on a
+  single cosine well (N=8001 grid points, Dirichlet BCs at the
+  potential barriers).  Ground state energy E_0 = 0.652 χ_t
+  (30% above the harmonic 0.5 — real anharmonic correction from
+  the cosine potential).  Quantum width σ_q = 0.888 (25% above
+  the harmonic 0.707).
+
+- **Central physical statement.** The Choptyuk residual θ_Ch ~ 10⁻¹⁰
+  is **2 × 10¹⁶ times larger** than the quantum zero-point fluctuation
+  σ_θ^qm ~ 10⁻²⁶·⁴.  Therefore θ_Ch is a **CLASSICAL tilt** of the
+  PQ potential, NOT a quantum fluctuation.  The Higgs bridge induces
+  a classical shift of the potential minimum, and the quantum ground
+  state follows the shift adiabatically.
+
+- **Hubble-friction relaxation** (Wantz-Aliaga 2010, Hiramatsu 2012):
+  the cosmological axion equation ÿ + 3H ẏ + m_a² sin y = 0 has
+  damping term 3H ẏ that converts the field's kinetic energy into
+  cosmic expansion.  This is the physical "slowing" mechanism the
+  user identified: above T_osc ≈ 69 GeV the field is frozen; below
+  T_osc it oscillates around the Choptyuk-shifted minimum with
+  amplitude decaying as (T/T_osc)^(3/2).  After many oscillations
+  ⟨θ⟩ → θ_Ch.
+
+- **WKB instanton splitting.** The tunneling action S_inst = 8
+  (analytic) gives S_phys = 10^10.7 and splitting ΔE ~ 10⁻⁸·⁵ GeV,
+  exponentially suppressed relative to E_0 ~ 10⁻⁵ GeV.  The axion
+  is therefore a classical coherent field at f_a = 10¹² GeV.
+
+- **What this section does NOT prove.** The 5/2 exponent is NOT
+  derived from the wave-function analysis (it remains a Stage 2
+  structural-motivation result).  The wave function cannot
+  independently determine θ_Ch; the tilt amplitude is an input
+  from the Higgs bridge.
+
 ### Verification module
 
-All numerical results in § VII–VIII are produced by
+All numerical results in § VII–IX are produced by
 `python/src/core/qcd_bridge_verification.py` (mirroring the pattern of
-`enhanced_verification.py`) and verified by 28 unit tests in the
-`TestQCDBridgeVerification` class.  The full test suite (58 tests)
+`enhanced_verification.py`) and verified by 37 unit tests in the
+`TestQCDBridgeVerification` class.  The full test suite (67 tests)
 passes in <1 second.
 
 ## Reproducing
@@ -134,10 +179,16 @@ python scripts/qcd_bridge/qcd_observables_with_aC.py
 # → writes figures to scripts/qcd_bridge/figures_v2/
 #   (also copied into docs/monograph/qcd_bridge/figures/)
 
+# Stage 4 — Wave-function bridge analysis
+python scripts/qcd_bridge/axion_wavefunction_bridge.py
+# → writes results to scripts/qcd_bridge/wavefunction_bridge_results.json
+# → writes figures to scripts/qcd_bridge/figures_v3/
+#   (also copied into docs/monograph/qcd_bridge/figures/)
+
 # Compile the monograph (requires tectonic)
 cd docs/monograph/qcd_bridge/
 tectonic choptyuk_qcd_bridge.tex
-# → produces choptyuk_qcd_bridge.pdf (24 pages)
+# → produces choptyuk_qcd_bridge.pdf (34 pages)
 ```
 
 ## Citation

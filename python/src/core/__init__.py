@@ -14,6 +14,7 @@ from .qcd_bridge_verification import (
     MercuryParadox,
     MonteCarloUncertainty,
     PQAxiomWithResidual,
+    WaveFunctionBridge,
 )
 from .qnm import QNMPredictor
 from .spinor_phases import SpinorPhases
@@ -39,6 +40,7 @@ __all__ = [
     "MercuryParadox",
     "MonteCarloUncertainty",
     "PQAxiomWithResidual",
+    "WaveFunctionBridge",
     "QNMPredictor",
     "SpinorPhases",
     "SurfaceSpec",

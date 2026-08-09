@@ -741,6 +741,121 @@ class FalsifiabilityTimeline:
 
 
 # ─────────────────────────────────────────────────────────────────────
+# 7.5  Wave-function bridge (Stage 4)
+# ─────────────────────────────────────────────────────────────────────
+
+@dataclass
+class WaveFunctionBridge:
+    """Stage 4: wave-function analysis of the Choptyuk-augmented PQ axion.
+
+    The Choptyuk residual theta_Ch ~ 1e-10 is shown to be a CLASSICAL
+    tilt of the PQ potential, not a quantum fluctuation.  Quantum
+    zero-point fluctuations are ~10^16 times smaller.  The axion
+    ground state follows the classical minimum adiabatically.
+
+    See scripts/qcd_bridge/axion_wavefunction_bridge.py for the full
+    numerical Schroedinger solver (Numerov method) and the cosmological
+    relaxation ODE.
+    """
+
+    bridge: ChoptyukBridge = field(default_factory=ChoptyukBridge)
+    f_a_GeV: float = 1.0e12
+
+    @property
+    def axion_mass_eV(self) -> float:
+        """m_a = sqrt(chi_t)/f_a  (Dine-Fischler-Srednicki-Zhitnitsky 1981)
+        = 5.7 ueV * (1e12 GeV / f_a)."""
+        chi_t_GeV4 = (0.0756) ** 4
+        m_a_GeV = math.sqrt(chi_t_GeV4) / self.f_a_GeV
+        return m_a_GeV * 1.0e9  # GeV -> eV
+
+    @property
+    def quantum_fluctuation_sigma_theta(self) -> float:
+        """Quantum zero-point fluctuation of theta = a/f_a in a Hubble
+        volume V_H = H^-3 at T_osc (where H = m_a):
+
+            <delta theta^2>_osc = m_a^2 / (2 f_a^2) = chi_t / (2 f_a^4)
+        """
+        chi_t_GeV4 = (0.0756) ** 4
+        return math.sqrt(chi_t_GeV4 / (2.0 * self.f_a_GeV ** 4))
+
+    @property
+    def theta_Ch(self) -> float:
+        return self.bridge.theta_Ch
+
+    @property
+    def ratio_theta_Ch_to_sigma(self) -> float:
+        """How much LARGER is theta_Ch than the quantum fluctuation?
+        Should be ~10^16 for f_a = 1e12 GeV."""
+        return self.theta_Ch / self.quantum_fluctuation_sigma_theta
+
+    @property
+    def classical_theta_eff(self) -> float:
+        """Classical minimum theta_eff = arcsin(theta_Ch) ~ theta_Ch."""
+        return -math.asin(-self.theta_Ch)
+
+    @property
+    def hubble_oscillation_temperature_GeV(self) -> float:
+        """T_osc = sqrt(m_a M_Pl / (1.66 sqrt(g_*))) -- where H(T_osc) ~ m_a.
+        Below T_osc the axion field begins coherent oscillations."""
+        m_a_GeV = self.axion_mass_eV * 1.0e-9
+        g_star = 80.0
+        M_Pl = 1.2209e19
+        return math.sqrt(m_a_GeV * M_Pl / (1.66 * math.sqrt(g_star)))
+
+    @property
+    def instanton_action_dimensionless(self) -> float:
+        """WKB instanton action between adjacent minima of V = 1 - cos(q):
+            S_inst = int_0^{2 pi} dq sqrt(2 (1 - cos q)) = 8
+        """
+        return 8.0
+
+    @property
+    def instanton_action_physical(self) -> float:
+        """S_phys = f_a * sqrt(chi_t) * S_inst (dimensionless)."""
+        chi_t_GeV4 = (0.0756) ** 4
+        return self.instanton_action_dimensionless * math.sqrt(chi_t_GeV4) * self.f_a_GeV
+
+    @property
+    def tunneling_splitting_GeV(self) -> float:
+        """Coleman formula: Delta E ~ (omega/pi) exp(-S_inst), in chi_t units.
+        Physical: Delta E_GeV = Delta E_chi_t * chi_t."""
+        chi_t_GeV4 = (0.0756) ** 4
+        delta_E_chi_t = (1.0 / math.pi) * math.exp(-self.instanton_action_dimensionless)
+        return delta_E_chi_t * chi_t_GeV4
+
+    @property
+    def verdict(self) -> str:
+        return (
+            f"Wave-function bridge: theta_Ch = {self.theta_Ch:.3e} is "
+            f"{self.ratio_theta_Ch_to_sigma:.0e}x LARGER than the quantum "
+            f"zero-point fluctuation sigma_theta = "
+            f"{self.quantum_fluctuation_sigma_theta:.3e}.  The Choptyuk "
+            f"residual is therefore a CLASSICAL tilt of the PQ potential, "
+            f"not a quantum fluctuation.  Hubble-friction relaxation "
+            f"(T_osc = {self.hubble_oscillation_temperature_GeV:.1f} GeV) "
+            f"drives <theta> -> theta_Ch at late times, providing the "
+            f"physical 'slowing' mechanism."
+        )
+
+    @property
+    def summary(self) -> Dict:
+        return {
+            "f_a_GeV": self.f_a_GeV,
+            "axion_mass_eV": self.axion_mass_eV,
+            "theta_Ch": self.theta_Ch,
+            "classical_theta_eff": self.classical_theta_eff,
+            "quantum_fluctuation_sigma_theta": self.quantum_fluctuation_sigma_theta,
+            "ratio_theta_Ch_to_sigma": self.ratio_theta_Ch_to_sigma,
+            "hubble_T_osc_GeV": self.hubble_oscillation_temperature_GeV,
+            "instanton_action_dimensionless": self.instanton_action_dimensionless,
+            "instanton_action_physical": self.instanton_action_physical,
+            "tunneling_splitting_GeV": self.tunneling_splitting_GeV,
+            "verdict": self.verdict,
+        }
+
+
+# ─────────────────────────────────────────────────────────────────────
 # 8.  Top-level verify_all() function
 # ─────────────────────────────────────────────────────────────────────
 
@@ -756,6 +871,7 @@ def verify_all() -> Dict:
     mercury = MercuryParadox(bridge=bridge)
     lattice = LatticeThetaDependence(bridge=bridge)
     pq = PQAxiomWithResidual(bridge=bridge)
+    wfb = WaveFunctionBridge(bridge=bridge)
     mc = MonteCarloUncertainty()
     timeline = FalsifiabilityTimeline()
 
@@ -778,6 +894,7 @@ def verify_all() -> Dict:
         "mercury_paradox_resolution": mercury.summary,
         "lattice_theta_dependence": lattice.consistency_check,
         "PQ_axion_with_residual": pq.summary,
+        "wave_function_bridge": wfb.summary,
         "monte_carlo_uncertainty": mc.run(),
         "falsifiability_timeline": timeline.experiments,
         "verdict": {
@@ -885,6 +1002,18 @@ if __name__ == "__main__":
     print(f"  Standard PQ theta_eff = {pq['standard_PQ_theta_eff']}")
     print(f"  Choptyuk PQ theta_eff = {pq['Choptyuk_PQ_theta_eff']:.3e}")
     print(f"  Rel. m_a shift    = {pq['relative_axion_mass_shift']:.3e}")
+
+    wfb = results["wave_function_bridge"]
+    print(f"\n--- Wave-function bridge (Stage 4) ---")
+    print(f"  m_a               = {wfb['axion_mass_eV']*1e6:.3f} ueV")
+    print(f"  theta_Ch          = {wfb['theta_Ch']:.3e}")
+    print(f"  sigma_theta(qm)   = {wfb['quantum_fluctuation_sigma_theta']:.3e}")
+    print(f"  theta_Ch / sigma  = {wfb['ratio_theta_Ch_to_sigma']:.2e}x LARGER")
+    print(f"  T_osc (H=m_a)     = {wfb['hubble_T_osc_GeV']:.1f} GeV")
+    print(f"  S_inst (dim-less) = {wfb['instanton_action_dimensionless']}")
+    print(f"  S_phys            = 10^{math.log10(wfb['instanton_action_physical']):.1f}")
+    print(f"  Delta E tunneling = {wfb['tunneling_splitting_GeV']:.2e} GeV")
+    print(f"  verdict           = {wfb['verdict']}")
 
     mc = results["monte_carlo_uncertainty"]
     print(f"\n--- Monte Carlo Uncertainty ({mc['n_samples']} samples) ---")
