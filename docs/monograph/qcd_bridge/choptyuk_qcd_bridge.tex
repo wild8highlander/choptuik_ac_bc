@@ -18,6 +18,7 @@
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{stmaryrd}
 \usepackage{physics}
+\usepackage{slashed}
 \usepackage{siunitx}
 \sisetup{detect-all}
 
@@ -85,6 +86,10 @@
 \providecommand{\nb}{}
 \renewcommand{\nb}{n_{\mathrm{EDM}}}
 \renewcommand{\tr}{\mathrm{tr}}
+\providecommand{\Gt}{}
+\renewcommand{\Gt}{\widetilde{G}}
+\providecommand{\Ft}{}
+\renewcommand{\Ft}{\widetilde{F}}
 
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
@@ -1042,12 +1047,18 @@ the two.
 \end{verdict}
 
 % =============================================================================
+\input{v2_section}
+% =============================================================================
+
+% =============================================================================
 \section*{Acknowledgements}
 % =============================================================================
 The author thanks the developers of the Choptyuk--Isaev monograph for
 making their code and derivations publicly available.  All numerical
-experiments were performed with the companion script
-\texttt{scripts/qcd\_bridge\_experiments.py} in the project repository.
+experiments were performed with the companion scripts
+\texttt{scripts/qcd\_bridge\_experiments.py} and
+\texttt{scripts/qcd\_bridge/qcd\_observables\_with\_aC.py}
+in the project repository.
 
 % =============================================================================
 \begin{thebibliography}{99}
@@ -1184,6 +1195,42 @@ In: The Eightfold Way, MSRI Pub.~35 (1998) 51--101.
 C.~Bourque and A.~Strohmaier.
 \textit{On the spectral gap of the Klein quartic.}
 arXiv preprint (2024); cited in \cite{isaev2024spinor} for $\lambda_1(\Delta)=3.838$.
+
+\bibitem{cohenkaplannelson1993}
+A.~G.~Cohen, D.~B.~Kaplan and A.~E.~Nelson.
+\textit{Progress in electroweak baryogenesis.}
+Ann.~Rev.~Nucl.~Part.~Sci. \textbf{43} (1993) 27--70.
+
+\bibitem{pospelovritz2005}
+M.~Pospelov and A.~Ritz.
+\textit{Electric dipole moments as probes of new physics.}
+Ann.~Phys. (NY) \textbf{318} (2005) 119--169.
+
+\bibitem{hoferichter2025nEDM}
+J.~de~Vries, G.~Dimitrievska, B.~Kubis, J.~Liang, et al.
+\textit{Neutron EDM and CP-violation: lattice-QCD input and CP-odd couplings.}
+in: \emph{Proc.~Lattice 2024}, PoS (LATTICE2024) 023 (2025).
+[See also Hoferichter et al., PRL 2025 for the latest $c_n$ extraction.]
+
+\bibitem{graner2016hg}
+B.~Graner, Y.~Chen, E.~G.~Lindahl and B.~R.~Heckel.
+\textit{Reduced limit on the permanent electric dipole moment of $^{199}$Hg.}
+Phys.~Rev.~Lett. \textbf{116} (2016) 161601.
+
+\bibitem{andreev2018acme}
+V.~Andreev et al.\ (ACME Collaboration).
+\textit{Improved limit on the electric dipole moment of the electron.}
+Nature \textbf{562} (2018) 355--360.
+
+\bibitem{abel2024nEDMfuture}
+C.~Abel et al.\ (nEDM Collaboration).
+\textit{The n2EDM experiment at PSI: status and projected sensitivity.}
+EPJ Web Conf. \textbf{282} (2023) 01001.
+
+\bibitem{filippone2023snsnedm}
+S.~Filippone et al.\ (SNS nEDM Collaboration).
+\textit{The SNS nEDM experiment.}
+in: \emph{Proc.~CP AVS 2023}; see also J.~Phys.~Conf.~Ser. \textbf{1643} (2020) 012003.
 
 \end{thebibliography}
 
