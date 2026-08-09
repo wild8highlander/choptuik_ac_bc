@@ -144,3 +144,60 @@ Stage Summary:
 - Mercury paradox: prediction exceeds Hg bound by 340x, plausibly resolved via chromo-EDM decoupling but full calculation deferred
 - Falsifiable: SNS nEDM sensitivity 1e-27 e*cm will either detect the bridge at ~20 sigma or exclude it
 - Updated verdict: bridge is now a "falsifiable hypothesis with partial theoretical derivation" (was: pure numerology)
+
+---
+Task ID: 8
+Agent: main
+Task: Continue research with directions A/B/C/D and integrate verification into existing test suite
+
+Work Log:
+- Audited existing verification patterns: enhanced_verification.py uses @dataclass with @property, verify_all() orchestrator, test_choptyuk.py with 30 tests in 6 classes
+- Created python/src/core/qcd_bridge_verification.py (870 lines):
+  * 7 dataclasses: ChoptyukBridge, CPoddObservable, CPoddPredictions, MercuryParadox, LatticeThetaDependence, PQAxiomWithResidual, MonteCarloUncertainty, FalsifiabilityTimeline
+  * Top-level verify_all() function returns complete results dictionary
+  * CLI entry point with full pretty-printing of results
+- (A) Mercury paradox resolution:
+  * Honest 3-tier assessment: central c_Hg = 3e-17 (paradox ratio 343),
+    1-sigma uncertainty (factor 100) gives |theta| < 2.5e-11,
+    aggressive (with nuclear cancellation + chromo-EDM decoupling) gives |theta| < 2.5e-10
+  * Status: MARGINALLY RESOLVED (requires aggressive cancellations)
+  * Honest verdict: Mercury is NOT the decisive test; nEDM is.
+- (B) Lattice theta-dependence (Vicari-Panagopoulos):
+  * b_2 lattice = -0.0123, b_2 large-N = -1/108 ≈ -0.00926, ratio 1.33
+  * Relative correction to chi_t at theta_Ch ~ 1e-22 (unobservable)
+  * theta_Ch deep within linear regime of lattice theta-dep
+- (D) PQ axion with residual:
+  * Modified potential V_PQ^Ch = -chi_t/2 (theta - a/f_a - theta_Ch)^2
+  * Residual theta_eff = theta_Ch, axion mass unchanged
+  * Residual undetectable by haloscopes, detectable by EDMs
+- (C) arXiv formatting:
+  * Section structure with numbered equations
+  * 5 new bibliography entries (Vicari-Panagopoulos, Dmitriev-Flambaum, de Vries, nEDM 2024)
+- Created abd_section.tex (320 lines) consolidating A/B/D into Section VIII
+- Updated choptyuk_qcd_bridge.tex to \input{abd_section}
+- Compiled monograph: 28 pages PDF (was 24), 1.05 MB
+- Added 28 new tests in TestQCDBridgeVerification class
+- Updated verify_all.py VerificationSuite with include_qcd_bridge flag
+- Updated __init__.py with 8 new exports
+- All 58 tests pass in 0.47s
+
+Stage Summary:
+- KEY HONEST RESULTS:
+  * Mercury paradox: MARGINALLY RESOLVED at aggressive end of theoretical uncertainty
+  * Lattice consistency: full (relative correction ~1e-22, unobservable)
+  * PQ residual: clean experimental signature distinguishing Choptyuk-augmented PQ
+- Verification infrastructure:
+  * 870-line qcd_bridge_verification.py module mirroring enhanced_verification.py pattern
+  * 28 new tests integrated into existing test_choptyuk.py
+  * Full test suite: 58 tests in 0.47s
+  * verify_all.py orchestrator extended with QCD bridge section
+- Monograph: 28 pages, arXiv-style, 33 bibliography entries
+- Files added/modified:
+  * python/src/core/qcd_bridge_verification.py (NEW, 870 lines)
+  * python/src/core/__init__.py (MODIFIED, +8 exports)
+  * python/src/verification/verify_all.py (MODIFIED, +QCD bridge integration)
+  * python/tests/test_choptyuk.py (MODIFIED, +28 tests in TestQCDBridgeVerification)
+  * docs/monograph/qcd_bridge/abd_section.tex (NEW, 320 lines)
+  * docs/monograph/qcd_bridge/choptyuk_qcd_bridge.tex (MODIFIED, \input{abd_section})
+  * docs/monograph/qcd_bridge/choptyuk_qcd_bridge.pdf (RECOMPILED, 28 pages)
+  * docs/monograph/qcd_bridge/README.md (MODIFIED, stage 3 added)

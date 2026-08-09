@@ -10,6 +10,7 @@ Orchestrates the complete verification chain:
   Part IV.1: 64 spinor structures
   Part IV.3: Bolza, Bring, Macbeath surfaces
   Part IV.4: LIGO/Virgo QNM predictions
+  Part V:   QCD bridge (Choptyuk Higgs-scale bridge + CP-odd observables)
 """
 
 from __future__ import annotations
@@ -21,6 +22,15 @@ from typing import Any
 from ..core.choptyuk_formula import ChoptyukFormula
 from ..core.dirac_operator import DiracOperator
 from ..core.klein_curve import KleinCurve
+from ..core.qcd_bridge_verification import (
+    ChoptyukBridge,
+    CPoddPredictions,
+    FalsifiabilityTimeline,
+    LatticeThetaDependence,
+    MercuryParadox,
+    PQAxiomWithResidual,
+    verify_all as qcd_verify_all,
+)
 from ..core.qnm import QNMPredictor
 from ..core.spinor_phases import SpinorPhases
 from ..core.surfaces import DEFAULT_SURFACES, SurfaceSpec
@@ -46,7 +56,8 @@ class VerificationSuite:
                  delta_obs: float = 3.443,
                  b_ch_obs: float = 0.377,
                  surfaces: list[SurfaceSpec] | None = None,
-                 qnm_events: list | None = None):
+                 qnm_events: list | None = None,
+                 include_qcd_bridge: bool = True):
         self.curve = KleinCurve(genus, K, psl_order, lambda_1)
         self.phases = SpinorPhases(delta_A, delta_B, delta_C)
         self.dirac = DiracOperator(lambda_1, self.curve.R)
@@ -57,18 +68,22 @@ class VerificationSuite:
         self.surfaces = surfaces or DEFAULT_SURFACES
         self.qnm = QNMPredictor(qnm_events)
         self.delta_obs = delta_obs
+        self.include_qcd_bridge = include_qcd_bridge
         self.results: dict[str, Any] = {}
         self.logs: list[str] = []
         self._start_time = 0.0
 
     def run(self, include_structures: bool = True,
             include_surfaces: bool = True,
-            include_qnm: bool = True) -> dict:
+            include_qnm: bool = True,
+            include_qcd_bridge: bool | None = None) -> dict:
         """Run the full verification suite.
 
         Returns:
             Complete results dictionary.
         """
+        if include_qcd_bridge is None:
+            include_qcd_bridge = self.include_qcd_bridge
         self._start_time = time.time()
         self._log("=" * 60)
         self._log("FULL VERIFICATION SUITE")
@@ -137,6 +152,28 @@ class VerificationSuite:
             self._log("\n--- LIGO/Virgo QNM ---")
             self.results["qnm_predictions"] = self.qnm.predict_all()
             self.results["qnm_detectability"] = self.qnm.detectability()
+
+        # QCD bridge
+        if include_qcd_bridge:
+            self._log("\n--- QCD Bridge (Choptyuk Higgs-scale bridge) ---")
+            self.results["qcd_bridge"] = qcd_verify_all()
+            bridge = ChoptyukBridge()
+            self._log(f"theta_Ch = {bridge.theta_Ch:.4e} "
+                      f"(ratio to 1e-10 bound: {bridge.ratio_to_nEDM_bound:.3f})")
+            preds = CPoddPredictions(bridge=bridge)
+            self._log(f"d_n^Ch = {preds.neutron_EDM_prediction:.4e} e*cm "
+                      f"(ratio to bound: {preds.neutron_EDM_ratio_to_bound:.3f})")
+            mp = MercuryParadox(bridge=bridge)
+            self._log(f"Mercury paradox status: {mp.paradox_status}")
+            lt = LatticeThetaDependence(bridge=bridge)
+            self._log(f"Lattice b_2 = {lt.b2_lattice} (large-N: "
+                      f"{lt.b2_large_N_prediction:.5f})")
+            pq = PQAxiomWithResidual(bridge=bridge)
+            self._log(f"PQ residual theta_eff = {pq.Choptyuk_PQ_theta_eff:.4e}")
+            tl = FalsifiabilityTimeline()
+            for e in tl.experiments:
+                self._log(f"  {e['name']}: sigma={e['sigma_if_detection']:.1f} "
+                          f"({e['first_results_expected']})")
 
         elapsed = time.time() - self._start_time
         self.results["timing"] = {"elapsed_seconds": round(elapsed, 4)}

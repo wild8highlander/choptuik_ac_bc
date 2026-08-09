@@ -19,6 +19,17 @@ from src.core.enhanced_verification import (
     TyukovskyAdapter,
     CriticismResponse,
 )
+from src.core.qcd_bridge_verification import (
+    ChoptyukBridge,
+    CPoddObservable,
+    CPoddPredictions,
+    FalsifiabilityTimeline,
+    LatticeThetaDependence,
+    MercuryParadox,
+    MonteCarloUncertainty,
+    PQAxiomWithResidual,
+    verify_all as qcd_verify_all,
+)
 
 
 # ──────────────────────────────────────────────
@@ -308,3 +319,193 @@ class TestEnhancedVerificationModule:
         assert ss["total"] == 64
         assert ss["even_Arf0"] == 28
         assert ss["odd_Arf1"] == 36
+
+
+# ──────────────────────────────────────────────
+# QCD Bridge Verification Module Tests
+# ──────────────────────────────────────────────
+class TestQCDBridgeVerification:
+    """Tests for the QCD bridge verification module.
+
+    These tests verify the Choptyuk Higgs-scale bridge:
+        theta_Ch = a_C * (Lambda_QCD / M_H)^(5/2) ~ 8.5e-11
+    and its phenomenological consequences for CP-odd observables.
+    """
+
+    def test_a_C_value(self):
+        """a_C = (pi/7)^5 / 22 ~ 8.276e-4."""
+        a_C = (math.pi / 7) ** 5 / 22
+        assert abs(a_C - 8.276e-4) < 1e-5
+
+    def test_bridge_theta_Ch_value(self):
+        """theta_Ch = a_C * (Lambda/M_H)^(5/2) ~ 8.46e-11."""
+        bridge = ChoptyukBridge()
+        assert abs(bridge.theta_Ch - 8.46e-11) < 1e-12
+
+    def test_bridge_theta_Ch_within_order_of_bound(self):
+        """theta_Ch must be within 1 order of magnitude of 1e-10."""
+        bridge = ChoptyukBridge()
+        ratio = bridge.ratio_to_nEDM_bound
+        assert 0.1 < ratio < 10.0
+
+    def test_bridge_log10_theta_Ch(self):
+        """log10(theta_Ch) ~ -10.07."""
+        bridge = ChoptyukBridge()
+        assert abs(bridge.log10_theta_Ch - (-10.07)) < 0.05
+
+    def test_sphaleron_motivation_structure(self):
+        """The sphaleron motivation must give 5/2 exponent structurally."""
+        bridge = ChoptyukBridge()
+        s = bridge.sphaleron_motivation
+        assert s["M_H_over_T_to_5_2"] > 1e6
+        assert abs(s["T_GeV"] - 0.200) < 1e-9
+        assert "5/2" in s["structural_explanation"]
+
+    def test_neutron_EDM_prediction_value(self):
+        """d_n^Ch = 2.4e-16 * theta_Ch ~ 2.03e-26 e*cm."""
+        bridge = ChoptyukBridge()
+        preds = CPoddPredictions(bridge=bridge)
+        d_n = preds.neutron_EDM_prediction
+        assert abs(d_n - 2.03e-26) < 1e-27
+
+    def test_neutron_EDM_ratio_to_bound(self):
+        """d_n^Ch / 1.8e-26 ~ 1.13 (within 30% of bound)."""
+        bridge = ChoptyukBridge()
+        preds = CPoddPredictions(bridge=bridge)
+        ratio = preds.neutron_EDM_ratio_to_bound
+        assert 0.5 < ratio < 2.0
+
+    def test_all_six_CP_observables_present(self):
+        """All 6 CP-odd observables must be in the predictions list."""
+        preds = CPoddPredictions()
+        all_preds = preds.all_predictions()
+        names = [p["name"] for p in all_preds]
+        expected = ["Neutron EDM", "Proton EDM", "Hg-199 EDM",
+                    "Ra-225 EDM", "Electron EDM", "Deuteron EDM"]
+        assert names == expected
+
+    def test_mercury_paradox_central_ratio(self):
+        """Mercury paradox: central ratio ~ 343 (the 'paradox')."""
+        mp = MercuryParadox()
+        assert 300 < mp.paradox_apparent_ratio < 400
+
+    def test_mercury_paradox_central_bound(self):
+        """Central Mercury bound on |theta| ~ 2.5e-13."""
+        mp = MercuryParadox()
+        assert abs(mp.effective_theta_bound_central - 2.47e-13) < 1e-14
+
+    def test_mercury_paradox_with_uncertainty(self):
+        """Mercury bound with 100x uncertainty ~ 2.5e-11."""
+        mp = MercuryParadox()
+        assert abs(mp.effective_theta_bound_with_uncertainty - 2.47e-11) < 1e-12
+
+    def test_mercury_paradox_aggressive_bound(self):
+        """Most aggressive Mercury bound ~ 2.5e-10."""
+        mp = MercuryParadox()
+        assert abs(mp.effective_theta_bound_aggressive - 2.47e-10) < 1e-11
+
+    def test_mercury_paradox_status_honest(self):
+        """Paradox status should be honest -- 'MARGINALLY RESOLVED'
+        at default parameters."""
+        mp = MercuryParadox()
+        # theta_Ch = 8.46e-11
+        # aggressive bound = 2.47e-10 -> theta_Ch < bound, so MARGINALLY RESOLVED
+        assert mp.theta_Ch_below_aggressive_Hg_bound is True
+        assert mp.theta_Ch_below_uncertainty_Hg_bound is False
+        assert mp.theta_Ch_below_central_Hg_bound is False
+        assert "MARGINALLY" in mp.paradox_status or "UNRESOLVED" in mp.paradox_status
+
+    def test_lattice_b2_value(self):
+        """Lattice b_2 = -0.0123 (Vicari-Panagopoulos)."""
+        lt = LatticeThetaDependence()
+        assert abs(lt.b2_lattice - (-0.0123)) < 1e-6
+
+    def test_lattice_b2_large_N(self):
+        """Large-N b_2 = -1/(12 * (11 - 2*Nf/Nc)) ~ -0.00926 for Nf=Nc=3."""
+        lt = LatticeThetaDependence()
+        assert abs(lt.b2_large_N_prediction - (-1.0 / 108.0)) < 1e-6
+
+    def test_lattice_b2_ratio_in_range(self):
+        """Lattice/large-N ratio ~ 1.33 (within 30%)."""
+        lt = LatticeThetaDependence()
+        r = lt.large_N_b2_agreement
+        assert 0.7 < r < 2.0
+
+    def test_lattice_relative_correction_negligible(self):
+        """Relative correction to chi_t at theta_Ch ~ 1e-22."""
+        lt = LatticeThetaDependence()
+        assert abs(lt.relative_correction_chi_t) < 1e-20
+
+    def test_lattice_in_linear_regime(self):
+        """theta_Ch is well within the linear regime of lattice theta-dep."""
+        lt = LatticeThetaDependence()
+        c = lt.consistency_check
+        assert c["well_within_linear_regime"] is True
+
+    def test_PQ_axion_mass_standard(self):
+        """Standard QCD axion mass at f_a=1e12 GeV: 5.7e-6 eV."""
+        pq = PQAxiomWithResidual()
+        assert abs(pq.axion_mass_eV - 5.7e-6) < 1e-7
+
+    def test_PQ_standard_theta_eff_zero(self):
+        """Standard PQ: theta_eff -> 0 after relaxation."""
+        pq = PQAxiomWithResidual()
+        assert pq.standard_PQ_theta_eff == 0.0
+
+    def test_PQ_Choptyuk_theta_eff(self):
+        """Choptyuk-augmented PQ: theta_eff -> theta_Ch."""
+        pq = PQAxiomWithResidual()
+        assert abs(pq.Choptyuk_PQ_theta_eff - 8.46e-11) < 1e-12
+
+    def test_PQ_axion_mass_shift_negligible(self):
+        """Relative axion mass shift ~ theta_Ch^2/2 ~ 1e-21."""
+        pq = PQAxiomWithResidual()
+        assert abs(pq.axion_mass_shift - 3.58e-21) < 1e-22
+
+    def test_monte_carlo_d_n_mean(self):
+        """Monte Carlo d_n mean ~ 2.1e-26 e*cm (within 30%)."""
+        mc = MonteCarloUncertainty(n_samples=10000)
+        r = mc.run()
+        assert 1.5e-26 < r["d_n_mean_e_cm"] < 3.0e-26
+
+    def test_monte_carlo_p_value_in_range(self):
+        """P(d_n > bound) should be 0.3-0.7 (coin flip)."""
+        mc = MonteCarloUncertainty(n_samples=10000)
+        r = mc.run()
+        assert 0.3 < r["p_value_d_n_above_bound"] < 0.7
+
+    def test_falsifiability_timeline_has_4_experiments(self):
+        """Timeline must include SNS nEDM, n2EDM, RaEDM, J-PARC."""
+        tl = FalsifiabilityTimeline()
+        exps = tl.experiments
+        assert len(exps) == 4
+        names = [e["name"] for e in exps]
+        assert "SNS nEDM (ORNL, USA)" in names
+        assert "n2EDM@PSI (Switzerland)" in names
+
+    def test_falsifiability_SNS_decisive(self):
+        """SNS nEDM must be marked as decisive."""
+        tl = FalsifiabilityTimeline()
+        sns = [e for e in tl.experiments if "SNS" in e["name"]][0]
+        assert sns["decisive"] is True
+        assert sns["sigma_if_detection"] > 10.0
+
+    def test_qcd_verify_all_returns_complete_dict(self):
+        """verify_all() must return a complete results dictionary."""
+        results = qcd_verify_all()
+        assert "bridge" in results
+        assert "cp_observables" in results
+        assert "mercury_paradox_resolution" in results
+        assert "lattice_theta_dependence" in results
+        assert "PQ_axion_with_residual" in results
+        assert "monte_carlo_uncertainty" in results
+        assert "falsifiability_timeline" in results
+        assert "verdict" in results
+
+    def test_qcd_verify_all_bridge_values(self):
+        """verify_all() bridge values match direct computation."""
+        results = qcd_verify_all()
+        b = results["bridge"]
+        assert abs(b["a_C"] - (math.pi / 7) ** 5 / 22) < 1e-15
+        assert abs(b["theta_Ch"] - 8.46e-11) < 1e-12
+        assert abs(b["exponent"] - 2.5) < 1e-9

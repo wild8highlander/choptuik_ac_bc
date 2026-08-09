@@ -5,6 +5,16 @@ from .dirac_operator import DiracOperator
 from .enhanced_verification import CriticismResponse, K3Surface, KleinQuartic, QNMPredictor as EnhancedQNMPredictor, TyukovskyAdapter
 from .hypothesis import HypothesisTester
 from .klein_curve import KleinCurve
+from .qcd_bridge_verification import (
+    ChoptyukBridge,
+    CPoddObservable,
+    CPoddPredictions,
+    FalsifiabilityTimeline,
+    LatticeThetaDependence,
+    MercuryParadox,
+    MonteCarloUncertainty,
+    PQAxiomWithResidual,
+)
 from .qnm import QNMPredictor
 from .spinor_phases import SpinorPhases
 from .surfaces import BOLZA, BRING, MACBEATH, SurfaceSpec
@@ -13,14 +23,22 @@ __all__ = [
     "BOLZA",
     "BRING",
     "MACBEATH",
+    "ChoptyukBridge",
     "ChoptyukFormula",
+    "CPoddObservable",
+    "CPoddPredictions",
     "CriticismResponse",
     "DiracOperator",
     "EnhancedQNMPredictor",
+    "FalsifiabilityTimeline",
     "HypothesisTester",
     "K3Surface",
     "KleinCurve",
     "KleinQuartic",
+    "LatticeThetaDependence",
+    "MercuryParadox",
+    "MonteCarloUncertainty",
+    "PQAxiomWithResidual",
     "QNMPredictor",
     "SpinorPhases",
     "SurfaceSpec",

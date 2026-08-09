@@ -9,9 +9,10 @@ angle θ whose experimental bound from the neutron EDM is |θ| < 10⁻¹⁰.
 
 | File | Purpose |
 |------|---------|
-| `choptyuk_qcd_bridge.pdf` | Final research monograph (24 pages, arXiv-style) |
+| `choptyuk_qcd_bridge.pdf` | Final research monograph (28 pages, arXiv-style) |
 | `choptyuk_qcd_bridge.tex` | LaTeX source |
 | `v2_section.tex` | § VII — Higgs-scale bridge derivation + phenomenology |
+| `abd_section.tex` | § VIII — Mercury paradox + lattice θ-dep + PQ residual |
 | `qcd_bridge.bib` | Bibliography |
 | `qcd_bridge_results.json` | Numerical results of original E1–E5 experiments |
 | `qcd_observables_results.json` | v2 CP-odd observables + Monte Carlo |
@@ -23,6 +24,15 @@ and the reproducible Python scripts at
 [`../../scripts/qcd_bridge/qcd_bridge_experiments.py`](../../scripts/qcd_bridge/qcd_bridge_experiments.py)
 and
 [`../../scripts/qcd_bridge/qcd_observables_with_aC.py`](../../scripts/qcd_bridge/qcd_observables_with_aC.py).
+
+The verification module for the bridge is at
+[`../../python/src/core/qcd_bridge_verification.py`](../../python/src/core/qcd_bridge_verification.py)
+and is integrated into the test suite:
+```bash
+cd python/
+python -m pytest tests/test_choptyuk.py -v
+# 58 passed in <1 second
+```
 
 ## Headline findings
 
@@ -41,7 +51,7 @@ The direct identification is **refuted** (7 orders of magnitude gap, CP-even vs
 CP-odd, discrete vs continuous). The bridge hypothesis remained numerological
 at this stage.
 
-### Stage 2 — Higgs-scale bridge: derivation and phenomenology (v2)
+### Stage 2 — Higgs-scale bridge: derivation and phenomenology (§ VII)
 
 The v2 extension (§ VII of the monograph) closes the gap on the third
 coincidence:
@@ -60,6 +70,53 @@ coincidence:
 - **Falsification timeline**: SNS nEDM (2026–2027) and n2EDM@PSI (2027–2028)
   will measure d_n at 10⁻²⁷ – 10⁻²⁸ e·cm sensitivity, decisively testing
   the bridge hypothesis.
+
+### Stage 3 — Mercury paradox, lattice θ-dep, and PQ residual (§ VIII)
+
+Section VIII consolidates directions (A), (B), (D):
+
+- **(A) Mercury paradox — honest verdict.** At the central theoretical
+  estimate `c_Hg = 3e-17 e*cm/theta`, the Mercury bound excludes
+  `theta_Ch` (paradox apparent ratio ~343).  However, the Schiff-moment
+  coefficient has a 1–2 order-of-magnitude theoretical uncertainty
+  (Pospelov-Ritz 2005).  With 100x uncertainty, the effective Mercury
+  bound relaxes to ~2.5e-11 (1-sigma); with additional nuclear
+  cancellations (de Vries 2018) and chromo-EDM decoupling, to ~2.5e-10
+  (aggressive).  At the aggressive end, the Choptyuk phase
+  `theta_Ch = 8.5e-11` is consistent.  Status: **MARGINALLY RESOLVED
+  (requires aggressive cancellations)**.  The decisive test remains
+  the nEDM experiment, not Mercury.
+
+- **(B) Lattice QCD θ-dependence (Vicari-Panagopoulos).** Lattice
+  values `b_2 = -0.0123`, `b_4 = 7.5e-4` agree with the large-N
+  prediction `b_2 = -1/108 ≈ -0.00926` at 30% level (ratio 1.33).  At
+  `theta_Ch ~ 1e-10`, the relative correction to `chi_t` is ~1e-22
+  (unobservable).  The Choptyuk phase is deep within the linear regime
+  of lattice θ-dependence.  Status: **fully consistent**.
+
+- **(D) PQ axion with residual θ_Ch.** Standard PQ potential
+  `V_PQ = -chi_t/2 * (theta - a/f_a)^2` is modified to
+  `V_PQ^Ch = -chi_t/2 * (theta - a/f_a - theta_Ch)^2`.  PQ relaxation
+  drives `<a>/f_a -> theta - theta_Ch`, leaving a residual
+  `theta_eff = theta_Ch ~ 1e-10`.  The axion mass is unchanged
+  (`m_a = 5.7 µeV at f_a = 1e12 GeV`); the relative mass shift is
+  ~1e-21 (unobservable).  The residual is undetectable by axion
+  haloscopes (which see `<a>` fluctuations) but detectable by EDM
+  experiments.  This provides a clean experimental signature
+  distinguishing Choptyuk-augmented PQ from standard PQ.
+
+- **(C) arXiv formatting.** Achieved by the section structure,
+  numbered equations, and bibliographic additions (Vicari-Panagopoulos
+  2009, Pospelov-Ritz 2005, Dmitriev-Flambaum 2005, de Vries 2018,
+  nEDM Collaboration 2024).
+
+### Verification module
+
+All numerical results in § VII–VIII are produced by
+`python/src/core/qcd_bridge_verification.py` (mirroring the pattern of
+`enhanced_verification.py`) and verified by 28 unit tests in the
+`TestQCDBridgeVerification` class.  The full test suite (58 tests)
+passes in <1 second.
 
 ## Reproducing
 
