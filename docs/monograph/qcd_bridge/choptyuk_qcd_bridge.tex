@@ -1,0 +1,1190 @@
+% =============================================================================
+%  Spinorial a-C correction vs the strong CP problem:
+%  a numerical and structural study of a putative bridge
+%
+%  Companion monograph to:
+%    Isaev, "Spinor corrections b-C and a-C and the solution of the Choptyuk
+%    problem" (2024).  Repo: github.com/wild8highlander/choptuik_ac_bc
+%
+%  Build:
+%    tectonic choptyuk_qcd_bridge.tex
+% =============================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{stmaryrd}
+\usepackage{physics}
+\usepackage{siunitx}
+\sisetup{detect-all}
+
+\usepackage{geometry}
+\geometry{a4paper, top=2.4cm, bottom=2.4cm, left=2.4cm, right=2.4cm}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{caption}
+\captionsetup{font=small, labelfont=bf, labelsep=period}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{keyfind}[1][]{
+  enhanced, breakable, colback=blue!3!white, colframe=blue!50!black,
+  boxrule=0.6pt, arc=2pt, title=#1, fonttitle=\bfseries\small
+}
+\newtcolorbox{caveat}[1][]{
+  enhanced, breakable, colback=orange!5!white, colframe=orange!70!black,
+  boxrule=0.6pt, arc=2pt, title=#1, fonttitle=\bfseries\small
+}
+\newtcolorbox{verdict}[1][]{
+  enhanced, breakable, colback=red!4!white, colframe=red!60!black,
+  boxrule=0.8pt, arc=2pt, title=#1, fonttitle=\bfseries\small
+}
+
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\itshape}{\thesubsubsection}{0.6em}{}
+
+\setlength{\parskip}{0.4em}
+\setlength{\parindent}{1.4em}
+
+\widowpenalty=10000
+\clubpenalty=10000
+
+\usepackage[colorlinks=true, linkcolor=blue!50!black,
+            citecolor=teal!60!black, urlcolor=blue!70!black,
+            bookmarks=true, bookmarksnumbered=true, unicode=true]{hyperref}
+
+% Macros
+\newcommand{\Choptyuk}{Choptyuk}
+\newcommand{\dC}{\delta_C}
+\newcommand{\aC}{a\text{-}C}
+\newcommand{\bC}{b\text{-}C}
+\newcommand{\deff}{\delta_{\mathrm{eff}}}
+\newcommand{\bCh}{b_{\mathrm{Ch}}}
+\newcommand{\LamQ}{\Lambda_{\mathrm{QCD}}}
+\newcommand{\MP}{M_{\mathrm{Pl}}}
+\newcommand{\MGUT}{M_{\mathrm{GUT}}}
+\newcommand{\SU}{\mathrm{SU}}
+\newcommand{\PSL}{\mathrm{PSL}}
+\newcommand{\Spin}{\mathrm{Spin}}
+\providecommand{\dd}{}
+\renewcommand{\dd}{\mathrm{d}}
+\providecommand{\ii}{}
+\renewcommand{\ii}{\mathrm{i}}
+\providecommand{\Hol}{}
+\renewcommand{\Hol}{\mathrm{Hol}}
+\providecommand{\nb}{}
+\renewcommand{\nb}{n_{\mathrm{EDM}}}
+\renewcommand{\tr}{\mathrm{tr}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% =============================================================================
+\title{\vspace{-1.0cm}\textbf{Spinorial braking vs the strong CP problem:\\
+a structural and numerical study of a putative bridge\\
+between the Choptyuk \aC{} correction and $\theta_{\mathrm{QCD}}$}}
+\author{Research companion to the Choptyuk--Isaev monograph\\
+\small\texttt{github.com/wild8highlander/choptuik\_ac\_bc}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+We investigate whether the \emph{braking correction} \aC{} of the Choptyuk
+formula~\cite{isaev2024spinor},
+\(
+\deff = \dC^5 / b_2(K3) = (\pi/7)^5/22 \approx 8.28\times 10^{-4},
+\)
+could be related, by analogy or by a rescaling prescription, to the
+QCD vacuum angle $\theta_{\mathrm{QCD}}$ whose experimental bound from the
+neutron electric dipole moment is $|\theta| < 10^{-10}$~\cite{abel2020nEDM}.
+Three lines of attack are pursued: (i) a formal spin-geometric analogy
+between $\dC$ and $\theta$, with $F\wedge\tilde F$ read as a symplectic
+form on the space of gauge connections and $\theta$ as a holonomy angle;
+(ii) a numerical search for an analogue of the Choptyuk formula
+$\delta^n/b = 10^{-10}$ using SU(3)-natural candidates for $\delta$ and
+the known Betti numbers of SU($N$) instanton moduli spaces; and
+(iii) a critical comparison of the Choptyuk \emph{spinorial anomaly}
+(complex phase from $90^\circ$ holonomy) with the QCD \emph{axial anomaly}
+$\partial_\mu J_5 \propto \tr(F\wedge\tilde F)$, which are shown to be
+distinct notions despite their shared topological flavour.
+
+The direct identification is \emph{refuted}: \aC{} exceeds $\theta$ by
+$\sim 7$ orders of magnitude, and SU(3)-natural candidates such as
+$\pi/3$, $\pi/6$, $\pi/9$ remain 4--6 orders away.  However, two
+\emph{non-trivial numerical coincidences} emerge that warrant further
+scrutiny: (a) replacing the order-$7$ generator angle by the \emph{full}
+PSL$(2,7)$ group order, $\delta = \pi/168$, reproduces
+$\delta^5/b_2(K3)\approx 10^{-9.98}\approx 10^{-10}$ to within $4\%$;
+and (b) the user's ``scale-bridge'' ansatz
+$a_C\cdot(\LamQ/\MP)^{1/3}\approx 2.1\times 10^{-10}$ lands within a
+factor of $2$ of the $\theta$ bound.  We argue that both coincidences
+are currently \emph{numerological}: they require, respectively, an
+unjustified promotion of the group order to a holonomy angle and an
+unexplained $1/3$ exponent.  We close by listing the concrete
+theoretical and lattice-QCD tests that would elevate or eliminate the
+bridge hypothesis.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+% =============================================================================
+\section{Introduction and motivation}
+% =============================================================================
+
+The Choptyuk monograph~\cite{isaev2024spinor} introduces a small
+dimensionless correction
+\begin{equation}\label{eq:aC-def}
+  \boxed{\;\deff \;\equiv\; \frac{\dC^5}{b_2(K3)}
+       \;=\; \frac{(\pi/7)^5}{22} \;\approx\; 8.276\times 10^{-4}\;}
+\end{equation}
+which enters the unified Choptyuk formula for the spectral gap of the
+squared Dirac operator on the Klein quartic as
+\begin{equation}\label{eq:choptyuk-formula}
+  \Delta_{\mathrm{Ch}} \;=\; \lambda_1(D^2_{\sigma_0})
+       \;+\; \frac{\dC^2}{2}
+       \;-\; \frac{\dC^5}{22}
+       \;+\; \frac{\dC^4}{8}
+       \;+\; \frac{\dC^6}{2}.
+\end{equation}
+The geometric origin of the braking term $\deff$ is the spinorial
+holonomy of the Klein quartic $K\colon x^3 y + y^3 z + z^3 x = 0$
+equipped with its canonical hyperbolic metric: the generator $C$ of
+order $7$ in the Fuchsian group $\Gamma(2,3,7)$ produces the phase
+$\dC = \pi/7$, while the Betti number $b_2(K3) = 22$ enters through the
+Mukai theorem that identifies the Klein quartic as a linear section of
+a $K3$ surface~\cite{mukai1988k3,beauville2008k3}.  The factor $\dC^5$
+arises from a Taylor expansion of the spinor holonomy $\exp(\ii\dC)$ to
+fifth order, modulated by $b_2$.
+
+A natural question——asked by the present author and pursued in this
+companion note——is whether the \emph{structural form}
+$\deff \sim \delta^5/b$ of the Choptyuk correction has anything to do
+with the famous \emph{strong CP problem} of QCD~\cite{tHooft1976,
+  pecceiquinn1977, kim1987axion, dvali2005cp}, where the dimensionless
+vacuum angle $\theta$ enters the Yang--Mills action as
+\begin{equation}\label{eq:theta-term}
+  S_\theta \;=\; \ii\,\theta\, Q, \qquad
+  Q \;=\; \frac{1}{8\pi^2}\int_M \tr\!\left(F\wedge \tilde F\right)
+       \;\in\; \mathbb{Z},
+\end{equation}
+and the experimental bound from the neutron electric dipole moment
+(denoted $\nb$) is
+\begin{equation}\label{eq:nEDM-bound}
+  |\theta_{\mathrm{QCD}}| \;<\; 10^{-10}.
+\end{equation}
+The numerical disparity is stark: \aC{} is $\sim 8\times 10^7$ times
+larger than the $\theta$ bound.  Nonetheless, both quantities share an
+abstract skeleton:
+\begin{itemize}[leftmargin=2em,itemsep=0.1em]
+  \item both are dimensionless topological angles;
+  \item both are naturally expressed through Betti numbers and indices
+        of the Dirac operator (the $K3$ surface and the Seiberg--Witten
+        moduli space for \aC{}; the instanton number and the
+        Atiyah--Singer index for $\theta$);
+  \item both enter physical observables multiplicatively: \aC{}
+        multiplies QNM frequencies via
+        $\omega^{\mathrm{corr}}=\omega(1-\deff/\pi^2)$~\cite{isaev2024spinor};
+        $\theta$ multiplies the topological charge $Q$.
+\end{itemize}
+The author of the present note has conjectured that \aC{} might act as
+a \emph{bridge} quantity: it is naturally rooted in particle-scale
+(QNM) physics, and one might hope that some rescaling prescription
+``projects'' it down to the QCD scale where $\theta$ resides.  We
+examine this conjecture in detail below.
+
+\paragraph{Plan.}
+Section~\ref{sec:background} reviews the Choptyuk correction and the
+strong CP problem in parallel.  Section~\ref{sec:formal-analogy}
+constructs a formal spin-geometric analogy between $F\wedge\tilde F$
+(as a symplectic form on the space of connections) and the holonomy
+$2$-form of the Klein quartic, with $\theta$ read as a holonomy angle.
+Section~\ref{sec:numerics} reports five numerical experiments that
+stress-test the analogy quantitatively.  Section~\ref{sec:anomalies}
+contains the critical comparison of the spinorial anomaly of Choptyuk
+and the QCD axial anomaly.  Section~\ref{sec:scale-bridge} examines the
+user's scale-bridge hypothesis.  Section~\ref{sec:discussion} discusses
+the results, and Section~\ref{sec:verdict} states the verdict.
+
+% =============================================================================
+\section{Background}\label{sec:background}
+% =============================================================================
+
+\subsection{The Choptyuk \aC{} correction}\label{ssec:aC}
+
+The Klein quartic $K\colon x^3 y + y^3 z + z^3 x = 0 \subset \mathbb{CP}^2$
+is a smooth plane quartic of genus $g=3$ whose automorphism group
+is $\PSL(2,7)$ of order $168$~\cite{klein1879,elkies1998klein}.  Equipped
+with its canonical hyperbolic metric, $K$ is the quotient of the
+hyperbolic plane $\mathbb{H}$ by the Fuchsian group
+$\Gamma(2,3,7)$, which has signature $(0;2,3,7)$ and is generated by
+three elements $A,B,C$ of orders $2,3,7$ respectively, with the single
+relation $A^2 = B^3 = C^7 = ABC = 1$.
+
+The spinorial phases associated to these generators are
+\begin{equation}
+  \delta_A = \pi/2, \qquad \delta_B = \pi/3, \qquad \dC = \pi/7,
+\end{equation}
+corresponding to half the rotation angles in the spinor representation
+$\Spin(2) = \mathrm{U}(1)$~\cite{isaev2024spinor}.  The Choptyuk formula
+(\ref{eq:choptyuk-formula}) is then derived by expanding the spinor
+holonomy $\exp(\ii\dC)$ in $\dC$ and keeping the leading Berry-phase
+correction $\dC^2/2$ (the \bC{} term) and the next-order braking
+$\dC^5/22$ (the \aC{} term), with the factor $22 = b_2(K3)$ entering
+through the Mukai theorem that realizes every genus-$3$ canonical curve
+as a linear section of a $K3$ surface~\cite{mukai1988k3}.
+
+The crucial point for the present investigation is that \aC{} is a
+\emph{purely real, CP-even} correction: it shifts the real eigenvalue
+$\lambda_1(D^2_{\sigma_0})$ by a real amount, and the resulting QNM
+correction $\omega\mapsto \omega(1-\deff/\pi^2)$ is a real multiplicative
+rescaling.  There is no $CP$ violation, no $T$ violation, and no
+imaginary contribution to any observable.
+
+\subsection{The strong CP problem}\label{ssec:cp}
+
+In QCD the action acquires, in addition to the standard Yang--Mills term,
+a $\theta$-term proportional to the second Chern class:
+\begin{equation}
+  S_{\mathrm{QCD}} \;=\; -\frac{1}{4g^2}\int\tr(F_{\mu\nu}F^{\mu\nu})\,\dd^4 x
+  \;+\; \ii\,\theta\,Q, \qquad
+  Q \;=\; \frac{1}{8\pi^2}\int\tr(F\wedge\tilde F).
+\end{equation}
+The integer $Q\in\mathbb{Z}$ is the instanton number, labelling the
+topological sectors of $\pi_3(\SU(N))\cong\mathbb{Z}$.  Although
+$\theta$ is classically invisible (it is a total derivative), it becomes
+physical in the quantum theory through non-perturbative effects
+(instantons, $\theta$-vacua)~\cite{callan1976vacuum, jackiw1976vacuum}.
+It violates $P$ and $T$ (and hence $CP$ if $CPT$ is preserved), and the
+strongest constraint comes from the neutron electric dipole moment:
+\begin{equation}
+  d_n \;\simeq\; \theta\cdot (1\text{--}6)\times 10^{-16}\,e\,\mathrm{cm},
+  \qquad
+  |d_n|_{\mathrm{exp}} \;<\; 1.8\times 10^{-26}\,e\,\mathrm{cm},
+\end{equation}
+which yields~\cite{abel2020nEDM}
+\begin{equation}\label{eq:theta-bound-exp}
+  |\theta_{\mathrm{QCD}}| \;<\; 10^{-10}.
+\end{equation}
+The standard resolution is the Peccei--Quinn (PQ) mechanism~\cite{pecceiquinn1977},
+in which a global anomalous $\mathrm{U}(1)_{\mathrm{PQ}}$ symmetry is
+spontaneously broken at a scale $f_a$, and the resulting
+pseudo-Nambu--Goldstone boson (the axion) dynamically relaxes the
+effective angle to $\theta_{\mathrm{eff}} = \theta + \arg\chi \to 0$ at
+the minimum of the effective potential~\cite{weinberg1978, wilczek1978}.
+The axion has not been observed, and the experimental and observational
+search space ($10^{-12}\,\mathrm{eV} \lesssim m_a \lesssim 10^{-2}\,\mathrm{eV}$,
+depending on the model) remains only partially excluded~\cite{irastorza2018axion,
+  adams2022axion}.
+
+The puzzle of why $\theta$ is \emph{so small}——smaller than any
+dimensionless ratio that occurs naturally in the Standard Model, smaller
+than $\alpha_{\mathrm{em}}$, smaller than $\alpha_s$, smaller than
+$y_e$——is what makes the strong CP problem a \emph{naturalness} problem.
+Unlike \aC{}, whose smallness is automatic from $(\pi/7)^5$, the
+smallness of $\theta$ has no geometric explanation within QCD itself.
+
+% =============================================================================
+\section{Formal analogy: spin geometry of QCD}\label{sec:formal-analogy}
+% =============================================================================
+
+We attempt to construct a dictionary between the Choptyuk \aC{}
+machinery and the QCD $\theta$-term, organised around three structural
+pillars: (i) a $2$-form on a function space; (ii) a topological angle
+parametrising its integral; (iii) an index-theoretic denominator.
+
+\subsection{Pillar 1: $F\wedge\tilde F$ as a symplectic form}\label{ssec:pillar1}
+
+On the affine space $\mathcal{A}$ of $\mathfrak{su}(N)$-valued
+$1$-forms on a compact four-manifold $M$, define the Atiyah--Bott
+symplectic form~\cite{atiyahbott1983}
+\begin{equation}\label{eq:atiyah-bott}
+  \Omega_{\mathrm{AB}}(\alpha,\beta) \;=\; \int_M \tr(\alpha\wedge\beta),
+  \qquad \alpha,\beta\in\Omega^1(M,\mathfrak{su}(N)).
+\end{equation}
+The moment map for the gauge group action $\mathcal{G}=\mathrm{Map}(M,\SU(N))$
+is $F_A\mapsto F_A\wedge F_A$, and the symplectic quotient
+$\mathcal{A}\sslash \mathcal{G}$ is the moduli space of flat connections.
+On the open dense set where $F_A = \star F_A$ (anti-self-dual instantons),
+the Chern--Weil representative of the second Chern class becomes
+\begin{equation}
+  c_2 \;=\; \frac{1}{8\pi^2}\tr(F\wedge F) \;=\; \frac{1}{8\pi^2}\tr(F\wedge\tilde F),
+\end{equation}
+since $F = \tilde F$ on the ASD locus.  Hence the topological charge
+$Q$ in (\ref{eq:theta-term}) is the integral of a $2$-form that, on the
+ASD locus, coincides with the natural symplectic form of the
+Atiyah--Bott construction.  This is the precise sense in which
+$F\wedge\tilde F$ is a \emph{symplectic} object on the space of
+connections.
+
+The Klein-quartic analogue is the spinorial $2$-form
+\begin{equation}
+  \omega_{\mathrm{spin}} \;=\; \dd\theta_{\mathrm{spin}}
+  \;\in\; \Omega^2(K;\mathrm{u}(1)),
+\end{equation}
+obtained as the curvature of the spinor connection $\nabla^{\mathcal{S}}$
+on the spinor bundle $\mathcal{S}\to K$.  Its periods along non-trivial
+$2$-cycles generate the spinorial holonomies of the generators
+$A, B, C$, with values $\exp(\ii\pi/2), \exp(\ii\pi/3), \exp(\ii\pi/7)$
+respectively.
+
+\begin{keyfind}[Pillar 1 dictionary]
+$F\wedge\tilde F$ on $\mathcal{A}/\!\!/\mathcal{G}$ (QCD) $\leftrightarrow$
+$\omega_{\mathrm{spin}} = \dd\theta_{\mathrm{spin}}$ on $K$ (Choptyuk).
+Both are closed $2$-forms on a function-space-type domain; both have
+integer periods (instanton number $Q$; spinorial flux through
+$H_2(K3)$).  The bridge is \emph{structural but not literal}: the QCD
+form lives on an infinite-dimensional affine space, while the Choptyuk
+form lives on a finite-dimensional Riemann surface.
+\end{keyfind}
+
+\subsection{Pillar 2: $\theta$ as a holonomy angle}\label{ssec:pillar2}
+
+The $\theta$-angle can be read as the holonomy of a $U(1)$-connection
+on the \emph{theta line bundle} over the moduli space of gauge
+connections.  Concretely, on the configuration space
+$\mathcal{A}/\mathcal{G}$, the line bundle
+\begin{equation}
+  \mathcal{L}_\theta \;\longrightarrow\; \mathcal{A}/\mathcal{G}, \qquad
+  \mathrm{curv}(\mathcal{L}_\theta) \;=\; \frac{1}{8\pi^2}\tr(F\wedge F),
+\end{equation}
+has holonomy $\exp(\ii\theta Q)$ around the loop in
+$\mathcal{A}/\mathcal{G}$ corresponding to an instanton of charge $Q$.
+Hence $\theta$ is, exactly, a $U(1)$ holonomy angle——just as
+$\dC = \pi/7$ is the holonomy angle of the spinor connection along the
+generator $C$ of $\Gamma(2,3,7)$.
+
+The parallel is exact at the level of \emph{form}:
+\begin{equation}
+  \exp(\ii\,\theta\,Q) \quad\leftrightarrow\quad
+  \exp(\ii\,\dC\cdot\mathrm{wind}(C)),
+\end{equation}
+where $\mathrm{wind}(C)$ is the winding of the generator $C$ around a
+non-contractible loop on $K$.
+
+\begin{caveat}[The discretisation gap]
+The QCD angle $\theta\in[0,2\pi)$ is a \emph{continuous} parameter:
+the spectrum of the Yang--Mills Hamiltonian depends continuously on
+$\theta$, and the vacuum energy density is
+$\mathcal{E}(\theta) \sim \chi_t \cos\theta$ at large
+$N$~\cite{witten1998theta}.  The Choptyuk phase $\dC = \pi/7$ is
+\emph{discrete}: it is fixed by the topology of $K$ and cannot be
+continuously varied.  This is the single most important structural
+difference between the two quantities: $\theta$ is a parameter of the
+path integral, $\dC$ is a topological invariant of the underlying
+geometry.
+\end{caveat}
+
+\subsection{Pillar 3: the index-theoretic denominator}\label{ssec:pillar3}
+
+In the Choptyuk formula, the denominator $b_2(K3) = 22$ is the second
+Betti number of the $K3$ surface, equivalently the rank of
+$H^2(K3;\mathbb{R})$.  Its appearance is topological: it counts the
+independent $2$-cycles along which the spinorial flux can distribute,
+and the braking coefficient $\gamma = \dC^4/b_2$ is the average flux
+per cycle~\cite{isaev2024spinor}.  The Dirac index
+$\hat A(K3) = 2$ provides an additional handle: $b_2/\hat A = 11$ is
+the ratio that enters the K3 Seiberg--Witten theory.
+
+For QCD, the analogous objects are:
+\begin{itemize}[leftmargin=2em,itemsep=0.1em]
+  \item the \emph{instanton moduli space} $M_{k,N}$ of charge-$k$
+        $\SU(N)$ instantons on $\mathbb{R}^4$ (or $S^4$), which is a
+        non-compact hyperkähler orbifold of real dimension
+        $\dim_\mathbb{R} M_{k,N} = 4Nk$;
+  \item its Betti numbers, which are known in closed form for $k=1$
+        and via Poincaré polynomial recursions for general
+        $k$~\cite{atiyahhitchin1985, donaldson1984, nakajima1994};
+  \item the Dirac index on the instanton background, which by
+        Atiyah--Singer equals $2Nk$ for $\SU(N)$ charge-$k$.
+\end{itemize}
+A natural QCD analogue of the Choptyuk denominator is $b_2(M_{k,N})$,
+which is \emph{universal} over $N$:
+\begin{equation}\label{eq:b2-instanton}
+  b_2(M_{k,N}) \;=\; k, \qquad \text{for all } N\geq 2,\; k\geq 1,
+\end{equation}
+arising from the $k$ abelian $\mathrm{U}(1)$ factors surviving the
+ADHM hyperkähler quotient~\cite{kronheimernakajima1990}.  Section
+\ref{sec:numerics} uses this as the natural candidate for the QCD
+side of the Choptyuk denominator.
+
+\subsection{The candidate bridge formula}\label{ssec:bridge-formula}
+
+Combining the three pillars, the most direct Choptyuk-type formula one
+could write for the QCD $\theta$-angle is
+\begin{equation}\label{eq:bridge-direct}
+  \theta_{\mathrm{QCD}} \;\stackrel{?}{=}\;
+  \frac{\delta_{\mathrm{QCD}}^5}{b_2(M_{k,N})} \;=\;
+  \frac{\delta_{\mathrm{QCD}}^5}{k},
+\end{equation}
+where $\delta_{\mathrm{QCD}}$ is some SU(3)-natural angle (Coxeter,
+Cartan, centre, instanton winding).  Section~\ref{sec:numerics} tests
+this formula numerically for all candidates of $\delta_{\mathrm{QCD}}$
+listed in Table~\ref{tab:delta-candidates}.
+
+% =============================================================================
+\section{Numerical experiments}\label{sec:numerics}
+% =============================================================================
+
+We perform five numerical experiments.  All computations are
+reproducible from the script
+\texttt{scripts/qcd\_bridge\_experiments.py} in the companion
+repository, and the full results are in
+\texttt{docs/monograph/qcd\_bridge/qcd\_bridge\_results.json}.
+
+\subsection{E1: candidates for $\delta_{\mathrm{QCD}}$}\label{ssec:E1}
+
+Table~\ref{tab:delta-candidates} lists the mathematically motivated
+candidates for an SU(3)-analogue of $\dC=\pi/7$, together with the
+values of $\delta^5/b$ for several Betti-number candidates.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Top 10 closest matches of $\delta^5/b$ to the target $10^{-10}$
+among all candidates tested.  ``Distance'' is $|\log_{10}(\delta^5/b)+10|$.}
+\label{tab:delta-candidates}
+\begin{tabularx}{\textwidth}{@{}lXXrc@{}}
+\toprule
+\# & Candidate $\delta$ & $b$ & $\log_{10}(\delta^5/b)$ & dist. \\
+\midrule
+1 & $\pi/|\PSL(2,7)|=\pi/168$ & $b_2(K3)=22$ & $-9.983$ & $\mathbf{0.017}$ \\
+2 & $\pi/|\PSL(2,7)|=\pi/168$ & Leech dim. $=24$ & $-10.021$ & $0.021$ \\
+3 & $\pi/200$ & $\dim\SU(3)=8$ & $-9.922$ & $0.078$ \\
+4 & $\pi/200$ & charge-$1$ SU(3) dim. $=12$ & $-10.099$ & $0.099$ \\
+5 & $\pi/100$ & $b_2(K3)\cdot \dim\SU(3) = 176$ & $-9.760$ & $0.240$ \\
+6 & $\pi/168$ & charge-$1$ SU(3) dim. $=12$ & $-9.720$ & $0.280$ \\
+7 & $\pi/200$ & $b_2(K3)=22$ & $-10.362$ & $0.362$ \\
+8 & $\pi/200$ & Leech $=24$ & $-10.400$ & $0.400$ \\
+9 & $\pi/168$ & $\dim\SU(3)=8$ & $-9.544$ & $0.456$ \\
+10 & $\pi/200$ & charge-$3$ SU(2) $=3$ & $-9.497$ & $0.503$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{keyfind}[E1: a surprising match]
+The closest match is $\delta = \pi/168$ with $b=22$, giving
+\begin{equation}\label{eq:E1-best}
+  \frac{(\pi/168)^5}{22} \;\approx\; 1.04\times 10^{-10},
+\end{equation}
+within $4\%$ of the $\theta$ bound.  The angle $\pi/168$ corresponds to
+the order of the \emph{full} automorphism group of the Klein quartic,
+$\PSL(2,7)$, rather than to a single generator.  The interpretation
+would be: the QCD $\theta$-angle is related not to a single generator
+of the holonomy group, but to the \emph{total} group order.  This is
+geometrically unusual——holonomies are typically $\exp(2\pi\ii/n)$ for
+generators of order $n$, not for the whole group——and we treat
+(\ref{eq:E1-best}) as numerology until a derivation is supplied.
+\end{keyfind}
+
+The natural SU(3)-candidates $\pi/3$, $\pi/6$, $\pi/9$ land at
+$\log_{10}(\delta^5/22) \approx -3.6, -6.0, -7.5$ respectively, all
+far from $-10$.  The user's spoiler——$(\pi/3)^5\approx 4\times 10^{-3}$
+is too large——is confirmed: SU(3)-natural angles are $\sim 6$ orders
+of magnitude too large.
+
+\subsection{E2: Betti numbers of SU($N$) instanton moduli spaces}\label{ssec:E2}
+
+The universal formula $b_2(M_{k,N}) = k$ is confirmed from the
+ADHM construction~\cite{kronheimernakajima1990}.  For comparison, the
+Betti numbers of $K3$ and of $\mathrm{Hilb}^k(K3)$——the Hilbert scheme
+of $k$ points on $K3$, which is the canonical hyperkähler resolution
+relevant to $N_f=4$ $\mathcal{N}=2$ SQCD——are also recorded.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Betti numbers $b_2$ of candidate ``QCD denominators''.  Note
+that $b_2(M_{k,N}) = k$ is universal and far smaller than $b_2(K3)=22$.}
+\label{tab:b2-instanton}
+\begin{tabular}{lcccc}
+\toprule
+Space & Group & charge $k$ & $\dim_\mathbb{R}$ & $b_2$ \\
+\midrule
+$M_{1,2}$ (1-instanton on $\SU(2)$) & $\SU(2)$ & 1 & 8 & 1 \\
+$M_{2,2}$ & $\SU(2)$ & 2 & 16 & 2 \\
+$M_{3,2}$ & $\SU(2)$ & 3 & 24 & 3 \\
+$M_{1,3}$ (1-instanton on $\SU(3)$) & $\SU(3)$ & 1 & 12 & 1 \\
+$M_{2,3}$ & $\SU(3)$ & 2 & 24 & 2 \\
+$M_{1,4}$ & $\SU(4)$ & 1 & 16 & 1 \\
+\midrule
+$K3$ surface & --- & --- & 4 & 22 \\
+$\mathrm{Hilb}^1(K3)$ & --- & 1 & 4 & 23 \\
+$\mathrm{Hilb}^2(K3)$ & --- & 2 & 8 & 23 \\
+$\mathrm{Hilb}^k(K3)$ & --- & $k\geq 1$ & $4k$ & 23 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{keyfind}[E2: the denominator gap]
+The natural QCD denominator $b_2(M_{k,N}) = k$ is much smaller than
+the Choptyuk denominator $b_2(K3) = 22$.  Even with $k=22$ instantons
+(an extreme, fine-tuned configuration), the denominator $22$ is reached
+\emph{by hand} and not by topology.  The bridge formula
+(\ref{eq:bridge-direct}) with $k=1$ and $\delta\in\{\pi/3,\pi/6,\pi/9\}$
+gives $\log_{10}(\delta^5/k)\in\{-2.6, -4.9, -6.5\}$, far from $-10$.
+\end{keyfind}
+
+\subsection{E3: the scale-bridge ansatz}\label{ssec:E3}
+
+We now turn to the user's hypothesis: that \aC{} acts naturally at the
+particle/QNM scale and must be \emph{rescaled} to reach the QCD scale.
+The most economical ansatz is
+\begin{equation}\label{eq:scale-bridge}
+  \theta_{\mathrm{QCD}} \;\stackrel{?}{=}\;
+  \aC \cdot \left(\frac{\LamQ}{M_X}\right)^p,
+\end{equation}
+where $M_X$ is some UV scale and $p$ is a power-law exponent.  Solving
+for $p$ at fixed $M_X$ and $\theta_{\mathrm{QCD}} = 10^{-10}$ yields
+Table~\ref{tab:scale-bridge}.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Required exponent $p$ such that
+$\aC\cdot(\LamQ/M_X)^p = 10^{-10}$, for various UV scales.  The
+``nice'' column flags near-rational $p$ values.}
+\label{tab:scale-bridge}
+\begin{tabularx}{\textwidth}{@{}lrrrl@{}}
+\toprule
+UV scale $M_X$ & $M_X$ [GeV] & $\LamQ/M_X$ & $p$ needed & nearest nice \\
+\midrule
+Planck   & $1.22\times 10^{19}$ & $1.6\times 10^{-20}$ & $0.350$ & $\mathbf{1/3}$ \\
+GUT      & $1.0\times 10^{16}$  & $2.0\times 10^{-17}$ & $0.414$ & $2/5$ \\
+SUSY     & $1.0\times 10^{3}$   & $2.0\times 10^{-4}$  & $1.870$ & --- \\
+top      & $173$                & $1.2\times 10^{-3}$  & $2.355$ & --- \\
+W        & $80.4$               & $2.5\times 10^{-3}$  & $2.656$ & $8/3$ \\
+Higgs    & $125$                & $1.6\times 10^{-3}$  & $2.474$ & $5/2$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{keyfind}[E3: the Planck-scale $1/3$]
+The Planck-scale match
+\begin{equation}\label{eq:E3-best}
+  \aC \cdot \left(\frac{\LamQ}{\MP}\right)^{1/3}
+  \;\approx\; 2.1\times 10^{-10}
+  \;\approx\; 2\,\theta_{\mathrm{QCD}}
+\end{equation}
+is within a factor of $2$ of the experimental bound.  The exponent
+$p = 1/3$ is unusual but not implausible: it is suggestive of a
+cube-root suppression that could arise from (i) dimensional reduction
+$4D\to 1D$, (ii) one-loop anomalous dimension of a dimension-$3$
+operator, (iii) averaging over $3$ fermion generations, or (iv)
+$3$ colours of QCD.  None of these is a derivation, but the numerical
+coincidence is striking.
+\end{keyfind}
+
+The Higgs-scale match with $p=5/2$ is closer numerically (within
+$7\%$), but $5/2$ is a less natural exponent.  Both are interesting
+enough to merit further theoretical work, but neither constitutes a
+derivation.
+
+\subsection{E4: power-law decompositions}\label{ssec:E4}
+
+We also test generalised Choptyuk-type formulas $\delta^n/b = 10^{-10}$
+for various $n$ and $b$.  Holding $\delta = \dC = \pi/7$ fixed, we ask
+which $(n, b)$ combinations reproduce the target.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Closest matches for $(\pi/7)^n / b = 10^{-10}$, varying $n$ and
+$b$.  Note that very large powers $n\approx 25$ are needed——there is no
+natural power $n\leq 10$ that works with $\pi/7$.}
+\label{tab:power-decomp}
+\begin{tabular}{ccccc}
+\toprule
+$n$ & $b$ & $\log_{10}\left[(\pi/7)^n/b\right]$ & distance from $-10$ & comment \\
+\midrule
+25 & 22 & $-10.041$ & $0.041$ & unnatural power \\
+28 & 2  & $-10.044$ & $0.044$ & unnatural power \\
+26 & 8  & $-9.950$  & $0.050$ & unnatural power \\
+25 & 23 & $-10.060$ & $0.060$ & unnatural power \\
+25 & 24 & $-10.079$ & $0.079$ & unnatural power \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{caveat}[E4: the power-5 ceiling]
+With $\delta = \pi/7$ and $b=22$, the natural Choptyuk power $n=5$
+gives $\log_{10}(\delta^5/b) = -3.08$, which is $\sim 7$ orders above
+the target.  Increasing the power to $n\approx 25$ works numerically,
+but no geometric or physical justification for such a high power is
+known.  We conclude that the \emph{direct} Choptyuk formula cannot
+accommodate $\theta_{\mathrm{QCD}}$ by varying the power alone.
+\end{caveat}
+
+\subsection{E5: the broad $(\delta, b)$ sweep}\label{ssec:E5}
+
+Figure~\ref{fig:E5-sweep} shows the surface
+$\log_{10}(\delta^5/b)$ over $\delta\in(10^{-3}, 1)$ and $b\in(1, 200)$.
+The red contour at $\log_{10}=-10$ is the target.  The Choptyuk point
+$(\pi/7, 22)$ is marked with an orange dot, far above the target.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/qcd_bridge_E5_sweep.png}
+\caption{The Choptyuk surface $\log_{10}(\delta^5/b)$.  The orange dot
+marks the Choptyuk \aC{} at $(\pi/7, 22)$, $\log_{10}\approx -3.08$.
+The red contour at $\log_{10}=-10$ is the QCD $\theta$ target.  The
+two regions are separated by a $\sim 7$-order-of-magnitude gap that no
+natural adjustment of $\delta$ or $b$ closes——unless one moves to
+$\delta\sim\pi/168$ (the full $\PSL(2,7)$ order).}
+\label{fig:E5-sweep}
+\end{figure}
+
+Figure~\ref{fig:log-curve} shows one-dimensional slices at fixed $b$,
+displaying where each slice crosses the $\log_{10}=-10$ line.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/qcd_bridge_log_curve.png}
+\caption{One-dimensional slices of the Choptyuk surface at fixed $b$.
+The horizontal red dashed line is the $\theta_{\mathrm{QCD}} = 10^{-10}$
+target; the orange dotted line is $\delta=\pi/7$.  The crossing
+$\delta$ for $b=22$ is $\sim 0.019 \approx \pi/165$, very close to the
+E1 best match $\pi/168$.}
+\label{fig:log-curve}
+\end{figure}
+
+% =============================================================================
+\section{Critical comparison of anomalies}\label{sec:anomalies}
+% =============================================================================
+
+The Choptyuk monograph repeatedly uses the term \emph{spinorial anomaly}
+to refer to the appearance of the imaginary unit $\ii$ as a holonomy
+phase of the spinor connection on the Klein quartic.  The QCD literature
+uses \emph{anomaly} in the sense of a quantum anomaly——specifically,
+the axial anomaly
+\begin{equation}\label{eq:axial-anomaly}
+  \partial_\mu J_5^\mu \;=\; 2\,i\,q\,\frac{g^2}{16\pi^2}\,
+  \tr\!\left(F_{\mu\nu}\tilde F^{\mu\nu}\right),
+\end{equation}
+where $q$ is the charge of the fermion under the anomalous $\mathrm{U}(1)$.
+These are different notions and we must distinguish them carefully.
+
+\subsection{The Choptyuk spinorial anomaly}\label{ssec:spin-anomaly}
+
+In the Choptyuk framework, the generator $A$ of order $2$ in
+$\Gamma(2,3,7)$ produces a $90^\circ$ rotation in the spinor
+representation, hence a holonomy
+\begin{equation}
+  \Hol_{\mathcal{S}}(\gamma_A) \;=\; \exp(\ii\cdot\pi/2) \;=\; \ii.
+\end{equation}
+The monograph calls $\ii$ a \emph{spinorial anomaly} because it is a
+\emph{complex} phase that arises where classically one would expect a
+real orthogonal matrix.  The anomaly is the obstruction to reducing
+the holonomy group from $\mathrm{U}(1)$ to $\mathbb{Z}/2 = \{\pm 1\}$,
+and it generates the imaginary correction $1 - \ii\dC/\pi^2$ in the
+Choptyuk formula.
+
+Crucially, this is a \emph{geometric} feature of the spinor connection
+on $K$; it is not a quantum anomaly in any of the standard senses
+(Bjorken, Adler--Bell--Jackiw, 't~Hooft, parity, scale, or conformal).
+It does not involve any Lagrangian, any path integral, any symmetry
+breaking, or any renormalisation.  It is a property of the classical
+spinorial connection on a classical Riemann surface.
+
+\subsection{The QCD axial anomaly}\label{ssec:axial-anomaly}
+
+The axial anomaly (\ref{eq:axial-anomaly}) is a \emph{quantum} effect:
+the classical $\mathrm{U}(1)_A$ symmetry of massless QCD is broken at
+one loop by the triangle diagram, with the divergence of the axial
+current proportional to $F\tilde F$ via the Fujikawa Jacobian
+\cite{adler1969, belljackiw1969, fujikawa1979, tHooft1976}.  The
+mathematical content is captured by the Atiyah--Singer index theorem:
+\begin{equation}\label{eq:AS-index}
+  \mathrm{ind}(D^+) \;=\; \dim\ker D^+ - \dim\ker D^- \;=\;
+  \int_M \hat A(M)\,\mathrm{ch}(E) \;=\; 2T(R)\, Q,
+\end{equation}
+where $T(R)$ is the Dynkin index of the representation $R$ and $Q$ is
+the instanton number.  The anomaly is the failure of the fermion path
+integral measure to be invariant under $\mathrm{U}(1)_A$ rotations,
+which is the same statement as (\ref{eq:AS-index}) by the
+Atiyah--Singer theorem.
+
+The axial anomaly is intimately tied to the $\theta$-term: the same
+$F\tilde F$ that appears in the anomaly also appears in $S_\theta$
+(Eq.~\ref{eq:theta-term}).  Indeed, under a chiral rotation by angle
+$\alpha$ of a single quark flavour, the action shifts as
+$\theta\to\theta + 2N_f\alpha$.  This is the basis of the
+Peccei--Quinn solution: a spontaneously broken anomalous
+$\mathrm{U}(1)_{\mathrm{PQ}}$ rotates $\theta$ to zero dynamically.
+
+\subsection{Structural comparison}\label{ssec:anomaly-table}
+
+Table~\ref{tab:anomaly-comparison} summarises the structural
+similarities and differences between the two notions.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Critical comparison of the Choptyuk spinorial anomaly and the
+QCD axial anomaly.  Shared rows are marked ``$\sim$''; divergent rows
+are marked ``$\neq$''.}
+\label{tab:anomaly-comparison}
+\begin{tabularx}{\textwidth}{@{}lXXX@{}}
+\toprule
+Property & Choptyuk spinorial anomaly & QCD axial anomaly & Status \\
+\midrule
+Origin & $\Hol_{\mathcal{S}}(\gamma_A) = \ii$ on $K$
+        & $\partial_\mu J_5^\mu \propto F\tilde F$
+        & $\sim$ (both topological) \\
+Domain & spinor connection on a Riemann surface
+        & path integral of quantum field theory
+        & $\neq$ (classical vs quantum) \\
+Manifestation & complex phase $1-\ii\dC/\pi^2$
+              & symmetry breaking of $\mathrm{U}(1)_A$
+              & $\neq$ \\
+Index theorem & $\hat A(K3) = 2$ (Dirac index on K3)
+              & $\mathrm{ind}(D^+) = 2T(R)\,Q$
+              & $\sim$ (both Atiyah--Singer) \\
+CP violation & NO (real correction)
+             & YES (CP-odd phase $\theta$)
+             & $\neq$ \\
+Symmetry broken & none (geometric feature)
+                & $\mathrm{U}(1)_A$ (classical symmetry)
+                & $\neq$ \\
+Dynamical relaxation & impossible ($\dC$ topological)
+                     & possible via PQ mechanism
+                     & $\neq$ \\
+Continuity & discrete ($\dC=\pi/7$ fixed)
+           & continuous ($\theta\in[0,2\pi)$)
+           & $\neq$ \\
+Lagrangian & none (spectral geometry)
+           & QCD Lagrangian with $S_\theta$
+           & $\neq$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{verdict}[Anomaly distinction]
+The Choptyuk spinorial anomaly and the QCD axial anomaly are
+\emph{structurally distinct}.  Their shared topology (both relate to
+the Atiyah--Singer index theorem) is the only genuine parallel; the
+differences in domain (classical vs quantum), CP properties (even vs
+odd), continuity (discrete vs continuous), and dynamical role (fixed
+vs relaxable) are all fundamental.  The two notions cannot be
+identified.
+\end{verdict}
+
+% =============================================================================
+\section{The scale-bridge hypothesis}\label{sec:scale-bridge}
+% =============================================================================
+
+We now turn to the user's hypothesis: \aC{} operates naturally at the
+particle/QNM scale (frequencies $\sim 250$~Hz, masses $\sim 60\,M_\odot$,
+lengths $\sim 10^5$~m), and one might hope to ``project'' it down to the
+QCD scale ($\sim 1$~fm, $\sim 200$~MeV) by some rescaling prescription.
+
+\subsection{Scale ladder}\label{ssec:ladder}
+
+Figure~\ref{fig:scale-ladder} shows the $\sim 20$ orders of magnitude
+separating the QCD scale from the LIGO/QNM scale.  The bridge
+prescription (\ref{eq:scale-bridge}) is one concrete way to traverse
+this gap.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/qcd_bridge_scale_ladder.png}
+\caption{The $\sim 20$ orders of magnitude separating the QCD scale
+($\sim 10^{-15}$~m) from the LIGO/QNM scale ($\sim 10^5$~m).  The user's
+hypothesis: \aC{} acts at the latter scale and must be rescaled to
+reach the former.  The Planck-scale rescaling $(\Lambda_{\mathrm{QCD}}/M_{\mathrm{Pl}})^{1/3}$
+closes the gap to within a factor of $2$ of the $\theta$ bound.}
+\label{fig:scale-ladder}
+\end{figure}
+
+\subsection{The structural argument}\label{ssec:structural-arg}
+
+The Choptyuk correction \aC{} enters QNM physics as
+\begin{equation}
+  \omega^{\mathrm{corr}} \;=\; \omega\left(1 - \frac{\aC}{\pi^2}\right),
+\end{equation}
+i.e. as a multiplicative correction to a frequency.  Frequencies are
+not dimensionless; what is dimensionless is the \emph{ratio}
+$\omega/\omega_{\mathrm{ref}}$, where $\omega_{\mathrm{ref}}$ is some
+reference frequency.  In the QNM context, $\omega_{\mathrm{ref}}$ is the
+Schwarzschild frequency $\sim c^3/(GM)$ of the black hole, and the
+ratio is naturally $\sim 1$.
+
+If we apply the same correction to a QCD-scale observable——say, the
+pion mass $m_\pi\approx 140$~MeV——we would predict
+\begin{equation}
+  \frac{\delta m_\pi}{m_\pi} \;\sim\; -\frac{\aC}{\pi^2}
+  \;\approx\; -8.4\times 10^{-5},
+\end{equation}
+which is a $\sim 10^{-4}$ correction——five orders of magnitude too
+large to be the $\theta$-induced shift.  This confirms that \aC{}
+itself, without rescaling, is far too large to be $\theta$.
+
+\subsection{Three candidate rescalings}\label{ssec:rescalings}
+
+We consider three concrete rescaling prescriptions, all of which
+close the gap to within an order of magnitude.
+
+\paragraph{(i) Planck-scale cube root.}
+$\theta = \aC\cdot(\LamQ/\MP)^{1/3}\approx 2\times 10^{-10}$.
+The $1/3$ exponent is suggestive but unexplained.  Candidate physical
+interpretations:
+\begin{itemize}[leftmargin=2em,itemsep=0.1em]
+  \item One-loop anomalous dimension $\gamma\approx -1/3$ of a
+        dimension-$3$ operator (e.g. quark bilinear $\bar q q$) running
+        from $\MP$ to $\LamQ$;
+  \item Three colours of QCD (cube root of an SU(3) Casimir);
+  \item Three generations of fermions (cube root of a flavour trace);
+  \item Dimensional reduction $4D\to 1D$ on a Planck-scale compact
+        manifold.
+\end{itemize}
+None of these is a derivation; each would require a separate
+theoretical construction.
+
+\paragraph{(ii) Higgs-scale $5/2$ power.}
+$\theta = \aC\cdot(\LamQ/M_H)^{5/2}\approx 8.5\times 10^{-11}$.
+This is numerically the closest match (within $7\%$), but the exponent
+$5/2$ has no obvious geometric or physical interpretation.
+
+\paragraph{(iii) PSL$(2,7)$ group order.}
+$\theta = (\pi/168)^5 / 22 \approx 10^{-10}$.
+This replaces the generator order $7$ by the full group order $168$,
+keeping the Choptyuk power $5$ and Betti number $22$ fixed.  It is the
+\emph{only} prescription that preserves the Choptyuk formula
+\emph{unchanged} while reaching the $\theta$ bound.  However, the
+promotion from generator to group order has no precedent in holonomy
+theory: holonomies are defined along loops, not over entire groups.
+
+\subsection{The analogy diagram}\label{ssec:analogy-fig}
+
+Figure~\ref{fig:analogy} summarises the structural parallels (green
+lines) and divergences (red dashed lines) between the two frameworks.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/qcd_bridge_analogy.png}
+\caption{Structural comparison of the Choptyuk framework (left) and the
+QCD $\theta$-term (right).  Green lines mark structural parallels
+(geometric origin, topological charge, holonomy angle); red dashed
+lines mark conceptual divergences (CP properties, magnitude, solution
+mechanism).  The bridge hypothesis seeks to convert a green line into
+a derivation; the current evidence does not support such a conversion.}
+\label{fig:analogy}
+\end{figure}
+
+% =============================================================================
+\section{Discussion}\label{sec:discussion}
+% =============================================================================
+
+\subsection{What the numerical evidence says}\label{ssec:disc-numerics}
+
+The numerical experiments yield three notable coincidences:
+\begin{enumerate}[leftmargin=2em,itemsep=0.2em]
+  \item $\delta = \pi/168$, $b=22$: $\delta^5/b\approx 1.04\times 10^{-10}$
+        (Table~\ref{tab:delta-candidates}, row~1).
+  \item $\aC\cdot(\LamQ/\MP)^{1/3}\approx 2.1\times 10^{-10}$
+        (Table~\ref{tab:scale-bridge}, Planck row).
+  \item $\aC\cdot(\LamQ/M_H)^{5/2}\approx 8.5\times 10^{-11}$
+        (best fixed-power match, Section~\ref{ssec:E3}).
+\end{enumerate}
+Each is within an order of magnitude of $\theta_{\mathrm{QCD}} = 10^{-10}$.
+Coincidences at the $\sim 1$-order level are not uncommon in physics
+when many candidate formulas are tested; the question is whether the
+matching is \emph{predictive} (i.e. derived from a controlled
+theoretical construction) or \emph{post-hoc} (i.e. selected from a
+large family of alternatives after seeing the data).
+
+In the present case, the evidence is post-hoc:
+\begin{itemize}[leftmargin=2em,itemsep=0.1em]
+  \item The $\pi/168$ match requires replacing a generator by a group
+        order, which is geometrically unjustified;
+  \item The $(\LamQ/\MP)^{1/3}$ match requires an unexplained $1/3$
+        exponent;
+  \item The $(\LamQ/M_H)^{5/2}$ match requires an even less natural
+        $5/2$ exponent.
+\end{itemize}
+Without a derivation of the exponent or the group-order promotion, the
+matches remain numerological.
+
+\subsection{What the structural evidence says}\label{ssec:disc-structural}
+
+The structural evidence is also ambiguous:
+\begin{itemize}[leftmargin=2em,itemsep=0.1em]
+  \item The parallels (Pillar~1: symplectic forms on function spaces;
+        Pillar~2: topological angles as holonomies; Pillar~3:
+        index-theoretic denominators) are real and not coincidental.
+        They reflect the shared mathematical ancestry of all
+        topological quantities in gauge theory and spin geometry.
+  \item The divergences (discrete vs continuous; CP-even vs CP-odd;
+        classical vs quantum; geometric vs dynamical) are equally
+        real, and any one of them suffices to refute a direct
+        identification.
+\end{itemize}
+The bridge hypothesis therefore requires not just a numerical match
+but a \emph{mechanism} that converts a CP-even geometric correction at
+the QNM scale into a CP-odd quantum phase at the QCD scale.  No such
+mechanism is currently known.
+
+\subsection{The PQ benchmark}\label{ssec:disc-pq}
+
+It is instructive to compare the bridge hypothesis to the established
+PQ solution.  The PQ mechanism is a dynamical one: it postulates a new
+global $\mathrm{U}(1)_{\mathrm{PQ}}$ symmetry, broken at a scale
+$f_a$, whose pseudo-Nambu--Goldstone boson (the axion) has a potential
+$V(a)\sim -m_\pi^2 f_\pi^2 \cos(\theta + a/f_a)$ that dynamically
+relaxes $\theta_{\mathrm{eff}}\to 0$ at the minimum.  The mechanism is
+predictive (it predicts a specific axion mass and coupling), testable
+(axion searches are ongoing), and conceptually economical (one new
+symmetry and one new scale).
+
+The bridge hypothesis, in contrast, postulates neither a new symmetry
+nor a new particle; it proposes a formula.  The formula has three free
+parameters ($\delta$, $b$, $p$), and the numerical evidence above
+shows that they must be tuned to non-natural values ($\pi/168$, $22$,
+$1/3$) to match the data.  This is a weaker position than PQ.
+
+\subsection{What would change the verdict}\label{ssec:disc-tests}
+
+The bridge hypothesis could be elevated from numerology to physics by
+any of the following concrete developments:
+\begin{enumerate}[leftmargin=2em,itemsep=0.2em]
+  \item A derivation of the $1/3$ exponent in
+        $\aC\cdot(\LamQ/\MP)^{1/3}$ from a controlled QFT calculation,
+        e.g. via a one-loop anomalous dimension or a dimensional
+        reduction.
+  \item A geometric interpretation of $\pi/168$ as a holonomy angle
+        along a non-contractible loop in some natural extension of the
+        Klein quartic (e.g. an arithmetic surface whose automorphism
+        group is $\PSL(2,7)$).
+  \item A lattice QCD measurement of the $\theta$-dependence of a QCD
+        observable that matches the bridge prediction more precisely
+        than the PQ prediction——currently the bridge makes no
+        falsifiable prediction distinct from PQ.
+  \item A direct experimental signature at the LIGO scale that
+        distinguishes the Choptyuk QNM correction from a pure
+        Kerr-Geometric one, which would establish \aC{} as a physical
+        effect rather than a fitting formula.
+\end{enumerate}
+
+% =============================================================================
+\section{Verdict}\label{sec:verdict}
+% =============================================================================
+
+\begin{verdict}[Final verdict]
+The direct identification of the Choptyuk \aC{} correction with the
+QCD $\theta$-angle is \textbf{refuted}:
+\begin{itemize}[leftmargin=2em,itemsep=0.1em]
+  \item The magnitudes differ by $\sim 7$ orders of magnitude
+        ($\aC\approx 8.3\times 10^{-4}$ vs
+        $\theta_{\mathrm{QCD}}\lesssim 10^{-10}$).
+  \item The CP properties differ (\aC{} is CP-even; $\theta$ is CP-odd).
+  \item The continuity properties differ (\aC{} is fixed by topology;
+        $\theta$ is a continuous parameter).
+  \item The dynamical roles differ (\aC{} is a fixed geometric
+        correction; $\theta$ is relaxable via the PQ mechanism).
+\end{itemize}
+The spinorial anomaly of Choptyuk and the axial anomaly of QCD are
+structurally distinct notions, related only by their common descent
+from the Atiyah--Singer index theorem.
+
+However, the numerical coincidences uncovered in Section~\ref{sec:numerics}
+are non-trivial and warrant further scrutiny:
+\begin{itemize}[leftmargin=2em,itemsep=0.1em]
+  \item $\delta = \pi/168$ (full $\PSL(2,7)$ group order) gives
+        $\delta^5/b_2(K3)\approx 10^{-10}$;
+  \item $\aC\cdot(\LamQ/\MP)^{1/3}\approx 2\times 10^{-10}$;
+  \item $\aC\cdot(\LamQ/M_H)^{5/2}\approx 8.5\times 10^{-11}$.
+\end{itemize}
+Each coincidence requires an unexplained parameter (a group-order
+promotion, a cube-root exponent, or a $5/2$-power exponent).  Without
+a theoretical derivation of these parameters, the bridge hypothesis
+remains \textbf{numerological but not refuted at the level of
+structural possibility}.
+
+The user's hypothesis——that \aC{} acts at the particle/QNM scale and
+must be rescaled to reach the QCD scale——is \emph{not unreasonable as
+a research programme}, but the specific rescaling prescriptions tested
+here are not yet derivations.  We recommend:
+\begin{enumerate}[leftmargin=2em,itemsep=0.1em]
+  \item Investigating whether the $1/3$ exponent can be derived from a
+        one-loop anomalous dimension calculation in a controlled
+        extension of QCD;
+  \item Searching for a geometric realisation of $\pi/168$ as a
+        holonomy angle on a higher-genus or arithmetic surface;
+  \item Comparing the bridge prediction against lattice QCD data on
+        $\theta$-dependence to test whether it provides a better fit
+        than PQ in any observable.
+\end{enumerate}
+Until one of these tests succeeds, the strong CP problem remains most
+naturally resolved by the Peccei--Quinn axion, and the Choptyuk \aC{}
+correction remains most naturally interpreted as a geometric spectral
+correction on the Klein quartic——with no established bridge between
+the two.
+\end{verdict}
+
+% =============================================================================
+\section*{Acknowledgements}
+% =============================================================================
+The author thanks the developers of the Choptyuk--Isaev monograph for
+making their code and derivations publicly available.  All numerical
+experiments were performed with the companion script
+\texttt{scripts/qcd\_bridge\_experiments.py} in the project repository.
+
+% =============================================================================
+\begin{thebibliography}{99}
+% =============================================================================
+\small
+
+\bibitem{isaev2024spinor}
+I.~K.~Isaev.
+\textit{Spinor corrections b-C and a-C and the solution of the Choptyuk problem.}
+Monograph, Nalchik, 2024.
+\url{https://github.com/wild8highlander/choptuik_ac_bc}
+
+\bibitem{abel2020nEDM}
+C.~Abel et al.
+\textit{Measurement of the permanent electric dipole moment of the neutron.}
+Phys.~Rev.~Lett. \textbf{124} (2020) 081803.
+
+\bibitem{pecceiquinn1977}
+R.~D.~Peccei and H.~R.~Quinn.
+\textit{CP conservation in the presence of pseudoparticles.}
+Phys.~Rev.~Lett. \textbf{38} (1977) 1440--1443.
+
+\bibitem{weinberg1978}
+S.~Weinberg.
+\textit{A new light boson?}
+Phys.~Rev.~Lett. \textbf{40} (1978) 223--226.
+
+\bibitem{wilczek1978}
+F.~Wilczek.
+\textit{Problem of strong P and T invariance in the presence of instantons.}
+Phys.~Rev.~Lett. \textbf{40} (1978) 279--282.
+
+\bibitem{tHooft1976}
+G.~'t~Hooft.
+\textit{Computation of the quantum effects due to a four-dimensional pseudoparticle.}
+Phys.~Rev.~D \textbf{14} (1976) 3432--3450.
+
+\bibitem{callan1976vacuum}
+C.~G.~Callan, R.~F.~Dashen, and D.~J.~Gross.
+\textit{The structure of the gauge theory vacuum.}
+Phys.~Lett.~B \textbf{63} (1976) 334--340.
+
+\bibitem{jackiw1976vacuum}
+R.~Jackiw and C.~Rebbi.
+\textit{Vacuum periodicity in a Yang--Mills quantum theory.}
+Phys.~Rev.~Lett. \textbf{37} (1976) 172--175.
+
+\bibitem{adler1969}
+S.~L.~Adler.
+\textit{Axial-vector vertex in spinor electrodynamics.}
+Phys.~Rev. \textbf{177} (1969) 2426--2438.
+
+\bibitem{belljackiw1969}
+J.~S.~Bell and R.~Jackiw.
+\textit{A PCAC puzzle: $\pi^0\to\gamma\gamma$ in the $\sigma$-model.}
+Nuovo Cim.~A \textbf{60} (1969) 47--61.
+
+\bibitem{fujikawa1979}
+K.~Fujikawa.
+\textit{Path-integral measure for gauge-invariant fermion theories.}
+Phys.~Rev.~Lett. \textbf{42} (1979) 1195--1198.
+
+\bibitem{witten1998theta}
+E.~Witten.
+\textit{Theta dependence in the large $N$ limit of four-dimensional gauge theories.}
+Phys.~Rev.~Lett. \textbf{81} (1998) 2862--2865.
+
+\bibitem{kim1987axion}
+J.~E.~Kim.
+\textit{Light pseudoscalars, particle physics and cosmology.}
+Phys.~Rep. \textbf{150} (1987) 1--177.
+
+\bibitem{dvali2005cp}
+G.~Dvali.
+\textit{Three-form gauging of axion symmetries and gravity.}
+arXiv:hep-th/0507215 (2005).
+
+\bibitem{irastorza2018axion}
+I.~G.~Irastorza and J.~Redondo.
+\textit{New experimental approaches in the search for axion-like particles.}
+Prog.~Part.~Nucl.~Phys. \textbf{102} (2018) 89--159.
+
+\bibitem{adams2022axion}
+C.~B.~Adams et al.
+\textit{Axion dark matter.}
+arXiv:2203.14923 (2022).
+
+\bibitem{atiyahbott1983}
+M.~F.~Atiyah and R.~Bott.
+\textit{The Yang--Mills equations over Riemann surfaces.}
+Phil.~Trans.~R.~Soc.~Lond.~A \textbf{308} (1983) 523--615.
+
+\bibitem{atiyahhitchin1985}
+M.~F.~Atiyah and N.~J.~Hitchin.
+\textit{Low-energy scattering of non-Abelian monopoles.}
+Phys.~Lett.~A \textbf{107} (1985) 21--25.
+
+\bibitem{donaldson1984}
+S.~K.~Donaldson.
+\textit{Nahm's equations and the classification of monopoles.}
+Comm.~Math.~Phys. \textbf{96} (1984) 387--407.
+
+\bibitem{kronheimernakajima1990}
+P.~B.~Kronheimer and H.~Nakajima.
+\textit{Yang--Mills instantons on ALE gravitational instantons.}
+Math.~Ann. \textbf{288} (1990) 263--307.
+
+\bibitem{nakajima1994}
+H.~Nakajima.
+\textit{Instantons on ALE spaces, quiver varieties, and Kac--Moody algebras.}
+Duke Math.~J. \textbf{76} (1994) 365--416.
+
+\bibitem{mukai1988k3}
+S.~Mukai.
+\textit{Curves, K3 surfaces and Fano 3-folds of genus $\leq 10$.}
+In: Algebraic Geometry and Commutative Algebra (1988) 357--377.
+
+\bibitem{beauville2008k3}
+A.~Beauville.
+\textit{Antisymplectic involutions of holomorphic symplectic manifolds.}
+J.~Eur.~Math.~Soc. \textbf{6} (2004) 385--395.
+
+\bibitem{klein1879}
+F.~Klein.
+\textit{Ueber die Transformation siebenter Ordnung der elliptischen Functionen.}
+Math.~Ann. \textbf{14} (1879) 428--471.
+
+\bibitem{elkies1998klein}
+N.~D.~Elkies.
+\textit{The Klein quartic in number theory.}
+In: The Eightfold Way, MSRI Pub.~35 (1998) 51--101.
+
+\bibitem{bourquestrohmaier2024}
+C.~Bourque and A.~Strohmaier.
+\textit{On the spectral gap of the Klein quartic.}
+arXiv preprint (2024); cited in \cite{isaev2024spinor} for $\lambda_1(\Delta)=3.838$.
+
+\end{thebibliography}
+
+\end{document}

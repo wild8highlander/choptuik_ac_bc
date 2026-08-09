@@ -1,0 +1,2902 @@
+{
+  "metadata": {
+    "target_theta_QCD": 1e-10,
+    "a_C_choptyuk": 0.0008276304915843545,
+    "log10_a_C": -3.082163517422821,
+    "log10_target": -10.0,
+    "orders_of_magnitude_gap": 6.917836482577179,
+    "lambda_QCD_MeV": 200.0
+  },
+  "E1_delta_candidates": {
+    "all_candidates_count": 144,
+    "top_15_closest_to_1e-10": [
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 1.0393941640147202e-10,
+        "log10_value": -9.98321972598085,
+        "distance_from_-10": 0.016780274019149388
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 9.527779836801602e-11,
+        "log10_value": -10.02100828687025,
+        "distance_from_-10": 0.02100828687025036
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 1.195389393692506e-10,
+        "log10_value": -9.92249060184118,
+        "distance_from_-10": 0.07750939815882063
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 7.969262624616707e-11,
+        "log10_value": -10.09858186089686,
+        "distance_from_-10": 0.09858186089686072
+      },
+      {
+        "candidate": "pi/100",
+        "formula": "$\\pi/100$",
+        "source": "ad-hoc scale-suppressed",
+        "delta": 0.031415926535897934,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 1.7387482090072814e-10,
+        "log10_value": -9.75976330434348,
+        "distance_from_-10": 0.24023669565652028
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 1.9055559673603203e-10,
+        "log10_value": -9.719978291206269,
+        "distance_from_-10": 0.2800217087937309
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 4.3468705225182036e-11,
+        "log10_value": -10.361823295671442,
+        "distance_from_-10": 0.3618232956714422
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 3.984631312308353e-11,
+        "log10_value": -10.399611856560842,
+        "distance_from_-10": 0.39961185656084197
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 2.8583339510404806e-10,
+        "log10_value": -9.543887032150588,
+        "distance_from_-10": 0.45611296784941224
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 3.1877050498466826e-10,
+        "log10_value": -9.496521869568898,
+        "distance_from_-10": 0.5034781304311018
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 4.781557574770024e-10,
+        "log10_value": -9.320430610513217,
+        "distance_from_-10": 0.6795693894867831
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 4.781557574770024e-10,
+        "log10_value": -9.320430610513217,
+        "distance_from_-10": 0.6795693894867831
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 7.622223869441281e-10,
+        "log10_value": -9.117918299878307,
+        "distance_from_-10": 0.8820817001216934
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 1.2992427050184003e-11,
+        "log10_value": -10.886309712972794,
+        "distance_from_-10": 0.8863097129727944
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 9.563115149540048e-10,
+        "log10_value": -9.019400614849237,
+        "distance_from_-10": 0.9805993851507626
+      }
+    ],
+    "best_match": {
+      "candidate": "pi/order(PSL(2,7)) = pi/168",
+      "formula": "$\\pi/168$",
+      "source": "order of PSL(2,7)",
+      "delta": 0.018699956271367817,
+      "b_name": "b2=22 (K3)",
+      "b_value": 22,
+      "delta5_over_b": 1.0393941640147202e-10,
+      "log10_value": -9.98321972598085,
+      "distance_from_-10": 0.016780274019149388
+    },
+    "full_table": [
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 1.0393941640147202e-10,
+        "log10_value": -9.98321972598085,
+        "distance_from_-10": 0.016780274019149388
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 9.527779836801602e-11,
+        "log10_value": -10.02100828687025,
+        "distance_from_-10": 0.02100828687025036
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 1.195389393692506e-10,
+        "log10_value": -9.92249060184118,
+        "distance_from_-10": 0.07750939815882063
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 7.969262624616707e-11,
+        "log10_value": -10.09858186089686,
+        "distance_from_-10": 0.09858186089686072
+      },
+      {
+        "candidate": "pi/100",
+        "formula": "$\\pi/100$",
+        "source": "ad-hoc scale-suppressed",
+        "delta": 0.031415926535897934,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 1.7387482090072814e-10,
+        "log10_value": -9.75976330434348,
+        "distance_from_-10": 0.24023669565652028
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 1.9055559673603203e-10,
+        "log10_value": -9.719978291206269,
+        "distance_from_-10": 0.2800217087937309
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 4.3468705225182036e-11,
+        "log10_value": -10.361823295671442,
+        "distance_from_-10": 0.3618232956714422
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 3.984631312308353e-11,
+        "log10_value": -10.399611856560842,
+        "distance_from_-10": 0.39961185656084197
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 2.8583339510404806e-10,
+        "log10_value": -9.543887032150588,
+        "distance_from_-10": 0.45611296784941224
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 3.1877050498466826e-10,
+        "log10_value": -9.496521869568898,
+        "distance_from_-10": 0.5034781304311018
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 4.781557574770024e-10,
+        "log10_value": -9.320430610513217,
+        "distance_from_-10": 0.6795693894867831
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 4.781557574770024e-10,
+        "log10_value": -9.320430610513217,
+        "distance_from_-10": 0.6795693894867831
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 7.622223869441281e-10,
+        "log10_value": -9.117918299878307,
+        "distance_from_-10": 0.8820817001216934
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 1.2992427050184003e-11,
+        "log10_value": -10.886309712972794,
+        "distance_from_-10": 0.8863097129727944
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 9.563115149540048e-10,
+        "log10_value": -9.019400614849237,
+        "distance_from_-10": 0.9805993851507626
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 1.1433335804161922e-09,
+        "log10_value": -8.941827040822625,
+        "distance_from_-10": 1.0581729591773748
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 1.1433335804161922e-09,
+        "log10_value": -8.941827040822625,
+        "distance_from_-10": 1.0581729591773748
+      },
+      {
+        "candidate": "pi/100",
+        "formula": "$\\pi/100$",
+        "source": "ad-hoc scale-suppressed",
+        "delta": 0.031415926535897934,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 1.275082019938673e-09,
+        "log10_value": -8.894461878240937,
+        "distance_from_-10": 1.1055381217590625
+      },
+      {
+        "candidate": "pi/100",
+        "formula": "$\\pi/100$",
+        "source": "ad-hoc scale-suppressed",
+        "delta": 0.031415926535897934,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 1.3909985672058251e-09,
+        "log10_value": -8.856673317351536,
+        "distance_from_-10": 1.143326682648464
+      },
+      {
+        "candidate": "pi/200",
+        "formula": "$\\pi/200$",
+        "source": "(Λ_QCD/E_Planck)^{-1/2} ∼ 1/200",
+        "delta": 0.015707963267948967,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 5.4335881531477545e-12,
+        "log10_value": -11.264913282663386,
+        "distance_from_-10": 1.264913282663386
+      },
+      {
+        "candidate": "pi/order(PSL(2,7)) = pi/168",
+        "formula": "$\\pi/168$",
+        "source": "order of PSL(2,7)",
+        "delta": 0.018699956271367817,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 2.2866671608323845e-09,
+        "log10_value": -8.640797045158646,
+        "distance_from_-10": 1.3592029548413542
+      },
+      {
+        "candidate": "pi/100",
+        "formula": "$\\pi/100$",
+        "source": "ad-hoc scale-suppressed",
+        "delta": 0.031415926535897934,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 2.550164039877346e-09,
+        "log10_value": -8.593431882576956,
+        "distance_from_-10": 1.4065681174230438
+      },
+      {
+        "candidate": "pi/100",
+        "formula": "$\\pi/100$",
+        "source": "ad-hoc scale-suppressed",
+        "delta": 0.031415926535897934,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 3.825246059816019e-09,
+        "log10_value": -8.417340623521275,
+        "distance_from_-10": 1.5826593764787251
+      },
+      {
+        "candidate": "pi/100",
+        "formula": "$\\pi/100$",
+        "source": "ad-hoc scale-suppressed",
+        "delta": 0.031415926535897934,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 1.0200656159509384e-08,
+        "log10_value": -7.991371891248993,
+        "distance_from_-10": 2.008628108751007
+      },
+      {
+        "candidate": "pi/100",
+        "formula": "$\\pi/100$",
+        "source": "ad-hoc scale-suppressed",
+        "delta": 0.031415926535897934,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 1.5300984239264077e-08,
+        "log10_value": -7.8152806321933115,
+        "distance_from_-10": 2.1847193678066885
+      },
+      {
+        "candidate": "pi/100",
+        "formula": "$\\pi/100$",
+        "source": "ad-hoc scale-suppressed",
+        "delta": 0.031415926535897934,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 1.5300984239264077e-08,
+        "log10_value": -7.8152806321933115,
+        "distance_from_-10": 2.1847193678066885
+      },
+      {
+        "candidate": "pi/100",
+        "formula": "$\\pi/100$",
+        "source": "ad-hoc scale-suppressed",
+        "delta": 0.031415926535897934,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 3.0601968478528155e-08,
+        "log10_value": -7.51425063652933,
+        "distance_from_-10": 2.4857493634706698
+      },
+      {
+        "candidate": "pi/N^3 (SU(3))",
+        "formula": "$\\pi/N^3$",
+        "source": "third-order winding",
+        "delta": 0.11635528346628864,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 1.2117635224810369e-07,
+        "log10_value": -6.916582125138417,
+        "distance_from_-10": 3.083417874861583
+      },
+      {
+        "candidate": "pi/N^3 (SU(3))",
+        "formula": "$\\pi/N^3$",
+        "source": "third-order winding",
+        "delta": 0.11635528346628864,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 8.886265831527604e-07,
+        "log10_value": -6.051280699035873,
+        "distance_from_-10": 3.948719300964127
+      },
+      {
+        "candidate": "pi/N^3 (SU(3))",
+        "formula": "$\\pi/N^3$",
+        "source": "third-order winding",
+        "delta": 0.11635528346628864,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 9.694108179848295e-07,
+        "log10_value": -6.013492138146473,
+        "distance_from_-10": 3.986507861853527
+      },
+      {
+        "candidate": "pi/N^3 (SU(3))",
+        "formula": "$\\pi/N^3$",
+        "source": "third-order winding",
+        "delta": 0.11635528346628864,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 1.7772531663055208e-06,
+        "log10_value": -5.750250703371893,
+        "distance_from_-10": 4.249749296628107
+      },
+      {
+        "candidate": "pi/N^3 (SU(3))",
+        "formula": "$\\pi/N^3$",
+        "source": "third-order winding",
+        "delta": 0.11635528346628864,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 2.665879749458281e-06,
+        "log10_value": -5.574159444316211,
+        "distance_from_-10": 4.425840555683789
+      },
+      {
+        "candidate": "pi/N^3 (SU(3))",
+        "formula": "$\\pi/N^3$",
+        "source": "third-order winding",
+        "delta": 0.11635528346628864,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 7.109012665222083e-06,
+        "log10_value": -5.14819071204393,
+        "distance_from_-10": 4.85180928795607
+      },
+      {
+        "candidate": "pi/N^3 (SU(3))",
+        "formula": "$\\pi/N^3$",
+        "source": "third-order winding",
+        "delta": 0.11635528346628864,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 1.0663518997833124e-05,
+        "log10_value": -4.972099452988249,
+        "distance_from_-10": 5.027900547011751
+      },
+      {
+        "candidate": "pi/N^3 (SU(3))",
+        "formula": "$\\pi/N^3$",
+        "source": "third-order winding",
+        "delta": 0.11635528346628864,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 1.0663518997833124e-05,
+        "log10_value": -4.972099452988249,
+        "distance_from_-10": 5.027900547011751
+      },
+      {
+        "candidate": "pi/N^3 (SU(3))",
+        "formula": "$\\pi/N^3$",
+        "source": "third-order winding",
+        "delta": 0.11635528346628864,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 2.132703799566625e-05,
+        "log10_value": -4.6710694573242675,
+        "distance_from_-10": 5.3289305426757325
+      },
+      {
+        "candidate": "pi/N^2 (SU(3), N=3)",
+        "formula": "$\\pi/N^2$",
+        "source": "higher instanton winding",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 2.9445853596289193e-05,
+        "log10_value": -4.530975851540105,
+        "distance_from_-10": 5.469024148459895
+      },
+      {
+        "candidate": "pi/(N·h^∨) = pi/9",
+        "formula": "$\\pi/(N h^\\vee)$",
+        "source": "rank × Coxeter",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 2.9445853596289193e-05,
+        "log10_value": -4.530975851540105,
+        "distance_from_-10": 5.469024148459895
+      },
+      {
+        "candidate": "pi/dim(SU(3)) = pi/8",
+        "formula": "$\\pi/8$",
+        "source": "dimension of adjoint rep",
+        "delta": 0.39269908169872414,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 5.306238430808352e-05,
+        "log10_value": -4.2752132393031985,
+        "distance_from_-10": 5.7247867606968015
+      },
+      {
+        "candidate": "pi/7 (Klein, Choptyuk)",
+        "formula": "$\\pi/7$",
+        "source": "Hurwitz Γ(2,3,7) order-7 generator",
+        "delta": 0.4487989505128276,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 0.00010345381144804431,
+        "log10_value": -3.985253504414765,
+        "distance_from_-10": 6.014746495585236
+      },
+      {
+        "candidate": "pi/N^2 (SU(3), N=3)",
+        "formula": "$\\pi/N^2$",
+        "source": "higher instanton winding",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 0.00021593625970612075,
+        "log10_value": -3.6656744254375613,
+        "distance_from_-10": 6.334325574562438
+      },
+      {
+        "candidate": "pi/(N·h^∨) = pi/9",
+        "formula": "$\\pi/(N h^\\vee)$",
+        "source": "rank × Coxeter",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 0.00021593625970612075,
+        "log10_value": -3.6656744254375613,
+        "distance_from_-10": 6.334325574562438
+      },
+      {
+        "candidate": "pi/2N (SU(3), 2N=6)",
+        "formula": "$\\pi/(2N)$",
+        "source": "center Z_N smallest generator",
+        "delta": 0.5235987755982988,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 0.000223604450746821,
+        "log10_value": -3.650519556261699,
+        "distance_from_-10": 6.349480443738301
+      },
+      {
+        "candidate": "pi/N^2 (SU(3), N=3)",
+        "formula": "$\\pi/N^2$",
+        "source": "higher instanton winding",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 0.00023556682877031354,
+        "log10_value": -3.6278858645481615,
+        "distance_from_-10": 6.372114135451838
+      },
+      {
+        "candidate": "pi/(N·h^∨) = pi/9",
+        "formula": "$\\pi/(N h^\\vee)$",
+        "source": "rank × Coxeter",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 0.00023556682877031354,
+        "log10_value": -3.6278858645481615,
+        "distance_from_-10": 6.372114135451838
+      },
+      {
+        "candidate": "pi/dim(SU(3)) = pi/8",
+        "formula": "$\\pi/8$",
+        "source": "dimension of adjoint rep",
+        "delta": 0.39269908169872414,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 0.00038912415159261246,
+        "log10_value": -3.409911813200655,
+        "distance_from_-10": 6.5900881867993455
+      },
+      {
+        "candidate": "pi/dim(SU(3)) = pi/8",
+        "formula": "$\\pi/8$",
+        "source": "dimension of adjoint rep",
+        "delta": 0.39269908169872414,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 0.00042449907446466816,
+        "log10_value": -3.3721232523112548,
+        "distance_from_-10": 6.627876747688745
+      },
+      {
+        "candidate": "pi/N^2 (SU(3), N=3)",
+        "formula": "$\\pi/N^2$",
+        "source": "higher instanton winding",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 0.0004318725194122415,
+        "log10_value": -3.36464442977358,
+        "distance_from_-10": 6.6353555702264195
+      },
+      {
+        "candidate": "pi/(N·h^∨) = pi/9",
+        "formula": "$\\pi/(N h^\\vee)$",
+        "source": "rank × Coxeter",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 0.0004318725194122415,
+        "log10_value": -3.36464442977358,
+        "distance_from_-10": 6.6353555702264195
+      },
+      {
+        "candidate": "pi/N^2 (SU(3), N=3)",
+        "formula": "$\\pi/N^2$",
+        "source": "higher instanton winding",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 0.0006478087791183622,
+        "log10_value": -3.1885531707178987,
+        "distance_from_-10": 6.811446829282101
+      },
+      {
+        "candidate": "pi/(N·h^∨) = pi/9",
+        "formula": "$\\pi/(N h^\\vee)$",
+        "source": "rank × Coxeter",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 0.0006478087791183622,
+        "log10_value": -3.1885531707178987,
+        "distance_from_-10": 6.811446829282101
+      },
+      {
+        "candidate": "pi/7 (Klein, Choptyuk)",
+        "formula": "$\\pi/7$",
+        "source": "Hurwitz Γ(2,3,7) order-7 generator",
+        "delta": 0.4487989505128276,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 0.000758661283952325,
+        "log10_value": -3.1199520783122208,
+        "distance_from_-10": 6.88004792168778
+      },
+      {
+        "candidate": "pi/dim(SU(3)) = pi/8",
+        "formula": "$\\pi/8$",
+        "source": "dimension of adjoint rep",
+        "delta": 0.39269908169872414,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 0.0007782483031852249,
+        "log10_value": -3.1088818175366737,
+        "distance_from_-10": 6.891118182463327
+      },
+      {
+        "candidate": "pi/7 (Klein, Choptyuk)",
+        "formula": "$\\pi/7$",
+        "source": "Hurwitz Γ(2,3,7) order-7 generator",
+        "delta": 0.4487989505128276,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 0.0008276304915843545,
+        "log10_value": -3.082163517422821,
+        "distance_from_-10": 6.917836482577179
+      },
+      {
+        "candidate": "pi/dim(SU(3)) = pi/8",
+        "formula": "$\\pi/8$",
+        "source": "dimension of adjoint rep",
+        "delta": 0.39269908169872414,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 0.0011673724547778374,
+        "log10_value": -2.9327905584809923,
+        "distance_from_-10": 7.067209441519008
+      },
+      {
+        "candidate": "pi/7 (Klein, Choptyuk)",
+        "formula": "$\\pi/7$",
+        "source": "Hurwitz Γ(2,3,7) order-7 generator",
+        "delta": 0.4487989505128276,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 0.00151732256790465,
+        "log10_value": -2.81892208264824,
+        "distance_from_-10": 7.18107791735176
+      },
+      {
+        "candidate": "pi/2N (SU(3), 2N=6)",
+        "formula": "$\\pi/(2N)$",
+        "source": "center Z_N smallest generator",
+        "delta": 0.5235987755982988,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 0.001639765972143354,
+        "log10_value": -2.785218130159155,
+        "distance_from_-10": 7.214781869840845
+      },
+      {
+        "candidate": "pi/Coxeter_affine (SU(3)~)",
+        "formula": "$\\pi/(N+1)$",
+        "source": "affine Coxeter number h=N+1",
+        "delta": 0.7853981633974483,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 0.0016979962978586726,
+        "log10_value": -2.7700632609832927,
+        "distance_from_-10": 7.229936739016708
+      },
+      {
+        "candidate": "pi/N^2 (SU(3), N=3)",
+        "formula": "$\\pi/N^2$",
+        "source": "higher instanton winding",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 0.001727490077648966,
+        "log10_value": -2.7625844384456175,
+        "distance_from_-10": 7.237415561554382
+      },
+      {
+        "candidate": "pi/(N·h^∨) = pi/9",
+        "formula": "$\\pi/(N h^\\vee)$",
+        "source": "rank × Coxeter",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 0.001727490077648966,
+        "log10_value": -2.7625844384456175,
+        "distance_from_-10": 7.237415561554382
+      },
+      {
+        "candidate": "pi/2N (SU(3), 2N=6)",
+        "formula": "$\\pi/(2N)$",
+        "source": "center Z_N smallest generator",
+        "delta": 0.5235987755982988,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 0.001788835605974568,
+        "log10_value": -2.7474295692697552,
+        "distance_from_-10": 7.252570430730245
+      },
+      {
+        "candidate": "pi/7 (Klein, Choptyuk)",
+        "formula": "$\\pi/7$",
+        "source": "Hurwitz Γ(2,3,7) order-7 generator",
+        "delta": 0.4487989505128276,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 0.002275983851856975,
+        "log10_value": -2.6428308235925586,
+        "distance_from_-10": 7.357169176407441
+      },
+      {
+        "candidate": "pi/N^2 (SU(3), N=3)",
+        "formula": "$\\pi/N^2$",
+        "source": "higher instanton winding",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 0.002591235116473449,
+        "log10_value": -2.5864931793899366,
+        "distance_from_-10": 7.413506820610063
+      },
+      {
+        "candidate": "pi/N^2 (SU(3), N=3)",
+        "formula": "$\\pi/N^2$",
+        "source": "higher instanton winding",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 0.002591235116473449,
+        "log10_value": -2.5864931793899366,
+        "distance_from_-10": 7.413506820610063
+      },
+      {
+        "candidate": "pi/(N·h^∨) = pi/9",
+        "formula": "$\\pi/(N h^\\vee)$",
+        "source": "rank × Coxeter",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 0.002591235116473449,
+        "log10_value": -2.5864931793899366,
+        "distance_from_-10": 7.413506820610063
+      },
+      {
+        "candidate": "pi/(N·h^∨) = pi/9",
+        "formula": "$\\pi/(N h^\\vee)$",
+        "source": "rank × Coxeter",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 0.002591235116473449,
+        "log10_value": -2.5864931793899366,
+        "distance_from_-10": 7.413506820610063
+      },
+      {
+        "candidate": "pi/dim(SU(3)) = pi/8",
+        "formula": "$\\pi/8$",
+        "source": "dimension of adjoint rep",
+        "delta": 0.39269908169872414,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 0.0031129932127408996,
+        "log10_value": -2.506821826208711,
+        "distance_from_-10": 7.493178173791289
+      },
+      {
+        "candidate": "pi/2N (SU(3), 2N=6)",
+        "formula": "$\\pi/(2N)$",
+        "source": "center Z_N smallest generator",
+        "delta": 0.5235987755982988,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 0.003279531944286708,
+        "log10_value": -2.4841881344951737,
+        "distance_from_-10": 7.515811865504826
+      },
+      {
+        "candidate": "pi/dim(SU(3)) = pi/8",
+        "formula": "$\\pi/8$",
+        "source": "dimension of adjoint rep",
+        "delta": 0.39269908169872414,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 0.00466948981911135,
+        "log10_value": -2.33073056715303,
+        "distance_from_-10": 7.669269432846971
+      },
+      {
+        "candidate": "pi/dim(SU(3)) = pi/8",
+        "formula": "$\\pi/8$",
+        "source": "dimension of adjoint rep",
+        "delta": 0.39269908169872414,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 0.00466948981911135,
+        "log10_value": -2.33073056715303,
+        "distance_from_-10": 7.669269432846971
+      },
+      {
+        "candidate": "pi/2N (SU(3), 2N=6)",
+        "formula": "$\\pi/(2N)$",
+        "source": "center Z_N smallest generator",
+        "delta": 0.5235987755982988,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 0.004919297916430062,
+        "log10_value": -2.308096875439493,
+        "distance_from_-10": 7.691903124560508
+      },
+      {
+        "candidate": "pi/N^2 (SU(3), N=3)",
+        "formula": "$\\pi/N^2$",
+        "source": "higher instanton winding",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 0.005182470232946898,
+        "log10_value": -2.2854631837259554,
+        "distance_from_-10": 7.714536816274045
+      },
+      {
+        "candidate": "pi/(N·h^∨) = pi/9",
+        "formula": "$\\pi/(N h^\\vee)$",
+        "source": "rank × Coxeter",
+        "delta": 0.3490658503988659,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 0.005182470232946898,
+        "log10_value": -2.2854631837259554,
+        "distance_from_-10": 7.714536816274045
+      },
+      {
+        "candidate": "pi/7 (Klein, Choptyuk)",
+        "formula": "$\\pi/7$",
+        "source": "Hurwitz Γ(2,3,7) order-7 generator",
+        "delta": 0.4487989505128276,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 0.0060692902716186,
+        "log10_value": -2.2168620913202775,
+        "distance_from_-10": 7.7831379086797225
+      },
+      {
+        "candidate": "pi/N (SU(3), N=3)",
+        "formula": "$\\pi/N$, $N=3$",
+        "source": "Coxeter number of SU(N) is N",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 0.007155342423898272,
+        "log10_value": -2.145369577941793,
+        "distance_from_-10": 7.854630422058207
+      },
+      {
+        "candidate": "pi/h^∨ (SU(3))",
+        "formula": "$\\pi/h^\\vee_{\\mathrm{SU}(3)}$",
+        "source": "dual Coxeter h^∨=N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 0.007155342423898272,
+        "log10_value": -2.145369577941793,
+        "distance_from_-10": 7.854630422058207
+      },
+      {
+        "candidate": "pi/center_order (Z_3)",
+        "formula": "$\\pi/3$",
+        "source": "center order = N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 0.007155342423898272,
+        "log10_value": -2.145369577941793,
+        "distance_from_-10": 7.854630422058207
+      },
+      {
+        "candidate": "Cartan long root (SU(3))",
+        "formula": "$\\pi/3$",
+        "source": "long-root Weyl reflection",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 0.007155342423898272,
+        "log10_value": -2.145369577941793,
+        "distance_from_-10": 7.854630422058207
+      },
+      {
+        "candidate": "pi/7 (Klein, Choptyuk)",
+        "formula": "$\\pi/7$",
+        "source": "Hurwitz Γ(2,3,7) order-7 generator",
+        "delta": 0.4487989505128276,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 0.0091039354074279,
+        "log10_value": -2.040770832264596,
+        "distance_from_-10": 7.959229167735404
+      },
+      {
+        "candidate": "pi/7 (Klein, Choptyuk)",
+        "formula": "$\\pi/7$",
+        "source": "Hurwitz Γ(2,3,7) order-7 generator",
+        "delta": 0.4487989505128276,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 0.0091039354074279,
+        "log10_value": -2.040770832264596,
+        "distance_from_-10": 7.959229167735404
+      },
+      {
+        "candidate": "pi/dim(SU(3)) = pi/8",
+        "formula": "$\\pi/8$",
+        "source": "dimension of adjoint rep",
+        "delta": 0.39269908169872414,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 0.0093389796382227,
+        "log10_value": -2.0297005714890486,
+        "distance_from_-10": 7.970299428510952
+      },
+      {
+        "candidate": "pi/Coxeter_affine (SU(3)~)",
+        "formula": "$\\pi/(N+1)$",
+        "source": "affine Coxeter number h=N+1",
+        "delta": 0.7853981633974483,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 0.012451972850963599,
+        "log10_value": -1.9047618348807487,
+        "distance_from_-10": 8.095238165119252
+      },
+      {
+        "candidate": "pi/2N (SU(3), 2N=6)",
+        "formula": "$\\pi/(2N)$",
+        "source": "center Z_N smallest generator",
+        "delta": 0.5235987755982988,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 0.013118127777146832,
+        "log10_value": -1.8821281431672117,
+        "distance_from_-10": 8.117871856832789
+      },
+      {
+        "candidate": "pi/Coxeter_affine (SU(3)~)",
+        "formula": "$\\pi/(N+1)$",
+        "source": "affine Coxeter number h=N+1",
+        "delta": 0.7853981633974483,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 0.013583970382869381,
+        "log10_value": -1.866973273991349,
+        "distance_from_-10": 8.133026726008652
+      },
+      {
+        "candidate": "pi/7 (Klein, Choptyuk)",
+        "formula": "$\\pi/7$",
+        "source": "Hurwitz Γ(2,3,7) order-7 generator",
+        "delta": 0.4487989505128276,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 0.0182078708148558,
+        "log10_value": -1.7397408366006148,
+        "distance_from_-10": 8.260259163399386
+      },
+      {
+        "candidate": "pi/2N (SU(3), 2N=6)",
+        "formula": "$\\pi/(2N)$",
+        "source": "center Z_N smallest generator",
+        "delta": 0.5235987755982988,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 0.019677191665720246,
+        "log10_value": -1.7060368841115303,
+        "distance_from_-10": 8.29396311588847
+      },
+      {
+        "candidate": "pi/2N (SU(3), 2N=6)",
+        "formula": "$\\pi/(2N)$",
+        "source": "center Z_N smallest generator",
+        "delta": 0.5235987755982988,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 0.019677191665720246,
+        "log10_value": -1.7060368841115303,
+        "distance_from_-10": 8.29396311588847
+      },
+      {
+        "candidate": "pi/Coxeter_affine (SU(3)~)",
+        "formula": "$\\pi/(N+1)$",
+        "source": "affine Coxeter number h=N+1",
+        "delta": 0.7853981633974483,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 0.024903945701927197,
+        "log10_value": -1.6037318392167677,
+        "distance_from_-10": 8.396268160783233
+      },
+      {
+        "candidate": "pi/Coxeter_affine (SU(3)~)",
+        "formula": "$\\pi/(N+1)$",
+        "source": "affine Coxeter number h=N+1",
+        "delta": 0.7853981633974483,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 0.0373559185528908,
+        "log10_value": -1.4276405801610863,
+        "distance_from_-10": 8.572359419838914
+      },
+      {
+        "candidate": "pi/2N (SU(3), 2N=6)",
+        "formula": "$\\pi/(2N)$",
+        "source": "center Z_N smallest generator",
+        "delta": 0.5235987755982988,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 0.03935438333144049,
+        "log10_value": -1.405006888447549,
+        "distance_from_-10": 8.594993111552451
+      },
+      {
+        "candidate": "pi/N (SU(3), N=3)",
+        "formula": "$\\pi/N$, $N=3$",
+        "source": "Coxeter number of SU(N) is N",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 0.052472511108587326,
+        "log10_value": -1.2800681518392492,
+        "distance_from_-10": 8.719931848160751
+      },
+      {
+        "candidate": "pi/h^∨ (SU(3))",
+        "formula": "$\\pi/h^\\vee_{\\mathrm{SU}(3)}$",
+        "source": "dual Coxeter h^∨=N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 0.052472511108587326,
+        "log10_value": -1.2800681518392492,
+        "distance_from_-10": 8.719931848160751
+      },
+      {
+        "candidate": "pi/center_order (Z_3)",
+        "formula": "$\\pi/3$",
+        "source": "center order = N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 0.052472511108587326,
+        "log10_value": -1.2800681518392492,
+        "distance_from_-10": 8.719931848160751
+      },
+      {
+        "candidate": "Cartan long root (SU(3))",
+        "formula": "$\\pi/3$",
+        "source": "long-root Weyl reflection",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 0.052472511108587326,
+        "log10_value": -1.2800681518392492,
+        "distance_from_-10": 8.719931848160751
+      },
+      {
+        "candidate": "pi/N (SU(3), N=3)",
+        "formula": "$\\pi/N$, $N=3$",
+        "source": "Coxeter number of SU(N) is N",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 0.057242739391186175,
+        "log10_value": -1.2422795909498494,
+        "distance_from_-10": 8.757720409050151
+      },
+      {
+        "candidate": "pi/h^∨ (SU(3))",
+        "formula": "$\\pi/h^\\vee_{\\mathrm{SU}(3)}$",
+        "source": "dual Coxeter h^∨=N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 0.057242739391186175,
+        "log10_value": -1.2422795909498494,
+        "distance_from_-10": 8.757720409050151
+      },
+      {
+        "candidate": "pi/center_order (Z_3)",
+        "formula": "$\\pi/3$",
+        "source": "center order = N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 0.057242739391186175,
+        "log10_value": -1.2422795909498494,
+        "distance_from_-10": 8.757720409050151
+      },
+      {
+        "candidate": "Cartan long root (SU(3))",
+        "formula": "$\\pi/3$",
+        "source": "long-root Weyl reflection",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 0.057242739391186175,
+        "log10_value": -1.2422795909498494,
+        "distance_from_-10": 8.757720409050151
+      },
+      {
+        "candidate": "pi/Coxeter_affine (SU(3)~)",
+        "formula": "$\\pi/(N+1)$",
+        "source": "affine Coxeter number h=N+1",
+        "delta": 0.7853981633974483,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 0.09961578280770879,
+        "log10_value": -1.0016718478888051,
+        "distance_from_-10": 8.998328152111196
+      },
+      {
+        "candidate": "pi/N (SU(3), N=3)",
+        "formula": "$\\pi/N$, $N=3$",
+        "source": "Coxeter number of SU(N) is N",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 0.10494502221717465,
+        "log10_value": -0.979038156175268,
+        "distance_from_-10": 9.020961843824733
+      },
+      {
+        "candidate": "pi/h^∨ (SU(3))",
+        "formula": "$\\pi/h^\\vee_{\\mathrm{SU}(3)}$",
+        "source": "dual Coxeter h^∨=N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 0.10494502221717465,
+        "log10_value": -0.979038156175268,
+        "distance_from_-10": 9.020961843824733
+      },
+      {
+        "candidate": "pi/center_order (Z_3)",
+        "formula": "$\\pi/3$",
+        "source": "center order = N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 0.10494502221717465,
+        "log10_value": -0.979038156175268,
+        "distance_from_-10": 9.020961843824733
+      },
+      {
+        "candidate": "Cartan long root (SU(3))",
+        "formula": "$\\pi/3$",
+        "source": "long-root Weyl reflection",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 0.10494502221717465,
+        "log10_value": -0.979038156175268,
+        "distance_from_-10": 9.020961843824733
+      },
+      {
+        "candidate": "pi/Coxeter_affine (SU(3)~)",
+        "formula": "$\\pi/(N+1)$",
+        "source": "affine Coxeter number h=N+1",
+        "delta": 0.7853981633974483,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 0.1494236742115632,
+        "log10_value": -0.825580588833124,
+        "distance_from_-10": 9.174419411166877
+      },
+      {
+        "candidate": "pi/Coxeter_affine (SU(3)~)",
+        "formula": "$\\pi/(N+1)$",
+        "source": "affine Coxeter number h=N+1",
+        "delta": 0.7853981633974483,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 0.1494236742115632,
+        "log10_value": -0.825580588833124,
+        "distance_from_-10": 9.174419411166877
+      },
+      {
+        "candidate": "pi/N (SU(3), N=3)",
+        "formula": "$\\pi/N$, $N=3$",
+        "source": "Coxeter number of SU(N) is N",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 0.15741753332576197,
+        "log10_value": -0.8029468971195868,
+        "distance_from_-10": 9.197053102880414
+      },
+      {
+        "candidate": "pi/h^∨ (SU(3))",
+        "formula": "$\\pi/h^\\vee_{\\mathrm{SU}(3)}$",
+        "source": "dual Coxeter h^∨=N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 0.15741753332576197,
+        "log10_value": -0.8029468971195868,
+        "distance_from_-10": 9.197053102880414
+      },
+      {
+        "candidate": "pi/center_order (Z_3)",
+        "formula": "$\\pi/3$",
+        "source": "center order = N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 0.15741753332576197,
+        "log10_value": -0.8029468971195868,
+        "distance_from_-10": 9.197053102880414
+      },
+      {
+        "candidate": "Cartan long root (SU(3))",
+        "formula": "$\\pi/3$",
+        "source": "long-root Weyl reflection",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 0.15741753332576197,
+        "log10_value": -0.8029468971195868,
+        "distance_from_-10": 9.197053102880414
+      },
+      {
+        "candidate": "2pi/N (center, SU(3))",
+        "formula": "$2\\pi/N$",
+        "source": "center Z_N element",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 0.2289709575647447,
+        "log10_value": -0.640219599621887,
+        "distance_from_-10": 9.359780400378114
+      },
+      {
+        "candidate": "Cartan short (SU(3))",
+        "formula": "$2\\pi/3$",
+        "source": "short-root (adjoint weight)",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=22·8=176 (K3×SU(3)?)",
+        "b_value": 176,
+        "delta5_over_b": 0.2289709575647447,
+        "log10_value": -0.640219599621887,
+        "distance_from_-10": 9.359780400378114
+      },
+      {
+        "candidate": "pi/Coxeter_affine (SU(3)~)",
+        "formula": "$\\pi/(N+1)$",
+        "source": "affine Coxeter number h=N+1",
+        "delta": 0.7853981633974483,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 0.2988473484231264,
+        "log10_value": -0.5245505931691428,
+        "distance_from_-10": 9.475449406830858
+      },
+      {
+        "candidate": "pi/N (SU(3), N=3)",
+        "formula": "$\\pi/N$, $N=3$",
+        "source": "Coxeter number of SU(N) is N",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 0.4197800888686986,
+        "log10_value": -0.3769781648473056,
+        "distance_from_-10": 9.623021835152695
+      },
+      {
+        "candidate": "pi/h^∨ (SU(3))",
+        "formula": "$\\pi/h^\\vee_{\\mathrm{SU}(3)}$",
+        "source": "dual Coxeter h^∨=N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 0.4197800888686986,
+        "log10_value": -0.3769781648473056,
+        "distance_from_-10": 9.623021835152695
+      },
+      {
+        "candidate": "pi/center_order (Z_3)",
+        "formula": "$\\pi/3$",
+        "source": "center order = N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 0.4197800888686986,
+        "log10_value": -0.3769781648473056,
+        "distance_from_-10": 9.623021835152695
+      },
+      {
+        "candidate": "Cartan long root (SU(3))",
+        "formula": "$\\pi/3$",
+        "source": "long-root Weyl reflection",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 0.4197800888686986,
+        "log10_value": -0.3769781648473056,
+        "distance_from_-10": 9.623021835152695
+      },
+      {
+        "candidate": "pi/N (SU(3), N=3)",
+        "formula": "$\\pi/N$, $N=3$",
+        "source": "Coxeter number of SU(N) is N",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 0.6296701333030479,
+        "log10_value": -0.20088690579162435,
+        "distance_from_-10": 9.799113094208376
+      },
+      {
+        "candidate": "pi/N (SU(3), N=3)",
+        "formula": "$\\pi/N$, $N=3$",
+        "source": "Coxeter number of SU(N) is N",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 0.6296701333030479,
+        "log10_value": -0.20088690579162435,
+        "distance_from_-10": 9.799113094208376
+      },
+      {
+        "candidate": "pi/h^∨ (SU(3))",
+        "formula": "$\\pi/h^\\vee_{\\mathrm{SU}(3)}$",
+        "source": "dual Coxeter h^∨=N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 0.6296701333030479,
+        "log10_value": -0.20088690579162435,
+        "distance_from_-10": 9.799113094208376
+      },
+      {
+        "candidate": "pi/h^∨ (SU(3))",
+        "formula": "$\\pi/h^\\vee_{\\mathrm{SU}(3)}$",
+        "source": "dual Coxeter h^∨=N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 0.6296701333030479,
+        "log10_value": -0.20088690579162435,
+        "distance_from_-10": 9.799113094208376
+      },
+      {
+        "candidate": "pi/center_order (Z_3)",
+        "formula": "$\\pi/3$",
+        "source": "center order = N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 0.6296701333030479,
+        "log10_value": -0.20088690579162435,
+        "distance_from_-10": 9.799113094208376
+      },
+      {
+        "candidate": "pi/center_order (Z_3)",
+        "formula": "$\\pi/3$",
+        "source": "center order = N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 0.6296701333030479,
+        "log10_value": -0.20088690579162435,
+        "distance_from_-10": 9.799113094208376
+      },
+      {
+        "candidate": "Cartan long root (SU(3))",
+        "formula": "$\\pi/3$",
+        "source": "long-root Weyl reflection",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 0.6296701333030479,
+        "log10_value": -0.20088690579162435,
+        "distance_from_-10": 9.799113094208376
+      },
+      {
+        "candidate": "Cartan long root (SU(3))",
+        "formula": "$\\pi/3$",
+        "source": "long-root Weyl reflection",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 0.6296701333030479,
+        "log10_value": -0.20088690579162435,
+        "distance_from_-10": 9.799113094208376
+      },
+      {
+        "candidate": "pi/N (SU(3), N=3)",
+        "formula": "$\\pi/N$, $N=3$",
+        "source": "Coxeter number of SU(N) is N",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 1.2593402666060958,
+        "log10_value": 0.10014308987235683,
+        "distance_from_-10": 10.100143089872358
+      },
+      {
+        "candidate": "pi/h^∨ (SU(3))",
+        "formula": "$\\pi/h^\\vee_{\\mathrm{SU}(3)}$",
+        "source": "dual Coxeter h^∨=N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 1.2593402666060958,
+        "log10_value": 0.10014308987235683,
+        "distance_from_-10": 10.100143089872358
+      },
+      {
+        "candidate": "pi/center_order (Z_3)",
+        "formula": "$\\pi/3$",
+        "source": "center order = N for SU(N)",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 1.2593402666060958,
+        "log10_value": 0.10014308987235683,
+        "distance_from_-10": 10.100143089872358
+      },
+      {
+        "candidate": "Cartan long root (SU(3))",
+        "formula": "$\\pi/3$",
+        "source": "long-root Weyl reflection",
+        "delta": 1.0471975511965976,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 1.2593402666060958,
+        "log10_value": 0.10014308987235683,
+        "distance_from_-10": 10.100143089872358
+      },
+      {
+        "candidate": "2pi/N (center, SU(3))",
+        "formula": "$2\\pi/N$",
+        "source": "center Z_N element",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 1.6791203554747944,
+        "log10_value": 0.2250818264806568,
+        "distance_from_-10": 10.225081826480658
+      },
+      {
+        "candidate": "Cartan short (SU(3))",
+        "formula": "$2\\pi/3$",
+        "source": "short-root (adjoint weight)",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=24 (Leech lattice dim.)",
+        "b_value": 24,
+        "delta5_over_b": 1.6791203554747944,
+        "log10_value": 0.2250818264806568,
+        "distance_from_-10": 10.225081826480658
+      },
+      {
+        "candidate": "2pi/N (center, SU(3))",
+        "formula": "$2\\pi/N$",
+        "source": "center Z_N element",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 1.8317676605179576,
+        "log10_value": 0.2628703873700566,
+        "distance_from_-10": 10.262870387370057
+      },
+      {
+        "candidate": "Cartan short (SU(3))",
+        "formula": "$2\\pi/3$",
+        "source": "short-root (adjoint weight)",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=22 (K3)",
+        "b_value": 22,
+        "delta5_over_b": 1.8317676605179576,
+        "log10_value": 0.2628703873700566,
+        "distance_from_-10": 10.262870387370057
+      },
+      {
+        "candidate": "2pi/N (center, SU(3))",
+        "formula": "$2\\pi/N$",
+        "source": "center Z_N element",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 3.358240710949589,
+        "log10_value": 0.526111822144638,
+        "distance_from_-10": 10.526111822144639
+      },
+      {
+        "candidate": "Cartan short (SU(3))",
+        "formula": "$2\\pi/3$",
+        "source": "short-root (adjoint weight)",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=12 (charge-1 SU(3) dim.)",
+        "b_value": 12,
+        "delta5_over_b": 3.358240710949589,
+        "log10_value": 0.526111822144638,
+        "distance_from_-10": 10.526111822144639
+      },
+      {
+        "candidate": "2pi/N (center, SU(3))",
+        "formula": "$2\\pi/N$",
+        "source": "center Z_N element",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 5.037361066424383,
+        "log10_value": 0.7022030812003193,
+        "distance_from_-10": 10.70220308120032
+      },
+      {
+        "candidate": "Cartan short (SU(3))",
+        "formula": "$2\\pi/3$",
+        "source": "short-root (adjoint weight)",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=dim(SU(3))=8",
+        "b_value": 8,
+        "delta5_over_b": 5.037361066424383,
+        "log10_value": 0.7022030812003193,
+        "distance_from_-10": 10.70220308120032
+      },
+      {
+        "candidate": "2pi/N (center, SU(3))",
+        "formula": "$2\\pi/N$",
+        "source": "center Z_N element",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 13.432962843798355,
+        "log10_value": 1.1281718134726004,
+        "distance_from_-10": 11.128171813472601
+      },
+      {
+        "candidate": "Cartan short (SU(3))",
+        "formula": "$2\\pi/3$",
+        "source": "short-root (adjoint weight)",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=k=3 (SU(2), charge 3)",
+        "b_value": 3,
+        "delta5_over_b": 13.432962843798355,
+        "log10_value": 1.1281718134726004,
+        "distance_from_-10": 11.128171813472601
+      },
+      {
+        "candidate": "2pi/N (center, SU(3))",
+        "formula": "$2\\pi/N$",
+        "source": "center Z_N element",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 20.149444265697532,
+        "log10_value": 1.3042630725282816,
+        "distance_from_-10": 11.30426307252828
+      },
+      {
+        "candidate": "2pi/N (center, SU(3))",
+        "formula": "$2\\pi/N$",
+        "source": "center Z_N element",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 20.149444265697532,
+        "log10_value": 1.3042630725282816,
+        "distance_from_-10": 11.30426307252828
+      },
+      {
+        "candidate": "Cartan short (SU(3))",
+        "formula": "$2\\pi/3$",
+        "source": "short-root (adjoint weight)",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=2 (Â(K3) Dirac index)",
+        "b_value": 2,
+        "delta5_over_b": 20.149444265697532,
+        "log10_value": 1.3042630725282816,
+        "distance_from_-10": 11.30426307252828
+      },
+      {
+        "candidate": "Cartan short (SU(3))",
+        "formula": "$2\\pi/3$",
+        "source": "short-root (adjoint weight)",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=k=2 (SU(2), charge 2)",
+        "b_value": 2,
+        "delta5_over_b": 20.149444265697532,
+        "log10_value": 1.3042630725282816,
+        "distance_from_-10": 11.30426307252828
+      },
+      {
+        "candidate": "2pi/N (center, SU(3))",
+        "formula": "$2\\pi/N$",
+        "source": "center Z_N element",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 40.298888531395065,
+        "log10_value": 1.6052930681922628,
+        "distance_from_-10": 11.605293068192262
+      },
+      {
+        "candidate": "Cartan short (SU(3))",
+        "formula": "$2\\pi/3$",
+        "source": "short-root (adjoint weight)",
+        "delta": 2.0943951023931953,
+        "b_name": "b2=k=1 (SU(N) instanton)",
+        "b_value": 1,
+        "delta5_over_b": 40.298888531395065,
+        "log10_value": 1.6052930681922628,
+        "distance_from_-10": 11.605293068192262
+      }
+    ]
+  },
+  "E2_instanton_betti": {
+    "instanton_moduli_betti": [
+      {
+        "group": "SU(2)",
+        "charge_k": 1,
+        "dim_real": 8,
+        "b_2": 1,
+        "euler_chi_approx": 2
+      },
+      {
+        "group": "SU(2)",
+        "charge_k": 2,
+        "dim_real": 16,
+        "b_2": 2,
+        "euler_chi_approx": 3
+      },
+      {
+        "group": "SU(2)",
+        "charge_k": 3,
+        "dim_real": 24,
+        "b_2": 3,
+        "euler_chi_approx": 4
+      },
+      {
+        "group": "SU(2)",
+        "charge_k": 4,
+        "dim_real": 32,
+        "b_2": 4,
+        "euler_chi_approx": 5
+      },
+      {
+        "group": "SU(2)",
+        "charge_k": 5,
+        "dim_real": 40,
+        "b_2": 5,
+        "euler_chi_approx": 6
+      },
+      {
+        "group": "SU(3)",
+        "charge_k": 1,
+        "dim_real": 12,
+        "b_2": 1,
+        "euler_chi_approx": 3
+      },
+      {
+        "group": "SU(3)",
+        "charge_k": 2,
+        "dim_real": 24,
+        "b_2": 2,
+        "euler_chi_approx": 6
+      },
+      {
+        "group": "SU(3)",
+        "charge_k": 3,
+        "dim_real": 36,
+        "b_2": 3,
+        "euler_chi_approx": 10
+      },
+      {
+        "group": "SU(3)",
+        "charge_k": 4,
+        "dim_real": 48,
+        "b_2": 4,
+        "euler_chi_approx": 15
+      },
+      {
+        "group": "SU(3)",
+        "charge_k": 5,
+        "dim_real": 60,
+        "b_2": 5,
+        "euler_chi_approx": 21
+      },
+      {
+        "group": "SU(4)",
+        "charge_k": 1,
+        "dim_real": 16,
+        "b_2": 1,
+        "euler_chi_approx": 4
+      },
+      {
+        "group": "SU(4)",
+        "charge_k": 2,
+        "dim_real": 32,
+        "b_2": 2,
+        "euler_chi_approx": 10
+      },
+      {
+        "group": "SU(4)",
+        "charge_k": 3,
+        "dim_real": 48,
+        "b_2": 3,
+        "euler_chi_approx": 20
+      },
+      {
+        "group": "SU(4)",
+        "charge_k": 4,
+        "dim_real": 64,
+        "b_2": 4,
+        "euler_chi_approx": 35
+      },
+      {
+        "group": "SU(4)",
+        "charge_k": 5,
+        "dim_real": 80,
+        "b_2": 5,
+        "euler_chi_approx": 56
+      },
+      {
+        "group": "SU(5)",
+        "charge_k": 1,
+        "dim_real": 20,
+        "b_2": 1,
+        "euler_chi_approx": 5
+      },
+      {
+        "group": "SU(5)",
+        "charge_k": 2,
+        "dim_real": 40,
+        "b_2": 2,
+        "euler_chi_approx": 15
+      },
+      {
+        "group": "SU(5)",
+        "charge_k": 3,
+        "dim_real": 60,
+        "b_2": 3,
+        "euler_chi_approx": 35
+      },
+      {
+        "group": "SU(5)",
+        "charge_k": 4,
+        "dim_real": 80,
+        "b_2": 4,
+        "euler_chi_approx": 70
+      },
+      {
+        "group": "SU(5)",
+        "charge_k": 5,
+        "dim_real": 100,
+        "b_2": 5,
+        "euler_chi_approx": 126
+      }
+    ],
+    "k3_surface": {
+      "group": "K3 (no gauge group)",
+      "charge_k": null,
+      "dim_real": 4,
+      "b_2": 22,
+      "euler_chi": 24,
+      "hodge_11": 20,
+      "hodge_20": 1,
+      "holonomy": "Sp(1) ≅ SU(2)"
+    },
+    "hilb_k3_betti": [
+      {
+        "space": "Hilb^k(K3)",
+        "dim_real": 4,
+        "b_2": 23,
+        "euler_chi": 23
+      },
+      {
+        "space": "Hilb^k(K3)",
+        "dim_real": 8,
+        "b_2": 23,
+        "euler_chi": 276
+      },
+      {
+        "space": "Hilb^k(K3)",
+        "dim_real": 12,
+        "b_2": 23,
+        "euler_chi": 2300
+      },
+      {
+        "space": "Hilb^k(K3)",
+        "dim_real": 16,
+        "b_2": 23,
+        "euler_chi": 14950
+      },
+      {
+        "space": "Hilb^k(K3)",
+        "dim_real": 20,
+        "b_2": 23,
+        "euler_chi": 80730
+      }
+    ],
+    "summary": {
+      "b2_for_SU2_k1": 1,
+      "b2_for_SU3_k1": 1,
+      "b2_for_SUN_general_k": "b_2 = k (universal, from ADHM U(1)^k)",
+      "b2_for_Hilb_k_K3": 23
+    }
+  },
+  "E3_scale_bridge": {
+    "a_C_value": 0.0008276304915843545,
+    "target_theta": 1e-10,
+    "ratio_target_over_aC": 1.2082686780735617e-07,
+    "log10_ratio": -6.9178364825771785,
+    "per_scale_p": [
+      {
+        "scale": "Planck",
+        "M_gev": 1.22e+19,
+        "ratio_LambdaQCD_over_M": 1.639344262295082e-20,
+        "log10_ratio": -19.785329835010767,
+        "exponent_p_needed": 0.34964473881733565,
+        "nearest_nice_rational": "1/3",
+        "predicted_theta_at_p": 1.0000000000000011e-10,
+        "log10_predicted": -10.0,
+        "distance_from_target_log10": 0.0
+      },
+      {
+        "scale": "GUT",
+        "M_gev": 1e+16,
+        "ratio_LambdaQCD_over_M": 2e-17,
+        "log10_ratio": -16.69897000433602,
+        "exponent_p_needed": 0.4142672560511761,
+        "nearest_nice_rational": "2/5",
+        "predicted_theta_at_p": 1.0000000000000004e-10,
+        "log10_predicted": -10.0,
+        "distance_from_target_log10": 0.0
+      },
+      {
+        "scale": "SUSY",
+        "M_gev": 1000.0,
+        "ratio_LambdaQCD_over_M": 0.0002,
+        "log10_ratio": -3.6989700043360187,
+        "exponent_p_needed": 1.8702061585976446,
+        "nearest_nice_rational": null,
+        "predicted_theta_at_p": 1.0000000000000007e-10,
+        "log10_predicted": -10.0,
+        "distance_from_target_log10": 0.0
+      },
+      {
+        "scale": "top",
+        "M_gev": 173.0,
+        "ratio_LambdaQCD_over_M": 0.0011560693641618498,
+        "log10_ratio": -2.9370161074648142,
+        "exponent_p_needed": 2.355396167216987,
+        "nearest_nice_rational": null,
+        "predicted_theta_at_p": 1.0000000000000011e-10,
+        "log10_predicted": -10.0,
+        "distance_from_target_log10": 0.0
+      },
+      {
+        "scale": "W",
+        "M_gev": 80.4,
+        "ratio_LambdaQCD_over_M": 0.0024875621890547263,
+        "log10_ratio": -2.60422605308447,
+        "exponent_p_needed": 2.6563886320020598,
+        "nearest_nice_rational": "8/3",
+        "predicted_theta_at_p": 9.999999999999996e-11,
+        "log10_predicted": -10.0,
+        "distance_from_target_log10": 0.0
+      },
+      {
+        "scale": "Higgs",
+        "M_gev": 125.0,
+        "ratio_LambdaQCD_over_M": 0.0016,
+        "log10_ratio": -2.795880017344075,
+        "exponent_p_needed": 2.474296622052017,
+        "nearest_nice_rational": null,
+        "predicted_theta_at_p": 9.999999999999985e-11,
+        "log10_predicted": -10.0,
+        "distance_from_target_log10": 0.0
+      }
+    ],
+    "best_fixed_power_matches": [
+      {
+        "scale": "Higgs",
+        "power_p": 2.5,
+        "predicted_theta": 8.474936233823791e-11,
+        "log10_value": -10.07186356078301,
+        "distance_from_-10": 0.07186356078300982
+      },
+      {
+        "scale": "Planck",
+        "power_p": 0.3333333333333333,
+        "predicted_theta": 2.1024541695013673e-10,
+        "log10_value": -9.67727346242641,
+        "distance_from_-10": 0.3227265375735904
+      },
+      {
+        "scale": "W",
+        "power_p": 2.5,
+        "predicted_theta": 2.554296744519762e-10,
+        "log10_value": -9.592728650133996,
+        "distance_from_-10": 0.40727134986600433
+      },
+      {
+        "scale": "top",
+        "power_p": 2.5,
+        "predicted_theta": 3.76093834541209e-11,
+        "log10_value": -10.424703786084857,
+        "distance_from_-10": 0.4247037860848568
+      },
+      {
+        "scale": "SUSY",
+        "power_p": 2,
+        "predicted_theta": 3.310521966337418e-11,
+        "log10_value": -10.480103526094858,
+        "distance_from_-10": 0.48010352609485807
+      },
+      {
+        "scale": "W",
+        "power_p": 3,
+        "predicted_theta": 1.2739674249238978e-11,
+        "log10_value": -10.894841676676231,
+        "distance_from_-10": 0.894841676676231
+      },
+      {
+        "scale": "top",
+        "power_p": 2,
+        "predicted_theta": 1.106125151638016e-09,
+        "log10_value": -8.95619573235245,
+        "distance_from_-10": 1.04380426764755
+      },
+      {
+        "scale": "Higgs",
+        "power_p": 2,
+        "predicted_theta": 2.1187340584559475e-09,
+        "log10_value": -8.673923552110972,
+        "distance_from_-10": 1.3260764478890277
+      },
+      {
+        "scale": "GUT",
+        "power_p": 0.3333333333333333,
+        "predicted_theta": 2.246534786387676e-09,
+        "log10_value": -8.648486852201493,
+        "distance_from_-10": 1.3515131477985065
+      },
+      {
+        "scale": "SUSY",
+        "power_p": 1.5,
+        "predicted_theta": 2.3408925316642118e-09,
+        "log10_value": -8.630618523926849,
+        "distance_from_-10": 1.3693814760731513
+      }
+    ]
+  },
+  "E4_theta_expansions": {
+    "delta_required_table": [
+      {
+        "power_n": 2,
+        "b": 1,
+        "delta_required_for_1e-10": 1e-05,
+        "log10_delta": -5.0,
+        "pi_over_N_equivalent": 314159.2653589793,
+        "comment": ""
+      },
+      {
+        "power_n": 2,
+        "b": 2,
+        "delta_required_for_1e-10": 1.4142135623730951e-05,
+        "log10_delta": -4.849485002168009,
+        "pi_over_N_equivalent": 222144.1469079183,
+        "comment": ""
+      },
+      {
+        "power_n": 2,
+        "b": 8,
+        "delta_required_for_1e-10": 2.8284271247461902e-05,
+        "log10_delta": -4.548455006504028,
+        "pi_over_N_equivalent": 111072.07345395915,
+        "comment": ""
+      },
+      {
+        "power_n": 2,
+        "b": 12,
+        "delta_required_for_1e-10": 3.464101615137755e-05,
+        "log10_delta": -4.4604093769761874,
+        "pi_over_N_equivalent": 90689.96821171089,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 2,
+        "b": 22,
+        "delta_required_for_1e-10": 4.69041575982343e-05,
+        "log10_delta": -4.328788659588897,
+        "pi_over_N_equivalent": 66978.9804242867,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 2,
+        "b": 23,
+        "delta_required_for_1e-10": 4.7958315233127196e-05,
+        "log10_delta": -4.3191360819912035,
+        "pi_over_N_equivalent": 65506.73513692863,
+        "comment": ""
+      },
+      {
+        "power_n": 2,
+        "b": 24,
+        "delta_required_for_1e-10": 4.898979485566356e-05,
+        "log10_delta": -4.309894379144197,
+        "pi_over_N_equivalent": 64127.491508093204,
+        "comment": ""
+      },
+      {
+        "power_n": 2,
+        "b": 176,
+        "delta_required_for_1e-10": 0.000132664991614216,
+        "log10_delta": -3.877243666092925,
+        "pi_over_N_equivalent": 23680.64562748707,
+        "comment": ""
+      },
+      {
+        "power_n": 3,
+        "b": 1,
+        "delta_required_for_1e-10": 0.0004641588833612781,
+        "log10_delta": -3.333333333333333,
+        "pi_over_N_equivalent": 6768.356194843166,
+        "comment": ""
+      },
+      {
+        "power_n": 3,
+        "b": 2,
+        "delta_required_for_1e-10": 0.0005848035476425735,
+        "log10_delta": -3.2329900014453394,
+        "pi_over_N_equivalent": 5372.047871894761,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 3,
+        "b": 8,
+        "delta_required_for_1e-10": 0.0009283177667225561,
+        "log10_delta": -3.032303337669352,
+        "pi_over_N_equivalent": 3384.178097421583,
+        "comment": ""
+      },
+      {
+        "power_n": 3,
+        "b": 12,
+        "delta_required_for_1e-10": 0.0010626585691826114,
+        "log10_delta": -2.973606251317458,
+        "pi_over_N_equivalent": 2956.3518750959506,
+        "comment": ""
+      },
+      {
+        "power_n": 3,
+        "b": 22,
+        "delta_required_for_1e-10": 0.0013005914468513875,
+        "log10_delta": -2.885859106392598,
+        "pi_over_N_equivalent": 2415.5107748826895,
+        "comment": ""
+      },
+      {
+        "power_n": 3,
+        "b": 23,
+        "delta_required_for_1e-10": 0.0013200061217959129,
+        "log10_delta": -2.8794240546608023,
+        "pi_over_N_equivalent": 2379.983396831183,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 3,
+        "b": 24,
+        "delta_required_for_1e-10": 0.0013388659001643396,
+        "log10_delta": -2.8732629194294645,
+        "pi_over_N_equivalent": 2346.458038257735,
+        "comment": ""
+      },
+      {
+        "power_n": 3,
+        "b": 176,
+        "delta_required_for_1e-10": 0.002601182893702775,
+        "log10_delta": -2.5848291107286165,
+        "pi_over_N_equivalent": 1207.7553874413447,
+        "comment": ""
+      },
+      {
+        "power_n": 4,
+        "b": 1,
+        "delta_required_for_1e-10": 0.0031622776601683794,
+        "log10_delta": -2.5,
+        "pi_over_N_equivalent": 993.4588265796101,
+        "comment": ""
+      },
+      {
+        "power_n": 4,
+        "b": 2,
+        "delta_required_for_1e-10": 0.0037606030930863936,
+        "log10_delta": -2.4247425010840047,
+        "pi_over_N_equivalent": 835.3959659729558,
+        "comment": ""
+      },
+      {
+        "power_n": 4,
+        "b": 8,
+        "delta_required_for_1e-10": 0.0053182958969449886,
+        "log10_delta": -2.274227503252014,
+        "pi_over_N_equivalent": 590.7141525153634,
+        "comment": ""
+      },
+      {
+        "power_n": 4,
+        "b": 12,
+        "delta_required_for_1e-10": 0.0058856619127654235,
+        "log10_delta": -2.2302046884880937,
+        "pi_over_N_equivalent": 533.7704917735738,
+        "comment": ""
+      },
+      {
+        "power_n": 4,
+        "b": 22,
+        "delta_required_for_1e-10": 0.006848661007688605,
+        "log10_delta": -2.1643943297944483,
+        "pi_over_N_equivalent": 458.7163315665507,
+        "comment": ""
+      },
+      {
+        "power_n": 4,
+        "b": 23,
+        "delta_required_for_1e-10": 0.006925194237934933,
+        "log10_delta": -2.1595680409956017,
+        "pi_over_N_equivalent": 453.64686471618796,
+        "comment": ""
+      },
+      {
+        "power_n": 4,
+        "b": 24,
+        "delta_required_for_1e-10": 0.006999271023161166,
+        "log10_delta": -2.1549471895720984,
+        "pi_over_N_equivalent": 448.84569310061056,
+        "comment": ""
+      },
+      {
+        "power_n": 4,
+        "b": 176,
+        "delta_required_for_1e-10": 0.01151802898130648,
+        "log10_delta": -1.9386218330464626,
+        "pi_over_N_equivalent": 272.75436263344466,
+        "comment": ""
+      },
+      {
+        "power_n": 5,
+        "b": 1,
+        "delta_required_for_1e-10": 0.009999999999999997,
+        "log10_delta": -2.0,
+        "pi_over_N_equivalent": 314.15926535897944,
+        "comment": ""
+      },
+      {
+        "power_n": 5,
+        "b": 2,
+        "delta_required_for_1e-10": 0.011486983549970348,
+        "log10_delta": -1.9397940008672039,
+        "pi_over_N_equivalent": 273.49152542295604,
+        "comment": ""
+      },
+      {
+        "power_n": 5,
+        "b": 8,
+        "delta_required_for_1e-10": 0.015157165665103977,
+        "log10_delta": -1.8193820026016114,
+        "pi_over_N_equivalent": 207.2678179418871,
+        "comment": ""
+      },
+      {
+        "power_n": 5,
+        "b": 12,
+        "delta_required_for_1e-10": 0.016437518295172253,
+        "log10_delta": -1.784163750790475,
+        "pi_over_N_equivalent": 191.1232947197685,
+        "comment": ""
+      },
+      {
+        "power_n": 5,
+        "b": 22,
+        "delta_required_for_1e-10": 0.01855600736258084,
+        "log10_delta": -1.7315154638355588,
+        "pi_over_N_equivalent": 169.30326617163232,
+        "comment": ""
+      },
+      {
+        "power_n": 5,
+        "b": 23,
+        "delta_required_for_1e-10": 0.01872171230554857,
+        "log10_delta": -1.7276544327964816,
+        "pi_over_N_equivalent": 167.80477139682978,
+        "comment": ""
+      },
+      {
+        "power_n": 5,
+        "b": 24,
+        "delta_required_for_1e-10": 0.018881750225898036,
+        "log10_delta": -1.723957751657679,
+        "pi_over_N_equivalent": 166.3824918773056,
+        "comment": ""
+      },
+      {
+        "power_n": 5,
+        "b": 176,
+        "delta_required_for_1e-10": 0.0281256477677527,
+        "log10_delta": -1.5508974664371702,
+        "pi_over_N_equivalent": 111.69849951657889,
+        "comment": ""
+      },
+      {
+        "power_n": 6,
+        "b": 1,
+        "delta_required_for_1e-10": 0.021544346900318843,
+        "log10_delta": -1.6666666666666665,
+        "pi_over_N_equivalent": 145.8198138066232,
+        "comment": ""
+      },
+      {
+        "power_n": 6,
+        "b": 2,
+        "delta_required_for_1e-10": 0.02418271175121958,
+        "log10_delta": -1.6164950007226697,
+        "pi_over_N_equivalent": 129.91068519978356,
+        "comment": ""
+      },
+      {
+        "power_n": 6,
+        "b": 8,
+        "delta_required_for_1e-10": 0.030468307578901656,
+        "log10_delta": -1.516151668834676,
+        "pi_over_N_equivalent": 103.11017917402302,
+        "comment": ""
+      },
+      {
+        "power_n": 6,
+        "b": 12,
+        "delta_required_for_1e-10": 0.0325984442754959,
+        "log10_delta": -1.486803125658729,
+        "pi_over_N_equivalent": 96.37247185907316,
+        "comment": ""
+      },
+      {
+        "power_n": 6,
+        "b": 22,
+        "delta_required_for_1e-10": 0.036063713714083685,
+        "log10_delta": -1.442929553196299,
+        "pi_over_N_equivalent": 87.11228905865374,
+        "comment": ""
+      },
+      {
+        "power_n": 6,
+        "b": 23,
+        "delta_required_for_1e-10": 0.03633188849751569,
+        "log10_delta": -1.4397120273304012,
+        "pi_over_N_equivalent": 86.46929139960919,
+        "comment": ""
+      },
+      {
+        "power_n": 6,
+        "b": 24,
+        "delta_required_for_1e-10": 0.03659051653317208,
+        "log10_delta": -1.4366314597147323,
+        "pi_over_N_equivalent": 85.85811164326421,
+        "comment": ""
+      },
+      {
+        "power_n": 6,
+        "b": 176,
+        "delta_required_for_1e-10": 0.051001793043997726,
+        "log10_delta": -1.2924145553643083,
+        "pi_over_N_equivalent": 61.597690318056756,
+        "comment": ""
+      },
+      {
+        "power_n": 7,
+        "b": 1,
+        "delta_required_for_1e-10": 0.03727593720314941,
+        "log10_delta": -1.4285714285714284,
+        "pi_over_N_equivalent": 84.27937402267013,
+        "comment": ""
+      },
+      {
+        "power_n": 7,
+        "b": 2,
+        "delta_required_for_1e-10": 0.0411559713783608,
+        "log10_delta": -1.385567143476574,
+        "pi_over_N_equivalent": 76.33382346168109,
+        "comment": ""
+      },
+      {
+        "power_n": 7,
+        "b": 8,
+        "delta_required_for_1e-10": 0.0501696910622704,
+        "log10_delta": -1.299558573286865,
+        "pi_over_N_equivalent": 62.619334244862344,
+        "comment": ""
+      },
+      {
+        "power_n": 7,
+        "b": 12,
+        "delta_required_for_1e-10": 0.053161511556276644,
+        "log10_delta": -1.2744026791360534,
+        "pi_over_N_equivalent": 59.09524694880263,
+        "comment": ""
+      },
+      {
+        "power_n": 7,
+        "b": 22,
+        "delta_required_for_1e-10": 0.05796999195733658,
+        "log10_delta": -1.236796759882542,
+        "pi_over_N_equivalent": 54.19342917801111,
+        "comment": ""
+      },
+      {
+        "power_n": 7,
+        "b": 23,
+        "delta_required_for_1e-10": 0.05833928732113474,
+        "log10_delta": -1.2340388805689153,
+        "pi_over_N_equivalent": 53.85037764168366,
+        "comment": ""
+      },
+      {
+        "power_n": 7,
+        "b": 24,
+        "delta_required_for_1e-10": 0.05869506744033424,
+        "log10_delta": -1.231398394041199,
+        "pi_over_N_equivalent": 53.523963607049964,
+        "comment": ""
+      },
+      {
+        "power_n": 7,
+        "b": 176,
+        "delta_required_for_1e-10": 0.07802182334227543,
+        "log10_delta": -1.1077839045979785,
+        "pi_over_N_equivalent": 40.265563133636086,
+        "comment": ""
+      },
+      {
+        "power_n": 8,
+        "b": 1,
+        "delta_required_for_1e-10": 0.05623413251903491,
+        "log10_delta": -1.25,
+        "pi_over_N_equivalent": 55.86629530608271,
+        "comment": ""
+      },
+      {
+        "power_n": 8,
+        "b": 2,
+        "delta_required_for_1e-10": 0.061323756351730395,
+        "log10_delta": -1.2123712505420023,
+        "pi_over_N_equivalent": 51.22961867454399,
+        "comment": ""
+      },
+      {
+        "power_n": 8,
+        "b": 8,
+        "delta_required_for_1e-10": 0.0729266473721711,
+        "log10_delta": -1.137113751626007,
+        "pi_over_N_equivalent": 43.07880269823879,
+        "comment": ""
+      },
+      {
+        "power_n": 8,
+        "b": 12,
+        "delta_required_for_1e-10": 0.07671806770745353,
+        "log10_delta": -1.1151023442440469,
+        "pi_over_N_equivalent": 40.9498407281258,
+        "comment": ""
+      },
+      {
+        "power_n": 8,
+        "b": 22,
+        "delta_required_for_1e-10": 0.08275663724251128,
+        "log10_delta": -1.0821971648972242,
+        "pi_over_N_equivalent": 37.96182104866856,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 8,
+        "b": 23,
+        "delta_required_for_1e-10": 0.08321775193992526,
+        "log10_delta": -1.0797840204978009,
+        "pi_over_N_equivalent": 37.75147225627656,
+        "comment": ""
+      },
+      {
+        "power_n": 8,
+        "b": 24,
+        "delta_required_for_1e-10": 0.08366164607011486,
+        "log10_delta": -1.0774735947860492,
+        "pi_over_N_equivalent": 37.55116951627868,
+        "comment": ""
+      },
+      {
+        "power_n": 8,
+        "b": 176,
+        "delta_required_for_1e-10": 0.10732208058599349,
+        "log10_delta": -0.9693109165232312,
+        "pi_over_N_equivalent": 29.27256568672784,
+        "comment": ""
+      },
+      {
+        "power_n": 10,
+        "b": 1,
+        "delta_required_for_1e-10": 0.09999999999999999,
+        "log10_delta": -1.0,
+        "pi_over_N_equivalent": 31.415926535897935,
+        "comment": ""
+      },
+      {
+        "power_n": 10,
+        "b": 2,
+        "delta_required_for_1e-10": 0.1071773462536293,
+        "log10_delta": -0.9698970004336019,
+        "pi_over_N_equivalent": 29.312095917689422,
+        "comment": ""
+      },
+      {
+        "power_n": 10,
+        "b": 8,
+        "delta_required_for_1e-10": 0.12311444133449162,
+        "log10_delta": -0.9096910013008057,
+        "pi_over_N_equivalent": 25.517661612534546,
+        "comment": ""
+      },
+      {
+        "power_n": 10,
+        "b": 12,
+        "delta_required_for_1e-10": 0.12820888539868153,
+        "log10_delta": -0.8920818753952375,
+        "pi_over_N_equivalent": 24.503704589745233,
+        "comment": ""
+      },
+      {
+        "power_n": 10,
+        "b": 22,
+        "delta_required_for_1e-10": 0.13622043665537428,
+        "log10_delta": -0.8657577319177794,
+        "pi_over_N_equivalent": 23.062564845080814,
+        "comment": ""
+      },
+      {
+        "power_n": 10,
+        "b": 23,
+        "delta_required_for_1e-10": 0.13682730833261528,
+        "log10_delta": -0.8638272163982408,
+        "pi_over_N_equivalent": 22.96027519559805,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 10,
+        "b": 24,
+        "delta_required_for_1e-10": 0.1374108810316637,
+        "log10_delta": -0.8619788758288394,
+        "pi_over_N_equivalent": 22.86276479710419,
+        "comment": ""
+      },
+      {
+        "power_n": 10,
+        "b": 176,
+        "delta_required_for_1e-10": 0.1677070295716691,
+        "log10_delta": -0.7754487332185851,
+        "pi_over_N_equivalent": 18.732623561537967,
+        "comment": ""
+      },
+      {
+        "power_n": 12,
+        "b": 1,
+        "delta_required_for_1e-10": 0.14677992676220697,
+        "log10_delta": -0.8333333333333333,
+        "pi_over_N_equivalent": 21.40342159101481,
+        "comment": ""
+      },
+      {
+        "power_n": 12,
+        "b": 2,
+        "delta_required_for_1e-10": 0.15550791539731854,
+        "log10_delta": -0.8082475003613349,
+        "pi_over_N_equivalent": 20.202139843255623,
+        "comment": ""
+      },
+      {
+        "power_n": 12,
+        "b": 8,
+        "delta_required_for_1e-10": 0.17455173324519485,
+        "log10_delta": -0.758075834417338,
+        "pi_over_N_equivalent": 17.998060490048307,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 12,
+        "b": 12,
+        "delta_required_for_1e-10": 0.18055039262071934,
+        "log10_delta": -0.7434015628293645,
+        "pi_over_N_equivalent": 17.40008763198488,
+        "comment": ""
+      },
+      {
+        "power_n": 12,
+        "b": 22,
+        "delta_required_for_1e-10": 0.1899044857660916,
+        "log10_delta": -0.7214647765981494,
+        "pi_over_N_equivalent": 16.54301445759077,
+        "comment": ""
+      },
+      {
+        "power_n": 12,
+        "b": 23,
+        "delta_required_for_1e-10": 0.1906092560646405,
+        "log10_delta": -0.7198560136652006,
+        "pi_over_N_equivalent": 16.481847306116123,
+        "comment": ""
+      },
+      {
+        "power_n": 12,
+        "b": 24,
+        "delta_required_for_1e-10": 0.19128647765373297,
+        "log10_delta": -0.7183157298573661,
+        "pi_over_N_equivalent": 16.423495754240967,
+        "comment": ""
+      },
+      {
+        "power_n": 12,
+        "b": 176,
+        "delta_required_for_1e-10": 0.2258357656439691,
+        "log10_delta": -0.6462072776821541,
+        "pi_over_N_equivalent": 13.910961554878448,
+        "comment": ""
+      }
+    ],
+    "natural_pi_over_N_matches": [
+      {
+        "power_n": 2,
+        "b": 8,
+        "delta_required_for_1e-10": 2.8284271247461902e-05,
+        "log10_delta": -4.548455006504028,
+        "pi_over_N_equivalent": 111072.07345395915,
+        "comment": ""
+      },
+      {
+        "power_n": 2,
+        "b": 12,
+        "delta_required_for_1e-10": 3.464101615137755e-05,
+        "log10_delta": -4.4604093769761874,
+        "pi_over_N_equivalent": 90689.96821171089,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 2,
+        "b": 22,
+        "delta_required_for_1e-10": 4.69041575982343e-05,
+        "log10_delta": -4.328788659588897,
+        "pi_over_N_equivalent": 66978.9804242867,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 3,
+        "b": 2,
+        "delta_required_for_1e-10": 0.0005848035476425735,
+        "log10_delta": -3.2329900014453394,
+        "pi_over_N_equivalent": 5372.047871894761,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 3,
+        "b": 23,
+        "delta_required_for_1e-10": 0.0013200061217959129,
+        "log10_delta": -2.8794240546608023,
+        "pi_over_N_equivalent": 2379.983396831183,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 6,
+        "b": 2,
+        "delta_required_for_1e-10": 0.02418271175121958,
+        "log10_delta": -1.6164950007226697,
+        "pi_over_N_equivalent": 129.91068519978356,
+        "comment": ""
+      },
+      {
+        "power_n": 7,
+        "b": 12,
+        "delta_required_for_1e-10": 0.053161511556276644,
+        "log10_delta": -1.2744026791360534,
+        "pi_over_N_equivalent": 59.09524694880263,
+        "comment": ""
+      },
+      {
+        "power_n": 8,
+        "b": 8,
+        "delta_required_for_1e-10": 0.0729266473721711,
+        "log10_delta": -1.137113751626007,
+        "pi_over_N_equivalent": 43.07880269823879,
+        "comment": ""
+      },
+      {
+        "power_n": 8,
+        "b": 12,
+        "delta_required_for_1e-10": 0.07671806770745353,
+        "log10_delta": -1.1151023442440469,
+        "pi_over_N_equivalent": 40.9498407281258,
+        "comment": ""
+      },
+      {
+        "power_n": 8,
+        "b": 22,
+        "delta_required_for_1e-10": 0.08275663724251128,
+        "log10_delta": -1.0821971648972242,
+        "pi_over_N_equivalent": 37.96182104866856,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 10,
+        "b": 22,
+        "delta_required_for_1e-10": 0.13622043665537428,
+        "log10_delta": -0.8657577319177794,
+        "pi_over_N_equivalent": 23.062564845080814,
+        "comment": ""
+      },
+      {
+        "power_n": 10,
+        "b": 23,
+        "delta_required_for_1e-10": 0.13682730833261528,
+        "log10_delta": -0.8638272163982408,
+        "pi_over_N_equivalent": 22.96027519559805,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 12,
+        "b": 8,
+        "delta_required_for_1e-10": 0.17455173324519485,
+        "log10_delta": -0.758075834417338,
+        "pi_over_N_equivalent": 17.998060490048307,
+        "comment": "pi/N"
+      },
+      {
+        "power_n": 12,
+        "b": 176,
+        "delta_required_for_1e-10": 0.2258357656439691,
+        "log10_delta": -0.6462072776821541,
+        "pi_over_N_equivalent": 13.910961554878448,
+        "comment": ""
+      }
+    ],
+    "matches_for_pi_over_7": [
+      {
+        "power_n": 25,
+        "b": 22,
+        "value": 9.096475123595646e-11,
+        "log10_value": -10.041126863825282,
+        "distance_from_-10": 0.041126863825281745
+      },
+      {
+        "power_n": 28,
+        "b": 2,
+        "value": 9.045265508671667e-11,
+        "log10_value": -10.043578680627425,
+        "distance_from_-10": 0.04357868062742476
+      },
+      {
+        "power_n": 26,
+        "b": 8,
+        "value": 1.1226843344298368e-10,
+        "log10_value": -9.949742337315142,
+        "distance_from_-10": 0.05025766268485832
+      },
+      {
+        "power_n": 25,
+        "b": 23,
+        "value": 8.700976205178445e-11,
+        "log10_value": -10.060432019020668,
+        "distance_from_-10": 0.06043201902066819
+      },
+      {
+        "power_n": 25,
+        "b": 24,
+        "value": 8.338435529962676e-11,
+        "log10_value": -10.078915424714681,
+        "distance_from_-10": 0.07891542471468149
+      },
+      {
+        "power_n": 29,
+        "b": 1,
+        "value": 8.119011334803445e-11,
+        "log10_value": -10.090496852283566,
+        "distance_from_-10": 0.0904968522835663
+      },
+      {
+        "power_n": 22,
+        "b": 176,
+        "value": 1.2578465158699994e-10,
+        "log10_value": -9.900372348856855,
+        "distance_from_-10": 0.09962765114314465
+      },
+      {
+        "power_n": 26,
+        "b": 12,
+        "value": 7.484562229532245e-11,
+        "log10_value": -10.125833596370823,
+        "distance_from_-10": 0.12583359637082303
+      },
+      {
+        "power_n": 25,
+        "b": 12,
+        "value": 1.6676871059925353e-10,
+        "log10_value": -9.7778854290507,
+        "distance_from_-10": 0.22211457094929976
+      },
+      {
+        "power_n": 23,
+        "b": 176,
+        "value": 5.645201962286725e-11,
+        "log10_value": -10.248320516176978,
+        "distance_from_-10": 0.24832051617697815
+      }
+    ]
+  },
+  "E5_sweep": {
+    "figure": "/home/z/my-project/download/qcd_bridge_E5_sweep.png",
+    "delta_range": [
+      0.001,
+      1.0
+    ],
+    "b_range": [
+      1.0,
+      200.0
+    ],
+    "a_C_value": 0.0008276304915843545,
+    "log10_a_C": -3.082163517422821,
+    "theta_target_log10": -10,
+    "comment": "a_C lives at log10 = -3.08, far above the θ=10^-10 contour."
+  },
+  "figures": {
+    "log_curve": "/home/z/my-project/download/qcd_bridge_log_curve.png",
+    "scale_ladder": "/home/z/my-project/download/qcd_bridge_scale_ladder.png",
+    "analogy_diagram": "/home/z/my-project/download/qcd_bridge_analogy.png",
+    "sweep_heatmap": "/home/z/my-project/download/qcd_bridge_E5_sweep.png"
+  }
+}
