@@ -1,0 +1,351 @@
+{
+  "A_monte_carlo": {
+    "n_samples": 100000,
+    "observed_r_tilde": 0.39101233011384734,
+    "gue_mean_r_tilde": 0.6020536686259688,
+    "gue_std_r_tilde": 0.23074649426161412,
+    "poisson_mean_r_tilde": 0.3873391436547386,
+    "poisson_std_r_tilde": 0.279806946048468,
+    "gue_cdf_at_observed": 0.21055,
+    "poisson_cdf_at_observed": 0.55918,
+    "gue_pdf_at_observed": 1.20275,
+    "poisson_pdf_at_observed": 1.045,
+    "bayes_factor_GUE_over_Poisson": 1.1509569377990432,
+    "interpretation": "With N=3 there is exactly one folded ratio r~=0.391. Under GUE, 21.1% of samples have r~ <= 0.391. Under Poisson, 55.9% of samples have r~ <= 0.391. Bayes factor GUE/Poisson = 1.15. A Bayes factor < 3 is 'barely worth mentioning' (Jeffreys)."
+  },
+  "B_cabibbo_audit": {
+    "theta_C_rad_used": 0.22632675183246945,
+    "theta_C_deg": 12.96756767090527,
+    "c_K3_target": 0.04017757639214903,
+    "hypotheses": [
+      {
+        "label": "H2",
+        "formula": "sin^2(2 theta_C)/4",
+        "value": 0.047819485932411275,
+        "abs_diff_from_c_K3": 0.007641909540262247,
+        "rel_diff_from_c_K3": 0.19020334789919105,
+        "agreement_percent": 80.9796652100809
+      },
+      {
+        "label": "H5",
+        "formula": "sin^2(theta_C) cos^2(theta_C)",
+        "value": 0.04781948593241129,
+        "abs_diff_from_c_K3": 0.007641909540262261,
+        "rel_diff_from_c_K3": 0.1902033478991914,
+        "agreement_percent": 80.97966521008087
+      },
+      {
+        "label": "H4",
+        "formula": "(1 - cos(2 theta_C))/2 = sin^2(theta_C)",
+        "value": 0.05035512449535384,
+        "abs_diff_from_c_K3": 0.010177548103204814,
+        "rel_diff_from_c_K3": 0.2533141373154996,
+        "agreement_percent": 74.66858626845003
+      },
+      {
+        "label": "H1",
+        "formula": "sin^2(theta_C)",
+        "value": 0.05035512449535386,
+        "abs_diff_from_c_K3": 0.010177548103204835,
+        "rel_diff_from_c_K3": 0.2533141373155001,
+        "agreement_percent": 74.66858626844999
+      },
+      {
+        "label": "H6",
+        "formula": "tan^2(theta_C)",
+        "value": 0.05302521584038971,
+        "abs_diff_from_c_K3": 0.012847639448240682,
+        "rel_diff_from_c_K3": 0.3197713899624667,
+        "agreement_percent": 68.02286100375333
+      },
+      {
+        "label": "H3",
+        "formula": "sin(theta_C) cos(theta_C)",
+        "value": 0.21867666984022618,
+        "abs_diff_from_c_K3": 0.17849909344807716,
+        "rel_diff_from_c_K3": 4.442754129961833,
+        "agreement_percent": -344.2754129961833
+      }
+    ],
+    "best": {
+      "label": "H2",
+      "formula": "sin^2(2 theta_C)/4",
+      "value": 0.047819485932411275,
+      "abs_diff_from_c_K3": 0.007641909540262247,
+      "rel_diff_from_c_K3": 0.19020334789919105,
+      "agreement_percent": 80.9796652100809
+    },
+    "bonferroni_alpha_single": 0.008333333333333333,
+    "selection_margin_best_vs_second": 3.4541127300367156e-16,
+    "verdict": "Best hypothesis is H2 = sin^2(2 theta_C)/4 with 80.98% agreement. However, this is a POST-HOC selection from 6 candidates. The selection margin over the second-best is only 0.0% of c_K3, which is well within the expected spread of 6 random hypotheses. H_2 is therefore NOT a derivation; it is the best fit."
+  },
+  "C_sensitivity": {
+    "trace_O_chi": 0.10863072935191456,
+    "vandermonde": 4.060277832006081e-06,
+    "S_GUE": 0.018549199859540195,
+    "theta_eff_full": 0.0009043357688743528,
+    "theta_eff_simplified": 0.0009043357688743529,
+    "trace_cancellation_verified": true,
+    "structural_fact": "theta_eff = delta_C * tr(O_chi) * S_GUE = delta_C * tr(O_chi) * sqrt(|Vand|)/tr(O_chi) = delta_C * sqrt(|Vand|).  The trace CANCELS.  The suppression depends ONLY on the Vandermonde (the level-repulsion product), not on the absolute scale of the eigenvalues.",
+    "perturbations": [
+      {
+        "perturbed": "c_AB",
+        "pct": -10,
+        "new_value": 0.018570300324618826,
+        "new_theta_eff": 0.0009863014657371216,
+        "rel_change_theta": 0.0906363539781174
+      },
+      {
+        "perturbed": "c_AB",
+        "pct": -5,
+        "new_value": 0.019601983675986537,
+        "new_theta_eff": 0.0009453404483770633,
+        "rel_change_theta": 0.04534231743785821
+      },
+      {
+        "perturbed": "c_AB",
+        "pct": 5,
+        "new_value": 0.021665350378721967,
+        "new_theta_eff": 0.0008632812055747847,
+        "rel_change_theta": -0.045397478140967125
+      },
+      {
+        "perturbed": "c_AB",
+        "pct": 10,
+        "new_value": 0.022697033730089678,
+        "new_theta_eff": 0.0008221692857538575,
+        "rel_change_theta": -0.09085838020403611
+      },
+      {
+        "perturbed": "c_K3",
+        "pct": -10,
+        "new_value": 0.03615981875293413,
+        "new_theta_eff": 0.0009956301333675945,
+        "rel_change_theta": 0.10095184513919853
+      },
+      {
+        "perturbed": "c_K3",
+        "pct": -5,
+        "new_value": 0.03816869757254158,
+        "new_theta_eff": 0.0009626262529990945,
+        "rel_change_theta": 0.06445668316016871
+      },
+      {
+        "perturbed": "c_K3",
+        "pct": 5,
+        "new_value": 0.04218645521175648,
+        "new_theta_eff": 0.0008153532989919425,
+        "rel_change_theta": -0.09839538912982371
+      },
+      {
+        "perturbed": "c_K3",
+        "pct": 10,
+        "new_value": 0.044195334031363935,
+        "new_theta_eff": 0.0006838002346427704,
+        "rel_change_theta": -0.24386465936881824
+      },
+      {
+        "perturbed": "c_theta",
+        "pct": -10,
+        "new_value": 0.04303753733917015,
+        "new_theta_eff": 0.0005022259270297759,
+        "rel_change_theta": -0.4446466187499054
+      },
+      {
+        "perturbed": "c_theta",
+        "pct": -5,
+        "new_value": 0.04542851163579071,
+        "new_theta_eff": 0.0007159069512326341,
+        "rel_change_theta": -0.20836156671792413
+      },
+      {
+        "perturbed": "c_theta",
+        "pct": 5,
+        "new_value": 0.05021046022903184,
+        "new_theta_eff": 0.0010808016200524505,
+        "rel_change_theta": 0.1951331101254004
+      },
+      {
+        "perturbed": "c_theta",
+        "pct": 10,
+        "new_value": 0.052601434525652406,
+        "new_theta_eff": 0.0012503797982815102,
+        "rel_change_theta": 0.382649941888162
+      }
+    ],
+    "max_sensitivity": {
+      "perturbed": "c_theta",
+      "pct": -10,
+      "new_value": 0.04303753733917015,
+      "new_theta_eff": 0.0005022259270297759,
+      "rel_change_theta": -0.4446466187499054
+    },
+    "sensitivity_verdict": "Largest sensitivity: perturbing c_theta by -10% changes theta_eff by -44.46%.  The result is MOST sensitive to the smallest eigenvalue c_AB, because the Vandermonde is dominated by the smallest spacing."
+  },
+  "D_scaling": {
+    "eps_geometric_mean": 0.03409743306358868,
+    "actual_N3_theta_eff": 0.0009043357688743529,
+    "analytic_scaling": [
+      {
+        "N": 3,
+        "n_pairs": 3,
+        "exponent_N(N-1)/4": 1.5,
+        "theta_eff_analytic": 0.0028257540642988204,
+        "log10_theta": -2.5488656390783158,
+        "below_1e-10": false
+      },
+      {
+        "N": 4,
+        "n_pairs": 6,
+        "exponent_N(N-1)/4": 3.0,
+        "theta_eff_analytic": 1.7791677148035303e-05,
+        "log10_theta": -4.749783110836509,
+        "below_1e-10": false
+      },
+      {
+        "N": 5,
+        "n_pairs": 10,
+        "exponent_N(N-1)/4": 5.0,
+        "theta_eff_analytic": 2.0685225520653903e-08,
+        "log10_theta": -7.684339739847433,
+        "below_1e-10": false
+      },
+      {
+        "N": 6,
+        "n_pairs": 15,
+        "exponent_N(N-1)/4": 7.5,
+        "theta_eff_analytic": 4.440833330220982e-12,
+        "log10_theta": -11.352535526111087,
+        "below_1e-10": true
+      },
+      {
+        "N": 7,
+        "n_pairs": 21,
+        "exponent_N(N-1)/4": 10.5,
+        "theta_eff_analytic": 1.7604736550574423e-16,
+        "log10_theta": -15.754370469627473,
+        "below_1e-10": true
+      },
+      {
+        "N": 8,
+        "n_pairs": 28,
+        "exponent_N(N-1)/4": 14.0,
+        "theta_eff_analytic": 1.288710685693351e-21,
+        "log10_theta": -20.88984457039659,
+        "below_1e-10": true
+      }
+    ],
+    "exponent_needed_for_1e-10": 6.57820110694749,
+    "N_needed_for_theta_1e-10": 5.653911565771183,
+    "verdict": "With eigenvalues of order eps ~ 0.034 (geometric mean of our three corrections), the scaling theta ~ delta_C * eps^(N(N-1)/4) gives: N=3 -> theta ~ 10^-3 (matches our 9e-4), N=5 -> theta ~ 10^-8, N=6 -> theta ~ 10^-11 < 1e-10. Analytically, N ~ 5.7 eigenvalues of the same order would reach the experimental bound.  CAVEAT: this is a scaling argument only.  It assumes additional eigenvalues of the same order (~0.01-0.05), which is NOT guaranteed by any known physics.  The operator O_chi is defined by exactly three corrections; postulating more would require new physical input."
+  },
+  "E_coincidence": {
+    "cabibbo": {
+      "sin_theta_C": 0.2256,
+      "pi_over_14": 0.2243994752564138,
+      "relative_error": 0.005349944522884474,
+      "agreement_percent": 99.46500554771156
+    },
+    "theta_13": {
+      "observed_deg": 8.57,
+      "delta_C_over_3_deg": 8.571428571428571,
+      "relative_error": 0.0001666666666666039,
+      "agreement_percent": 99.98333333333333
+    },
+    "n_special_fractions_q_le_30": 127,
+    "n_fractions_in_cabibbo_range": 41,
+    "fractions_within_1pct_of_cabibbo": [
+      [
+        5,
+        22,
+        0.22727272727272727
+      ]
+    ],
+    "fractions_within_observed_accuracy": [],
+    "expected_matches_by_chance": 0.4386954508765269,
+    "p_at_least_one_match_by_chance": 0.35512285350368167,
+    "verdict": "There are 41 reduced fractions p/q with q <= 30 in the range [0.15, 0.30] relevant to sin(theta_C). The expected number of 0.53%-accuracy matches by chance is 0.44. P(at least one such match by chance) = 35.5%. The Cabibbo coincidence is therefore NOT statistically significant as a standalone fact; it acquires significance only if the SAME rational structure (q=14, q=7) recurs in INDEPENDENT observables. The 3*theta_13 ~ delta_C coincidence is a second such occurrence, but with the SAME denominator family (7, 14), so it is not fully independent."
+  },
+  "F_seesaw": {
+    "code_actual_cp_contribution": 0.4999999999999999,
+    "code_actual_atmos_contribution": 0.25,
+    "code_actual_seesaw_contribution": 0.6881777216413041,
+    "code_actual_total": 1.438177721641304,
+    "monograph_claimed_total": 1.44,
+    "DISCREPANCY": "The code computes lepton-scale c_C = 1.4382, but the monograph and JSON claim 1.44. The code uses sin^2(delta_CP/2) with delta_CP = -pi/2, which gives 0.500, NOT 0.978 as stated. The monograph's 0.978 corresponds to delta_CP ~ -1.91 rad (~ -109 deg), which is NOT the standard near-maximal value -pi/2 = -90 deg.  This is an INCONSISTENCY that must be corrected: either the code is wrong, or the monograph uses different (NuFIT) inputs without documenting them.",
+    "divisor_needed_for_1.44": 5.145253993579845,
+    "divisor_scan": [
+      {
+        "divisor": 1.0,
+        "total_c_C": 2.327084354626087,
+        "exceeds_KY_1.435": true
+      },
+      {
+        "divisor": 1.5,
+        "total_c_C": 1.9600562364173912,
+        "exceeds_KY_1.435": true
+      },
+      {
+        "divisor": 2.0,
+        "total_c_C": 1.7765421773130434,
+        "exceeds_KY_1.435": true
+      },
+      {
+        "divisor": 2.5,
+        "total_c_C": 1.6664337418504347,
+        "exceeds_KY_1.435": true
+      },
+      {
+        "divisor": 3.0,
+        "total_c_C": 1.5930281182086956,
+        "exceeds_KY_1.435": true
+      },
+      {
+        "divisor": 3.5,
+        "total_c_C": 1.5405955298931677,
+        "exceeds_KY_1.435": true
+      },
+      {
+        "divisor": 4.0,
+        "total_c_C": 1.5012710886565217,
+        "exceeds_KY_1.435": true
+      },
+      {
+        "divisor": 4.5,
+        "total_c_C": 1.4706854121391304,
+        "exceeds_KY_1.435": true
+      },
+      {
+        "divisor": 5.0,
+        "total_c_C": 1.4462168709252172,
+        "exceeds_KY_1.435": true
+      },
+      {
+        "divisor": 5.5,
+        "total_c_C": 1.426197155386561,
+        "exceeds_KY_1.435": false
+      },
+      {
+        "divisor": 6.0,
+        "total_c_C": 1.4095140591043478,
+        "exceeds_KY_1.435": false
+      },
+      {
+        "divisor": 6.5,
+        "total_c_C": 1.395397593019398,
+        "exceeds_KY_1.435": false
+      },
+      {
+        "divisor": 7.0,
+        "total_c_C": 1.3832977649465839,
+        "exceeds_KY_1.435": false
+      },
+      {
+        "divisor": 7.5,
+        "total_c_C": 1.3728112472834781,
+        "exceeds_KY_1.435": false
+      }
+    ],
+    "verdict": "The divisor 1.6 in the code gives c_C = 1.438, which is BELOW the KY threshold 1.435.  The monograph's claim that 'KY is resolved' depends on using the NuFIT-fitted values (delta_CP ~ -1.91, theta_23 ~ 42 deg) AND a divisor ~ 5.15.  Neither the NuFIT inputs NOR the divisor are derived from first principles; they are fitted.  The 'KY resolution' is therefore a FIT, not a PREDICTION."
+  }
+}

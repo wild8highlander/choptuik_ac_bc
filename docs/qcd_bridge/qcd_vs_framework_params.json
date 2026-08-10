@@ -1,0 +1,173 @@
+{
+  "qcd_empirical": {
+    "alpha_s(M_Z)": {
+      "value": 0.1181,
+      "unit": "dimensionless",
+      "origin": "Lattice + R-ratio + jet data",
+      "role": "Running coupling at M_Z"
+    },
+    "m_u": {
+      "value": 2.16,
+      "unit": "MeV",
+      "origin": "Lattice QCD",
+      "role": "Up quark mass (MS-bar, 2 GeV)"
+    },
+    "m_d": {
+      "value": 4.67,
+      "unit": "MeV",
+      "origin": "Lattice QCD",
+      "role": "Down quark mass"
+    },
+    "m_s": {
+      "value": 93.4,
+      "unit": "MeV",
+      "origin": "Lattice QCD",
+      "role": "Strange quark mass"
+    },
+    "m_c": {
+      "value": 1270.0,
+      "unit": "MeV",
+      "origin": "Lattice + e+e- sum rules",
+      "role": "Charm quark mass"
+    },
+    "m_b": {
+      "value": 4180.0,
+      "unit": "MeV",
+      "origin": "e+e- sum rules + lattice",
+      "role": "Bottom quark mass"
+    },
+    "m_t": {
+      "value": 173100.0,
+      "unit": "MeV",
+      "origin": "Tevatron + LHC (pole mass)",
+      "role": "Top quark mass"
+    },
+    "theta_QCD": {
+      "value": 1e-10,
+      "unit": "radians (bound)",
+      "origin": "Neutron EDM bound",
+      "role": "Topological vacuum angle (effective)"
+    },
+    "f_pi": {
+      "value": 92.28,
+      "unit": "MeV",
+      "origin": "Pi -> mu nu decay",
+      "role": "Pion decay constant"
+    },
+    "Lambda_QCD": {
+      "value": 217.0,
+      "unit": "MeV",
+      "origin": "alpha_s running extraction",
+      "role": "QCD confinement scale"
+    },
+    "V_us (Cabibbo)": {
+      "value": 0.2243,
+      "unit": "dimensionless",
+      "origin": "K_l3 + K_mu3 decays",
+      "role": "CKM V_us element"
+    },
+    "delta_CKM": {
+      "value": 1.2,
+      "unit": "radians",
+      "origin": "CKM fitter global fit",
+      "role": "CKM CP-violating phase"
+    }
+  },
+  "framework": {
+    "delta_C": {
+      "value": 0.4487989505128276,
+      "unit": "radians",
+      "origin": "Choptuik critical exponent (numerical)",
+      "role": "Critical collapse exponent / Berry phase period"
+    },
+    "a_C": {
+      "value": 0.0842,
+      "unit": "dimensionless",
+      "origin": "Fit to Choptuik mass-ratio data",
+      "role": "Real part of spinorial correction gamma*"
+    },
+    "b_C": {
+      "value": 0.377,
+      "unit": "dimensionless",
+      "origin": "Fit to Choptuik mass-ratio data",
+      "role": "Imaginary part of gamma* (Berry phase)"
+    },
+    "c_C": {
+      "value": 0.0478,
+      "unit": "dimensionless",
+      "origin": "Cabibbo H_2 realisation",
+      "role": "Third Isaev correction"
+    }
+  },
+  "three_corrections": {
+    "c_K3": {
+      "value": 0.04018,
+      "unit": "dimensionless",
+      "origin": "K3 topology (b_2=22, chi=24) + Choptuik simulations",
+      "role": "K3 topological realisation of c_C"
+    },
+    "c_AB": {
+      "value": 0.02063,
+      "unit": "dimensionless",
+      "origin": "Aharonov-Bohm phase (q/e=1/14, Z_14 cover)",
+      "role": "AB realisation of c_C"
+    },
+    "c_theta": {
+      "value": 0.04782,
+      "unit": "dimensionless",
+      "origin": "Cabibbo angle (sin theta_C ~ pi/14)",
+      "role": "Cabibbo realisation of c_C"
+    }
+  },
+  "equivalences": [
+    {
+      "qcd": "theta_QCD (eff.)",
+      "framework": "delta_C",
+      "relation": "theta_QCD enters the framework via the work formula; delta_C bounds theta_eff",
+      "kind": "structural"
+    },
+    {
+      "qcd": "V_us (Cabibbo)",
+      "framework": "c_theta",
+      "relation": "c_theta = sin^2(2*theta_C)/4 where sin(theta_C) = V_us; direct algebraic substitution",
+      "kind": "algebraic"
+    },
+    {
+      "qcd": "delta_CKM",
+      "framework": "b_C (Berry phase)",
+      "relation": "Both are T-violating phases; b_C ~ 0.377 rad, delta_CKM ~ 1.20 rad \u2014 same epistemic niche",
+      "kind": "epistemic"
+    },
+    {
+      "qcd": "m_u..m_t (6 masses)",
+      "framework": "a_C, b_C, c_C (3 params)",
+      "relation": "6 quark masses are inputs to QCD; 3 framework params are inputs to bridge. Same niche.",
+      "kind": "epistemic"
+    },
+    {
+      "qcd": "alpha_s",
+      "framework": "delta_C = pi/7",
+      "relation": "alpha_s is running coupling (input to QCD); delta_C is critical exponent (input to framework). Same niche.",
+      "kind": "epistemic"
+    },
+    {
+      "qcd": "f_pi",
+      "framework": "c_K3",
+      "relation": "f_pi measured from pi decay; c_K3 measured from Choptuik + K3 topology. Same niche.",
+      "kind": "epistemic"
+    },
+    {
+      "qcd": "Lambda_QCD",
+      "framework": "a_C",
+      "relation": "Lambda_QCD is QCD confinement scale (empirical); a_C is framework real-part of gamma* (empirical). Same niche.",
+      "kind": "epistemic"
+    }
+  ],
+  "counting": {
+    "qcd_canonical_8": 8,
+    "qcd_extended_11": 11,
+    "framework_canonical_4": 4,
+    "framework_with_3_c_C_realisations": 6,
+    "net_new_framework_inputs": 5
+  }
+}
