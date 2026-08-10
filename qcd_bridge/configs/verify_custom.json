@@ -1,0 +1,23 @@
+{
+  "mode": "custom",
+  "sections": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  "language": "en",
+  "output_dir": "reports_custom",
+  "report_formats": ["txt", "csv", "md", "pdf", "html", "docx", "json"],
+  "_comment_arbitrary_precision": "All numeric parameters accept arbitrary values. For N, values up to ~10000 are tractable on a typical laptop; larger values use streaming computation. For kappa_T, any positive real is valid. For n_flavors, any positive integer is valid (1-12 typical for BSM physics).",
+  "_comment_infinite_N": "To approach N -> infinity, set N_values to [100, 1000, 10000, 100000] — the engine will verify 1/sqrt(N) scaling. The continuum limit is inferred from the trend.",
+  "kappa_values": [0.0, 0.1, 0.5, 1.0, 1.5, 2.0, 2.62, 5.0, 8.45, 15.0, 50.0, 100.0, 1000.0],
+  "N_values": [10, 28, 100, 500, 1000, 5000],
+  "kappa_T_custom": 8.45,
+  "N_custom": 28,
+  "n_flavors": 6,
+  "seed": 42,
+  "_example_overrides": {
+    "kappa_T_custom": "any positive real — try 0.001, 8.45, 1e6",
+    "N_custom": "any positive integer — try 28, 1000, 100000",
+    "n_flavors": "1-12 typical; BSM scenarios use 6-12",
+    "seed": "any integer for reproducibility",
+    "kappa_values": "any list of positive reals",
+    "N_values": "any list of positive integers"
+  }
+}

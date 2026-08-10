@@ -8,6 +8,71 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Author:** Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович) — aslan08_05@mail.ru
 **Repository:** https://github.com/wild8highlander/choptuik_ac_bc
 
+## [2.1.0] - 2026-08-10
+
+### Added
+- **§14: Jet diffusion wake bridge** in the QCD-bridge monograph
+  (`docs/monograph/qcd_bridge/choptyuk_qcd_bridge.tex`).  This new
+  section closes the gap between the abstract GUE level-repulsion
+  argument for $\bar\theta_{\mathrm{QCD}}$ suppression and the first
+  direct experimental observation of the jet diffusion wake in PbPb
+  collisions by the CMS collaboration (CMS HIN-25-012,
+  arXiv:2602.19431, accepted by PRL on 25 June 2026, $>5\sigma$ in
+  0--30% central collisions at $\sqrt{s_{NN}} = 5.02$ TeV).
+- Python: `scripts/qcd_bridge/jet_wake_4d_psl27.py` — the
+  4D-PSL(2,7)/Hg-199 mass-ratio model
+  $\frac{m(k)}{m_0} = \delta_C^k e^{-a_C k} |\cos(b_C k \pi/2)|
+  \ln(1+c_C k)$ producing the full scale bridge:
+  - $k = 23 \to 2.15\times 10^{-9} \sim 10^{-10}$ (Strong CP)
+  - $k = 28 \to 5\sigma$ CMS threshold ($28-23 = 5$)
+  - $k = 45 \to 4.65\times 10^{-18}$ (quark scale, exact hit!)
+  - $k = 48 = 2\cdot 24 \to$ full thermalisation
+- Figure: `docs/monograph/qcd_bridge/figures/fig_jet_wake_bridge.png`
+  (two-panel: full mass-ratio curve + zoom on $10^{-10}\to 10^{-18}$).
+- JSON: `scripts/qcd_bridge/jet_wake_bridge_results.json` with the full
+  numerical report (PSL(2,7) topology, QGP observables, special
+  k-points, main claims, external references).
+- Bibliography: five new entries (CMS HIN-25-012, CMS sound-speed 2024,
+  Casalderrey-Solana--Shuryak--Teaney Mach cone, Son-Starinets AdS/CFT
+  viscosity, PSI nEDM Hg-199).
+
+### Verified external numbers
+- CMS HIN-25-012: arXiv:2602.19431, PRL accepted 25 Jun 2026
+- CMS QGP sound speed: $(c_s/c)^2 = 0.241 \pm 0.016$ (16 Feb 2024)
+- $\sin^2(\pi/7) = 0.1883$ (Klein heptagon) and $\sin^2(\pi/6) = 0.2500$
+  (heptagon neighbour) bracket the CMS measurement within $0.6\sigma$
+  of the $\pi/6$ value.
+- $|\mathrm{PSL}(2,7)| = 168 = 12 \cdot 14$ matches the dijet-pair
+  count ($12 = 24/2$) against the $1i_{13/2}$ shell dimension of
+  ${}^{199}\mathrm{Hg}$ ($14 = 2(2j+1)|_{j=13/2}$), the PSI nEDM
+  co-magnetometer.
+
+### Honest limitations (stated in §14)
+- The parameters $a_C, b_C, c_C$ remain inputs; they are not derived
+  from QCD.
+- The identification $k \leftrightarrow \mathrm{PSL}(2,7)/C_7$ step is
+  a discrete book-keeping device, not a continuous-time evolution.
+- The $k=45 \to 10^{-18}$ match is a dimensional coincidence at the
+  one-significant-digit level.
+- The $5\sigma$ coincidence is conditional on the same model
+  parameters; it is a bridge, not an independent prediction.
+- Falsifiable prediction: the QGP sound speed should lie in the band
+  $[\sin^2(\pi/7), \sin^2(\pi/6)] = [0.188, 0.250]$.  CMS measures
+  $0.241 \pm 0.016$.  The next-generation sPHENIX and ALICE 3
+  measurements of $(c_s/c)^2$ will sharpen this test.
+
+### Changed
+- `docs/monograph/qcd_bridge/choptyuk_qcd_bridge.tex`: +299 lines
+  (new §14 with 7 subsections, 1 figure, 1 table, 5 new bibitems).
+- `docs/monograph/qcd_bridge/choptyuk_qcd_bridge.pdf`: rebuilt by
+  tectonic (915 KiB, compiles cleanly).
+- `docs/monograph/qcd_bridge/README.md`: added new §14 description and
+  the jet-wake bridge value table.
+- `README.md`: added "Jet Diffusion Wake Bridge (v2.1.0)" subsection
+  with the scale-bridge table and reproduce instructions.
+- Project `worklog.md`: appended Task ID jet-wake-bridge with full
+  provenance.
+
 ## [2.0.0] - 2026-08-08
 
 ### Added

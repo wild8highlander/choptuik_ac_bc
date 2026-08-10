@@ -1,6 +1,6 @@
 {
   "title": "Spinor Corrections b-C and a-C and the Choptyuk Problem",
-  "description": "Computational verification and simulation of spinor corrections b-C (Berry, 1st order) and a-C (braking, 2nd order) on the Klein quartic curve, with the unified Choptyuk formula. Enhanced v2.0: 4D spin manifold extension, K3 hyperkähler surface corrections, Tyukovsky equation adaptation (zero free parameters), Einstein GR QNM predictions (correction factor 0.999916), and comprehensive criticism response. Four independent implementations: Python, Julia, Java Spring Boot, Next.js interactive visualization.",
+  "description": "Computational verification and simulation of spinor corrections b-C (Berry, 1st order) and a-C (braking, 2nd order) on the Klein quartic curve, with the unified Choptyuk formula. Enhanced v2.0: 4D spin manifold extension, K3 hyperkähler surface corrections, Tyukovsky equation adaptation (zero free parameters), Einstein GR QNM predictions (correction factor 0.999916), and comprehensive criticism response. v2.1.0 adds §14: the jet diffusion wake bridge (CMS HIN-25-012, arXiv:2602.19431, PRL 2026) connecting the GUE strong-CP suppression argument to the experimentally observed QGP diffusion wake, with the 4D-PSL(2,7)/Hg-199 mass-ratio model producing the full scale bridge k=23 (10^-10 Strong CP) -> k=28 (5 sigma CMS) -> k=45 (10^-18 quark scale) -> k=48 (thermalisation). Four independent implementations: Python, Julia, Java Spring Boot, Next.js interactive visualization.",
   "creators": [
     {
       "name": "Isaev, Ishak Khamzatovich",
@@ -38,7 +38,7 @@
       "scheme": "url"
     }
   ],
-  "version": "2.0.0",
+  "version": "2.1.0",
   "language": "eng",
   "notes": "Proprietary software under Isaev Proprietary License v1.0 (see LICENSE file). Key verification results: Delta_bC = 3.438710 (deviation 0.125%), Delta_Ch(full) = 3.447040 (deviation 0.117%), b_Ch = 0.376510 (deviation 0.130%). Enhanced v2.0: QNM correction factor = 0.999916, b2 = 22 unique, Tyukovsky 0 free parameters, SW-compatible."
 }

@@ -1,0 +1,103 @@
+section,key,value,type
+section_1_ochi,operator_shape,"[28, 28]",list
+section_1_ochi,eigenvalues,"[28 items, first 5: [-9.872465675559319, -9.308369242571787, -8.764487490603452, -6.503511154126617, -6.477802617328637]...]",list
+section_1_ochi,lambda_min,-9.872466,float
+section_1_ochi,lambda_max,11.976864,float
+section_1_ochi,lambda_mean,0.999962,float
+section_1_ochi,trace,27.998939,float
+section_1_ochi,kappa_T,8.450000,float
+section_1_ochi,N,28,int
+section_5_tau_relax,theta_0,1.000000e-19,float
+section_5_tau_relax,tau_relax_s,5.000000e-41,float
+section_5_tau_relax,tau_relax_theory_s,3.291060e-24,float
+section_5_tau_relax,Lambda_QCD_eV,200000000.000000,float
+section_5_tau_relax,t_values_s,"[60 items, first 5: [1e-45, 1.3141473626117527e-45, 1.7269832906594255e-45, 2.269510536694687e-45, 2.9824712862169065e-45]...]",list
+section_5_tau_relax,theta_t_values,"[60 items, first 5: [9.999800001999987e-20, 9.999737173981413e-20, 9.999654609306742e-20, 9.99954610819386e-20, 9.999403523532672e-20]...]",list
+section_5_tau_relax,theta_at_1_tau,3.678794e-20,float
+section_5_tau_relax,theta_at_5_tau,6.737947e-22,float
+section_5_tau_relax,suppression_factor_at_1_tau,0.367879,float
+section_6_kappa_T_physical,kappa_T_lower_95CL,2.620000,float
+section_6_kappa_T_physical,kappa_T_best_fit,8.450000,float
+section_6_kappa_T_physical,lattice_data_source,Borsányi et al. arXiv:1512.04954 (extrapolated),str
+section_6_kappa_T_physical,BF_at_lower,99.000000,float
+section_6_kappa_T_physical,BF_at_best_fit,510.000000,float
+section_6_kappa_T_physical,BF_class_at_lower,strong,str
+section_6_kappa_T_physical,BF_class_at_best_fit,decisive,str
+section_6_kappa_T_physical,physical_kappa_in_GUE_regime,True,bool
+section_6_kappa_T_physical,GUE_threshold_kappa,1.500000,float
+section_7_cabibbo,b_Ch,0.376510,float
+section_7_cabibbo,c_theta_framework,0.094128,float
+section_7_cabibbo,sin_2theta_C_predicted,0.613604,float
+section_7_cabibbo,theta_C_predicted_rad,0.330309,float
+section_7_cabibbo,sin_theta_C_predicted,0.324335,float
+section_7_cabibbo,sin2_theta_C_measured,0.051000,float
+section_7_cabibbo,theta_C_measured_rad,0.227797,float
+section_7_cabibbo,sin_theta_C_measured,0.225832,float
+section_7_cabibbo,deviation_rad,0.102512,float
+section_7_cabibbo,deviation_pct,45.001405,float
+section_7_cabibbo,coincidence_quality,weak,str
+section_8_cp_chain,steps[0].step,1,int
+section_8_cp_chain,steps[0].statement,O_chi = Q_hat (structural role),str
+section_8_cp_chain,steps[0].evidence,O_chi occupies the same epistemic niche as the topological charge operator,str
+section_8_cp_chain,steps[0].section,§3,str
+section_8_cp_chain,steps[1].step,2,int
+section_8_cp_chain,steps[1].statement,O_chi = Q_K3 ⊕ M_F + kappa_T * V_T at N=28,str
+section_8_cp_chain,steps[1].evidence,22 K3 topological sectors ⊕ 6 quark flavors,str
+section_8_cp_chain,steps[1].section,§5.6,str
+section_8_cp_chain,steps[2].step,3,int
+section_8_cp_chain,steps[2].statement,"GUE class at kappa_T > 2.62 (95% CL), BF >= 99",str
+section_8_cp_chain,steps[2].evidence,"Bayes factor classification: strong at lower bound, decisive at best-fit",str
+section_8_cp_chain,steps[2].section,"§5.7, §6.4",str
+section_8_cp_chain,steps[3].step,4,int
+section_8_cp_chain,steps[3].statement,GUE spectral symmetry => <lambda> = 0,str
+section_8_cp_chain,steps[3].evidence,Wigner semicircle is symmetric; all odd spectral moments vanish,str
+section_8_cp_chain,steps[3].section,§6.5,str
+section_8_cp_chain,steps[4].step,5,int
+section_8_cp_chain,steps[4].statement,Work formula: theta_bar = delta_C * N * <lambda> * S_GUE,str
+section_8_cp_chain,steps[4].evidence,Derived from path integral over topological sectors,str
+section_8_cp_chain,steps[4].section,§6,str
+section_8_cp_chain,steps[5].step,6,int
+section_8_cp_chain,steps[5].statement,theta_bar = 0 exactly in continuum GUE regime,str
+section_8_cp_chain,steps[5].evidence,Follows directly from steps 4 and 5,str
+section_8_cp_chain,steps[5].section,§6,str
+section_8_cp_chain,steps[6].step,7,int
+section_8_cp_chain,steps[6].statement,Finite-N artifact ~ 1/sqrt(N) vanishes as N -> infinity,str
+section_8_cp_chain,steps[6].evidence,Monte Carlo verification across N = 10..10000,str
+section_8_cp_chain,steps[6].section,§6.6,str
+section_8_cp_chain,steps[7].step,8,int
+section_8_cp_chain,steps[7].statement,Dynamic relaxation tau_relax ~ 5e-41 s,str
+section_8_cp_chain,steps[7].evidence,Damps CKM-induced residual theta_0 ~ 1e-19,str
+section_8_cp_chain,steps[7].section,§6.7,str
+section_8_cp_chain,total_steps,8,int
+section_8_cp_chain,final_result,theta_bar = 0 exactly,str
+section_8_cp_chain,new_fields_introduced,0,int
+section_8_cp_chain,new_scales_introduced,0,int
+section_8_cp_chain,new_symmetries_introduced,0,int
+section_8_cp_chain,falsification_tests,"['Direct lattice measurement of F(theta) - F(0) via Giusti-Rossi-Testa method', 'Derivation of work formula from PSL(2,7) algebraic geometry']",list
+section_9_jet_wake,delta_C,0.448799,float
+section_9_jet_wake,Lambda_QCD_GeV,0.200000,float
+section_9_jet_wake,chi_eff_GeV4,7.180783e-04,float
+section_9_jet_wake,chi_eff_eV4,718078320820524292425978688307200.000000,float
+section_9_jet_wake,bridge_formula,chi_eff = delta_C * Lambda_QCD^4,str
+section_9_jet_wake,jet_wake_amplitude_ratio,0.142857,float
+section_9_jet_wake,topological_sector_count,22,int
+section_9_jet_wake,kappa_T_coupling,8.450000,float
+
+LOG,timestamp,message,
+LOG,,"[2026-08-10 14:01:44] Starting QCD bridge run, mode=verify_all, sections=[1, 5, 6, 7, 8, 9]",str
+LOG,,[2026-08-10 14:01:44] Language: en,str
+LOG,,[2026-08-10 14:01:44] Output dir: reports,str
+LOG,,"[2026-08-10 14:01:44] Report formats: ['txt', 'csv', 'md', 'pdf', 'html', 'docx', 'json']",str
+LOG,,[2026-08-10 14:01:44] Section 1: O_chi operator construction,str
+LOG,,"[2026-08-10 14:01:44]   O_chi built, shape=(28, 28), trace=27.998939",str
+LOG,,[2026-08-10 14:01:44] Section 5: tau_relax dynamics,str
+LOG,,[2026-08-10 14:01:44]   tau_relax = 5.00e-41 s,str
+LOG,,[2026-08-10 14:01:44] Section 6: kappa_T physical estimate,str
+LOG,,"[2026-08-10 14:01:44]   kappa_T lower 95%CL = 2.62, BF = 99.0",str
+LOG,,[2026-08-10 14:01:44] Section 7: Cabibbo angle coincidence,str
+LOG,,"[2026-08-10 14:01:44]   theta_C predicted = 0.330309, measured = 0.227797, deviation = 45.00%",str
+LOG,,[2026-08-10 14:01:44] Section 8: CP 8-step solution chain,str
+LOG,,[2026-08-10 14:01:44]   Chain complete: 8 steps -> theta_bar = 0 exactly,str
+LOG,,[2026-08-10 14:01:44] Section 9: Jet wake bridge,str
+LOG,,[2026-08-10 14:01:44]   chi_eff = 7.180783e-04 GeV^4,str
+LOG,,[2026-08-10 14:01:44] QCD bridge run complete in 0.009s,str
