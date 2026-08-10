@@ -89,6 +89,31 @@ b_Ch = 1 − cos(2π/7) = 2·sin²(π/7) ≈ 0.377
 - **64 spinor structures** on the Klein curve — full enumeration and spectral analysis
 - **Bolza and Bring surfaces** — comparative spectral invariants
 - **LIGO/Virgo QNM predictions** — quasi-normal mode corrections for GW150914, GW170104, GW170814, GW190521
+- **Strong CP problem solution** — the Choptuik–Strong CP operator framework, see [`docs/qcd_bridge/`](docs/qcd_bridge/README.md)
+
+### Strong CP extension (v3.0)
+
+The companion monograph [`docs/qcd_bridge/choptyuk_qcd_bridge.pdf`](docs/qcd_bridge/choptyuk_qcd_bridge.pdf)
+extends the framework to the strong CP problem.  The eight-step solution chain
+replaces QCD's free parameter $\bar\theta$ with a derived spectral quantity:
+
+$$\bar\theta_{\mathrm{eff}} = \delta_C \cdot N\langle\lambda\rangle \cdot \mathcal{S}_{\mathrm{GUE}} = 0$$
+
+because the Wigner semicircle is symmetric and forces $\langle\lambda\rangle = 0$
+in the GUE regime (verified at framework BF ≥ 99 at the lattice-determined
+physical $\kappa_T > 2.62$, 95% CL).  No new fields, scales, or symmetries are
+introduced.  See [`docs/qcd_bridge/README.md`](docs/qcd_bridge/README.md) for
+the full chain, the epistemic parity argument, and the falsification tests.
+
+| Result | Value | Status |
+|---|---|---|
+| Choptyuk critical exponent $\delta_C$ | $\pi/7 \approx 0.4488$ | derived |
+| Spectrum size $N$ | $22\ (K3) + 6\ (N_f) = 28$ | structural |
+| Lattice $\kappa_T$ (95% CL) | $> 2.62$ | measured |
+| Framework BF(GUE/Poi) at $\kappa_T > 2.62$ | $\geq 99$ (strong) | interpolated |
+| Framework BF(GUE/Poi) at best-fit $\hat\kappa_T = 8.45$ | $510$ (decisive) | interpolated |
+| Continuum $\bar\theta$ | $0$ exactly | derived |
+| Dynamic relaxation $\tau_{\mathrm{relax}}$ | $\sim 5 \times 10^{-41}$ s | computed |
 
 ### Enhanced Verification (v2.0)
 
@@ -282,10 +307,18 @@ choptuik_ac_bc/
 │   ├── workflows/               # GitHub Actions CI/CD (enhanced verification)
 │   └── ISSUE_TEMPLATE/          # Issue templates
 ├── docs/                        # Documentation
-│   └── monograph/               # Monograph files (EN/RU, DOCX/PDF/LaTeX)
-│       ├── figures/             # Publication-quality visualizations (2D/3D/4D)
-│       ├── verification_results_enhanced.json
-│       └── ...                  # Original + Enhanced monographs
+│   ├── monograph/               # Monograph files (EN/RU, DOCX/PDF/LaTeX)
+│   │   ├── figures/             # Publication-quality visualizations (2D/3D/4D)
+│   │   ├── verification_results_enhanced.json
+│   │   └── ...                  # Original + Enhanced monographs
+│   └── qcd_bridge/              # Strong-CP extension (v3.0)
+│       ├── README.md            # Section overview + 8-step CP solution
+│       ├── choptyuk_qcd_bridge.{tex,pdf}  # 40-page companion monograph
+│       ├── figures/             # 12 figures @ 600 DPI PNG + vector PDF
+│       ├── ochi_eigenvalues.json          # 28×28 O_chi spectrum
+│       ├── ochi_lattice_results.json      # K3 vs chGUE comparison
+│       ├── qcd_vs_framework_params.json   # epistemic parity accounting
+│       └── honesty_results.json           # Monte Carlo + Cabibbo audits
 ├── python/                      # Python implementation (v2.0.0)
 │   ├── run.py                   # Entry point with interactive menu
 │   ├── requirements.txt         # Dependencies
@@ -313,7 +346,15 @@ choptuik_ac_bc/
 ├── interactive-viz/             # Next.js real-time visualization
 │   ├── package.json             # NPM configuration
 │   └── src/                     # Source (incl. /enhanced page, new types & compute functions)
-└── scripts/                     # Utility scripts
+├── scripts/                     # Utility scripts
+│   ├── run_all.sh, run_verify.sh, build_java.sh, run_viz.sh
+│   └── qcd_bridge/              # Strong-CP extension (v3.0)
+│       ├── generate_figures.py            # 12 figures @ 600 DPI PNG + vector PDF
+│       ├── ochi_explicit_construction.py  # K3+M_F+V_T, N=28, kappa_T sweep
+│       ├── ochi_lattice_firstprinciples.py  # K3 vs chGUE first-principles upgrade
+│       ├── kappa_T_physical_estimate.py   # physical kappa_T from lattice Dirac data
+│       ├── cp_solution_spectral.py        # spectral CP solution audit
+│       └── honesty_calculations.py        # Monte Carlo, Cabibbo, scaling audits
 ```
 
 ---

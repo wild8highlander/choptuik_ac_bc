@@ -1,0 +1,13 @@
+{
+  "n_spacings": 2000,
+  "r_observed": 0.9988046760666152,
+  "r_GOE_ref": 0.5359,
+  "r_GUE_ref": 0.5996,
+  "r_Poisson_ref": 0.3863,
+  "best_fit_kappa_T": 20.0,
+  "lower_bound_95CL": 4.3999999999999995,
+  "lower_bound_999CL": 2.55,
+  "crossover_threshold": 1.5,
+  "framework_BF_at_lb95": 214.54911541214958,
+  "framework_BF_at_best": 320.99999999999983
+}
