@@ -1,0 +1,12 @@
+{
+  "mode": "verify_section",
+  "sections": [3, 8],
+  "language": "en",
+  "output_dir": "reports_section_3_8",
+  "report_formats": ["txt", "csv", "md", "pdf", "html", "docx", "json"],
+  "kappa_T_custom": 8.45,
+  "N_custom": 28,
+  "n_flavors": 6,
+  "seed": 42,
+  "_comment": "Section-specific verification: runs only sections 3 (spectral staircase) and 8 (CP 8-step chain). Edit 'sections' array to choose different subsets. Use: python run.py --mode verify_section --sections 3,8"
+}

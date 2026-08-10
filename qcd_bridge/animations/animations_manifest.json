@@ -1,0 +1,25 @@
+{
+  "sections": [
+    {
+      "section": 3,
+      "name": "staircase_anim",
+      "paths": {
+        "mp4": "/home/z/my-project/choptuik_ac_bc/qcd_bridge/animations/fig_s3_staircase_4d_anim.mp4",
+        "gif": "/home/z/my-project/choptuik_ac_bc/qcd_bridge/animations/fig_s3_staircase_4d_anim.gif"
+      },
+      "files": 2
+    },
+    {
+      "section": 5,
+      "name": "tau_relax_anim",
+      "paths": {
+        "mp4": "/home/z/my-project/choptuik_ac_bc/qcd_bridge/animations/fig_s5_tau_relax_4d_anim.mp4",
+        "gif": "/home/z/my-project/choptuik_ac_bc/qcd_bridge/animations/fig_s5_tau_relax_4d_anim.gif"
+      },
+      "files": 2
+    }
+  ],
+  "total_files": 4,
+  "output_dir": "/home/z/my-project/choptuik_ac_bc/qcd_bridge/animations",
+  "elapsed_s": 28.705
+}

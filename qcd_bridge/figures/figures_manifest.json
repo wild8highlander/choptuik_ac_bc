@@ -1,0 +1,33 @@
+{
+  "generated": "2026-08-10T14:06:49",
+  "sections": {
+    "section_4": {
+      "name": "N-scaling of <lambda>",
+      "elapsed_s": 7.60609245300293,
+      "result": {
+        "3d": {
+          "png": "/home/z/my-project/choptuik_ac_bc/qcd_bridge/figures/fig_s4_N_scaling_3d.png",
+          "pdf": "/home/z/my-project/choptuik_ac_bc/qcd_bridge/figures/fig_s4_N_scaling_3d.pdf",
+          "svg": "/home/z/my-project/choptuik_ac_bc/qcd_bridge/figures/fig_s4_N_scaling_3d.svg"
+        },
+        "4d": {
+          "png": "/home/z/my-project/choptuik_ac_bc/qcd_bridge/figures/fig_s4_N_scaling_4d.png",
+          "pdf": "/home/z/my-project/choptuik_ac_bc/qcd_bridge/figures/fig_s4_N_scaling_4d.pdf",
+          "svg": "/home/z/my-project/choptuik_ac_bc/qcd_bridge/figures/fig_s4_N_scaling_4d.svg"
+        },
+        "N_values": [
+          10,
+          28,
+          50,
+          100,
+          200,
+          500,
+          1000
+        ],
+        "n_realizations": 5
+      },
+      "status": "ok"
+    }
+  },
+  "output_dir": "/home/z/my-project/choptuik_ac_bc/qcd_bridge/figures"
+}

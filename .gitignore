@@ -14,6 +14,8 @@ env/
 .ipynb_checkpoints/
 
 # Julia
+code/julia/Manifest.toml
+code/julia/.julia/
 julia/Manifest.toml
 julia/.julia/
 *.jl.cov
@@ -33,12 +35,24 @@ interactive-viz/out/
 interactive-viz/.env
 interactive-viz/.env.local
 interactive-viz/.env.production
+code/web/node_modules/
+code/web/.next/
+code/web/out/
+code/web/.env
+code/web/.env.local
+code/web/.env.production
 
-# Output artifacts (generated at runtime)
-output/
-results/
-plots/
-reports/
+# Output artifacts (generated at runtime, top-level only)
+/output/
+/results/
+/plots/
+/reports/
+
+# Web app runtime output
+code/web/output/
+
+# Java runtime output
+code/java/qcd_bridge/
 
 # IDE
 .idea/

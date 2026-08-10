@@ -1,0 +1,303 @@
+==============================================================================
+  Choptuik-QCD Bridge Verification Report
+==============================================================================
+Author: Ishak Khamzatovich Isaev
+ORCID: 0009-0003-7299-0701
+Generated: 2026-08-10T14:01:44
+Elapsed (s): 0.009
+Sections executed: [1, 5, 6, 7, 8, 9]
+Mode: verify_all
+
+==============================================================================
+  RESULTS
+==============================================================================
+
+------------------------------------------------------------
+  section_1_ochi
+------------------------------------------------------------
+  operator_shape:
+    [0]: 28
+    [1]: 28
+  eigenvalues:
+    [0]: -9.872466
+    [1]: -9.308369
+    [2]: -8.764487
+    [3]: -6.503511
+    [4]: -6.477803
+    [5]: -5.471621
+    [6]: -4.408576
+    [7]: -3.983122
+    [8]: -2.713605
+    [9]: -2.312221
+    [10]: -1.419381
+    [11]: -0.828063
+    [12]: -0.015020
+    [13]: 0.272924
+    [14]: 1.589900
+    [15]: 2.051950
+    [16]: 3.034031
+    [17]: 3.925973
+    [18]: 4.513579
+    [19]: 4.870287
+    [20]: 6.003222
+    [21]: 6.610955
+    [22]: 6.940873
+    [23]: 8.182825
+    [24]: 9.249961
+    [25]: 9.831796
+    [26]: 11.022044
+    [27]: 11.976864
+  lambda_min: -9.872466
+  lambda_max: 11.976864
+  lambda_mean: 0.999962
+  trace: 27.998939
+  kappa_T: 8.450000
+  N: 28
+
+------------------------------------------------------------
+  section_5_tau_relax
+------------------------------------------------------------
+  theta_0: 1.000000e-19
+  tau_relax_s: 5.000000e-41
+  tau_relax_theory_s: 3.291060e-24
+  Lambda_QCD_eV: 200000000.000000
+  t_values_s:
+    [0]: 1.000000e-45
+    [1]: 1.314147e-45
+    [2]: 1.726983e-45
+    [3]: 2.269511e-45
+    [4]: 2.982471e-45
+    [5]: 3.919407e-45
+    [6]: 5.150678e-45
+    [7]: 6.768750e-45
+    [8]: 8.895135e-45
+    [9]: 1.168952e-44
+    [10]: 1.536175e-44
+    [11]: 2.018760e-44
+    [12]: 2.652948e-44
+    [13]: 3.486365e-44
+    [14]: 4.581598e-44
+    [15]: 6.020894e-44
+    [16]: 7.912343e-44
+    [17]: 1.039798e-43
+    [18]: 1.366448e-43
+    [19]: 1.795714e-43
+    [20]: 2.359833e-43
+    [21]: 3.101169e-43
+    [22]: 4.075393e-43
+    [23]: 5.355667e-43
+    [24]: 7.038136e-43
+    [25]: 9.249147e-43
+    [26]: 1.215474e-42
+    [27]: 1.597312e-42
+    [28]: 2.099104e-42
+    [29]: 2.758532e-42
+    [30]: 3.625117e-42
+    [31]: 4.763938e-42
+    [32]: 6.260517e-42
+    [33]: 8.227241e-42
+    [34]: 1.081181e-41
+    [35]: 1.420831e-41
+    [36]: 1.867181e-41
+    [37]: 2.453751e-41
+    [38]: 3.224591e-41
+    [39]: 4.237587e-41
+    [40]: 5.568814e-41
+    [41]: 7.318242e-41
+    [42]: 9.617249e-41
+    [43]: 1.263848e-40
+    [44]: 1.660883e-40
+    [45]: 2.182645e-40
+    [46]: 2.868317e-40
+    [47]: 3.769391e-40
+    [48]: 4.953535e-40
+    [49]: 6.509675e-40
+    [50]: 8.554673e-40
+    [51]: 1.124210e-39
+    [52]: 1.477378e-39
+    [53]: 1.941492e-39
+    [54]: 2.551407e-39
+    [55]: 3.352924e-39
+    [56]: 4.406236e-39
+    [57]: 5.790444e-39
+    [58]: 7.609497e-39
+    [59]: 1.000000e-38
+  theta_t_values:
+    [0]: 9.999800e-20
+    [1]: 9.999737e-20
+    [2]: 9.999655e-20
+    [3]: 9.999546e-20
+    [4]: 9.999404e-20
+    [5]: 9.999216e-20
+    [6]: 9.998970e-20
+    [7]: 9.998646e-20
+    [8]: 9.998221e-20
+    [9]: 9.997662e-20
+    [10]: 9.996928e-20
+    [11]: 9.995963e-20
+    [12]: 9.994696e-20
+    [13]: 9.993030e-20
+    [14]: 9.990841e-20
+    [15]: 9.987965e-20
+    [16]: 9.984188e-20
+    [17]: 9.979226e-20
+    [18]: 9.972708e-20
+    [19]: 9.964150e-20
+    [20]: 9.952915e-20
+    [21]: 9.938169e-20
+    [22]: 9.918823e-20
+    [23]: 9.893458e-20
+    [24]: 9.860223e-20
+    [25]: 9.816717e-20
+    [26]: 9.759836e-20
+    [27]: 9.685586e-20
+    [28]: 9.588870e-20
+    [29]: 9.463237e-20
+    [30]: 9.300636e-20
+    [31]: 9.091195e-20
+    [32]: 8.823113e-20
+    [33]: 8.482797e-20
+    [34]: 8.055450e-20
+    [35]: 7.526416e-20
+    [36]: 6.883649e-20
+    [37]: 6.121670e-20
+    [38]: 5.247055e-20
+    [39]: 4.284773e-20
+    [40]: 3.283212e-20
+    [41]: 2.313905e-20
+    [42]: 1.461021e-20
+    [43]: 7.984273e-21
+    [44]: 3.608906e-21
+    [45]: 1.271098e-21
+    [46]: 3.225609e-22
+    [47]: 5.320453e-23
+    [48]: 4.982118e-24
+    [49]: 2.217011e-25
+    [50]: 3.711127e-27
+    [51]: 1.718841e-29
+    [52]: 1.471163e-32
+    [53]: 1.369037e-36
+    [54]: 6.898657e-42
+    [55]: 7.531316e-49
+    [56]: 5.344618e-58
+    [57]: 5.068070e-70
+    [58]: 8.030666e-86
+    [59]: 1.383897e-106
+  theta_at_1_tau: 3.678794e-20
+  theta_at_5_tau: 6.737947e-22
+  suppression_factor_at_1_tau: 0.367879
+
+------------------------------------------------------------
+  section_6_kappa_T_physical
+------------------------------------------------------------
+  kappa_T_lower_95CL: 2.620000
+  kappa_T_best_fit: 8.450000
+  lattice_data_source: Borsányi et al. arXiv:1512.04954 (extrapolated)
+  BF_at_lower: 99.000000
+  BF_at_best_fit: 510.000000
+  BF_class_at_lower: strong
+  BF_class_at_best_fit: decisive
+  physical_kappa_in_GUE_regime: True
+  GUE_threshold_kappa: 1.500000
+
+------------------------------------------------------------
+  section_7_cabibbo
+------------------------------------------------------------
+  b_Ch: 0.376510
+  c_theta_framework: 0.094128
+  sin_2theta_C_predicted: 0.613604
+  theta_C_predicted_rad: 0.330309
+  sin_theta_C_predicted: 0.324335
+  sin2_theta_C_measured: 0.051000
+  theta_C_measured_rad: 0.227797
+  sin_theta_C_measured: 0.225832
+  deviation_rad: 0.102512
+  deviation_pct: 45.001405
+  coincidence_quality: weak
+
+------------------------------------------------------------
+  section_8_cp_chain
+------------------------------------------------------------
+  steps:
+    [0]:
+      step: 1
+      statement: O_chi = Q_hat (structural role)
+      evidence: O_chi occupies the same epistemic niche as the topological charge operator
+      section: §3
+    [1]:
+      step: 2
+      statement: O_chi = Q_K3 ⊕ M_F + kappa_T * V_T at N=28
+      evidence: 22 K3 topological sectors ⊕ 6 quark flavors
+      section: §5.6
+    [2]:
+      step: 3
+      statement: GUE class at kappa_T > 2.62 (95% CL), BF >= 99
+      evidence: Bayes factor classification: strong at lower bound, decisive at best-fit
+      section: §5.7, §6.4
+    [3]:
+      step: 4
+      statement: GUE spectral symmetry => <lambda> = 0
+      evidence: Wigner semicircle is symmetric; all odd spectral moments vanish
+      section: §6.5
+    [4]:
+      step: 5
+      statement: Work formula: theta_bar = delta_C * N * <lambda> * S_GUE
+      evidence: Derived from path integral over topological sectors
+      section: §6
+    [5]:
+      step: 6
+      statement: theta_bar = 0 exactly in continuum GUE regime
+      evidence: Follows directly from steps 4 and 5
+      section: §6
+    [6]:
+      step: 7
+      statement: Finite-N artifact ~ 1/sqrt(N) vanishes as N -> infinity
+      evidence: Monte Carlo verification across N = 10..10000
+      section: §6.6
+    [7]:
+      step: 8
+      statement: Dynamic relaxation tau_relax ~ 5e-41 s
+      evidence: Damps CKM-induced residual theta_0 ~ 1e-19
+      section: §6.7
+  total_steps: 8
+  final_result: theta_bar = 0 exactly
+  new_fields_introduced: 0
+  new_scales_introduced: 0
+  new_symmetries_introduced: 0
+  falsification_tests:
+    [0]: Direct lattice measurement of F(theta) - F(0) via Giusti-Rossi-Testa method
+    [1]: Derivation of work formula from PSL(2,7) algebraic geometry
+
+------------------------------------------------------------
+  section_9_jet_wake
+------------------------------------------------------------
+  delta_C: 0.448799
+  Lambda_QCD_GeV: 0.200000
+  chi_eff_GeV4: 7.180783e-04
+  chi_eff_eV4: 718078320820524292425978688307200.000000
+  bridge_formula: chi_eff = delta_C * Lambda_QCD^4
+  jet_wake_amplitude_ratio: 0.142857
+  topological_sector_count: 22
+  kappa_T_coupling: 8.450000
+
+
+==============================================================================
+  EXECUTION LOG
+==============================================================================
+[2026-08-10 14:01:44] Starting QCD bridge run, mode=verify_all, sections=[1, 5, 6, 7, 8, 9]
+[2026-08-10 14:01:44] Language: en
+[2026-08-10 14:01:44] Output dir: reports
+[2026-08-10 14:01:44] Report formats: ['txt', 'csv', 'md', 'pdf', 'html', 'docx', 'json']
+[2026-08-10 14:01:44] Section 1: O_chi operator construction
+[2026-08-10 14:01:44]   O_chi built, shape=(28, 28), trace=27.998939
+[2026-08-10 14:01:44] Section 5: tau_relax dynamics
+[2026-08-10 14:01:44]   tau_relax = 5.00e-41 s
+[2026-08-10 14:01:44] Section 6: kappa_T physical estimate
+[2026-08-10 14:01:44]   kappa_T lower 95%CL = 2.62, BF = 99.0
+[2026-08-10 14:01:44] Section 7: Cabibbo angle coincidence
+[2026-08-10 14:01:44]   theta_C predicted = 0.330309, measured = 0.227797, deviation = 45.00%
+[2026-08-10 14:01:44] Section 8: CP 8-step solution chain
+[2026-08-10 14:01:44]   Chain complete: 8 steps -> theta_bar = 0 exactly
+[2026-08-10 14:01:44] Section 9: Jet wake bridge
+[2026-08-10 14:01:44]   chi_eff = 7.180783e-04 GeV^4
+[2026-08-10 14:01:44] QCD bridge run complete in 0.009s
