@@ -1,7 +1,7 @@
 # MkDocs Material dependencies for choptuik_ac_bc documentation site
 
 mkdocs>=1.6.0
-mkdocs-material>=9.5.0
+mkdocs-material>=9.7.7
 mkdocstrings>=0.26.0
 mkdocstrings-python>=1.10.0
 mkdocs-autorefs>=1.2.0
