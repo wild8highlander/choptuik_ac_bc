@@ -43,6 +43,27 @@ All implementations share:
 
 ---
 
+## Audit & Transfer Appendix (v1.0, September 2026)
+
+A dedicated editorial-verification appendix [`audit_transfer/`](audit_transfer/) now accompanies the monographs. Three results, fully machine-verified (Python + Julia, deterministic, zero fitted parameters):
+
+| # | Task | Result |
+|---|------|--------|
+| 1 | **Monograph audit** | Corrections b-C and a-C reproduced at machine precision; catalog of seven typographical errors **E1–E7** found and fixed in the sources |
+| 2 | **Closure of c_K3 = 0.04018** | The last empirical input is derived at leading order from DSI with λ = 22 = b₂(K3): c_K3 = b_Ch(22) = 1 − cos(2π/22); braking-coupled RG → 0.04036; the 0.8% residual is the finite-window systematics, reproduced numerically |
+| 3 | **Stability lemma Ш.3** | Uniform trace theorem F ≥ n/2 (proved); sharpness 5n/7 (exact construction + numerics to 10⁻¹⁴); the soficity bridge stated explicitly |
+
+Run it:
+
+```bash
+python3 audit_transfer/python/run_all.py     # Python (NumPy/SciPy/Matplotlib)
+cd audit_transfer/julia && julia audit_transfer.jl   # Julia (stdlib only)
+```
+
+Full write-up: [`audit_transfer/README.md`](audit_transfer/README.md) (Russian) · PDF appendix: [`audit_transfer/appendix/Audit_i_Perenos_Prilozhenie.pdf`](audit_transfer/appendix/Audit_i_Perenos_Prilozhenie.pdf)
+
+---
+
 ## Mathematical Background
 
 The monograph establishes the following chain of results on the Klein quartic curve (genus 3, automorphism group PSL(2,7) of order 168):
@@ -346,6 +367,12 @@ choptuik_ac_bc/
 ├── interactive-viz/             # Next.js real-time visualization
 │   ├── package.json             # NPM configuration
 │   └── src/                     # Source (incl. /enhanced page, new types & compute functions)
+├── audit_transfer/              # Editorial verification appendix (v1.0, 2026-09)
+│   ├── README.md                # Full write-up (RU): audit, DSI closure, lemma Ш.3
+│   ├── python/                  # Verification core (run_all.py orchestrator)
+│   ├── julia/                   # Independent port (stdlib only)
+│   ├── figures/, results/       # Generated PNGs + deterministic JSONs
+│   └── appendix/                # PDF "Audit and Transfer" (11 pp.) + LaTeX sources
 ├── scripts/                     # Utility scripts
 │   ├── run_all.sh, run_verify.sh, build_java.sh, run_viz.sh
 │   └── qcd_bridge/              # Strong-CP extension (v3.0)

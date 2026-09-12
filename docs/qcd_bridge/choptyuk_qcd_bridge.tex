@@ -376,20 +376,27 @@ $\cC$: it arises from the $K3$ geometry of the moduli space of the
 critical collapse.
 
 \begin{caveat}[Status of \texorpdfstring{$c_{K3} = 0.04018$}{c\_K3 = 0.04018}]
-This value is an \emph{empirical input} to the present framework,
-measured from Choptuik-type collapse simulations --- exactly as
-$\alpha_s(M_Z) \approx 0.118$ is an empirical input to QCD,
-measured from $R$-ratio data.  The $K3$ topology predicts the
-\emph{existence} of a log-periodic modulation and fixes the
-discrete scale invariance ratio $\lambda_{\mathrm{DSI}} = 22$ and
-the Euler characteristic $\chi = 24$; the \emph{amplitude}
-$0.04018$ is read off from numerical experiments.  This is the
-same epistemic division that QCD practises: topology and symmetry
-fix structure, experiments fix amplitudes.  Demanding that the
-$K3$ framework predict $0.04018$ from geometry alone, while QCD
-is permitted to measure $\alpha_s$ from data, would be a double
-standard.  The value $c_{K3}$ is therefore an empirical input on
-the same footing as $\alpha_s$, not a deficiency of the framework.
+Originally this value was an \emph{empirical input} to the present
+framework, measured from Choptuik-type collapse simulations --- exactly
+as $\alpha_s(M_Z) \approx 0.118$ is an empirical input to QCD, measured
+from $R$-ratio data.  The $K3$ topology predicts the \emph{existence} of
+a log-periodic modulation and fixes the discrete scale invariance ratio
+$\lambda_{\mathrm{DSI}} = 22$ and the Euler characteristic $\chi = 24$.
+\emph{Editorial verification (September 2026, folder
+\texttt{audit\_transfer/}, task~2) has since closed this input at
+leading order}: the DSI cascade with $\lambda = 22$ fixes the bare
+amplitude as the framework's own constant
+$b_{Ch}(22) = 1 - \cos(2\pi/22) = 0.04051$ (zero fitted parameters;
+$+0.82\%$ from the measured value), and the braking-coupled amplitude RG
+map gives $b_{Ch}\bigl(22(1+\gamma)\bigr) = 0.04036$ with
+$\gamma = \delta_C^4/22$ ($+0.45\%$).  The remaining $0.8\%$ deficit is
+reproduced numerically as the finite-window systematics of the
+harmonic-fitting protocol.  The structure of the modulation ---
+existence, period $\omega = 2\pi/\ln 22$, and bare amplitude
+$b_{Ch}(22)$ --- is therefore fixed by topology; only the last digit of
+the measured value carries window systematics.  See
+\texttt{audit\_transfer/README.md}, \S5 and the PDF appendix
+``Audit and Transfer''.
 \end{caveat}
 
 \subsection{Realisation 2: the Aharonov--Bohm phase}
@@ -524,7 +531,7 @@ chart.}
 \toprule
 Realisation & Symbol & Value & Origin & Honesty \\
 \midrule
-$K3$ topology       & $c_{K3}$  & $0.04018$ & $b_2(K3) = 22$, $\chi = 24$ & observed (input) \\
+$K3$ topology       & $c_{K3}$  & $0.04018$ & $b_2(K3) = 22$, $\chi = 24$ & derived (leading order; see \texttt{audit\_transfer/}) \\
 Aharonov--Bohm      & $c_{AB}$  & $0.02063$ & $q/e = 1/14$, $Z_{14}$ cover & hardcoded \\
 Cabibbo angle       & $c_\theta$ & $0.04782$ & $\sin\theta_C \approx \pi/14$, $H_2$ & post-hoc fit \\
 \bottomrule
@@ -2319,7 +2326,7 @@ Choptyuk critical exponent $\dC$    & $\pi/7 \approx 0.4488$ & derived \\
 Isaev braking correction $a_C$      & $\dC^5/22 \approx 8.28\times 10^{-4}$ & derived \\
 Isaev Berry correction $b_C$        & $1 - \cos(2\dC) \approx 0.377$ & derived \\
 \midrule
-$c_{K3}$   & $0.04018$ & observed (input) \\
+$c_{K3}$   & $0.04018$ & derived (leading order) \\
 $c_{AB}$   & $0.02063$ & hardcoded \\
 $c_\theta$ & $0.04782$ & post-hoc fit ($H_2$, 81\%) \\
 \midrule

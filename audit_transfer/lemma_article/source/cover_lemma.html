@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    @page { size: 794px 1123px; margin: 0; }
+    :root {
+      --c-bg: #1e3a5f;
+      --c-accent: #c9a227;
+      --c-text: #FFFFFF;
+      --c-muted: #a9bdd3;
+      --c-footer: #7d93ab;
+    }
+    html, body { margin: 0; padding: 0; width: 794px; height: 1123px; background: var(--c-bg); color: var(--c-text); font-family: 'Inter', 'Noto Sans SC', 'DejaVu Sans', sans-serif; }
+    @media screen {
+      html { height: auto; display: flex; justify-content: center; min-height: 100vh; background: var(--c-bg); }
+      body { transform-origin: top center; scale: min(1, calc(100vw / 794), calc(100vh / 1123)); margin: 0 auto; box-shadow: 0 0 60px rgba(0,0,0,0.3); }
+    }
+    .cover { width: 794px; height: 1123px; position: relative; box-sizing: border-box; }
+    .vline { position: absolute; left: 38px; top: 76px; bottom: 76px; width: 2.5px; background: var(--c-accent); }
+    .content { position: absolute; left: 83px; right: 76px; top: 0; bottom: 0; }
+    .label { position: absolute; top: 128px; font-size: 9pt; color: var(--c-accent); letter-spacing: 3px; text-transform: uppercase; font-family: 'Inter', 'Noto Sans SC', 'DejaVu Sans', sans-serif; }
+    .title { position: absolute; top: 210px; font-size: 30pt; font-weight: 700; line-height: 1.28; font-family: 'Playfair Display', 'Noto Serif SC', 'DejaVu Serif', serif; color: var(--c-text); max-width: 610px; }
+    .subtitle { position: absolute; top: 520px; font-size: 12pt; line-height: 1.55; color: var(--c-muted); max-width: 540px; }
+    .authors { position: absolute; top: 745px; font-size: 12pt; color: var(--c-text); }
+    .institution { position: absolute; top: 790px; font-size: 10pt; color: var(--c-muted); line-height: 1.5; max-width: 540px; }
+    .footer { position: absolute; bottom: 76px; left: 0; right: 0; display: flex; justify-content: space-between; font-size: 9pt; color: var(--c-footer); }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <div class="vline"></div>
+    <div class="content">
+      <div class="label">ОТДЕЛЬНАЯ СТАТЬЯ · ЦЕПОЧКА ПЕРЕНОСА Ш1–Ш4</div>
+      <div class="title">Лемма Ш.3:<br>равномерная устойчивость<br>кунцевского дефекта</div>
+      <div class="subtitle">Острая теорема следа <strong>F&thinsp;≥&thinsp;5n/7 для всех n</strong> с полной<br>
+      характеризацией равенства (тождество F&thinsp;=&thinsp;G(P,Q), выпуклость,<br>
+      усреднение по Хаару);&nbsp; конструкция √(4/7)·I как случай равенства;&nbsp;<br>
+      часть (iii) — мост η(ε)&thinsp;=&thinsp;C·ε<sup>1/2</sup> от софичности к матричным моделям<br>
+      и условное замыкание цепочки Ш1–Ш4.</div>
+      <div class="authors">Репозиторий: wild8highlander / choptuik_ac_bc</div>
+      <div class="institution">Верификационное ядро: Python + Julia, детерминировано;<br>воспроизводится командой <span style="font-family:'Liberation Mono',monospace; font-size:9pt;">python3 audit_transfer/python/run_all.py</span><br>Исправляет и усилияет версию v1.0 приложения (пол n/2 → острый 5n/7).</div>
+      <div class="footer">
+        <span>Фреймворк Исаева–Чоптьюка · audit_transfer/lemma_article/</span>
+        <span>Сентябрь 2026 · v2.0</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
