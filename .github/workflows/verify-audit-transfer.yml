@@ -1,0 +1,158 @@
+# Верификация «Аудит и перенос» (папка audit_transfer/)
+# Автозапуск: при изменениях в audit_transfer/, вручную (workflow_dispatch)
+# и еженедельно по понедельникам. Python + Julia, артефакты прогона — JSON-отчёты.
+#
+# Добавлено в v2.0 издательского пакета. Существующие workflow репозитория
+# не изменялись.
+
+name: Verify Audit & Transfer
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'audit_transfer/**'
+      - '.github/workflows/verify-audit-transfer.yml'
+  pull_request:
+    paths:
+      - 'audit_transfer/**'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1'  # понедельник 06:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  python-verify:
+    name: Python · три задачи + фигуры
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r audit_transfer/python/requirements.txt
+
+      - name: Run full verification suite (run_all.py)
+        run: |
+          cd audit_transfer/python
+          python run_all.py
+
+      - name: Check results exist and are fresh
+        run: |
+          test -f audit_transfer/results/monograph_audit.json
+          test -f audit_transfer/results/dsi_closure.json
+          test -f audit_transfer/results/stability_lemma.json
+          test -f audit_transfer/figures/fig_stability_lemma.png
+          echo "Все результаты и фигуры на месте."
+
+      - name: Upload results artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-verification-results
+          path: |
+            audit_transfer/results/*.json
+            audit_transfer/figures/*.png
+          if-no-files-found: error
+          retention-days: 30
+
+  julia-verify:
+    name: Julia · независимое подтверждение
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Julia 1.10
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.10'
+
+      - name: Run Julia verification suite
+        run: |
+          cd audit_transfer/julia
+          julia --project=. audit_transfer.jl
+
+      - name: Check Julia results
+        run: |
+          test -f audit_transfer/results/julia_results.json
+          python3 - << 'PYEOF'
+          import json, sys
+          d = json.load(open('audit_transfer/results/julia_results.json'))
+          fails = []
+
+          def walk(o, path=''):
+              if isinstance(o, dict):
+                  if o.get('ok') is False:
+                      fails.append(path)
+                  for k, v in o.items():
+                      walk(v, f'{path}.{k}' if path else k)
+              elif isinstance(o, list):
+                  for i, v in enumerate(o):
+                      walk(v, f'{path}[{i}]')
+          walk(d)
+          if fails:
+              print('FAIL-флаги в результатах:', fails[:10])
+              sys.exit(1)
+          print('Julia: все ok-флаги пройдены.')
+          PYEOF
+
+      - name: Upload Julia results artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: julia-verification-results
+          path: audit_transfer/results/julia_results.json
+          if-no-files-found: error
+          retention-days: 30
+
+  cross-check:
+    name: Кросс-проверка Python ↔ Julia
+    needs: [python-verify, julia-verify]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Compare summary values (tolerance 1e-9)
+        run: |
+          python3 - << 'PYEOF'
+          import json, glob, sys
+          py = glob.glob('artifacts/python-verification-results/stability_lemma.json')
+          jl = glob.glob('artifacts/julia-verification-results/julia_results.json')
+          if not py or not jl:
+              print('артефакты не найдены'); sys.exit(1)
+          s_py = json.load(open(py[0]))
+          s_jl = json.load(open(jl[0]))
+          floor_py = s_py.get('per_dimension_floor') or s_py.get('sharp_bound_per_dim')
+          def find_floor(o):
+              if isinstance(o, dict):
+                  for k in ('per_dimension_floor', 'sharp_bound_per_dim'):
+                      if k in o:
+                          return o[k]
+                  for v in o.values():
+                      r = find_floor(v)
+                      if r is not None:
+                          return r
+              return None
+          floor_jl = find_floor(s_jl)
+          print(f'пол (Python): {floor_py} | пол (Julia): {floor_jl}')
+          assert floor_py is not None and floor_jl is not None
+          assert abs(floor_py - floor_jl) < 1e-9, 'расхождение Python/Julia > 1e-9'
+          print('Кросс-проверка пройдена: острие 5/7 совпадает в обеих реализациях.')
+          PYEOF

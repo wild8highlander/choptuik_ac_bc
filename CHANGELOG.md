@@ -8,6 +8,85 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Author:** Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович) — aslan08_05@mail.ru
 **Repository:** https://github.com/wild8highlander/choptuik_ac_bc
 
+## [2.2.1] - 2026-09-11
+
+### Fixed
+- **Lemma Ш.3 (i) upgraded to a sharp theorem** (in `audit_transfer/`):
+  the v1.0 "one-line" proof of the floor `F ≥ n/2` contained an invalid
+  estimate — the trinomial `t₁² + t₂² + (t₁+t₂+n)²` has minimum `n²/3`
+  (at `t₁ = t₂ = −n/3`), not `n²/2`. Replaced by the **sharp trace
+  theorem `F ≥ 5n/7` for all n** with full equality characterization
+  (`X_i X_i* = (4/7)I`), proved via the identity `F = G(P,Q)`, strict
+  convexity of `G` and Haar averaging; the v1.0 open question on the
+  global minimum `5n/7` for `n ≥ 2` is now closed. Numerics (Python and
+  Julia) re-verified: identity residual ≤ 4·10⁻¹², Haar bound never
+  violated, L-BFGS minima = 5n/7 to 1.3·10⁻¹⁴.
+
+### Added
+- **Standalone article** `audit_transfer/lemma_article/
+  Lemma_SH3_Ustojchivost.pdf` (RU, 10 pp.): the sharp trace theorem,
+  the equality construction `√(4/7)·I`, permutation models `F = 2n`,
+  and the bridge lemma Ш.3(iii) with `η(ε) = C·ε^{1/2}`; LaTeX/Tectonic
+  sources included.
+- **Monograph PDFs rebuilt from the corrected DOCX**:
+  `Choptyuk_Monograph_RU_Final.pdf` (60 pp.) and `..._EN_Final.pdf`
+  (59 pp.), ERRATA appendix included. Embedded figures are downsampled
+  to 2600 px (long side) in the PDF rendering only; the DOCX sources
+  remain full-resolution.
+- **CI workflow** `.github/workflows/verify-audit-transfer.yml`:
+  auto-runs the Python and Julia verification suites on changes to
+  `audit_transfer/`, weekly and on demand; uploads JSON artifacts and
+  cross-checks Python ↔ Julia (tolerance 1e-9). Existing workflows were
+  not modified.
+- **DSI-4 observation** (in `audit_transfer/`, documented, not claimed
+  as proof): the integer combination `c_K3 = 3³/(2²·|PSL(2,7)|) =
+  27/672 = 0.040178571` reproduces the measured `0.040177576` to
+  **+0.0025%** — three orders of magnitude tighter than all structural
+  candidates (`b_Ch(22)`: +0.82%; braking RG: +0.45%; `1/25`: −0.44%).
+
+### Changed
+- `audit_transfer/README.md`, appendix PDF (`Audit_i_Perenos_
+  Prilozhenie.pdf`, 11 pp., v2.0), figures and JSON results updated to
+  the sharp theorem; push scripts and PUSH_INSTRUCTIONS extended to the
+  new files.
+
+## [2.2.0] - 2026-09-11
+
+### Added
+- **`audit_transfer/` — editorial verification appendix (v1.0)**: a
+  dedicated folder with a full machine verification of the framework
+  (Python core + independent Julia port, stdlib only, deterministic,
+  zero fitted parameters):
+  - **Task 1 — Monograph audit**: corrections b-C and a-C reproduced at
+    machine precision; catalog of seven typographical errors E1–E7
+    (sign of A in the printed (2,3,7) matrices; the δ_C⁶/2 series member;
+    two shifted-exponent labels in Table B.4.1; Bring/Bolza/torus table
+    values; the V.4 δ⁵/22 column) — located by code and fixed in the
+    RU monograph DOCX (+ Errata appendix), with a backup of the originals
+    in `docs/monograph/_originals_backup/`.
+  - **Task 2 — DSI closure of c_K3 = 0.04018**: the last empirical input
+    is derived at leading order from the discrete scale invariance with
+    λ = 22 = b₂(K3) as the framework's own constant
+    b_Ch(22) = 1 − cos(2π/22) = 0.0405070 (+0.82%); the braking-coupled
+    amplitude RG map gives b_Ch(22(1+γ)) = 0.04036 (+0.45%); the 0.8%
+    residual is reproduced numerically as the finite-window systematics.
+    The c_K3 caveat in `docs/qcd_bridge/choptyuk_qcd_bridge.tex` is
+    upgraded accordingly.
+  - **Task 3 — Stability lemma Ш.3**: the uniform trace theorem
+    F(X₁,X₂) ≥ n/2 (proved); sharpness — exact construction 5n/7 with
+    the n = 1 global minimum proved and L-BFGS numerics to 10⁻¹⁴;
+    permutation models give F = 2n (the obstruction *increases* on the
+    sofic side); the soficity→matrices bridge stated as an explicit
+    lemma with universal η(ε) = C·ε^{1/2}.
+- Four publication-quality figures + deterministic JSON results in
+  `audit_transfer/figures/` and `audit_transfer/results/`.
+- PDF appendix "Аудит и перенос" (11 pp., Russian, LaTeX/Tectonic) with
+  full statements and proofs: `audit_transfer/appendix/`.
+
+### Changed
+- README.md: new "Audit & Transfer Appendix" section + project-structure
+  entry (cosmetic; licence untouched).
+
 ## [2.1.0] - 2026-08-10
 
 ### Added

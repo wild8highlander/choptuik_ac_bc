@@ -86,3 +86,6 @@ htmlcov/
 # Temporary
 tmp/
 temp/
+
+# Editorial verification: originals of the fixed monographs (kept locally)
+_originals_backup/
