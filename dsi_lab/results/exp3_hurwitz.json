@@ -1,0 +1,251 @@
+{
+  "repo_audit": [
+    {
+      "name": "Klein",
+      "g": 3,
+      "n": 7,
+      "b2": 22,
+      "aut": 168,
+      "n_divides_aut": true,
+      "consistent": true
+    },
+    {
+      "name": "Macbeath",
+      "g": 7,
+      "n": 9,
+      "b2": 46,
+      "aut": 504,
+      "n_divides_aut": true,
+      "consistent": true
+    },
+    {
+      "name": "Hurwitz_3",
+      "g": 14,
+      "n": 11,
+      "b2": 94,
+      "aut": 1092,
+      "n_divides_aut": false,
+      "consistent": false
+    }
+  ],
+  "tower": [
+    {
+      "name": "Klein (g=3)",
+      "g": 3,
+      "n": 7,
+      "aut": 168,
+      "group": "PSL(2,7)",
+      "n_tower": 0,
+      "checks": {
+        "84(g-1)=|Aut|": true,
+        "n | |Aut|": true,
+        "(2,3,n) гиперболична": true
+      },
+      "all_ok": true
+    },
+    {
+      "name": "Macbeath (g=7)",
+      "g": 7,
+      "n": 9,
+      "aut": 504,
+      "group": "PSL(2,8)",
+      "n_tower": 1,
+      "checks": {
+        "84(g-1)=|Aut|": true,
+        "n | |Aut|": true,
+        "(2,3,n) гиперболична": true
+      },
+      "all_ok": true
+    },
+    {
+      "name": "PSL(2,13) (g=14)",
+      "g": 14,
+      "n": 13,
+      "aut": 1092,
+      "group": "PSL(2,13)",
+      "n_tower": 2,
+      "checks": {
+        "84(g-1)=|Aut|": true,
+        "n | |Aut|": true,
+        "(2,3,n) гиперболична": true
+      },
+      "all_ok": true
+    },
+    {
+      "name": "Триплет (g=17)",
+      "g": 17,
+      "n": 8,
+      "aut": 1344,
+      "group": "первый триплет Гурвица",
+      "n_tower": 3,
+      "checks": {
+        "84(g-1)=|Aut|": true,
+        "n | |Aut|": true,
+        "(2,3,n) гиперболична": true
+      },
+      "all_ok": true
+    }
+  ],
+  "framework": {
+    "rows": [
+      {
+        "name": "Klein (g=3)",
+        "g": 3,
+        "n": 7,
+        "aut": 168,
+        "group": "PSL(2,7)",
+        "n_tower": 0,
+        "checks": {
+          "84(g-1)=|Aut|": true,
+          "n | |Aut|": true,
+          "(2,3,n) гиперболична": true
+        },
+        "all_ok": true,
+        "b2_hyp": 22,
+        "delta": 0.4487989505128276,
+        "gamma": 0.001844100773049154,
+        "delta_eff": 0.0008276304915843545
+      },
+      {
+        "name": "Macbeath (g=7)",
+        "g": 7,
+        "n": 9,
+        "aut": 504,
+        "group": "PSL(2,8)",
+        "n_tower": 1,
+        "checks": {
+          "84(g-1)=|Aut|": true,
+          "n | |Aut|": true,
+          "(2,3,n) гиперболична": true
+        },
+        "all_ok": true,
+        "b2_hyp": 46,
+        "delta": 0.3490658503988659,
+        "gamma": 0.00032275399108699763,
+        "delta_eff": 0.00011266239636841082
+      },
+      {
+        "name": "PSL(2,13) (g=14)",
+        "g": 14,
+        "n": 13,
+        "aut": 1092,
+        "group": "PSL(2,13)",
+        "n_tower": 2,
+        "checks": {
+          "84(g-1)=|Aut|": true,
+          "n | |Aut|": true,
+          "(2,3,n) гиперболична": true
+        },
+        "all_ok": true,
+        "b2_hyp": 94,
+        "delta": 0.241660973353061,
+        "gamma": 3.628258555000324e-05,
+        "delta_eff": 8.76808493977949e-06
+      },
+      {
+        "name": "Триплет (g=17)",
+        "g": 17,
+        "n": 8,
+        "aut": 1344,
+        "group": "первый триплет Гурвица",
+        "n_tower": 3,
+        "checks": {
+          "84(g-1)=|Aut|": true,
+          "n | |Aut|": true,
+          "(2,3,n) гиперболична": true
+        },
+        "all_ok": true,
+        "b2_hyp": 190,
+        "delta": 0.39269908169872414,
+        "gamma": 0.0001251658756090697,
+        "delta_eff": 4.915252441169842e-05
+      }
+    ],
+    "b2_hyp": [
+      22,
+      46,
+      94,
+      190
+    ]
+  },
+  "curve": {
+    "lambda_D2": 3.338,
+    "delta_obs": 3.443,
+    "monotone_on_0_16": false,
+    "delta_star_deviation_min": 0.4603,
+    "Delta_at_star": 3.442998792859111,
+    "Delta_at_pi_over_7": 3.4378826184991236,
+    "dev_at_pi_over_7_pct": 0.14863146967401927,
+    "points": [
+      {
+        "n": 7,
+        "delta": 0.4487989505128276,
+        "Delta_Ch": 3.4378826184991236,
+        "dev_pct": 0.14863146967401927
+      },
+      {
+        "n": 8,
+        "delta": 0.39269908169872414,
+        "Delta_Ch": 3.414681785309046,
+        "dev_pct": 0.8224866305824563
+      },
+      {
+        "n": 9,
+        "delta": 0.3490658503988659,
+        "Delta_Ch": 3.3986879171285715,
+        "dev_pct": 1.2870195431724807
+      },
+      {
+        "n": 13,
+        "delta": 0.241660973353061,
+        "Delta_Ch": 3.3671625493853226,
+        "dev_pct": 2.2026561317071596
+      },
+      {
+        "n": 11,
+        "delta": 0.28559933214452665,
+        "Delta_Ch": 3.3786971191936277,
+        "dev_pct": 1.8676410341670742
+      }
+    ]
+  },
+  "extrapolation": {
+    "step_factors": [
+      {
+        "from": "Klein (g=3)",
+        "to": "Macbeath (g=7)",
+        "factor": 7.346111198256139
+      },
+      {
+        "from": "Macbeath (g=7)",
+        "to": "PSL(2,13) (g=14)",
+        "factor": 12.849145183035166
+      },
+      {
+        "from": "PSL(2,13) (g=14)",
+        "to": "Триплет (g=17)",
+        "factor": 0.17838524154606117
+      }
+    ],
+    "formal_continuation": [
+      {
+        "k": 4,
+        "n": 10,
+        "b2": 382,
+        "delta_eff": 8.010986512703702e-06
+      },
+      {
+        "k": 5,
+        "n": 12,
+        "b2": 766,
+        "delta_eff": 1.6055149857800462e-06
+      },
+      {
+        "k": 6,
+        "n": 14,
+        "b2": 1534,
+        "delta_eff": 3.7092305277981987e-07
+      }
+    ]
+  }
+}

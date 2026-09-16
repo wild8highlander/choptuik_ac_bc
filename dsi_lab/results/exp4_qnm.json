@@ -1,0 +1,421 @@
+{
+  "catalog": {
+    "events": [
+      {
+        "name": "GW150914",
+        "M_f": 62.3,
+        "a_f": 0.67,
+        "f_berti": 271.09241851810026,
+        "f_repo": 251.0,
+        "sigma_repo": 5.5,
+        "tau_ms": 0.13843946597283585,
+        "berti_vs_repo_pct": 8.004947616773011,
+        "f_used": 251.0,
+        "f_source": "repo (measured)"
+      },
+      {
+        "name": "GW151226",
+        "M_f": 20.5,
+        "a_f": 0.74,
+        "f_berti": 871.7839214658889,
+        "f_repo": null,
+        "sigma_repo": null,
+        "tau_ms": 0.047221658265606876,
+        "berti_vs_repo_pct": null,
+        "f_used": 871.7839214658889,
+        "f_source": "Berti fit (GR prediction)"
+      },
+      {
+        "name": "GW170104",
+        "M_f": 48.7,
+        "a_f": 0.65,
+        "f_berti": 341.7223543936846,
+        "f_repo": 314.0,
+        "sigma_repo": 25.0,
+        "tau_ms": 0.10725218036125607,
+        "berti_vs_repo_pct": 8.828775284612933,
+        "f_used": 314.0,
+        "f_source": "repo (measured)"
+      },
+      {
+        "name": "GW170608",
+        "M_f": 17.8,
+        "a_f": 0.69,
+        "f_berti": 963.4631586229449,
+        "f_repo": null,
+        "sigma_repo": null,
+        "tau_ms": 0.03993121725435993,
+        "berti_vs_repo_pct": null,
+        "f_used": 963.4631586229449,
+        "f_source": "Berti fit (GR prediction)"
+      },
+      {
+        "name": "GW170729",
+        "M_f": 59.1,
+        "a_f": 0.81,
+        "f_berti": 323.5013516298265,
+        "f_repo": null,
+        "sigma_repo": null,
+        "tau_ms": 0.1425965335856682,
+        "berti_vs_repo_pct": null,
+        "f_used": 323.5013516298265,
+        "f_source": "Berti fit (GR prediction)"
+      },
+      {
+        "name": "GW170809",
+        "M_f": 35.4,
+        "a_f": 0.7,
+        "f_berti": 488.2902242853014,
+        "f_repo": null,
+        "sigma_repo": null,
+        "tau_ms": 0.07980859933424475,
+        "berti_vs_repo_pct": null,
+        "f_used": 488.2902242853014,
+        "f_source": "Berti fit (GR prediction)"
+      },
+      {
+        "name": "GW170814",
+        "M_f": 53.4,
+        "a_f": 0.7,
+        "f_berti": 323.69801385205363,
+        "f_repo": 286.0,
+        "sigma_repo": 30.0,
+        "tau_ms": 0.12038924306352178,
+        "berti_vs_repo_pct": 13.18112372449428,
+        "f_used": 286.0,
+        "f_source": "repo (measured)"
+      },
+      {
+        "name": "GW170818",
+        "M_f": 35.6,
+        "a_f": 0.67,
+        "f_berti": 474.4117324066754,
+        "f_repo": null,
+        "sigma_repo": null,
+        "tau_ms": 0.07910826627019193,
+        "berti_vs_repo_pct": null,
+        "f_used": 474.4117324066754,
+        "f_source": "Berti fit (GR prediction)"
+      },
+      {
+        "name": "GW190412",
+        "M_f": 40.3,
+        "a_f": 0.87,
+        "f_berti": 510.22461071670165,
+        "f_repo": null,
+        "sigma_repo": null,
+        "tau_ms": 0.10269507988079274,
+        "berti_vs_repo_pct": null,
+        "f_used": 510.22461071670165,
+        "f_source": "Berti fit (GR prediction)"
+      },
+      {
+        "name": "GW190521",
+        "M_f": 142.0,
+        "a_f": 0.72,
+        "f_berti": 123.72817013819773,
+        "f_repo": 110.0,
+        "sigma_repo": 10.0,
+        "tau_ms": 0.3234821441697463,
+        "berti_vs_repo_pct": 12.480154671088842,
+        "f_used": 110.0,
+        "f_source": "repo (measured)"
+      }
+    ]
+  },
+  "predictions": {
+    "events": [
+      {
+        "name": "GW150914",
+        "M_f": 62.3,
+        "a_f": 0.67,
+        "f_berti": 271.09241851810026,
+        "f_repo": 251.0,
+        "sigma_repo": 5.5,
+        "tau_ms": 0.13843946597283585,
+        "berti_vs_repo_pct": 8.004947616773011,
+        "f_used": 251.0,
+        "f_source": "repo (measured)",
+        "f_corr": 250.97895201824252,
+        "delta_f": -0.021047981757479982,
+        "sigma_used": 5.5,
+        "snr_current": 0.0038269057740872693,
+        "detect_ratios": {
+          "текущий LIGO (2%)": 0.0041928250512908325,
+          "LIGO A+ (1%)": 0.008385650102581665,
+          "Einstein Telescope (0.1%)": 0.08385650102581665,
+          "Cosmic Explorer (0.01%)": 0.8385650102581665
+        }
+      },
+      {
+        "name": "GW151226",
+        "M_f": 20.5,
+        "a_f": 0.74,
+        "f_berti": 871.7839214658889,
+        "f_repo": null,
+        "sigma_repo": null,
+        "tau_ms": 0.047221658265606876,
+        "berti_vs_repo_pct": null,
+        "f_used": 871.7839214658889,
+        "f_source": "Berti fit (GR prediction)",
+        "f_corr": 871.7108167165842,
+        "delta_f": -0.07310474930469478,
+        "sigma_used": 17.43567842931778,
+        "snr_current": 0.0041928250512908325,
+        "detect_ratios": {
+          "текущий LIGO (2%)": 0.0041928250512908325,
+          "LIGO A+ (1%)": 0.008385650102581665,
+          "Einstein Telescope (0.1%)": 0.08385650102581665,
+          "Cosmic Explorer (0.01%)": 0.8385650102581665
+        }
+      },
+      {
+        "name": "GW170104",
+        "M_f": 48.7,
+        "a_f": 0.65,
+        "f_berti": 341.7223543936846,
+        "f_repo": 314.0,
+        "sigma_repo": 25.0,
+        "tau_ms": 0.10725218036125607,
+        "berti_vs_repo_pct": 8.828775284612933,
+        "f_used": 314.0,
+        "f_source": "repo (measured)",
+        "f_corr": 313.9736690586779,
+        "delta_f": -0.026330941322106432,
+        "sigma_used": 25.0,
+        "snr_current": 0.0010532376528842573,
+        "detect_ratios": {
+          "текущий LIGO (2%)": 0.0041928250512908325,
+          "LIGO A+ (1%)": 0.008385650102581665,
+          "Einstein Telescope (0.1%)": 0.08385650102581667,
+          "Cosmic Explorer (0.01%)": 0.8385650102581665
+        }
+      },
+      {
+        "name": "GW170608",
+        "M_f": 17.8,
+        "a_f": 0.69,
+        "f_berti": 963.4631586229449,
+        "f_repo": null,
+        "sigma_repo": null,
+        "tau_ms": 0.03993121725435993,
+        "berti_vs_repo_pct": null,
+        "f_used": 963.4631586229449,
+        "f_source": "Berti fit (GR prediction)",
+        "f_corr": 963.3823659735955,
+        "delta_f": -0.08079264934940154,
+        "sigma_used": 19.2692631724589,
+        "snr_current": 0.004192825051290833,
+        "detect_ratios": {
+          "текущий LIGO (2%)": 0.004192825051290833,
+          "LIGO A+ (1%)": 0.008385650102581667,
+          "Einstein Telescope (0.1%)": 0.08385650102581665,
+          "Cosmic Explorer (0.01%)": 0.8385650102581667
+        }
+      },
+      {
+        "name": "GW170729",
+        "M_f": 59.1,
+        "a_f": 0.81,
+        "f_berti": 323.5013516298265,
+        "f_repo": null,
+        "sigma_repo": null,
+        "tau_ms": 0.1425965335856682,
+        "berti_vs_repo_pct": null,
+        "f_used": 323.5013516298265,
+        "f_source": "Berti fit (GR prediction)",
+        "f_corr": 323.4742239384017,
+        "delta_f": -0.027127691424799625,
+        "sigma_used": 6.47002703259653,
+        "snr_current": 0.004192825051290833,
+        "detect_ratios": {
+          "текущий LIGO (2%)": 0.004192825051290833,
+          "LIGO A+ (1%)": 0.008385650102581667,
+          "Einstein Telescope (0.1%)": 0.08385650102581667,
+          "Cosmic Explorer (0.01%)": 0.8385650102581667
+        }
+      },
+      {
+        "name": "GW170809",
+        "M_f": 35.4,
+        "a_f": 0.7,
+        "f_berti": 488.2902242853014,
+        "f_repo": null,
+        "sigma_repo": null,
+        "tau_ms": 0.07980859933424475,
+        "berti_vs_repo_pct": null,
+        "f_used": 488.2902242853014,
+        "f_source": "Berti fit (GR prediction)",
+        "f_corr": 488.2492779756077,
+        "delta_f": -0.04094630969367663,
+        "sigma_used": 9.765804485706028,
+        "snr_current": 0.004192825051290834,
+        "detect_ratios": {
+          "текущий LIGO (2%)": 0.004192825051290834,
+          "LIGO A+ (1%)": 0.008385650102581669,
+          "Einstein Telescope (0.1%)": 0.08385650102581667,
+          "Cosmic Explorer (0.01%)": 0.8385650102581667
+        }
+      },
+      {
+        "name": "GW170814",
+        "M_f": 53.4,
+        "a_f": 0.7,
+        "f_berti": 323.69801385205363,
+        "f_repo": 286.0,
+        "sigma_repo": 30.0,
+        "tau_ms": 0.12038924306352178,
+        "berti_vs_repo_pct": 13.18112372449428,
+        "f_used": 286.0,
+        "f_source": "repo (measured)",
+        "f_corr": 285.9760170407066,
+        "delta_f": -0.023982959293383566,
+        "sigma_used": 30.0,
+        "snr_current": 0.0007994319764461188,
+        "detect_ratios": {
+          "текущий LIGO (2%)": 0.004192825051290833,
+          "LIGO A+ (1%)": 0.008385650102581667,
+          "Einstein Telescope (0.1%)": 0.08385650102581665,
+          "Cosmic Explorer (0.01%)": 0.8385650102581667
+        }
+      },
+      {
+        "name": "GW170818",
+        "M_f": 35.6,
+        "a_f": 0.67,
+        "f_berti": 474.4117324066754,
+        "f_repo": null,
+        "sigma_repo": null,
+        "tau_ms": 0.07910826627019193,
+        "berti_vs_repo_pct": null,
+        "f_used": 474.4117324066754,
+        "f_source": "Berti fit (GR prediction)",
+        "f_corr": 474.3719498987502,
+        "delta_f": -0.03978250792521984,
+        "sigma_used": 9.488234648133508,
+        "snr_current": 0.004192825051290833,
+        "detect_ratios": {
+          "текущий LIGO (2%)": 0.004192825051290833,
+          "LIGO A+ (1%)": 0.008385650102581667,
+          "Einstein Telescope (0.1%)": 0.08385650102581667,
+          "Cosmic Explorer (0.01%)": 0.8385650102581667
+        }
+      },
+      {
+        "name": "GW190412",
+        "M_f": 40.3,
+        "a_f": 0.87,
+        "f_berti": 510.22461071670165,
+        "f_repo": null,
+        "sigma_repo": null,
+        "tau_ms": 0.10269507988079274,
+        "berti_vs_repo_pct": null,
+        "f_used": 510.22461071670165,
+        "f_source": "Berti fit (GR prediction)",
+        "f_corr": 510.1818250661097,
+        "delta_f": -0.042785650591962,
+        "sigma_used": 10.204492214334033,
+        "snr_current": 0.004192825051290833,
+        "detect_ratios": {
+          "текущий LIGO (2%)": 0.004192825051290833,
+          "LIGO A+ (1%)": 0.008385650102581667,
+          "Einstein Telescope (0.1%)": 0.08385650102581667,
+          "Cosmic Explorer (0.01%)": 0.8385650102581667
+        }
+      },
+      {
+        "name": "GW190521",
+        "M_f": 142.0,
+        "a_f": 0.72,
+        "f_berti": 123.72817013819773,
+        "f_repo": 110.0,
+        "sigma_repo": 10.0,
+        "tau_ms": 0.3234821441697463,
+        "berti_vs_repo_pct": 12.480154671088842,
+        "f_used": 110.0,
+        "f_source": "repo (measured)",
+        "f_corr": 109.99077578488716,
+        "delta_f": -0.009224215112839834,
+        "sigma_used": 10.0,
+        "snr_current": 0.0009224215112839833,
+        "detect_ratios": {
+          "текущий LIGO (2%)": 0.004192825051290833,
+          "LIGO A+ (1%)": 0.008385650102581667,
+          "Einstein Telescope (0.1%)": 0.08385650102581667,
+          "Cosmic Explorer (0.01%)": 0.8385650102581667
+        }
+      }
+    ],
+    "detectors": [
+      [
+        "текущий LIGO (2%)",
+        0.02
+      ],
+      [
+        "LIGO A+ (1%)",
+        0.01
+      ],
+      [
+        "Einstein Telescope (0.1%)",
+        0.001
+      ],
+      [
+        "Cosmic Explorer (0.01%)",
+        0.0001
+      ]
+    ],
+    "qnm_factor": 0.9999161434989742,
+    "shift": 8.385650102581666e-05
+  },
+  "overtones": {
+    "M_f": 62.3,
+    "f0_used": 251.0,
+    "overtones": [
+      {
+        "n": 0,
+        "Momega_R": 0.37367,
+        "Momega_I": 0.08896,
+        "f_n": 251.0,
+        "tau_ms": 3.449393952316772,
+        "delta_f_n": -0.021047981757479982,
+        "ratio_to_f0": 1.0
+      },
+      {
+        "n": 1,
+        "Momega_R": 0.58663,
+        "Momega_I": 0.19533,
+        "f_n": 394.0485722696497,
+        "tau_ms": 1.5709726411616238,
+        "delta_f_n": -0.03304353450475147,
+        "ratio_to_f0": 1.5699146305563734
+      },
+      {
+        "n": 2,
+        "Momega_R": 0.79985,
+        "Momega_I": 0.30064,
+        "f_n": 537.2717906173897,
+        "tau_ms": 1.0206828299564263,
+        "delta_f_n": -0.045053732461049496,
+        "ratio_to_f0": 2.140525062220676
+      },
+      {
+        "n": 3,
+        "Momega_R": 1.01377,
+        "Momega_I": 0.40573,
+        "f_n": 680.9652099446035,
+        "tau_ms": 0.7563110590740147,
+        "delta_f_n": -0.057103359826265104,
+        "ratio_to_f0": 2.7130088045601735
+      },
+      {
+        "n": 4,
+        "Momega_R": 1.2281,
+        "Momega_I": 0.5106,
+        "f_n": 824.9340327026522,
+        "tau_ms": 0.6009754915748139,
+        "delta_f_n": -0.06917608155956104,
+        "ratio_to_f0": 3.286589771723714
+      }
+    ]
+  }
+}
