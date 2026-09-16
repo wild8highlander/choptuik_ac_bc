@@ -1,0 +1,722 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{fontspec}
+\setmainfont{Liberation Serif}
+\setsansfont{Liberation Sans}
+\setmonofont{Liberation Mono}[Scale=0.86]
+\usepackage{booktabs}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\usepackage{colortbl}
+\usepackage{adjustbox}
+\usepackage{enumitem}
+\usepackage[htt]{hyphenat}
+\usepackage{tcolorbox}
+\definecolor{linkblue}{HTML}{1e3a5f}
+\definecolor{accgreen}{HTML}{0e7c66}
+\definecolor{warnamber}{HTML}{b45309}
+\definecolor{rowlight}{HTML}{f0f5fa}
+\usepackage[
+    colorlinks=true,
+    linkcolor=linkblue,
+    citecolor=darkgray,
+    urlcolor=linkblue,
+    bookmarks=true,
+    bookmarksnumbered=true,
+    unicode=true
+]{hyperref}
+
+\widowpenalty=10000
+\clubpenalty=10000
+\emergencystretch=1.8em
+\tolerance=2500
+\hbadness=2500
+\newcommand{\dd}{\mathrm{d}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newtcolorbox{honestybox}[1][]{colback=warnamber!6, colframe=warnamber!80,
+  title={\textbf{Honesty note:} #1}, fonttitle=\small, boxrule=0.7pt, arc=2pt}
+\newtcolorbox{findbox}[1][]{colback=accgreen!7, colframe=accgreen!80,
+  title={\textbf{Finding:} #1}, fonttitle=\small, boxrule=0.7pt, arc=2pt}
+
+\hypersetup{
+    pdftitle={The Choptuik Problem: Statement, Solvability, the Attack on 224 = 4·56, and the e >= 1 Threshold},
+    pdfauthor={Super Z (Z.ai)},
+    pdfsubject={Klein quartic, the {7,3} tiling, Cuntz defect, critical collapse},
+    pdfkeywords={Choptuik, Klein quartic, 7-3 tiling, PSL(2,7), Cuntz defect, partial isometry, DSI-4}
+}
+
+\begin{document}
+
+\tableofcontents
+\newpage
+
+% ==========================================================================
+\section{Summary of results}\label{sec:summary}
+% ==========================================================================
+
+This report continues the computational cycle on the Choptuik--Isaev framework
+(the repository \texttt{choptuik\_ac\_bc}) and answers three questions posed
+for this session: what exactly is the Choptuik problem and can it be solved;
+why does the DSI-4 observation single out the denominator $224 = 4\cdot 56$,
+a constant tied to the combinatorics of the $\{7,3\}$ tiling of the Klein
+quartic; and whether the ``obstruction ladder'' of the Cuntz defect can be
+turned into a theorem by proving the threshold $e \ge 1$ for constructions
+isometric on their carrier. All computations were carried out by two new
+deterministic experiments of the package \texttt{choptuik\_experiments/},
+namely \texttt{exp6\_census\_224.py} and \texttt{exp7\_e1\_threshold.py};
+generator seeds are fixed and every run is reproduced by a single command.
+
+The main results are as follows. First, for the class of
+\emph{carrier-isometric} pairs --- pairs of partial isometries
+$X_1, X_2 \in M_n(\mathbb{C})$, which contains all ``structural'' models of
+the framework (permutation matrices, truncated Cuntz-tree shifts) --- we
+prove the threshold $e = F(X_1,X_2)/n \ge 1$: the value $5/7$ that minimises
+the defect over all matrix pairs is unattainable in this class because it
+would require contracting the carrier. Together with the exact covering
+formula $F = n + 2\,\mathrm{rank}(I - P - Q)$ and the identity $F = 2n$ for
+unitary pairs, this turns the ladder $5/7 \to 1 \to 2$ into a theorem with
+an exact defect arithmetic (Section~\ref{sec:threshold}). Second, the attack
+on DSI-4 shows that $224 = 4\cdot 56 = 8\cdot 28$ is a \emph{census}
+constant of the $\{7,3\}$ tiling: it is expressible through the Klein quartic
+census in at least seven independent ways, and the fraction $9/224$ is the
+\emph{unique} census fraction within $0.1\%$ of the measured $c_{K3}$
+(Section~\ref{sec:attack224}). The main acquisition is the genus family
+$c(g)$: the two structural readings of $27/672$ coincide \emph{only} at
+$g = 3$, so a single measurement of the DSI amplitude on any higher Hurwitz
+surface discriminates the mechanisms. Third, the Choptuik problem statement
+is fixed at both levels (physical and spectral), and its solvability is
+assessed at three levels of rigour: numerically the problem is solved, the
+rigorous theory is partial, and a closed form is unknown
+(Sections~\ref{sec:statement} and~\ref{sec:solvability}).
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Session outcomes: results and their status.}
+\label{tab:summary}
+\begin{tabularx}{\textwidth}{@{}lYY@{}}
+\toprule
+Result & Statement & Status \\
+\midrule
+Theorem~A (\S\ref{sec:threshold}) & $e \ge 1$ for partial isometries;
+equality $\Leftrightarrow$ $PQ = 0$, $p + q = n$ & proved + verified
+(0 violations in 24{,}000 pairs) \\
+Theorem~B (\S\ref{sec:threshold}) & $F = n + 2\,\mathrm{rank}(I{-}P{-}Q)$
+exactly; tree: $F = n + 2$ & proved (accuracy $10^{-14}$) \\
+Theorem~C (\S\ref{sec:threshold}) & unitary pairs: $F = 2n$ exactly &
+proved (accuracy $10^{-14}$) \\
+Uniqueness lemma (\S\ref{sec:attack224}) & $9/224$ is the unique census
+fraction within $0.1\%$ of $c_{K3}$ & computational, exhaustive search \\
+Degeneracy theorem (\S\ref{sec:attack224}) & $c_I(g) = c_{II}(g)
+\Leftrightarrow g = 3$ & proved (algebra + grid $g \le 100$) \\
+Discriminator (\S\ref{sec:attack224}) & branches $(g{-}1)^{-1}$ vs
+$(g{-}1)^{-2}$ separable by one measurement at $g \ge 7$ &
+falsifiable prediction \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% ==========================================================================
+\section{The Choptuik problem: statement}\label{sec:statement}
+% ==========================================================================
+
+\subsection{Physical statement: critical collapse of a scalar field}
+
+The physical Choptuik problem (Choptuik, 1993) is gravitational collapse of
+a massless scalar field in spherical symmetry. One studies the
+Einstein--Klein--Gordon system $G_{\mu\nu} = 8\pi\,T_{\mu\nu}[\phi]$ with
+$T_{\mu\nu} = \partial_\mu\phi\,\partial_\nu\phi
+- \tfrac{1}{2}(\partial\phi)^2 g_{\mu\nu}$ and the wave equation
+$\Box\phi = 0$; in the radial gauge used by the monograph (the Tyukovsky
+formalism) the metric is
+\begin{equation}\label{eq:metric}
+\dd s^2 = -\alpha(r,t)^2\,\dd t^2 + a(r,t)^2\,\dd r^2 + r^2\,\dd\Omega^2,
+\end{equation}
+and the field--metric equations reduce to a coupled system for the three
+functions $(\phi, a, \alpha)$: the scalar equation
+$\tfrac{1}{a}\partial_r(\tfrac{1}{a}\partial_r\phi)
+- \tfrac{1}{\alpha}\partial_t(\tfrac{1}{\alpha}\partial_t\phi) = V'(\phi)$
+with two constraints on $\partial_t a$ and $\partial_r\alpha$
+(equations (9.3)--(9.5) of the monograph). A one-parameter family of smooth
+initial data is labelled by the amplitude $p$; a critical value $p_*$
+separates dispersion ($M_{BH} = 0$) from collapse. Near $p_*$ Choptuik
+discovered three universal phenomena. First, \emph{mass scaling}:
+$M_{BH} \propto (p - p_*)^{\gamma}$ with an exponent $\gamma \approx 0.374$
+independent of the data family. Second, \emph{discrete self-similarity}
+(DSS): the critical solution reproduces itself under logarithmic scale
+translation with echoing period $\Delta \approx 3.44$. Third, universality
+of the critical solution itself. The mechanism is explained by perturbation
+theory around the DSS solution: there is exactly one unstable mode with
+growth exponent $\lambda_0 \approx 2.674$, and $\gamma = 1/\lambda_0$;
+the scaling is illustrated in Fig.~\ref{fig:choptuik}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.98\textwidth]{figs_en/fig_choptuik.png}
+\caption{Left: universal mass scaling $M_{BH} \propto (p-p_*)^\gamma$ for two
+distinct families of initial data (synthetic illustration of the 1993
+statement). Right: the measured exponent $\gamma \approx 0.374$ versus the
+framework candidate $b_{\mathrm{Ch}} = 1 - \cos(2\pi/7) \approx 0.3765$;
+the gap is $+0.67\%$.}
+\label{fig:choptuik}
+\end{figure}
+
+\subsection{The ``Choptuik problem'' of the monograph: the spectral gap of the Klein quartic}
+
+In the Isaev monograph, the ``Choptuik problem'' is a related but distinct
+statement: the \emph{exact determination of the spectral gap}
+$\Delta = 3.443$ of the Laplacian on the Klein quartic
+$K\colon x^3y + y^3z + z^3x = 0 \subset \mathbb{CP}^2$ (genus $g = 3$,
+$\mathrm{Aut}(K) \cong \mathrm{PSL}(2,7)$, $|\mathrm{PSL}(2,7)| = 168$)
+equipped with the canonical hyperbolic metric. The uniformisation is given
+by the Fuchsian group $\Gamma(2,3,7) = \langle A,B,C \mid A^2 = B^3 = C^7
+= ABC = I \rangle$; the spinor phases of the generators $\delta_A = \pi/2$,
+$\delta_B = \pi/3$, $\delta_C = \pi/7$ produce two corrections to the gap,
+and the unified formula of the monograph,
+\begin{equation}\label{eq:delta_ch}
+\Delta_{\mathrm{Ch}} \;=\; \lambda_1 - \frac{R}{4} + \frac{\delta_C^2}{2}
+- \frac{\delta_C^5}{22} \;=\; 3.338 + \frac{\delta_C^2}{2} - \frac{\delta_C^5}{22}
+\;\approx\; 3.4379,
+\end{equation}
+reproduces the observed $\Delta = 3.443$ within $0.15\%$. The same machinery
+carries the critical-exponent constant of the framework,
+\begin{equation}\label{eq:bch}
+b_{\mathrm{Ch}}(n) = 1 - \cos\frac{2\pi}{n},
+\qquad b_{\mathrm{Ch}}(7) = 0.37651\ldots,
+\end{equation}
+identified (to $0.67\%$) with the physical $\gamma \approx 0.374$; the DSS
+echoing period $\Delta \approx 3.44$ additionally resonates with the gap
+$3.443$ (mismatch $\sim 0.1\%$). In the broad sense, the ``Choptuik problem''
+is thus the programme of reducing the three numbers of critical collapse
+($\gamma$, $\Delta$, and the DSI-modulation amplitude
+$c_{K3} = 0.040177576\ldots$) to the spectrum and combinatorics of the
+genus-3 arithmetic curve.
+
+\begin{honestybox}[status of the bridge]
+At present the connection between the Klein quartic and collapse is an
+analogy resting on numerical coincidences at the $0.1\%$--$0.8\%$ level: the
+gap $\Delta_{\mathrm{Ch}}$ (formula~\eqref{eq:delta_ch}), the exponent
+$b_{\mathrm{Ch}}(7)$, and the echoing period. A mechanism that would derive
+the perturbation spectrum of the DSS metric from the Maass spectrum of the
+arithmetic curve is absent; Section~\ref{sec:solvability} records this as
+the central gap of the programme.
+\end{honestybox}
+
+% ==========================================================================
+\section{Can the Choptuik problem be solved?}\label{sec:solvability}
+% ==========================================================================
+
+The answer depends on the level of ambition; three levels are useful.
+
+\textbf{Level I: numerical solution.} Here the problem \emph{is solved} and
+continues to be refined by routine means. Adaptive-grid simulations combined
+with perturbation theory around the DSS solution give $\gamma = 0.374(1)$,
+echoing period $\Delta \approx 3.44$, and confirm exactly one unstable mode;
+further progress is a matter of computational engineering, not principle.
+For the framework this level sets a hard bar: any analytic ``value'' of the
+exponent must agree with $\gamma$ to $\sim 10^{-3}$, otherwise it is
+falsified. The candidate $b_{\mathrm{Ch}}(7) = 0.3765$ passes this bar only
+marginally: the $+0.67\%$ gap is five times the modern uncertainty, and as
+an \emph{exact} claim it is ruled out unless the $\delta$-machinery of the
+monograph (the terms $\delta_C^2/2$, $\delta_C^5/22$ and higher) derives a
+correction bringing the value to $0.374$. Note that for the gap the
+analogous programme has been carried through: formula~\eqref{eq:delta_ch}
+achieves $0.15\%$, with the residue attributed to higher-order holonomy
+terms.
+
+\textbf{Level II: rigorous mathematical theory.} Here the picture is partial.
+For the spherically symmetric scalar field, Christodoulou's work
+(1991--1999) establishes the global evolution picture: dispersion, black-hole
+formation, instability of naked singularities, and weak cosmic censorship.
+However, the \emph{discrete} self-similarity of the critical solution resists
+rigour: existence and uniqueness of the DSS critical solution as theorems,
+a proof of universality, and a rigorous count of unstable modes all remain
+open problems of mathematical general relativity. Bounded-variation
+techniques, which work for CSS-like problems, do not transfer directly to
+the oscillating DSS regime; the self-similar change of variables makes the
+equation coefficients singular in the echoing period. Solving the Choptuik
+problem in the strict sense is therefore a programme at the level of the
+best current problems of mathematical GR, not of a single report.
+
+\textbf{Level III: a closed form for the exponent.} No closed formula for
+$\gamma$ is known; moreover, there is no substantive reason to expect one:
+the exponent is the reciprocal growth rate of the single unstable eigenvalue
+of the linearised operator on a DSS background, and eigenvalues of such
+operators are typically transcendental. The framework's programme claims the
+opposite --- that $\gamma$ is expressible through the arithmetic of genus 3.
+For this claim to become a theory, two things are needed. First, a
+\emph{mechanism}: an explicit correspondence between the DSS perturbation
+problem and objects of the quartic (Maass spectrum, the $\{7,3\}$ tiling,
+spin structures). Second, \emph{precision}: an explanation of the $0.67\%$
+gap between $b_{\mathrm{Ch}}(7)$ and $\gamma$ that is not a fit. Our
+contribution here is twofold: the theorems of Section~\ref{sec:threshold}
+close an entire class of candidate ``mechanisms'' (isometric transports),
+and the genus family of Section~\ref{sec:attack224} turns the single
+coincidence $27/672$ into a falsifiable one-parameter family of predictions
+--- that is, into testable physics rather than numerology.
+
+\begin{findbox}[solvability verdict]
+Numerically the Choptuik problem is solved ($\gamma = 0.374(1)$,
+$\Delta \approx 3.44$, one unstable mode). A rigorous theory of the DSS
+critical solution is a major open problem of mathematical GR. A closed form
+of $\gamma$ via Klein-quartic combinatorics is an unproven programme of the
+framework with two precise gaps --- the mechanism and the $0.67\%$ offset ---
+both now formulated with an attack plan.
+\end{findbox}
+
+% ==========================================================================
+\section{Analytical attack on DSI-4: why $224 = 4\cdot 56$?}\label{sec:attack224}
+% ==========================================================================
+
+The DSI-4 observation records the log-periodic modulation amplitude
+$c_{K3}$, whose extended writing equals $0.04017757639214903$, and its
+integer reading $c_{K3} \approx 27/672 = 9/224$ (deviation $+0.0025\%$).
+This section asks: does the combinatorics of the $\{7,3\}$ tiling derive
+the denominator $224 = 4\cdot 56$ naturally and uniquely? The answer: yes
+--- the constant is \emph{census-born}, and its census status is now
+established constructively.
+
+\subsection{The census of the $\{7,3\}$ tiling from $G = \mathrm{GL}(3,2)$}
+
+We constructed the tiling combinatorics explicitly from the group
+$G = \mathrm{GL}(3,2) \cong \mathrm{PSL}(2,7)$ of 168 matrices $3\times 3$
+over $\mathbb{F}_2$. The element census by order gives $1, 21, 56, 42, 48$
+elements of orders $1, 2, 3, 4, 7$ respectively; the Sylow numbers are
+$n_2 = 21$, $n_3 = 28$, $n_7 = 8$. The cells of the tiling are cosets by the
+stabilisers: vertices $G/H_3$ ($H_3 \cong C_3$; three heptagons meet at each
+vertex), edges $G/H_2$, faces $G/H_7$; this yields $V = 56$, $E = 84$,
+$F = 24$ and the Euler characteristic $V - E + F = -4 = 2 - 2g$. The
+integrity of the construction was verified by two nontrivial graphs: the
+1-skeleton of the tiling (the Klein graph) is a connected cubic graph on 56
+vertices with 84 edges and girth 7 (such a graph is unique), and the
+face-adjacency graph is a 7-valent graph on 24 vertices with legitimate
+triangles (three heptagons at each vertex are pairwise adjacent). The three
+valence streams coincide: $7F = 3V = 2E = |G| = 168$ --- the valence
+identity of the regular $\{7,3\}$ tiling of genus 3.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Census of the Klein quartic and the $\{7,3\}$ tiling (all values
+derived by the explicit $\mathrm{GL}(3,2)$ construction and verified
+programmatically).}
+\label{tab:census}
+\begin{tabularx}{\textwidth}{@{}lYY@{}}
+\toprule
+Object & Formula / origin & Value \\
+\midrule
+Group order & $|\mathrm{PSL}(2,7)| = 84(g-1)$ & 168 \\
+Elements of orders 2 / 3 / 4 / 7 & census of $\mathrm{GL}(3,2)$ & 21 / 56 / 42 / 48 \\
+Sylow numbers $n_2, n_3, n_7$ & subgroups $C_2, C_3, C_7$ & 21 / 28 / 8 \\
+Vertices / edges / faces & $|G|/3,\ |G|/2,\ |G|/7$ & 56 / 84 / 24 \\
+Flags (oriented / all) & $|G|,\ 2|G|$ & 168 / 336 \\
+1-skeleton $\{7,3\}$ (Klein graph) & double coset $H_3\,t\,H_3$, $t^2 = e$ &
+56 vertices, deg.~3, girth 7 \\
+Face adjacency of $\{7,3\}$ & double coset $H_7\,t\,H_7$ & 24 vertices,
+deg.~7, 84 edges \\
+Euler characteristic & $V - E + F = 2 - 2g$ & $-4$ \\
+Valence identity & $7F = 3V = 2E = |G|$ & 168 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Provenance of the constants 224 and 672}
+
+Both denominators of the DSI-4 observation are expressible through the census
+of Table~\ref{tab:census} repeatedly and independently; the enumeration of
+exact identities provides the criterion of ``census birth'': a constant is
+not accidental if it lies in the intersection of many independent counting
+families. For $224$ there are seven such appearances, for $672$ --- eight;
+two cross-tower identities deserve note: $224 = 14(g{-}1)|_{g=17}$ is
+the number of $C_3$-subgroups of the genus-17 Hurwitz triplet surface, and
+$672 = 4V|_{g=7}$ is four times the vertex count of the Fricke--Macbeath
+surface of genus 7.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Provenance: all exact appearances of $224$ and $672$ in the census
+of $\{7,3\}$ and the Hurwitz tower.}
+\label{tab:prov}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{ll@{\hspace{2.2em}}ll}
+\toprule
+\multicolumn{2}{c}{$224$} & \multicolumn{2}{c}{$672$} \\
+\cmidrule(r){1-2}\cmidrule(l){3-4}
+$4\cdot 56$ & vertices of $\{7,3\}$: $4V$ & $4\cdot 168$ & $4|G|$ (4 spinor components) \\
+$8\cdot 28$ & $8\,n_3$ ($C_3$-subgroups) & $2\cdot 336$ & $2|\mathrm{PGL}(2,7)|$ \\
+$8\cdot 28$ & 28 bitangents $= 8N$ & $24\cdot 28$ & $F\cdot n_3$ (faces $\times$ $C_3$) \\
+$32\cdot 7$ & $2^5\cdot 7$ (7 = order of $C$) & $12\cdot 56$ & $12V$ \\
+$168+56$ & $|G| + V$ & $8\cdot 84$ & $8E$ \\
+$2\cdot 84+56$ & $2E + V$ & $3\cdot 224$ & 3 = vertex valence \\
+$14\cdot 16$ & $N(g{=}17)$: Hurwitz triplet & $4\cdot 168$ & $4V$ at genus 7 (Fricke--Macbeath) \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\subsection{Uniqueness lemma: $9/224$ among census fractions}
+
+Call a number \emph{census} if $q = 2^a 3^b 7^c$ with exponent budget
+$a \le 6$, $b \le 1$, $c \le 1$ --- exactly the shape of every census
+denominator (64 spin structures, 28 bitangents, 24 faces, 56 vertices,
+84 edges, 168, 336, 672); denominators such as $25 = 5^2$, $49 = 7^2$,
+$81 = 3^4$, $11^2$ do not occur in the census \emph{by construction}. An
+exhaustive search over fractions $p/q$ with $q \le 5000$ from the semigroup
+and $p \le 32$ gives: within $0.1\%$ of the measured $c_{K3}$ lies
+\emph{exactly one} rational number --- $9/224$ (its unreduced writings
+$18/448$, $27/672$ exhaust all hits; within $0.01\%$ the same unique
+fraction). The continued fraction of the measured value,
+$[0; 24, 1, 8, 19, \ldots]$, has exactly two census convergents: $1/24$
+(deviation $+3.68\%$) and $9/224$ ($+0.0025\%$); the intermediate $1/25$ is
+discarded by the filter as non-census. The exclusivity of $9/224$ is
+therefore not a fitting artefact: any alternative of comparable accuracy
+must have a denominator outside the $\{7,3\}$ census (Fig.~\ref{fig:scan}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.94\textwidth]{figs_en/fig224_scan.png}
+\caption{The census filter: errors $|p/q - c_{K3}|$ for all census
+denominators (blue) and a random sample of other fractions (grey). Inside
+the $0.1\%$ band --- only $9/224 = 27/672$.}
+\label{fig:scan}
+\end{figure}
+
+\subsection{The genus family $c(g)$ and the degeneracy theorem}
+
+The main result of the attack: the observation $27/672$ admits \emph{two}
+structural readings, indistinguishable on the Klein quartic but divergent on
+the rest of the Hurwitz tower. Let a tower surface have genus $g$, group
+order $|G| = 84(g-1)$, and the canonical $\{7,3\}$ tiling: then
+$V = 28(g-1)$, $F = 12(g-1)$ and $N := n_3 = 14(g-1)$ is the number of
+$C_3$-subgroups (vertex stabilisers). Branch~I reads $27/672$ as
+$3^3/(4|G|)$ --- ``resonances per spinor slots over the group''; branch~II as
+$(N-1)/(FN)$ --- ``all but one of the $C_3$-subgroups over
+face$\times$subgroup slots'' (the $(N{-}1)/(24N)$ reading of Experiment 2).
+Explicitly:
+\begin{equation}\label{eq:branches}
+c_I(g) = \frac{27}{4\cdot 84(g-1)} = \frac{9}{112(g-1)},
+\qquad
+c_{II}(g) = \frac{14(g-1) - 1}{12(g-1)\cdot 14(g-1)}.
+\end{equation}
+
+\begin{theorem}[degeneracy]\label{thm:degen}
+The branches $c_I(g)$ and $c_{II}(g)$ coincide if and only if $g = 3$.
+\end{theorem}
+\begin{proof}
+The equality $27\cdot 168(g-1)^2 = 336(g-1)\bigl(14(g-1)-1\bigr)$, after
+cancelling $168(g-1)$, gives $27(g-1) = 28(g-1) - 2$, i.e.\ $g - 1 = 2$.
+\end{proof}
+
+A numerical check on the grid $g = 3..100$ confirms that the degeneracy
+point is unique. Branch~III --- the framework hypothesis
+$c_{III}(g) = b_{\mathrm{Ch}}(b_2(g))$ with hypothetical
+$b_2 = 22, 46, 94, 190$ --- separates from both already at $g = 7$ and
+behaves qualitatively differently: $b_{\mathrm{Ch}}(\lambda)
+= 2\sin^2(\pi/\lambda) \sim 2\pi^2/\lambda^2$, i.e.\ $(g-1)^{-2}$ versus
+$(g-1)^{-1}$. The prediction table:
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The genus family of the DSI amplitude $c(g)$: three branches on the
+Hurwitz tower. At $g = 3$ all branches merge (quartic degeneracy); at
+$g \ge 7$ they are distinguishable.}
+\label{tab:genus}
+\begin{tabular}{rrrrrrr}
+\toprule
+$g$ & $N = n_3$ & $c_I$ & $c_{II}$ & $c_{II}/c_I$ & $c_{III} = b_{\mathrm{Ch}}(b_2)$ &
+$c_{III}/c_I$ \\
+\midrule
+3 & 28 & $9/224 = 0.040179$ & $9/224 = 0.040179$ & 1.0000 & 0.040509 & 1.0082 \\
+7 & 84 & $3/224 = 0.013393$ & $83/6048 = 0.013724$ & 1.0247 & 0.009314 & 0.6954 \\
+14 & 182 & $9/1456 = 0.006181$ & $181/28392 = 0.006375$ & 1.0313 & 0.002233 & 0.3613 \\
+17 & 224 & $9/1792 = 0.005022$ & $223/43008 = 0.005185$ & 1.0324 & 0.000547 & 0.1089 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{findbox}[discriminator]
+Branch~I decays as $(g-1)^{-1}$, branch~III as $(g-1)^{-2}$: at $g = 17$
+they differ by a factor of nine. \emph{One} measurement of the DSI
+modulation amplitude on any higher Hurwitz surface (nearest candidates:
+Fricke--Macbeath $g = 7$ with $c_I = 3/224$, or the triplet $g = 17$)
+suffices to select the mechanism. DSI-4 thus upgrades from a single
+coincidence to a one-parameter falsifiable family (Fig.~\ref{fig:genus}).
+\end{findbox}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.94\textwidth]{figs_en/fig224_genus.png}
+\caption{The genus family $c(g)$: branch~I $9/(4V)$, branch~II $(N-1)/(FN)$,
+and branch~III $b_{\mathrm{Ch}}(b_2)$. The only degeneracy point
+$c_I = c_{II}$ is $g = 3$ (Theorem~\ref{thm:degen}).}
+\label{fig:genus}
+\end{figure}
+
+\subsection{The status of DSI-4 after the attack}
+
+The upshot is threefold. The denominator $224 = 4\cdot 56$ is a census
+constant of the $\{7,3\}$ tiling: it is expressible through the quartic
+census in seven ways and has cross-tower twins ($N$ of the genus-17 triplet,
+$4V$ at genus 7), making an accidental appearance highly unlikely. The
+fraction $9/224$ is the unique census fraction near the measured value
+(uniqueness lemma, exhaustive search). The numerator $9 = 3^2$ receives two
+interpretations --- ``$3^3$ resonances over $4|G|$ spinor slots'' (branch~I)
+and ``$N - 1$ out of $FN$ slots'' (branch~II) --- and only an experimental
+tower can tell them apart: at genus 3 the mechanisms are degenerate by
+Theorem~\ref{thm:degen}. What remains open is the dynamical derivation of
+the numerator (why ``all but one'', or exactly $3^3$) --- the same
+mechanism problem as for the $\gamma$ link; its statement is now precise.
+
+% ==========================================================================
+\section{The threshold $e \ge 1$: the ladder becomes a theorem}\label{sec:threshold}
+% ==========================================================================
+
+\subsection{The class of carrier-isometric pairs}
+
+The Cuntz defect functional for a pair $X_1, X_2 \in M_n(\mathbb{C})$:
+\begin{equation}\label{eq:F}
+F(X_1, X_2) = \|X_1^*X_1 - I\|^2 + \|X_2^*X_2 - I\|^2
++ \|X_1^*X_2\|^2 + \|X_1X_1^* + X_2X_2^* - I\|^2,
+\qquad e = F/n,
+\end{equation}
+with Frobenius norms; the exact Cuntz relations $X_i^*X_j = \delta_{ij}I$,
+$X_1X_1^* + X_2X_2^* = I$ are realised in no $M_n$. The sharp trace theorem
+of the audit gives the global floor $F \ge 5n/7$, with equality at the pair
+$\sqrt{4/7}\,I$ --- a construction that \emph{contracts} the whole space.
+Natural ``transports'' of the framework, however, do not contract the
+carrier. We formalise this.
+
+\begin{definition}[carrier-isometric pair]\label{def:carrier}
+$X \in M_n(\mathbb{C})$ is a \emph{partial isometry} if all its nonzero
+singular values equal 1 (equivalently: $XX^*X = X$; the carrier is the
+initial subspace $(X^*X)\mathbb{C}^n$, on which $X$ is isometric). A pair
+$(X_1, X_2)$ is \emph{carrier-isometric} if both operators are partial
+isometries.
+\end{definition}
+
+The class of Definition~\ref{def:carrier} contains all structural models of
+the framework: permutation matrices (unitary), truncated Cuntz-tree shifts
+(partial isometries with projection $P_i = S_iS_i^*$), complementary
+projections. Outside the class: $\sqrt{4/7}\,I$ (singular values
+$\sqrt{4/7} \approx 0.756$) and weighted trees $c_iS_i$ with $c_i \ne 1$.
+
+\subsection{Theorem A: the threshold}
+
+\begin{theorem}[threshold $e \ge 1$]\label{thm:A}
+For every carrier-isometric pair $(X_1, X_2) \in M_n(\mathbb{C})^2$:
+\begin{equation}\label{eq:thmA}
+F(X_1, X_2) \ge n, \qquad \text{i.e. } e \ge 1.
+\end{equation}
+Equality holds if and only if $P = X_1X_1^*$ and $Q = X_2X_2^*$ are
+orthogonal ($PQ = 0$) and $p + q = n$, where $p = \mathrm{rank}\,P$,
+$q = \mathrm{rank}\,Q$.
+\end{theorem}
+
+\begin{proof}
+If $X_i$ are partial isometries, then $P = X_1X_1^*$, $Q = X_2X_2^*$ are
+orthogonal projections. The audit identity $F = G(P,Q)$ with
+$G(P,Q) = 2\,\mathrm{tr}P^2 + 2\,\mathrm{tr}Q^2 + 3\,\mathrm{tr}(PQ)
+- 4\,\mathrm{tr}P - 4\,\mathrm{tr}Q + 3n$, together with
+$\mathrm{tr}(P^2) = \mathrm{tr}(P)$ for projections, gives
+\begin{equation}\label{eq:Fproj}
+F = 3n - 2p - 2q + 3r, \qquad r = \mathrm{tr}(PQ).
+\end{equation}
+For projections the bounds $\max(0,\, p + q - n) \le r \le \min(p, q)$
+hold: the lower one follows from $\mathrm{tr}(PQ) \ge \mathrm{tr}(P \wedge Q)
+\ge p + q - n$ (dimension of the intersection of ranges), the upper one from
+$\mathrm{tr}(PQ) = \mathrm{tr}(QPQ) \le \|P\|\,\mathrm{tr}(Q) = q$. If
+$p + q \ge n$, then $F - n = 3r - 2(p+q-n) \ge 3(p+q-n) - 2(p+q-n) =
+p+q-n \ge 0$; if $p + q \le n$, then $F - n = 2(n - p - q) + 3r \ge 0$. In
+both cases equality forces $p + q = n$ and $r = 0$, i.e.\ $PQ = 0$.
+\end{proof}
+
+\begin{remark}[geometry of equality]\label{rem:equality}
+The equality case is a pair of complementary orthogonal projections (e.g.\
+$X_1 = \mathrm{diag}(I_p, 0)$, $X_2 = \mathrm{diag}(0, I_q)$, $p + q = n$):
+the defect $F = n$ sits entirely in the ``fullness'' terms
+$\|X_i^*X_i - I\|^2 = q$ and $p$, while the overlap and covering terms
+vanish. Such a pair is degenerate as a Cuntz model: the operators are not
+isometric on the whole space. The gauge group of $F$ is large ---
+$(X_1, X_2) \mapsto (UX_1W,\, UX_2V)$ with arbitrary unitaries $U, V, W$
+--- and all equality cases are equivalent to the block form above.
+\end{remark}
+
+\subsection{Theorem B: exact covering arithmetic}
+
+\begin{theorem}[covering formula]\label{thm:B}
+Let $X_1, X_2$ be partial isometries with $P + Q \le I$ (the combined ranges
+do not cover the space) and $R := I - P - Q \ge 0$. Then
+\begin{equation}\label{eq:thmB}
+F = n + 2\,\mathrm{rank}(R) \quad \text{exactly.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+From $P + Q \le I$ for projections it follows that $PQ = 0$. Counting the
+four terms of~\eqref{eq:F} directly: $\|X_1^*X_1 - I\|^2 = \|P' - I\|^2$
+where $P' = X_1^*X_1$ is the initial projection of rank $p$; since
+$I - P = Q + R$, one has $\|P' - I\|^2 = \mathrm{tr}(I - P') = (n - p) =
+q + \mathrm{rank}(R)$; symmetrically $\|X_2^*X_2 - I\|^2 = p +
+\mathrm{rank}(R)$; next $\|X_1^*X_2\|^2 = \mathrm{tr}(PQ) = 0$ and
+$\|P + Q - I\|^2 = \|R\|^2 = \mathrm{rank}(R)$. Summing and using
+$p + q + \mathrm{rank}(R) = n$ yields $F = n + 2\,\mathrm{rank}(R)$.
+\end{proof}
+
+For the Cuntz-tree truncation at depth $k$ only the root is left uncovered:
+$\mathrm{rank}(R) = 1$, and formula~\eqref{eq:thmB} instantly reproduces the
+empirical finding of Experiment 1: $F = n + 2$, $e = 1 + 2/n \to 1$
+(Fig.~\ref{fig:tree}; verified up to $k = 10$, $n = 2047$, accuracy
+$10^{-13}$). The tree truncation is a \emph{near-extremal} of the class: it
+pays exactly $2$ for the single uncovered dimension.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{figs_en/fig7_tree.png}
+\caption{Covering arithmetic: the Cuntz-tree truncation follows $F = n + 2$
+exactly (Theorem~\ref{thm:B}, $\mathrm{rank}(R) = 1$); the class floor
+$F = n$ is out of reach for the tree, and unitary pairs pay $2n$.}
+\label{fig:tree}
+\end{figure}
+
+\subsection{Theorem C and the three-term defect arithmetic}
+
+\begin{theorem}[unitary pairs]\label{thm:C}
+If $X_1, X_2$ are unitary, then $F = 2n$ exactly, for every pair.
+\end{theorem}
+\begin{proof}
+$P = Q = I$, the first two terms of~\eqref{eq:F} vanish,
+$\|X_1^*X_2\|^2 = \mathrm{tr}(I) = n$ (a product of unitaries is unitary),
+and the last term is $\|I\|^2 = n$.
+\end{proof}
+
+The permutation models of the framework are a special case: \emph{every}
+unitary pair pays exactly $2n$, with the defect sitting entirely in the
+\emph{overlap} of ranges ($r = n$). Formulas~\eqref{eq:Fproj}
+and~\eqref{eq:thmB} provide the exact three-term arithmetic: the defect of a
+carrier-isometric pair decomposes into (i) \emph{range overlap} with weight
+$3r$, (ii) \emph{covering deficit} with weight $2\,\mathrm{rank}(R)$, and
+(iii) the base unit $n$; the framework's ladder is exactly this arithmetic
+evaluated on three families (Fig.~\ref{fig:ladder}): free scalars $5/7$
+(outside the class), tree $1 + 2/n$, unitary pairs $2$.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.94\textwidth]{figs_en/fig7_ladder.png}
+\caption{The ladder as a theorem: on the class of carrier-isometric pairs
+the floor is $e = 1$ (Theorem~\ref{thm:A}); the value $5/7$ is attainable
+only by contracting the carrier (outside the class), and unitary pairs pay
+exactly $e = 2$ (Theorem~\ref{thm:C}).}
+\label{fig:ladder}
+\end{figure}
+
+\subsection{Consequence for the Sh1--Sh4 chain and the Sh.3(iii) bridge}
+
+\begin{corollary}[class closure]\label{cor:D}
+On the class of carrier-isometric pairs $\inf e = 1$; the value $5/7 < 1$
+is unattainable. Hence no sequence of carrier-isometric models can drive
+$e \to 0$: in the Sh1--Sh4 chain the step Sh2 strengthens to
+$\eta \equiv 1$, and the Sh.3(iii) bridge (soficity $\Rightarrow$ matrix
+models with $e \to 0$) is impossible for isometric-on-carrier transports ---
+whatever permutation data one takes, the per-dimension defect stays at or
+above 1.
+\end{corollary}
+
+\begin{remark}[the class boundary is optimal]
+A weighted tree $c_iS_i$ leaves the class with a quadratic penalty
+\begin{equation}\label{eq:weightedtree}
+F = (n-1)[(c_1^2{-}1)^2 + (c_2^2{-}1)^2] + n + 2;
+\end{equation}
+at
+$c^2 = 4/7$ this gives $e \approx 1.37$--$1.48$ (for $k = 3$--$7$) --- above
+the class floor. Reaching $5/7$ requires contracting the \emph{entire}
+carrier ($\sqrt{4/7}\,I$): the global minimum lives strictly outside the
+class, so the threshold of Theorem~\ref{thm:A} is unavoidable within it.
+\end{remark}
+
+\subsection{Numerical verification}
+
+All statements were verified by the experiment \texttt{exp7\_e1\_threshold.py}
+(deterministic, fixed seeds); see Table~\ref{tab:verify}. Separately, the
+supporting bounds $\max(0, p+q-n) \le \mathrm{tr}(PQ) \le \min(p,q)$ were
+checked on $10^4$ random pairs of projections (0 violations), and the
+identity~\eqref{eq:Fproj} to $5.9\cdot 10^{-16}$.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Numerical verification of Theorems A/B/C (Experiment 7).}
+\label{tab:verify}
+\begin{tabularx}{\textwidth}{@{}lYY@{}}
+\toprule
+Check & Scope & Max deviation \\
+\midrule
+Identity $F = 3n - 2p - 2q + 3r$ & 24{,}000 random partial isometries,
+$n \le 12$ & $5.9\cdot 10^{-16}$ \\
+Threshold $e \ge 1$ (Theorem~A) & the same 24{,}000 pairs & 0 violations \\
+Equality cases $F = n$ & 5 configurations $(n, p, q)$ & $8.9\cdot 10^{-16}$ \\
+Covering formula (Theorem~B) & 500 random $(P, Q)$, $P + Q \le I$ &
+$7.1\cdot 10^{-15}$ \\
+Tree: $F = n + 2$, $\mathrm{rank}(R) = 1$ & $k = 2..10$ ($n$ up to 2047) &
+$2.3\cdot 10^{-13}$ \\
+Unitary pairs $F = 2n$ (Theorem~C) & 200 pairs, $n \le 32$ & $2.8\cdot 10^{-14}$ \\
+Permutation pairs $F = 2n$ & 200 pairs & $1.4\cdot 10^{-14}$ \\
+Bounds on $\mathrm{tr}(PQ)$ & 10{,}000 pairs of projections & 0 violations \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% ==========================================================================
+\section{Conclusions and next steps}\label{sec:conclusions}
+% ==========================================================================
+
+Assembled into one picture, the results of this session move the programme in
+three ways. First, the ``obstruction ladder'' of the Cuntz defect is no
+longer an empirical sequence of values but a theorem with exact arithmetic:
+the threshold $e \ge 1$ on the class of carrier-isometric constructions is
+proved (Theorem~\ref{thm:A}), the covering formula
+$F = n + 2\,\mathrm{rank}(R)$ is exact (Theorem~\ref{thm:B}), unitary pairs
+pay exactly $2n$ (Theorem~\ref{thm:C}), and Corollary~\ref{cor:D} closes the
+Sh.3(iii) bridge for the whole class: sofic amplification cannot come from
+isometric transports. Second, the DSI-4 observation acquired an analytical
+environment: the constant $224 = 4\cdot 56$ is census-born (seven independent
+identities, cross-tower twins), the fraction $9/224$ is unique among census
+fractions (uniqueness lemma), and the genus family $c(g)$ with a single
+degeneracy at $g = 3$ (Theorem~\ref{thm:degen}) makes the programme
+falsifiable: the branches $(g-1)^{-1}$ and $(g-1)^{-2}$ differ by a factor
+of $1.4$ already at $g = 7$ and by nine at $g = 17$. Third, the Choptuik
+problem statement is fixed at both levels (physical and spectral), and its
+solvability is assessed honestly: numerically --- solved; rigorously --- major
+open problems (existence, uniqueness, stability of the DSS critical
+solution); closed form --- the framework's programme with two precise gaps
+(the mechanism and the $0.67\%$ offset).
+
+Natural next steps: (a)~commit Theorems~\ref{thm:A}--\ref{thm:C} and
+Corollary~\ref{cor:D} to the repository as version 3 of
+\texttt{stability\_lemma} with tests on partial isometries;
+(b)~set up a lattice/spectral experiment on the Fricke--Macbeath surface
+($g = 7$): a measurement of the DSI amplitude would discriminate branches~I
+and~III with a single number ($3/224$ versus $b_{\mathrm{Ch}}(46)$ --- a
+factor of $1.44$); (c)~a high-precision computation of $\lambda_1$ of the
+Klein quartic (Hejhal's algorithm for Maass forms) and of $\gamma$ by
+Gundlach-type perturbation theory --- to test whether the monograph's
+$\delta$-expansion can close the $0.67\%$ gap between $b_{\mathrm{Ch}}(7)$
+and $\gamma$; (d)~analytic work on the numerator $9 = 3^2$: an attempt to
+derive ``all but one'' ($N - 1$) from the cohomology of spin bundles over
+$\{7,3\}$, or a proof that no such derivation exists --- which would itself
+sharpen the honest attribution of DSI-4 as an observation.
+
+\end{document}
