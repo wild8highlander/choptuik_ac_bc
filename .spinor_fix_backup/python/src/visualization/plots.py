@@ -414,8 +414,8 @@ class PlotGenerator:
         spin_struct = criticism.get("spin_structures", {})
         if spin_struct:
             fig, ax = plt.subplots(figsize=(7, 7))
-            even = spin_struct.get("even_Arf0", 36)
-            odd = spin_struct.get("odd_Arf1", 28)
+            even = spin_struct.get("even_Arf0", 28)
+            odd = spin_struct.get("odd_Arf1", 36)
             ax.pie([even, odd], labels=[f'Even (Arf=0): {even}', f'Odd (Arf=1): {odd}'],
                    colors=['#2ecc71', '#e74c3c'], autopct='%1.1f%%', startangle=90,
                    textprops={'fontsize': 12})

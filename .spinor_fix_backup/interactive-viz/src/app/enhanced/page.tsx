@@ -343,8 +343,8 @@ export default function EnhancedPage() {
           {/* Visual bar */}
           <div className="space-y-2">
             <div className="flex justify-between text-xs text-gray-400">
-              <span>Even (36)</span>
-              <span>Odd (28)</span>
+              <span>Even (28)</span>
+              <span>Odd (36)</span>
             </div>
             <div className="flex h-4 rounded-full overflow-hidden bg-navy-700">
               <div

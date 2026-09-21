@@ -213,8 +213,8 @@ class CriticismResponse:
     def check_spin_structures(self) -> Dict:
         """Check spin structure distribution."""
         total = self.klein.n_spin_structures  # 64
-        even = 36  # Arf = 0  (2^{g-1}(2^g + 1) = 4 * 9)
-        odd = 28   # Arf = 1  (2^{g-1}(2^g - 1) = 4 * 7, the 28 bitangents)
+        even = 28  # Arf = 0
+        odd = 36   # Arf = 1
         return {
             'total': total,
             'even_Arf0': even,
