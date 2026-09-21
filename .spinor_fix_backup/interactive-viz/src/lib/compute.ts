@@ -457,6 +457,6 @@ export function runEnhancedVerification(): EnhancedVerificationResult {
     imaginaryCorrection: imaginaryCorrection(),
     kahlerCorrection: kahlerCorrection(),
     b2Uniqueness: b2UniquenessCheck(),
-    spinStructureDistribution: { total: 64, even: 36, odd: 28, goodPct: 56.25 },
+    spinStructureDistribution: { total: 64, even: 28, odd: 36, goodPct: 43.75 },
   };
 }

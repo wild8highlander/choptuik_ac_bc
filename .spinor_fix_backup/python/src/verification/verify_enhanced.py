@@ -204,11 +204,11 @@ def verify():
         dev_deformed = abs(delta_eff_deformed - 1/1200) / (1/1200) * 100
         results[f'stability_eps_{eps}'] = dev_deformed
     
-    # 64 spin structures: 36 even + 28 odd
+    # 64 spin structures: 28 even + 36 odd
     results['spin_structures_total'] = 2**(2*3)  # 64
-    results['spin_structures_even'] = 36  # Arf = 0  (2^{g-1}(2^g + 1) = 4 * 9)
-    results['spin_structures_odd'] = 28   # Arf = 1  (2^{g-1}(2^g - 1) = 4 * 7)
-    results['spin_structures_good_pct'] = 36/64 * 100  # 56.25%
+    results['spin_structures_even'] = 28  # Arf = 0
+    results['spin_structures_odd'] = 36  # Arf = 1
+    results['spin_structures_good_pct'] = 28/64 * 100  # 43.75%
     
     # ═══════════════════════════════════════════════════════════════
     # PART 7: Hurwitz surfaces universality

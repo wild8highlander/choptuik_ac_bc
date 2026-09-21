@@ -306,5 +306,5 @@ class TestEnhancedVerificationModule:
         # Spin structures
         ss = criticism.check_spin_structures()
         assert ss["total"] == 64
-        assert ss["even_Arf0"] == 36
-        assert ss["odd_Arf1"] == 28
+        assert ss["even_Arf0"] == 28
+        assert ss["odd_Arf1"] == 36

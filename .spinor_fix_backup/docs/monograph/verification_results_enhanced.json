@@ -92,9 +92,9 @@
   "stability_eps_0.01": 10.884449372234746,
   "stability_eps_0.05": 68.41711377610287,
   "spin_structures_total": 64,
-  "spin_structures_even": 36,
-  "spin_structures_odd": 28,
-  "spin_structures_good_pct": 56.25,
+  "spin_structures_even": 28,
+  "spin_structures_odd": 36,
+  "spin_structures_good_pct": 43.75,
   "hurwitz_Klein": {
     "name": "Klein",
     "g": 3,

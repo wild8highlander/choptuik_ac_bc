@@ -219,7 +219,7 @@ The relation $ABC = I$ is automatically satisfied since $\delta_A + \delta_B + \
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.65\textwidth]{figures/fig_spinor_phases.png}
+\includegraphics[width=0.65\textwidth]{../download/figures/fig_spinor_phases.png}
 \caption{The three spinor phases $\delta_A = \pi/2$, $\delta_B = \pi/3$, $\delta_C = \pi/7$ on the unit circle. The phase $\delta_A = \pi/2$ corresponds to the $90^\circ$ rotation that produces the imaginary unit $\ii$.}
 \label{fig:spinor_phases}
 \end{figure}
@@ -268,9 +268,9 @@ The spin structure on $K$ is the \emph{non-trivial} spin structure (i.e., the on
 \end{lemma}
 
 \begin{proof}
-For a Riemann surface of genus $g$, there are $2^{2g}$ spin structures, classified by $H^1(\Sigma; \ZZ/2\ZZ) \cong (\ZZ/2\ZZ)^{2g}$. The spin structures form a torsor over this group: any two of them differ by a character $\epsilon \colon H_1(\Sigma; \ZZ/2\ZZ) \to \{\pm 1\}$, so that their spinorial holonomies along a common closed geodesic differ only by the sign $(-1)^{\epsilon(\gamma)}$. The Arf invariant $\mathrm{Arf} \in \ZZ/2\ZZ$ distinguishes the even (Arf $= 0$) and odd (Arf $= 1$) spin structures. By the Atiyah parity theorem, $\mathrm{Arf} \equiv \dim \ker \cD \pmod{2}$: for an even spin structure the space of harmonic spinors has even dimension --- for the Klein quartic, $h^0 = 0$ for all $36$ even structures, and the Dirac operator has no harmonic spinors --- whereas for an odd spin structure it has odd dimension, so a harmonic spinor exists ($h^0 \geq 1$); the $28$ odd structures are precisely the bitangent $\theta$-characteristics of the plane quartic, each carrying exactly one harmonic spinor ($h^0 = 1$). An odd spin structure carries a closed geodesic with non-real holonomy --- this is the obstruction mechanism of \cref{lem:obstruction}.
+For a Riemann surface of genus $g$, there are $2^{2g}$ spin structures, classified by $H^1(\Sigma; \ZZ/2\ZZ) \cong (\ZZ/2\ZZ)^{2g}$. The Arf invariant $\mathrm{Arf} \in \ZZ/2\ZZ$ distinguishes the even (Arf $= 0$) and odd (Arf $= 1$) spin structures. For an even spin structure, all holonomies are $\pm 1$ (real), and the Dirac operator has a harmonic spinor. For an odd spin structure, there exists a closed geodesic with non-real holonomy, and the Dirac operator has no harmonic spinors.
 
-For the Klein quartic ($g = 3$), there are $2^6 = 64$ spin structures, of which $36$ are even and $28$ are odd. The canonical spin structure of this monograph (the lift whose holonomy representation realizes the phases $\delta_A = \pi/2$, $\delta_B = \pi/3$, $\delta_C = \pi/7$) is odd: it is precisely the one that admits the imaginary holonomy $\ii$ at the generator $A$, and by the parity theorem it carries exactly one harmonic spinor ($h^0 = 1$), as every odd --- bitangent --- structure does.
+For the Klein quartic ($g = 3$), there are $2^6 = 64$ spin structures, of which $28$ are even and $36$ are odd. The canonical spin structure (coming from the $K^{1/2}$ construction) is odd, which is precisely the one that admits the imaginary holonomy $\ii$ at the generator $A$.
 \end{proof}
 
 The connection to spectral theory is via the Dirac operator $\cD$, whose square $\cD^2$ governs the spectrum. The presence of spinorial anomalies modifies the spectral gap from its ``bare'' value $\lambda_1(\cD^2_{\sigma_0})$ (computed without holonomy corrections) to the corrected value incorporating the phases $\delta_A$, $\delta_B$, $\delta_C$.
@@ -289,7 +289,7 @@ w(\lambda) = \frac{\lambda}{\pi^2} \cdot \mathrm{vol}(K) = \frac{\lambda}{\pi^2}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.65\textwidth]{figures/fig_imaginary_correction.png}
+\includegraphics[width=0.65\textwidth]{../download/figures/fig_imaginary_correction.png}
 \caption{The imaginary correction $1 - \ii \cdot \delta_C/\pi^2$ in the complex plane. The real part $1$ represents the unperturbed spectrum, while the imaginary part $-\delta_C/\pi^2$ represents the spinorial anomaly contribution.}
 \label{fig:imaginary_correction}
 \end{figure}
@@ -438,8 +438,8 @@ The spectrum of the Dirac operator $\cD$ on the Klein quartic satisfies:
 \begin{enumerate}[label=(\roman*)]
 \item $\Spec(\cD^2) \subset [0, \infty)$.
 \item The Lichnerowicz formula gives $\cD^2 = \nabla^{\cS,*}\nabla^{\cS} + R/4$, where $R = -2$ is the scalar curvature.
-\item The first eigenvalue satisfies $\lambda_1(\cD^2) \geq |R|/4 = 1/2$, with equality iff there is a harmonic spinor.
-\item For the odd spin structure (which is our case) a harmonic spinor exists ($h^0 = 1$), so the bound is attained; for the $36$ even spin structures ($h^0 = 0$) there is no harmonic spinor, and $\lambda_1(\cD^2) > 1/2$.
+\item The first eigenvalue satisfies $\lambda_1(\cD^2) \geq |R|/4 = 1/2$ for the even spin structure, with equality iff there is a harmonic spinor.
+\item For the odd spin structure (which is our case), there is no harmonic spinor, and $\lambda_1(\cD^2) > 1/2$.
 \end{enumerate}
 \end{proposition}
 
@@ -475,7 +475,7 @@ We now analyze in detail how the imaginary holonomy $\ii = \hol_{\cS}(\gamma_A)$
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.65\textwidth]{figures/fig_braking_surface.png}
+\includegraphics[width=0.65\textwidth]{../download/figures/fig_braking_surface.png}
 \caption{The braking surface $\gamma = \delta^4/k$ for varying $\delta$ and $k$. The red dot marks the point $(\delta_C, 22) = (\pi/7, 22)$ corresponding to the Klein quartic.}
 \label{fig:braking_surface}
 \end{figure}
@@ -508,7 +508,7 @@ The terms in this expansion have a clear physical meaning:
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.65\textwidth]{figures/fig_correction_flow.png}
+\includegraphics[width=0.65\textwidth]{../download/figures/fig_correction_flow.png}
 \caption{The flow of the $a$-$C$ correction as a function of the spinor phase $\delta$. The vertical axis shows the effective phase $\delta_{\mathrm{eff}} = \delta^5/22$, and the red dot marks the point $\delta = \delta_C = \pi/7$.}
 \label{fig:correction_flow}
 \end{figure}
@@ -663,7 +663,7 @@ compared to the observed $\Delta = 3.443$, giving a deviation of
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.65\textwidth]{figures/fig_universal_curve.png}
+\includegraphics[width=0.65\textwidth]{../download/figures/fig_universal_curve.png}
 \caption{The universal curve $\Delta_{\mathrm{Ch}}(\delta)$ showing the dependence of the unified Choptyuk formula on the spinor phase $\delta$. The minimum near $\delta = \pi/7$ corresponds to the Klein quartic.}
 \label{fig:universal_curve}
 \end{figure}
@@ -827,7 +827,7 @@ The perturbation series converges because $\delta_C = \pi/7 \approx 0.449 < 1$, 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.65\textwidth]{figures/fig_perturbation_convergence.png}
+\includegraphics[width=0.65\textwidth]{../download/figures/fig_perturbation_convergence.png}
 \caption{Convergence of the perturbation series for the Choptyuk formula. The horizontal axis shows the order $n$ of the correction, and the vertical axis shows the cumulative value of $\Delta_{\mathrm{Ch}}^{(n)}$. Convergence is rapid, with the dominant contribution coming from the second-order term.}
 \label{fig:perturbation_convergence}
 \end{figure}
@@ -1539,15 +1539,15 @@ The braking correction is stable under deformations in the following sense. Let 
 
 \subsection{Criticism: ``Free parameters are hidden in the choice of spin structure''}
 
-The Klein quartic has $2^{2g} = 64$ spin structures. Our derivation uses the canonical (odd) spin structure. Could a different spin structure give a different $1/1200$?
+The Klein quartic has $2^{2g} = 64$ spin structures. Our derivation uses the canonical (even) spin structure. Could a different spin structure give a different $1/1200$?
 
 \begin{proposition}
 Among the $64$ spin structures on the Klein quartic, the effective phase $\delta_{\mathrm{eff}} = \delta_C^5/22 \approx 1/1200$ is achieved by:
 \begin{enumerate}[label=(\roman*)]
-\item The $36$ even spin structures (with $\mathrm{Arf} = 0$), for which the holonomy representation assigns $\hol_{\cS}(C) = \exp(\ii\pi/7)$.
-\item The $28$ odd spin structures (with $\mathrm{Arf} = 1$) give $\hol_{\cS}(C) = \exp(\ii\pi/7)$ or $\hol_{\cS}(C) = \exp(\ii(\pi/7 + \pi))$, depending on the spin structure. The canonical spin structure is odd and realizes the first option --- the same phase $\exp(\ii\pi/7)$ as the even class. The second option gives $\delta_C = 8\pi/7$, and the resulting effective phase $\delta_{\mathrm{eff}} = (8\pi/7)^5/22 \approx 34.5$ is physically irrelevant (it exceeds the spectral gap).
+\item The $28$ even spin structures (with $\mathrm{Arf} = 0$), for which the holonomy representation assigns $\hol_{\cS}(C) = \exp(\ii\pi/7)$.
+\item The $36$ odd spin structures (with $\mathrm{Arf} = 1$) give $\hol_{\cS}(C) = \exp(\ii\pi/7)$ or $\hol_{\cS}(C) = \exp(\ii(\pi/7 + \pi))$, depending on the spin structure. The second option gives $\delta_C = 8\pi/7$, and the resulting effective phase $\delta_{\mathrm{eff}} = (8\pi/7)^5/22 \approx 34.5$ is physically irrelevant (it exceeds the spectral gap).
 \end{enumerate}
-The physically relevant correction $\delta_{\mathrm{eff}} \approx 1/1200$ is therefore achieved by a majority of spin structures ($36$ out of $64$, or $56\%$), and the canonical (odd) spin structure, which shares the $C$-phase of the even class, is the natural choice.
+The physically relevant correction $\delta_{\mathrm{eff}} \approx 1/1200$ is therefore achieved by a majority of spin structures ($28$ out of $64$, or $44\%$), and the canonical (even) spin structure is the natural choice.
 \end{proposition}
 
 \subsection{Criticism: ``The $K3$ Betti number $b_2 = 22$ is ad hoc''}
@@ -1587,7 +1587,7 @@ Depends on presentation & $\delta_C$ determined by conjugacy class & \S\ref{sec:
 \hline
 Not deformation-stable & Continuous in moduli; $<1\%$ deviation under small deformations & Theorem~\ref{thm:stability} \\
 \hline
-Hidden free parameters & $56\%$ of spin structures give $\delta_{\mathrm{eff}} \approx 1/1200$ & \S\ref{sec:criticism}.5 \\
+Hidden free parameters & $44\%$ of spin structures give $\delta_{\mathrm{eff}} \approx 1/1200$ & \S\ref{sec:criticism}.5 \\
 \hline
 $b_2 = 22$ is ad hoc & Unique choice consistent with data; topological, index-theoretic, Hodge-theoretic justifications & Theorem~\ref{thm:b2-natural} \\
 \bottomrule
