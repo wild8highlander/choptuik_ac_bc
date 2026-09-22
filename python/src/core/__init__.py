@@ -2,7 +2,13 @@
 
 from .choptyuk_formula import ChoptyukFormula
 from .dirac_operator import DiracOperator
-from .enhanced_verification import CriticismResponse, K3Surface, KleinQuartic, QNMPredictor as EnhancedQNMPredictor, TyukovskyAdapter
+from .enhanced_verification import (
+    CriticismResponse,
+    K3Surface,
+    KleinQuartic,
+    TyukovskyAdapter,
+)
+from .enhanced_verification import QNMPredictor as EnhancedQNMPredictor
 from .hypothesis import HypothesisTester
 from .klein_curve import KleinCurve
 from .qnm import QNMPredictor

@@ -188,7 +188,7 @@ julia --project=. run.jl
 ```bash
 cd java-webapp/
 mvn clean package
-java -jar target/choptyuk-webapp.jar
+java -jar target/choptyuk-spinor-monograph-1.0.0.jar
 # Open http://localhost:8080
 ```
 

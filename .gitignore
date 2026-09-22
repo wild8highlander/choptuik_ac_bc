@@ -42,8 +42,8 @@ code/web/.env
 code/web/.env.local
 code/web/.env.production
 
-# Output artifacts (generated at runtime, top-level only)
-/output/
+# Output artifacts (generated at runtime, any depth)
+output/
 /results/
 /plots/
 /reports/

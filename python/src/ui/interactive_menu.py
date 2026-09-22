@@ -37,17 +37,26 @@ class InteractiveMenu:
 
         # Default parameters (all customizable)
         self.params = {
-            "genus": 3, "K": -1.0, "psl_order": 168, "lambda_1": 3.838,
-            "delta_A": None, "delta_B": None, "delta_C": None,
-            "k_struct": 22, "c4": 0.125, "c6": 0.5,
-            "delta_obs": 3.443, "b_ch_obs": 0.377,
-            "dpi": 600, "precision": 15,
+            "genus": 3,
+            "K": -1.0,
+            "psl_order": 168,
+            "lambda_1": 3.838,
+            "delta_A": None,
+            "delta_B": None,
+            "delta_C": None,
+            "k_struct": 22,
+            "c4": 0.125,
+            "c6": 0.5,
+            "delta_obs": 3.443,
+            "b_ch_obs": 0.377,
+            "dpi": 600,
+            "precision": 15,
         }
         self.results = None
         self.sim_results = None
         self.logs = ""
-        self.plot_paths = []
-        self.report_paths = {}
+        self.plot_paths: list[str] = []
+        self.report_paths: dict[str, str] = {}
 
     def run(self):
         """Main menu loop."""
@@ -96,19 +105,29 @@ class InteractiveMenu:
     def _run_verification(self):
         print("\n--- Running Full Verification ---")
         suite = VerificationSuite(
-            genus=self.params["genus"], K=self.params["K"],
-            psl_order=self.params["psl_order"], lambda_1=self.params["lambda_1"],
-            delta_A=self.params["delta_A"], delta_B=self.params["delta_B"],
-            delta_C=self.params["delta_C"], k_struct=self.params["k_struct"],
-            c4=self.params["c4"], c6=self.params["c6"],
-            delta_obs=self.params["delta_obs"], b_ch_obs=self.params["b_ch_obs"],
+            genus=self.params["genus"],
+            K=self.params["K"],
+            psl_order=self.params["psl_order"],
+            lambda_1=self.params["lambda_1"],
+            delta_A=self.params["delta_A"],
+            delta_B=self.params["delta_B"],
+            delta_C=self.params["delta_C"],
+            k_struct=self.params["k_struct"],
+            c4=self.params["c4"],
+            c6=self.params["c6"],
+            delta_obs=self.params["delta_obs"],
+            b_ch_obs=self.params["b_ch_obs"],
         )
         self.results = suite.run()
         self.logs = suite.get_logs()
         print("  Verification complete.")
         ch = self.results.get("choptyuk", {})
-        print(f"  Delta_bC = {ch.get('delta_bc', 0):.6f} (dev {ch.get('deviation_bc_pct', 0):.3f}%)")
-        print(f"  Delta_Ch (full) = {ch.get('delta_ch_full', 0):.6f} (dev {ch.get('deviation_full_pct', 0):.3f}%)")
+        print(
+            f"  Delta_bC = {ch.get('delta_bc', 0):.6f} (dev {ch.get('deviation_bc_pct', 0):.3f}%)"
+        )
+        print(
+            f"  Delta_Ch (full) = {ch.get('delta_ch_full', 0):.6f} (dev {ch.get('deviation_full_pct', 0):.3f}%)"
+        )
 
     def _run_simulation(self):
         print("\n--- Running Simulations ---")
@@ -123,7 +142,9 @@ class InteractiveMenu:
         dC = self.params["delta_C"] or np.pi / 7
         if choice in ("1", "4"):
             print("  Sweeping delta_C [0.1, 1.0]...")
-            sim.sweep_delta_C(n_points=200, lambda_D2=self.params["lambda_1"] + self.params["K"])
+            sim.sweep_delta_C(
+                n_points=200, lambda_D2=self.params["lambda_1"] + self.params["K"]
+            )
         if choice in ("2", "4"):
             print("  Sweeping lambda_1 [2.0, 6.0]...")
             sim.sweep_lambda_1(delta_C=dC, R=2 * self.params["K"])
@@ -148,11 +169,20 @@ class InteractiveMenu:
                 break
             if inp.lower() == "reset":
                 self.params = {
-                    "genus": 3, "K": -1.0, "psl_order": 168, "lambda_1": 3.838,
-                    "delta_A": None, "delta_B": None, "delta_C": None,
-                    "k_struct": 22, "c4": 0.125, "c6": 0.5,
-                    "delta_obs": 3.443, "b_ch_obs": 0.377,
-                    "dpi": 600, "precision": 15,
+                    "genus": 3,
+                    "K": -1.0,
+                    "psl_order": 168,
+                    "lambda_1": 3.838,
+                    "delta_A": None,
+                    "delta_B": None,
+                    "delta_C": None,
+                    "k_struct": 22,
+                    "c4": 0.125,
+                    "c6": 0.5,
+                    "delta_obs": 3.443,
+                    "b_ch_obs": 0.377,
+                    "dpi": 600,
+                    "precision": 15,
                 }
                 print("  Reset to defaults.")
                 break
@@ -187,16 +217,21 @@ class InteractiveMenu:
         k_input = input("  > ").strip()
         k = None if k_input in ("default", "") else int(k_input)
 
-        config = HypothesisConfig(name=name, description=desc,
-                                  custom_delta_C=dC,
-                                  custom_lambda_D2=lam,
-                                  custom_k_struct=k)
+        config = HypothesisConfig(
+            name=name,
+            description=desc,
+            custom_delta_C=dC,
+            custom_lambda_D2=lam,
+            custom_k_struct=k,
+        )
         tester = HypothesisTester(delta_obs=self.params["delta_obs"])
         result = tester.test_hypothesis(config)
 
         print(f"\n  Result: Delta_Ch = {result.delta_ch_full:.6f}")
         print(f"  Deviation = {result.deviation:.3f}%")
-        print(f"  Status: {'PASS' if result.passed else 'FAIL'} (tolerance {tester.tolerance}%)")
+        print(
+            f"  Status: {'PASS' if result.passed else 'FAIL'} (tolerance {tester.tolerance}%)"
+        )
 
         print("\n  Parameter sweep? (y/n):")
         if input("  > ").strip().lower() == "y":
@@ -235,9 +270,7 @@ class InteractiveMenu:
     def _generate_plots(self):
         print("\n--- Generate Plots ---")
         plotter = PlotGenerator(str(self.output_base / "plots"), self.params["dpi"])
-        self.plot_paths = plotter.generate_all(
-            self.results or {}, self.sim_results
-        )
+        self.plot_paths = plotter.generate_all(self.results or {}, self.sim_results)
         print(f"  Generated {len(self.plot_paths)} plot files:")
         for p in self.plot_paths:
             print(f"    {p}")
@@ -248,10 +281,18 @@ class InteractiveMenu:
             return
         print("\n--- Results Summary ---")
         ch = self.results.get("choptyuk", {})
-        print(f"  Delta_bC = {ch.get('delta_bc', 0):.6f} (dev {ch.get('deviation_bc_pct', 0):.3f}%)")
-        print(f"  Delta_Ch (base) = {ch.get('delta_ch_base', 0):.6f} (dev {ch.get('deviation_ch_pct', 0):.3f}%)")
-        print(f"  Delta_Ch (full) = {ch.get('delta_ch_full', 0):.6f} (dev {ch.get('deviation_full_pct', 0):.3f}%)")
-        print(f"  b_Ch = {ch.get('b_ch', 0):.6f} (dev {ch.get('deviation_b_ch_pct', 0):.3f}%)")
+        print(
+            f"  Delta_bC = {ch.get('delta_bc', 0):.6f} (dev {ch.get('deviation_bc_pct', 0):.3f}%)"
+        )
+        print(
+            f"  Delta_Ch (base) = {ch.get('delta_ch_base', 0):.6f} (dev {ch.get('deviation_ch_pct', 0):.3f}%)"
+        )
+        print(
+            f"  Delta_Ch (full) = {ch.get('delta_ch_full', 0):.6f} (dev {ch.get('deviation_full_pct', 0):.3f}%)"
+        )
+        print(
+            f"  b_Ch = {ch.get('b_ch', 0):.6f} (dev {ch.get('deviation_b_ch_pct', 0):.3f}%)"
+        )
         if self.plot_paths:
             print(f"\n  Plot files: {len(self.plot_paths)}")
         if self.report_paths:
@@ -275,6 +316,6 @@ class InteractiveMenu:
         print("\n--- Save Configuration ---")
         name = input("  Config name: ").strip() or "custom"
         config_path = self.output_base / f"config_{name}.json"
-        with open(config_path, 'w') as f:
+        with open(config_path, "w") as f:
             json.dump(self.params, f, indent=2, default=str)
         print(f"  Saved to: {config_path}")

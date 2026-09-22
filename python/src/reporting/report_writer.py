@@ -21,15 +21,20 @@ logger = logging.getLogger(__name__)
 class ReportWriter:
     """Generate reports in 7 formats with execution logs appended."""
 
-    def __init__(self, output_dir: str = "output/reports",
-                 formats: list[str] | None = None):
+    def __init__(
+        self, output_dir: str = "output/reports", formats: list[str] | None = None
+    ):
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.formats = formats or ["docx", "pdf", "txt", "md", "csv", "html", "json"]
         logger.info(f"ReportWriter: output={self.output_dir}, formats={self.formats}")
 
-    def generate_all(self, results: dict, logs: str,
-                     title: str = "Choptyuk Spinor Corrections - Verification Report") -> dict[str, str]:
+    def generate_all(
+        self,
+        results: dict,
+        logs: str,
+        title: str = "Choptyuk Spinor Corrections - Verification Report",
+    ) -> dict[str, str]:
         """Generate reports in all configured formats."""
         timestamp = datetime.now(tz=timezone.utc).strftime("%Y%m%d_%H%M%S")
         paths = {}
@@ -63,13 +68,13 @@ class ReportWriter:
             "execution_log": logs,
         }
         path = self.output_dir / f"report_{timestamp}.json"
-        with open(path, 'w', encoding='utf-8') as f:
+        with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2, default=str)
         return str(path)
 
     def _write_txt(self, results: dict, logs: str, title: str, timestamp: str) -> str:
         path = self.output_dir / f"report_{timestamp}.txt"
-        with open(path, 'w', encoding='utf-8') as f:
+        with open(path, "w", encoding="utf-8") as f:
             f.write(f"{'='*60}\n{title}\nGenerated: {timestamp}\n{'='*60}\n\n")
             f.write(self._format_dict(results))
             f.write(f"\n{'='*60}\nEXECUTION LOG\n{'='*60}\n")
@@ -96,7 +101,7 @@ class ReportWriter:
         path = self.output_dir / f"report_{timestamp}.md"
         ch = results.get("choptyuk", {})
         curve = results.get("curve", {})
-        with open(path, 'w', encoding='utf-8') as f:
+        with open(path, "w", encoding="utf-8") as f:
             f.write(f"# {title}\n\n**Generated**: {timestamp}\n\n## Results\n\n")
             if curve:
                 f.write("### Klein Curve\n\n")
@@ -107,17 +112,25 @@ class ReportWriter:
             if ch:
                 f.write("### Choptyuk Formula\n\n")
                 f.write("| Constant | Value | Deviation |\n|---|---|---|\n")
-                f.write(f"| Delta_bC | {ch.get('delta_bc',0):.6f} | {ch.get('deviation_bc_pct',0):.3f}% |\n")
-                f.write(f"| Delta_Ch (base) | {ch.get('delta_ch_base',0):.6f} | {ch.get('deviation_ch_pct',0):.3f}% |\n")
-                f.write(f"| Delta_Ch (full) | {ch.get('delta_ch_full',0):.6f} | {ch.get('deviation_full_pct',0):.3f}% |\n")
-                f.write(f"| b_Ch | {ch.get('b_ch',0):.6f} | {ch.get('deviation_b_ch_pct',0):.3f}% |\n\n")
+                f.write(
+                    f"| Delta_bC | {ch.get('delta_bc',0):.6f} | {ch.get('deviation_bc_pct',0):.3f}% |\n"
+                )
+                f.write(
+                    f"| Delta_Ch (base) | {ch.get('delta_ch_base',0):.6f} | {ch.get('deviation_ch_pct',0):.3f}% |\n"
+                )
+                f.write(
+                    f"| Delta_Ch (full) | {ch.get('delta_ch_full',0):.6f} | {ch.get('deviation_full_pct',0):.3f}% |\n"
+                )
+                f.write(
+                    f"| b_Ch | {ch.get('b_ch',0):.6f} | {ch.get('deviation_b_ch_pct',0):.3f}% |\n\n"
+                )
             f.write("## Execution Log\n\n```\n" + logs + "\n```\n")
         return str(path)
 
     def _write_csv(self, results: dict, logs: str, timestamp: str) -> str:
         path = self.output_dir / f"report_{timestamp}.csv"
         ch = results.get("choptyuk", {})
-        with open(path, 'w', newline='', encoding='utf-8') as f:
+        with open(path, "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f)
             w.writerow(["constant", "value", "deviation_pct"])
             for name, val_key, dev_key in [
@@ -136,7 +149,9 @@ class ReportWriter:
     def _write_html(self, results: dict, logs: str, title: str, timestamp: str) -> str:
         path = self.output_dir / f"report_{timestamp}.html"
         ch = results.get("choptyuk", {})
-        log_escaped = logs.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        log_escaped = (
+            logs.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        )
         html = f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>{title}</title>
 <style>
@@ -157,7 +172,7 @@ pre{{background:#2c3e50;color:#ecf0f1;padding:15px;border-radius:5px;overflow-x:
 </table>
 <h2>Execution Log</h2><pre>{log_escaped}</pre>
 </body></html>"""
-        with open(path, 'w', encoding='utf-8') as f:
+        with open(path, "w", encoding="utf-8") as f:
             f.write(html)
         return str(path)
 
@@ -174,21 +189,32 @@ pre{{background:#2c3e50;color:#ecf0f1;padding:15px;border-radius:5px;overflow-x:
         ch = results.get("choptyuk", {})
         doc.add_heading("Choptyuk Formula Results", level=1)
         table = doc.add_table(rows=5, cols=3)
-        table.style = 'Table Grid'
+        table.style = "Table Grid"
         headers = ["Constant", "Value", "Deviation"]
         for i, h in enumerate(headers):
             table.rows[0].cells[i].text = h
-        for i, (name, val, dev) in enumerate([
-            ("Delta_bC", ch.get("delta_bc"), ch.get("deviation_bc_pct")),
-            ("Delta_Ch (base)", ch.get("delta_ch_base"), ch.get("deviation_ch_pct")),
-            ("Delta_Ch (full)", ch.get("delta_ch_full"), ch.get("deviation_full_pct")),
-            ("b_Ch", ch.get("b_ch"), ch.get("deviation_b_ch_pct")),
-        ], 1):
+        for i, (name, val, dev) in enumerate(
+            [
+                ("Delta_bC", ch.get("delta_bc"), ch.get("deviation_bc_pct")),
+                (
+                    "Delta_Ch (base)",
+                    ch.get("delta_ch_base"),
+                    ch.get("deviation_ch_pct"),
+                ),
+                (
+                    "Delta_Ch (full)",
+                    ch.get("delta_ch_full"),
+                    ch.get("deviation_full_pct"),
+                ),
+                ("b_Ch", ch.get("b_ch"), ch.get("deviation_b_ch_pct")),
+            ],
+            1,
+        ):
             table.rows[i].cells[0].text = name
             table.rows[i].cells[1].text = f"{val:.6f}" if val else ""
             table.rows[i].cells[2].text = f"{dev:.3f}%" if dev else ""
         doc.add_heading("Execution Log", level=1)
-        doc.add_paragraph(logs, style='No Spacing')
+        doc.add_paragraph(logs, style="No Spacing")
         doc.save(str(path))
         return str(path)
 
@@ -211,21 +237,40 @@ pre{{background:#2c3e50;color:#ecf0f1;padding:15px;border-radius:5px;overflow-x:
         styles = getSampleStyleSheet()
         ch = results.get("choptyuk", {})
         elems = [
-            Paragraph(title, styles['Title']),
-            Paragraph(f"Generated: {timestamp}", styles['Normal']),
+            Paragraph(title, styles["Title"]),
+            Paragraph(f"Generated: {timestamp}", styles["Normal"]),
             Spacer(1, 0.2 * inch),
-            Paragraph("Choptyuk Formula Results", styles['Heading1']),
-            Table([
-                ['Constant', 'Value', 'Deviation'],
-                ['Delta_bC', f"{ch.get('delta_bc',0):.6f}", f"{ch.get('deviation_bc_pct',0):.3f}%"],
-                ['Delta_Ch (base)', f"{ch.get('delta_ch_base',0):.6f}", f"{ch.get('deviation_ch_pct',0):.3f}%"],
-                ['Delta_Ch (full)', f"{ch.get('delta_ch_full',0):.6f}", f"{ch.get('deviation_full_pct',0):.3f}%"],
-                ['b_Ch', f"{ch.get('b_ch',0):.6f}", f"{ch.get('deviation_b_ch_pct',0):.3f}%"],
-            ], colWidths=[2*inch, 1.5*inch, 1.5*inch]),
+            Paragraph("Choptyuk Formula Results", styles["Heading1"]),
+            Table(
+                [
+                    ["Constant", "Value", "Deviation"],
+                    [
+                        "Delta_bC",
+                        f"{ch.get('delta_bc',0):.6f}",
+                        f"{ch.get('deviation_bc_pct',0):.3f}%",
+                    ],
+                    [
+                        "Delta_Ch (base)",
+                        f"{ch.get('delta_ch_base',0):.6f}",
+                        f"{ch.get('deviation_ch_pct',0):.3f}%",
+                    ],
+                    [
+                        "Delta_Ch (full)",
+                        f"{ch.get('delta_ch_full',0):.6f}",
+                        f"{ch.get('deviation_full_pct',0):.3f}%",
+                    ],
+                    [
+                        "b_Ch",
+                        f"{ch.get('b_ch',0):.6f}",
+                        f"{ch.get('deviation_b_ch_pct',0):.3f}%",
+                    ],
+                ],
+                colWidths=[2 * inch, 1.5 * inch, 1.5 * inch],
+            ),
             Spacer(1, 0.3 * inch),
-            Paragraph("Execution Log", styles['Heading1']),
+            Paragraph("Execution Log", styles["Heading1"]),
         ]
         for line in logs.split("\n")[-50:]:
-            elems.append(Paragraph(line, styles['Code']))
+            elems.append(Paragraph(line, styles["Code"]))
         doc.build(elems)
         return str(path)

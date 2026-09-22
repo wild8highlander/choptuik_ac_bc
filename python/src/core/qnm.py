@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 
@@ -29,6 +30,7 @@ class BHEvent:
         f_qnm: Quasi-normal mode frequency in Hz.
         sigma: Measurement uncertainty in Hz.
     """
+
     name: str
     mass_solar: float
     spin: float
@@ -45,7 +47,7 @@ GW190521 = BHEvent("GW190521", 142.0, 0.72, 110.0, 10.0)
 DEFAULT_EVENTS = [GW150914, GW170104, GW170814, GW190521]
 
 # Future detectors
-DEFAULT_DETECTORS = [
+DEFAULT_DETECTORS: list[dict[str, Any]] = [
     {"name": "LIGO O3", "sigma_hz": 5.5},
     {"name": "LIGO A+ (2024-26)", "sigma_hz": 2.8},
     {"name": "Einstein Telescope (2030+)", "sigma_hz": 0.5},
@@ -64,17 +66,21 @@ class QNMPredictor:
         M_sun: Solar mass in kg.
     """
 
-    def __init__(self, events: list[BHEvent] | None = None,
-                 detectors: list[dict] | None = None,
-                 G: float = 6.674e-11, c: float = 3e8,
-                 M_sun: float = 1.989e30):
+    def __init__(
+        self,
+        events: list[BHEvent] | None = None,
+        detectors: list[dict[str, Any]] | None = None,
+        G: float = 6.674e-11,
+        c: float = 3e8,
+        M_sun: float = 1.989e30,
+    ):
         self.events = events or DEFAULT_EVENTS
         self.detectors = detectors or DEFAULT_DETECTORS
         self.G = G
         self.c = c
         self.M_sun = M_sun
         # Enhanced: effective phase from spinorial braking
-        self._delta_eff = (np.pi / 7)**5 / 22
+        self._delta_eff = (np.pi / 7) ** 5 / 22
         logger.info(f"QNM predictor initialized with {len(self.events)} events")
 
     @property
@@ -138,8 +144,9 @@ class QNMPredictor:
         """
         return [self.predict_shift(e, scaling) for e in self.events]
 
-    def detectability(self, event_name: str = "GW150914",
-                       scaling: float = 14.0) -> list[dict]:
+    def detectability(
+        self, event_name: str = "GW150914", scaling: float = 14.0
+    ) -> list[dict]:
         """Compute detectability for a given event across all future detectors.
 
         Args:
@@ -155,12 +162,14 @@ class QNMPredictor:
         results = []
         for det in self.detectors:
             snr = delta_f / det["sigma_hz"]
-            results.append({
-                "detector": det["name"],
-                "sigma_hz": det["sigma_hz"],
-                "snr": snr,
-                "detectable": snr >= 1.0,
-            })
+            results.append(
+                {
+                    "detector": det["name"],
+                    "sigma_hz": det["sigma_hz"],
+                    "snr": snr,
+                    "detectable": snr >= 1.0,
+                }
+            )
             logger.info(f"{det['name']}: σ={det['sigma_hz']} Hz, SNR={snr:.2f}")
 
         return results
@@ -170,6 +179,14 @@ class QNMPredictor:
         return {
             "n_events": len(self.events),
             "n_detectors": len(self.detectors),
-            "events": [{"name": e.name, "M": e.mass_solar, "a": e.spin,
-                         "f": e.f_qnm, "sigma": e.sigma} for e in self.events],
+            "events": [
+                {
+                    "name": e.name,
+                    "M": e.mass_solar,
+                    "a": e.spin,
+                    "f": e.f_qnm,
+                    "sigma": e.sigma,
+                }
+                for e in self.events
+            ],
         }

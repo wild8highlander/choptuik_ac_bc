@@ -1,4 +1,5 @@
 """Conftest for choptyuk-spinor test suite."""
+
 import sys
 from pathlib import Path
 
