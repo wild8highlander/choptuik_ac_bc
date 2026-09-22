@@ -193,7 +193,7 @@ function plot_qnm_comparison(pred::QNMPredictor = QNMPredictor(); dir::String = 
                  dpi = DEFAULT_DPI)
 
     for (i, name) in enumerate(names)
-        annotate!(p3, [(masses[i], spins[i] + 0.02, text(name, 8)))])
+        annotate!(p3, [(masses[i], spins[i] + 0.02, text(name, 8))])
     end
 
     p = plot(p1, p2, p3; layout = (3, 1), size = (800, 1200))

@@ -169,7 +169,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.8.6</version>
+                <version>4.8.6.6</version>
                 <executions>
                     <execution>
                         <goals><goal>spotbugs</goal></goals>
@@ -229,7 +229,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.8.6</version>
+                <version>4.8.6.6</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>

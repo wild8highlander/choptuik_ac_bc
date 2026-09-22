@@ -133,8 +133,12 @@ jobs:
         run: |
           python3 - << 'PYEOF'
           import json, glob, sys
-          py = glob.glob('artifacts/python-verification-results/stability_lemma.json')
-          jl = glob.glob('artifacts/julia-verification-results/julia_results.json')
+          # NOTE: upload-artifact v4 roots the artifact at the least common
+          # ancestor of the upload paths (audit_transfer/), so the file lives
+          # at artifacts/<name>/results/stability_lemma.json — search for it
+          # recursively to survive layout changes.
+          py = glob.glob('artifacts/python-verification-results/**/stability_lemma.json', recursive=True)
+          jl = glob.glob('artifacts/julia-verification-results/**/julia_results.json', recursive=True)
           if not py or not jl:
               print('артефакты не найдены'); sys.exit(1)
           s_py = json.load(open(py[0]))
