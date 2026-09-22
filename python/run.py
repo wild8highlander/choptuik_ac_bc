@@ -110,6 +110,16 @@ def main():
 
     args = parser.parse_args()
 
+    # Piped / widget / CI invocations have no TTY — never block on input()
+    if not args.non_interactive and args.mode == "interactive":
+        try:
+            stdin_is_tty = sys.stdin.isatty()
+        except (AttributeError, ValueError):
+            stdin_is_tty = False
+        if not stdin_is_tty:
+            args.non_interactive = True
+            print("(stdin is not a terminal — switching to non-interactive verify mode)")
+
     if args.non_interactive or args.mode != "interactive":
         run_non_interactive(args)
     else:
