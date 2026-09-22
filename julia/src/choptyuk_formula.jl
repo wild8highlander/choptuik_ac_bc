@@ -228,24 +228,9 @@ function einstein_qnm_factor(delta_C::Float64)
     return 1 - einstein_qnm_correction(delta_C)
 end
 
-"""
-    corrected_qnm_frequency(omega::Float64, delta_C::Float64) -> Float64
-
-Compute the corrected QNM frequency: ω · (1 - δ_C⁵ / (22·π²)).
-
-Applies the Einstein QNM braking factor to an observed or computed
-QNM frequency.
-
-# Arguments
-- `omega`: The uncorrected QNM frequency
-- `delta_C`: The fundamental spinor phase δ_C
-
-# Returns
-The spinorially-corrected QNM frequency.
-"""
-function corrected_qnm_frequency(omega::Float64, delta_C::Float64)
-    return omega * einstein_qnm_factor(delta_C)
-end
+# NOTE: `corrected_qnm_frequency` is defined in qnm.jl (with a default
+# `delta_C = π/7` argument). It was previously duplicated here, which made
+# package precompilation fail ("Method overwriting is not permitted").
 
 """
     verify_choptyuk_formula(cf::ChoptyukFormula=ChoptyukFormula(); observed::Float64=3.443) -> Dict{String, Any}

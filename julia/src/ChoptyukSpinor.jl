@@ -73,23 +73,10 @@ using LinearAlgebra
 using Printf
 using Dates
 
-# Include source files
-include("klein_curve.jl")
-include("spinor_phases.jl")
-include("dirac_operator.jl")
-include("choptyuk_formula.jl")
-include("surfaces.jl")
-include("qnm.jl")
-include("hypothesis.jl")
-include("simulation.jl")
-include("enhanced_verification.jl")
-
-# Submodules (must come after main includes)
-include("visualization.jl")
-include("reporting.jl")
-include("interactive_menu.jl")
-
-# Export all public types
+# Export all public types.
+# NOTE: exports must come BEFORE the submodule includes below — the
+# submodules (Visualization, Reporting, InteractiveMenu) do
+# `using ..ChoptyukSpinor`, which only picks up names already exported.
 export KleinCurve, PSL27Generator
 export SpinorPhases, SpinorStructure
 export DiracOperator
@@ -132,5 +119,21 @@ export verify_k3, tyukovsky_corrected_exponent, verify_b2_uniqueness, verify_enh
 
 # Export submodules
 export Visualization, Reporting, InteractiveMenu
+
+# Include source files
+include("klein_curve.jl")
+include("spinor_phases.jl")
+include("dirac_operator.jl")
+include("choptyuk_formula.jl")
+include("surfaces.jl")
+include("qnm.jl")
+include("hypothesis.jl")
+include("simulation.jl")
+include("enhanced_verification.jl")
+
+# Submodules (must come after main includes)
+include("visualization.jl")
+include("reporting.jl")
+include("interactive_menu.jl")
 
 end # module ChoptyukSpinor

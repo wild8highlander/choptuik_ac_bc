@@ -24,6 +24,9 @@ jobs:
   python-ci:
     name: Python ${{ matrix.python-version }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
@@ -58,6 +61,10 @@ jobs:
 
       - name: Run tests with coverage
         working-directory: python
+        # NOTE: uses "\\" line continuations, which require bash. Windows
+        # runners default to pwsh, where "\\" is NOT a continuation character
+        # (that made all windows matrix jobs fail with exit code 1); the
+        # job-level defaults.run.shell=bash above applies here too.
         run: |
           python -m pytest tests/ -v \
             --cov=src \
