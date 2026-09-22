@@ -5,21 +5,20 @@ from the monograph by Ishak Khamzatovich Isaev.
 """
 
 import math
-import pytest
 
-from src.core.klein_curve import KleinCurve
-from src.core.spinor_phases import SpinorPhases
+import pytest
 from src.core.choptyuk_formula import ChoptyukFormula
 from src.core.dirac_operator import DiracOperator
-from src.core.qnm import QNMPredictor
 from src.core.enhanced_verification import (
-    KleinQuartic,
-    K3Surface,
-    QNMPredictor as EnhancedQNMPredictor,
-    TyukovskyAdapter,
     CriticismResponse,
+    K3Surface,
+    TyukovskyAdapter,
 )
-
+from src.core.enhanced_verification import (
+    QNMPredictor as EnhancedQNMPredictor,
+)
+from src.core.klein_curve import KleinCurve
+from src.core.spinor_phases import SpinorPhases
 
 # ──────────────────────────────────────────────
 # Reference constants from the monograph
@@ -161,7 +160,7 @@ class TestChoptyukFormula:
         """a-C braking: delta_eff = delta_C^5/22 ~ 1/1200."""
         result = choptyuk.compute()
         delta_c = REF_DELTA_C
-        expected_eff = delta_c ** 5 / 22
+        expected_eff = delta_c**5 / 22
         assert abs(result.delta_eff - expected_eff) < TOLERANCE_STRICT
 
     def test_bc_deviation_within_tolerance(self, choptyuk):
@@ -226,7 +225,7 @@ class TestMathIdentities:
     def test_braking_magnitude(self):
         """delta_eff ~ 1/1200 (a-C braking is very small)."""
         delta_c = math.pi / 7
-        delta_eff = delta_c ** 5 / 22
+        delta_eff = delta_c**5 / 22
         assert abs(delta_eff - 1 / 1200) < 1e-4
 
 
@@ -239,6 +238,7 @@ class TestEnhancedVerificationModule:
     def test_enhanced_verification_module(self):
         """Enhanced verification module imports and verify_all() runs correctly."""
         from src.core.enhanced_verification import verify_all
+
         results = verify_all()
         assert "klein" in results
         assert "k3" in results
@@ -246,7 +246,7 @@ class TestEnhancedVerificationModule:
         assert "tyukovsky" in results
         assert "criticism" in results
         # Check Klein results
-        assert abs(results["klein"]["effective_phase"] - 1/1200) / (1/1200) < 0.01
+        assert abs(results["klein"]["effective_phase"] - 1 / 1200) / (1 / 1200) < 0.01
         # Check QNM results
         assert abs(results["qnm"]["factor"] - 0.999916) < 1e-3
 
@@ -265,7 +265,7 @@ class TestEnhancedVerificationModule:
         """QNM Einstein GR correction from enhanced module."""
         qnm = EnhancedQNMPredictor()
         # qnm_correction = delta_eff / pi^2
-        delta_eff = (math.pi / 7)**5 / 22
+        delta_eff = (math.pi / 7) ** 5 / 22
         expected_correction = delta_eff / math.pi**2
         assert abs(qnm.qnm_correction - expected_correction) < TOLERANCE_STRICT
         # qnm_factor ~ 0.999916
@@ -273,7 +273,10 @@ class TestEnhancedVerificationModule:
         assert abs(qnm.qnm_factor - 0.999916) < 1e-4
         # corrected_frequency(omega) = omega * qnm_factor
         omega = 251.0
-        assert abs(qnm.corrected_frequency(omega) - omega * qnm.qnm_factor) < TOLERANCE_STRICT
+        assert (
+            abs(qnm.corrected_frequency(omega) - omega * qnm.qnm_factor)
+            < TOLERANCE_STRICT
+        )
 
     def test_tyukovsky_adapter(self):
         """Tyukovsky adapter critical exponent correction."""
@@ -281,7 +284,9 @@ class TestEnhancedVerificationModule:
         delta_0 = 0.36
         delta_C = math.pi / 7
         expected = delta_0 + delta_C**2 / 2 - delta_C**5 / 22
-        assert abs(tyuk.corrected_critical_exponent(delta_0) - expected) < TOLERANCE_STRICT
+        assert (
+            abs(tyuk.corrected_critical_exponent(delta_0) - expected) < TOLERANCE_STRICT
+        )
         # Free parameters must be zero
         assert tyuk.free_parameters == 0
         # GCT equation is symbolic

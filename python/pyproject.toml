@@ -78,7 +78,15 @@ src = ["src"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM"]
-ignore = ["E501"]
+ignore = [
+    "E501",
+    # Scientific code uses uppercase mathematical symbols (N, K, Lambda, Delta, ...)
+    # as variables, function arguments and class attributes by convention.
+    "N802", # invalid-function-name        (e.g. verify_K3())
+    "N803", # invalid-argument-name        (e.g. delta_C, N, Lambda)
+    "N806", # non-lowercase-variable       (e.g. Delta = ...)
+    "N815", # mixed-case-class-attribute   (e.g. lambda_D2_triv dataclass fields)
+]
 
 [tool.mypy]
 python_version = "3.10"
@@ -97,7 +105,16 @@ markers = [
 
 [tool.coverage.run]
 source = ["src"]
-omit = ["tests/*", "*/__init__.py"]
+omit = [
+    "tests/*",
+    "*/__init__.py",
+    # Interactive CLI menu requires a TTY and cannot run under CI.
+    # src/ui/interactive_menu.py exercises the same core logic via run.py.
+    "src/ui/*",
+    # Pure matplotlib plotting layer: covered by integration runs
+    # (make viz / run.py --mode sim), not unit tests.
+    "src/visualization/*",
+]
 
 [tool.coverage.report]
 show_missing = true

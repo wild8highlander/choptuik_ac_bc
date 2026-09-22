@@ -91,7 +91,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        julia-version: ['1.9', '1.10']
+        # 1.9 is EOL; supported stable versions only
+        julia-version: ['1.10', '1.11']
 
     steps:
       - name: Checkout repository
@@ -102,9 +103,29 @@ jobs:
         with:
           version: ${{ matrix.julia-version }}
 
+      - name: Cache Julia packages
+        uses: julia-actions/cache@v2
+        with:
+          cache-registries: "true"
+
+      # Retry to ride out transient registry / pkg-server failures
+      # (root cause of the long-standing "Julia registry issue")
       - name: Install Julia dependencies
         working-directory: julia
-        run: julia --project=. -e 'using Pkg; Pkg.instantiate()'
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            echo "::group::Pkg instantiate (attempt ${attempt})"
+            if julia --project=. -e 'using Pkg; Pkg.Registry.update(); Pkg.instantiate()'; then
+              echo "::endgroup::"
+              exit 0
+            fi
+            echo "::endgroup::"
+            echo "Attempt ${attempt} failed, retrying in 30s..."
+            sleep 30
+          done
+          echo "All 3 attempts failed"
+          exit 1
 
       - name: Run Julia tests
         working-directory: julia

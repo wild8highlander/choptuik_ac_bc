@@ -44,7 +44,9 @@ class DiracOperator:
             Eigenvalue of D^2.
         """
         result = self.lambda_D2_triv + spinor_contribution
-        logger.debug(f"D² eigenvalue: {self.lambda_D2_triv} + {spinor_contribution} = {result}")
+        logger.debug(
+            f"D² eigenvalue: {self.lambda_D2_triv} + {spinor_contribution} = {result}"
+        )
         return result
 
     def gap(self) -> float:

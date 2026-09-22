@@ -27,6 +27,7 @@ class SurfaceSpec:
         R: Scalar curvature.
         genus: Curve genus.
     """
+
     name: str
     lambda_1: float
     delta_max: float
@@ -65,18 +66,30 @@ class SurfaceSpec:
 
 # Predefined surfaces
 BOLZA = SurfaceSpec(
-    name="Bolza", lambda_1=3.34253, delta_max=np.pi/8,
-    group_name="GL(2,3)=2S4", group_order=48, genus=2
+    name="Bolza",
+    lambda_1=3.34253,
+    delta_max=np.pi / 8,
+    group_name="GL(2,3)=2S4",
+    group_order=48,
+    genus=2,
 )
 
 BRING = SurfaceSpec(
-    name="Bring", lambda_1=3.7, delta_max=np.pi/5,
-    group_name="S5", group_order=120, genus=4
+    name="Bring",
+    lambda_1=3.7,
+    delta_max=np.pi / 5,
+    group_name="S5",
+    group_order=120,
+    genus=4,
 )
 
 MACBEATH = SurfaceSpec(
-    name="Macbeath", lambda_1=3.2, delta_max=np.pi/7,
-    group_name="PSL(2,8)", group_order=504, genus=7
+    name="Macbeath",
+    lambda_1=3.2,
+    delta_max=np.pi / 7,
+    group_name="PSL(2,8)",
+    group_order=504,
+    genus=7,
 )
 
 DEFAULT_SURFACES = [BOLZA, BRING, MACBEATH]

@@ -32,6 +32,7 @@ class SpinorStructure:
         Delta: Computed spectral value.
         deviation: Percentage deviation from observed value.
     """
+
     id: int
     bits: list[int]
     n_active: int
@@ -49,9 +50,12 @@ class SpinorPhases:
         delta_C: Phase on C = pi/7.
     """
 
-    def __init__(self, delta_A: float | None = None,
-                 delta_B: float | None = None,
-                 delta_C: float | None = None):
+    def __init__(
+        self,
+        delta_A: float | None = None,
+        delta_B: float | None = None,
+        delta_C: float | None = None,
+    ):
         self.delta_A = delta_A if delta_A is not None else np.pi / 2
         self.delta_B = delta_B if delta_B is not None else np.pi / 3
         self.delta_C = delta_C if delta_C is not None else np.pi / 7
@@ -60,10 +64,13 @@ class SpinorPhases:
             f"δ_B={self.delta_B:.6f}, δ_C={self.delta_C:.6f}"
         )
 
-    def enumerate_structures(self, lambda_D2_triv: float,
-                              delta_obs: float = 3.443,
-                              n_structures: int = 64,
-                              n_generators: int = 6) -> list[SpinorStructure]:
+    def enumerate_structures(
+        self,
+        lambda_D2_triv: float,
+        delta_obs: float = 3.443,
+        n_structures: int = 64,
+        n_generators: int = 6,
+    ) -> list[SpinorStructure]:
         """Enumerate all 2^n_generators spinor structures.
 
         For each structure, compute the spectral value:
@@ -85,10 +92,16 @@ class SpinorPhases:
             sum_sq = sum(self.delta_C**2 for b in bits if b) / 2
             Delta = lambda_D2_triv + sum_sq
             deviation = abs(Delta - delta_obs) / delta_obs * 100
-            structures.append(SpinorStructure(
-                id=i, bits=bits, n_active=n_active,
-                delta_C=self.delta_C, Delta=Delta, deviation=deviation
-            ))
+            structures.append(
+                SpinorStructure(
+                    id=i,
+                    bits=bits,
+                    n_active=n_active,
+                    delta_C=self.delta_C,
+                    Delta=Delta,
+                    deviation=deviation,
+                )
+            )
 
         structures.sort(key=lambda s: s.deviation)
         logger.info(f"Enumerated {len(structures)} spinor structures")
@@ -106,6 +119,7 @@ class SpinorPhases:
             Dict mapping n_active -> count.
         """
         from collections import Counter
+
         counts = Counter(s.n_active for s in structures)
         result = {}
         for n in sorted(counts.keys()):

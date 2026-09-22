@@ -157,18 +157,22 @@
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>false</failsOnError>
+                    <!-- Report-only: do not fail `mvn verify` on style violations.
+                         Style gate lives in the Lint workflow (mvn checkstyle:check). -->
+                    <failOnViolation>false</failOnViolation>
                     <violationSeverity>warning</violationSeverity>
                 </configuration>
             </plugin>
 
-            <!-- SpotBugs: static bug analysis -->
+            <!-- SpotBugs: static bug analysis (report-only in the build lifecycle;
+                 blocking checks belong to the Lint workflow) -->
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.8.6</version>
                 <executions>
                     <execution>
-                        <goals><goal>check</goal></goals>
+                        <goals><goal>spotbugs</goal></goals>
                     </execution>
                 </executions>
                 <configuration>

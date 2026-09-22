@@ -48,6 +48,7 @@ class ChoptyukResult:
         deviation_full: Deviation of full from observed (%).
         deviation_b_ch: Deviation of b_Ch from observed (%).
     """
+
     lambda_D2_triv: float
     delta_C: float
     delta_bc: float
@@ -68,13 +69,16 @@ class ChoptyukFormula:
     All parameters are customizable for hypothesis testing.
     """
 
-    def __init__(self, lambda_D2_triv: float = 3.338,
-                 delta_C: float | None = None,
-                 k_struct: int = 22,
-                 c4: float = 0.125,
-                 c6: float = 0.5,
-                 delta_obs: float = 3.443,
-                 b_ch_obs: float = 0.377):
+    def __init__(
+        self,
+        lambda_D2_triv: float = 3.338,
+        delta_C: float | None = None,
+        k_struct: int = 22,
+        c4: float = 0.125,
+        c6: float = 0.5,
+        delta_obs: float = 3.443,
+        b_ch_obs: float = 0.377,
+    ):
         self.lambda_D2_triv = lambda_D2_triv
         self.delta_C = delta_C if delta_C is not None else np.pi / 7
         self.k_struct = k_struct
@@ -103,7 +107,9 @@ class ChoptyukFormula:
         gamma = dC**4 / self.k_struct
         delta_eff = dC * gamma  # = dC^5 / k
         logger.info(f"γ = δ_C⁴/k = {gamma:.8f}, δ_eff = {delta_eff:.8f}")
-        logger.info(f"δ_eff ≈ 1/1200 = {1/1200:.8f}, deviation = {abs(delta_eff - 1/1200)/(1/1200)*100:.3f}%")
+        logger.info(
+            f"δ_eff ≈ 1/1200 = {1/1200:.8f}, deviation = {abs(delta_eff - 1/1200)/(1/1200)*100:.3f}%"
+        )
 
         # Base Choptyuk formula
         delta_ch_base = delta_bc - delta_eff

@@ -32,6 +32,7 @@ class HypothesisConfig:
         custom_genus: Custom genus (None = use 3).
         custom_correction_fn: Optional custom correction function.
     """
+
     name: str
     description: str = ""
     custom_delta_C: float | None = None
@@ -58,6 +59,7 @@ class HypothesisResult:
         deviation: Percentage deviation from observed.
         passed: Whether deviation is within tolerance.
     """
+
     name: str
     delta_C: float
     lambda_D2: float
@@ -78,8 +80,9 @@ class HypothesisTester:
     - Multi-hypothesis comparison
     """
 
-    def __init__(self, delta_obs: float = 3.443, b_ch_obs: float = 0.377,
-                 tolerance: float = 1.0):
+    def __init__(
+        self, delta_obs: float = 3.443, b_ch_obs: float = 0.377, tolerance: float = 1.0
+    ):
         self.delta_obs = delta_obs
         self.b_ch_obs = b_ch_obs
         self.tolerance = tolerance  # percent
@@ -95,7 +98,9 @@ class HypothesisTester:
             HypothesisResult with computed values and pass/fail.
         """
         dC = config.custom_delta_C if config.custom_delta_C is not None else np.pi / 7
-        lam_D2 = config.custom_lambda_D2 if config.custom_lambda_D2 is not None else 3.338
+        lam_D2 = (
+            config.custom_lambda_D2 if config.custom_lambda_D2 is not None else 3.338
+        )
         k = config.custom_k_struct if config.custom_k_struct is not None else 22
         c4 = config.custom_c4 if config.custom_c4 is not None else 0.125
         c6 = config.custom_c6 if config.custom_c6 is not None else 0.5
@@ -119,9 +124,14 @@ class HypothesisTester:
         passed = deviation <= self.tolerance
 
         result = HypothesisResult(
-            name=config.name, delta_C=dC, lambda_D2=lam_D2,
-            delta_bc=delta_bc, delta_ch_base=delta_ch_base,
-            delta_ch_full=delta_ch_full, deviation=deviation, passed=passed,
+            name=config.name,
+            delta_C=dC,
+            lambda_D2=lam_D2,
+            delta_bc=delta_bc,
+            delta_ch_base=delta_ch_base,
+            delta_ch_full=delta_ch_full,
+            deviation=deviation,
+            passed=passed,
         )
         logger.info(
             f"Hypothesis '{config.name}': Δ_Ch={delta_ch_full:.6f}, "
@@ -129,8 +139,12 @@ class HypothesisTester:
         )
         return result
 
-    def parameter_sweep(self, param_name: str, values: list[float],
-                         base_config: HypothesisConfig | None = None) -> list[HypothesisResult]:
+    def parameter_sweep(
+        self,
+        param_name: str,
+        values: list[float],
+        base_config: HypothesisConfig | None = None,
+    ) -> list[HypothesisResult]:
         """Sweep a single parameter over a range of values.
 
         Args:
@@ -165,7 +179,9 @@ class HypothesisTester:
 
         return results
 
-    def compare_hypotheses(self, configs: list[HypothesisConfig]) -> list[HypothesisResult]:
+    def compare_hypotheses(
+        self, configs: list[HypothesisConfig]
+    ) -> list[HypothesisResult]:
         """Compare multiple hypotheses side by side.
 
         Args:
