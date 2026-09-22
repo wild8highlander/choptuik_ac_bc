@@ -1,5 +1,7 @@
 # CI: Full test suite with coverage reporting to Codecov
-# Runs on every push to main and on every pull request
+# Runs on EVERY push to main and on every pull request.
+# No paths-filter on purpose: with a filter the CI badge stays stale
+# (stuck on the last run) whenever a push touches other directories.
 # Matrix: Python 3.10/3.11/3.12 × ubuntu/macos/windows
 
 name: CI
@@ -7,10 +9,6 @@ name: CI
 on:
   push:
     branches: [main]
-    paths:
-      - 'python/**'
-      - 'julia/**'
-      - '.github/workflows/ci.yml'
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -213,11 +211,13 @@ jobs:
           from src.core.klein_curve import KleinCurve
           f = ChoptyukFormula()
           c = KleinCurve()
-          # Reference values from monograph
-          assert abs(f.delta_bC - 3.438710) < 0.001, f'b-C mismatch: {f.delta_bC}'
-          assert abs(f.delta_Ch - 3.447040) < 0.001, f'Choptyuk mismatch: {f.delta_Ch}'
-          assert abs(f.b_Ch - 0.376510) < 0.001, f'b_Ch mismatch: {f.b_Ch}'
+          r = f.compute()
+          # Reference values from monograph (API: ChoptyukResult fields,
+          # KleinCurve.psl_order — aligned with actual src/core API)
+          assert abs(r.delta_bc - 3.438710) < 0.001, f'b-C mismatch: {r.delta_bc}'
+          assert abs(r.delta_ch_full - 3.447040) < 0.001, f'Choptyuk mismatch: {r.delta_ch_full}'
+          assert abs(r.b_ch - 0.376510) < 0.001, f'b_Ch mismatch: {r.b_ch}'
           assert c.genus == 3, f'Genus mismatch: {c.genus}'
-          assert c.aut_order == 168, f'Aut order mismatch: {c.aut_order}'
+          assert c.psl_order == 168, f'PSL order mismatch: {c.psl_order}'
           print('Cross-implementation consistency: PASS')
           "

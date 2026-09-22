@@ -28,6 +28,19 @@ from ..visualization.plots import PlotGenerator
 logger = logging.getLogger(__name__)
 
 
+def _safe_input(prompt: str = "") -> str | None:
+    """input() that never crashes on closed stdin (EOF) or Ctrl+C.
+
+    Returns the stripped string, or None when input is unavailable.
+    Keeps the CLI usable when launched from Termux widgets, CI runners,
+    pipes or scripts where stdin is closed (`python run.py < /dev/null`).
+    """
+    try:
+        return input(prompt).strip()
+    except (EOFError, KeyboardInterrupt):
+        return None
+
+
 class InteractiveMenu:
     """Full interactive CLI menu system."""
 
@@ -62,7 +75,16 @@ class InteractiveMenu:
         """Main menu loop."""
         while True:
             self._print_header()
-            choice = input("\n  Select option [1-10]: ").strip()
+            choice = _safe_input("\n  Select option [1-10]: ")
+            if choice is None:
+                # stdin closed (EOF) or interrupted — exit gracefully, no traceback
+                print("\n  Input closed (EOF/interrupt). Exiting gracefully.")
+                print("  All outputs saved to:", self.output_base)
+                print(
+                    "  Tip: for unattended runs use:",
+                    "python run.py --mode verify --non-interactive",
+                )
+                break
             if choice == "1":
                 self._run_verification()
             elif choice == "2":

@@ -100,6 +100,19 @@ def parse_formats(s: str) -> List[str]:
     return [f.strip().lower() for f in s.split(",") if f.strip()]
 
 
+def safe_input(prompt: str = "") -> Optional[str]:
+    """input() that never crashes on closed stdin (EOF) or Ctrl+C.
+
+    Returns the stripped string, or None when input is unavailable.
+    This makes the CLI safe to run from Termux widgets, CI jobs, pipes:
+    `python3 run.py < /dev/null` used to raise an unhandled EOFError.
+    """
+    try:
+        return input(prompt).strip()
+    except (EOFError, KeyboardInterrupt):
+        return None
+
+
 def interactive_menu(lang: str = "en") -> Optional[Dict[str, Any]]:
     """Show interactive menu and return chosen config."""
     tr = I18N[lang]
@@ -110,7 +123,13 @@ def interactive_menu(lang: str = "en") -> Optional[Dict[str, Any]]:
         print(tr["choose_mode"])
         for k, v in tr["modes"].items():
             print(f"  [{k}] {v}")
-        choice = input("> ").strip()
+        choice = safe_input("> ")
+        if choice is None:
+            # stdin closed (EOF) or interrupted — exit gracefully, no traceback
+            print("\n" + tr["goodbye"])
+            print("(stdin closed — run with --non-interactive or --mode verify_all "
+                  "for unattended use)")
+            return None
         if choice == "5":
             print(tr["goodbye"])
             return None
@@ -118,7 +137,10 @@ def interactive_menu(lang: str = "en") -> Optional[Dict[str, Any]]:
             return {"mode": "verify_all", "sections": list(range(1, 10)),
                     "language": lang}
         if choice == "2":
-            s = input(tr["choose_sections"])
+            s = safe_input(tr["choose_sections"])
+            if s is None:
+                print(tr["invalid"])
+                continue
             try:
                 sections = [int(x.strip()) for x in s.split(",") if x.strip()]
                 sections = [s for s in sections if 1 <= s <= 9]
@@ -140,18 +162,18 @@ def gather_custom_params(lang: str = "en") -> Dict[str, Any]:
     tr = I18N[lang]
     params: Dict[str, Any] = {"mode": "custom", "language": lang}
     try:
-        s = input(tr["kappa_T"])
-        params["kappa_T_custom"] = float(s) if s.strip() else 8.45
-        s = input(tr["N"])
-        params["N_custom"] = int(s) if s.strip() else 28
-        s = input(tr["n_flavors"])
-        params["n_flavors"] = int(s) if s.strip() else 6
-        s = input(tr["seed"])
-        params["seed"] = int(s) if s.strip() else 42
-        s = input(tr["formats"])
-        params["report_formats"] = parse_formats(s)
-        s = input(tr["output_dir"])
-        params["output_dir"] = s.strip() if s.strip() else "reports"
+        s = safe_input(tr["kappa_T"])
+        params["kappa_T_custom"] = float(s) if s else 8.45
+        s = safe_input(tr["N"])
+        params["N_custom"] = int(s) if s else 28
+        s = safe_input(tr["n_flavors"])
+        params["n_flavors"] = int(s) if s else 6
+        s = safe_input(tr["seed"])
+        params["seed"] = int(s) if s else 42
+        s = safe_input(tr["formats"])
+        params["report_formats"] = parse_formats(s) if s else get_default_formats()
+        s = safe_input(tr["output_dir"])
+        params["output_dir"] = s if s else "reports"
         params["sections"] = list(range(1, 10))
     except (ValueError, EOFError):
         # Use defaults
@@ -223,8 +245,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     parser.add_argument("--mode", choices=["verify_all", "verify_section", "custom", "interactive", "figures"],
                         default="interactive", help="Run mode")
-    parser.add_argument("--sections", type=str, default=None,
-                        help="Comma-separated section numbers (1-9), for verify_section mode")
+    parser.add_argument("--sections", "--section", dest="sections", type=str, default=None,
+                        help="Comma-separated section numbers (1-9), for verify_section mode "
+                             "(--section is an accepted alias)")
     parser.add_argument("--config", type=str, default=None,
                         help="Path to custom JSON config (for custom mode)")
     parser.add_argument("--lang", choices=["en", "ru"], default="en",
@@ -256,6 +279,25 @@ def main(argv: Optional[List[str]] = None) -> int:
             print("  (none — config dir does not exist)")
         return 0
 
+    # ── Auto mode detection (README compatibility) ──────────────
+    # The README documents `run.py --config ...` and `run.py --section 3,6,8`
+    # without an explicit --mode. Previously these silently dropped into the
+    # interactive menu and crashed with EOFError on non-TTY stdin (Termux,
+    # CI, pipes). Now explicit arguments switch the mode automatically.
+    if args.mode == "interactive" and args.config:
+        args.mode = "custom"
+    elif args.mode == "interactive" and args.sections:
+        args.mode = "verify_section"
+
+    # Piped / widget / CI invocations have no TTY — never block on input()
+    if not args.non_interactive:
+        try:
+            stdin_is_tty = sys.stdin.isatty()
+        except (AttributeError, ValueError):
+            stdin_is_tty = False
+        if not stdin_is_tty:
+            args.non_interactive = True
+
     # Determine params
     if args.mode == "interactive" and not args.non_interactive:
         params = interactive_menu(args.lang)
@@ -267,6 +309,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     elif args.mode == "custom" and args.config:
         params = load_config_file(args.config)
         params.setdefault("language", args.lang)
+        # CLI overrides win over config-file values
+        params.setdefault("output_dir", args.output_dir)
+        if args.formats:
+            params["report_formats"] = parse_formats(args.formats)
     elif args.mode == "verify_section" and args.sections:
         try:
             sections = [int(s.strip()) for s in args.sections.split(",") if s.strip()]

@@ -10,6 +10,9 @@
     python3 run_all.py
 
 Требования: python >= 3.10, numpy, scipy, matplotlib.
+Опционально: playwright (только для одной структурной диаграммы
+fig_transfer_map.png) — без него прогон завершается успешно, диаграмма
+пропускается с предупреждением.
 Полное время прогона ~2–4 минуты (доминирует численная минимизация леммы Ш.3).
 """
 import os
@@ -44,11 +47,15 @@ def main():
     stability_lemma.main()
 
     banner("ФИГУРЫ (figures/*.png)")
-    import figures
-    figures.fig_dsi_closure()
-    figures.fig_stability_lemma()
-    figures.fig_audit_errors()
-    figures.fig_transfer_map()
+    try:
+        import figures
+        figures.fig_dsi_closure()
+        figures.fig_stability_lemma()
+        figures.fig_audit_errors()
+        figures.fig_transfer_map()
+    except Exception as exc:  # noqa: BLE001 — фигуры не должны ронять верификацию
+        print(f"[ПРЕДУПРЕЖДЕНИЕ] часть фигур не собрана: {exc}")
+        print("  Результаты задач 1–3 (results/*.json) не затронуты и валидны.")
 
     banner("ГОТОВО")
     print(f"  Полное время прогона: {time.time() - t0:.1f} с")

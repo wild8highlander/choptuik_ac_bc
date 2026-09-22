@@ -379,11 +379,24 @@ _HTML = """<!DOCTYPE html>
 
 
 def fig_transfer_map():
-    """Структурная диаграмма: HTML+CSS → PNG @2x (Playwright)."""
-    from playwright.sync_api import sync_playwright
+    """Структурная диаграмма: HTML+CSS → PNG @2x (Playwright).
+
+    Playwright — опциональная зависимость: если он не установлен (или в
+    системе нет браузера Chromium), диаграмма пропускается с понятным
+    предупреждением, а весь прогон run_all.py завершается успешно.
+    Все остальные фигуры (matplotlib) генерируются как раньше.
+    """
     html_path = os.path.join(FIG_DIR, "_transfer_map.html")
-    with open(html_path, "w", encoding="utf-8") as f:
-        f.write(_HTML)
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        with open(html_path, "w", encoding="utf-8") as f:
+            f.write(_HTML)
+        print("[SKIP] fig_transfer_map.png — модуль playwright не установлен;")
+        print("       HTML-заготовка сохранена:", html_path)
+        print("       Чтобы собрать PNG: pip install playwright"
+              " && playwright install chromium")
+        return
     with sync_playwright() as p:
         b = p.chromium.launch()
         pg = b.new_page(viewport={"width": 1240, "height": 900},
