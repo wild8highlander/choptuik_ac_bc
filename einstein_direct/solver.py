@@ -166,6 +166,15 @@ class DoubleNullSolver:
         self.du = self.u[1] - self.u[0]
         self.dv = self.v[1] - self.v[0]
         self.diag = Diagnostics()
+        self.R_heal = 0.0   # радиус унаследованной битой центральной зоны (зум)
+        # марш t ОТ центра наружу (зум-стадии): мода 1/r затухает, центр —
+        # внутреннее граничное условие t(i0) = s(i0); краевые данные не нужны
+        self.march_from_center = False
+        self.heal_enabled = True   # рутина лечения центра (отключается зум-машиной)
+        # сеточный пол для r в знаменателях (защита от деления на r~0:
+        # эволюционный m в центральной клетке не согласован с r ~ 1e-14,
+        # что давало всплески w = a2 m / (2 r_safe^3) ~ 1e20 и взрыв d)
+        self.r_floor = 0.5 * self.du
         self._init_fields()
 
     # ------------------------------------------------------------------ init
@@ -234,7 +243,7 @@ class DoubleNullSolver:
             st["r"], st["Phi"], st["p"], st["q"], st["s"], st["t"],
             st["c"], st["m"], st["alpha2"], st["d"], st["w"],
         )
-        r_safe = np.where(np.abs(r) < 1e-14, 1e-14, r)
+        r_safe = np.where(np.abs(r) < self.r_floor, self.r_floor, r)
         m_safe = m
         slopes = {}
         slopes["r"] = q
@@ -312,6 +321,82 @@ class DoubleNullSolver:
         obj._edge_t_arr = np.asarray(edge_t, dtype=float)
         return obj
 
+    def _center_heal(self, t_arr, s_arr, m_arr, r_arr, deep=False):
+        """Регулярная реконструкция центральной зоны.
+
+        Routine (deep=False, каждая строка): зона |r| <= max(2 du, R_heal),
+        ДВУСТОРОННЕЕ парное чётное усреднение: y[k] = 0.5[(t+s)_{-k} + (t+s)_{+k}]
+        (через тождество зеркала s(-r)=t(+r) сумма (t+s) чётна; усреднение
+        убывает антисимметричный мусор — моду 1/r и расстройку маршей —
+        и СОХРАНЯЕТ физическую вариацию по r, в отличие от константы).
+
+        Deep (deep=True, ОДИН раз на рестарт-строке после зума): зона
+        |r| <= R_zone, R_zone = max(2 du, R_heal) — константа y0 = чётный
+        предел (t+s)/2 из аннулуса [1.15, 2.6] R_zone (аннулус вне
+        унаследованной биты зоны), m ~ r^3 по аннулусу. Убивает
+        унаследованный мусор родителя на самой рестарт-строке.
+        """
+        R_zone = max(2.0 * self.du, float(getattr(self, "R_heal", 0.0)))
+        r_abs = np.abs(r_arr)
+        i0 = int(np.argmin(r_abs))
+        if r_abs[i0] > 3.0 * self.du:
+            return  # центр вне окна
+        n = len(r_arr)
+        if not deep:
+            # двухстороннее парное чётное усреднение (вариация сохраняется);
+            # dr ~ 0.5 du на клетку (p ~ -1/2), так что клеток 2*R_zone/du
+            K = int(np.ceil(2.0 * R_zone / self.du))
+            K = min(K, i0, n - 1 - i0)
+            if K < 1:
+                y0 = 0.5 * (t_arr[i0] + s_arr[i0])
+                t_arr[i0] = y0
+                s_arr[i0] = y0
+                return
+            A_plus = (t_arr[i0 - K:i0 + 1] + s_arr[i0 - K:i0 + 1])[::-1]  # k=0..K
+            A_minus = t_arr[i0:i0 + K + 1] + s_arr[i0:i0 + K + 1]       # k=0..K
+            y = 0.5 * (A_plus + A_minus)
+            t_arr[i0 - K:i0 + 1] = y[::-1]
+            s_arr[i0 - K:i0 + 1] = y[::-1]
+            t_arr[i0:i0 + K + 1] = y
+            s_arr[i0:i0 + K + 1] = y
+            return
+        # аннулус в ФИЗИЧЕСКИХ r-единицах: dr/du = p ~ -1/2, ищем по массиву r
+        rev = r_abs[:i0 + 1][::-1]          # возрастающий |r| от центра
+        j_near = int(np.searchsorted(rev, 1.15 * R_zone))
+        j_far = int(np.searchsorted(rev, 2.60 * R_zone))
+        if j_far - j_near < 2 or j_near < 1 or i0 - j_far < 0:
+            lo, hi = max(i0 - 6, 0), min(i0 + 7, n)
+            y0 = 0.5 * (t_arr[i0] + s_arr[i0])
+            t_arr[lo:hi] = y0
+            s_arr[lo:hi] = y0
+            return
+        i_near = i0 - j_near
+        i_far = i0 - j_far
+        r_near = float(r_arr[i_near]); r_far = float(r_arr[i_far])
+        y_near = float(0.5 * (t_arr[i_near] + s_arr[i_near]))
+        y_far = float(0.5 * (t_arr[i_far] + s_arr[i_far]))
+        if not (np.isfinite(y_near) and np.isfinite(y_far)):
+            y0 = 0.5 * (t_arr[i0] + s_arr[i0])
+            if not np.isfinite(y0):
+                return
+        else:
+            den = r_far * r_far - r_near * r_near
+            if den <= 0:
+                y0 = y_near
+            else:
+                y0 = y_near - (y_near - y_far) * r_near * r_near / den
+            lo_b = min(y_near, y_far) - 2.0 * abs(y_far - y_near)
+            hi_b = max(y_near, y_far) + 2.0 * abs(y_far - y_near)
+            y0 = float(np.clip(y0, lo_b, hi_b))
+        lo = max(i0 - j_near, 0)
+        hi = min(i0 + j_near + 1, n)
+        t_arr[lo:hi] = y0
+        s_arr[lo:hi] = y0
+        # масса: регулярный закон m ~ r^3 (нечётное продолжение в зеркало)
+        m_near = float(m_arr[i_near])
+        if np.isfinite(m_near) and r_near > 0:
+            m_arr[lo:hi] = m_near * (r_arr[lo:hi] / r_near) ** 3
+
     def _do_step(self, st, j):
         """Один шаг характеристического марша: строка j-1 -> строка j."""
         v_new = self.v[j]
@@ -346,43 +431,66 @@ class DoubleNullSolver:
             d_edge_new = self._edge_omega_v(st_new, v_new)
             st_new["d"] = d_edge_new + self._cumtrapz_u(st_new["w"])
 
-            # (Phi, t): ОДУ t_u = SC решается только в безопасной зоне
-            # (r > 5 du); в зоне центра |r| <= 5 du — регулярность t = s
-            # (точное соотношение при r = 0); в зеркале — явный марш.
+            # (Phi, t): ОДУ t_u = SC. Два режима:
+            #   march_from_center (зум-стадии): марш ОТ центра наружу,
+            #     внутреннее ГУ t(i0)=s(i0); мода 1/r затухает наружу.
+            #   иначе (базовая стадия): марш с края (данные Goursat),
+            #     клэмп t=s в зоне |r|<=5du, зеркало — явный марш.
             r_new = st_new["r"]
-            r_safe = np.where(np.abs(r_new) < 1e-14, 1e-14, r_new)
+            r_safe = np.where(np.abs(r_new) < self.r_floor, self.r_floor, r_new)
             pr = st_new["p"] / r_safe
             qsr = st_new["q"] * st_new["s"] / r_safe
             r_reg = 5.0 * self.du
-            below = r_new <= r_reg
-            i_cross = int(np.argmax(below)) if below.any() else len(pr)
-            t_new = np.empty_like(st_new["p"])
-            t_new[0] = float(self._edge_t(np.array([v_new]))[0])
-            # неявный марш по точкам 1..i_cross-1 (все с r > r_reg)
-            n_imp = max(i_cross - 1, 0)
-            if n_imp >= 1:
-                A = 1.0 - 0.5 * self.du * pr[:n_imp]
-                D = 1.0 + 0.5 * self.du * pr[1:n_imp + 1]
-                B = -0.5 * self.du * (qsr[1:n_imp + 1] + qsr[:n_imp])
-                C = A / D
-                E = B / D
-                LCp = np.concatenate(([0.0], np.cumsum(np.log(C))))
-                Ep = np.concatenate(([0.0], E))
-                Sv = np.cumsum(Ep * np.exp(-LCp))
-                t_new[1:n_imp + 1] = np.exp(LCp[1:]) * (t_new[0] + Sv[1:])
-            # центральная зона: регулярность t = s
-            below_m = r_new < -r_reg
-            i_mirror = int(np.argmax(below_m)) if below_m.any() else len(pr)
-            i_end_cross = max(i_mirror, i_cross)
-            t_new[i_cross:i_end_cross] = st_new["s"][i_cross:i_end_cross]
-            # зеркало: явный марш
-            for i in range(i_end_cross, len(pr)):
-                SC_im1 = -(st_new["p"][i - 1] * t_new[i - 1]
-                           + st_new["q"][i - 1] * st_new["s"][i - 1]) / r_safe[i - 1]
-                t_new[i] = t_new[i - 1] + self.du * SC_im1
+            if self.march_from_center:
+                i0c = int(np.argmin(np.abs(r_new)))
+                t_new = np.empty_like(st_new["p"])
+                t_new[i0c] = float(st_new["s"][i0c])
+                # (+r)-сторона: r убывает с i, наружу = убывание i
+                for i in range(i0c - 1, -1, -1):
+                    t_new[i] = (t_new[i + 1] * (1.0 + 0.5 * self.du * pr[i + 1])
+                                + 0.5 * self.du * (qsr[i] + qsr[i + 1])) \
+                               / (1.0 - 0.5 * self.du * pr[i])
+                # зеркало: наружу = рост i
+                for i in range(i0c + 1, len(pr)):
+                    t_new[i] = (t_new[i - 1] * (1.0 - 0.5 * self.du * pr[i - 1])
+                                - 0.5 * self.du * (qsr[i - 1] + qsr[i])) \
+                               / (1.0 + 0.5 * self.du * pr[i])
+            else:
+                below = r_new <= r_reg
+                i_cross = int(np.argmax(below)) if below.any() else len(pr)
+                t_new = np.empty_like(st_new["p"])
+                t_new[0] = float(self._edge_t(np.array([v_new]))[0])
+                # неявный марш по точкам 1..i_cross-1 (все с r > r_reg)
+                n_imp = max(i_cross - 1, 0)
+                if n_imp >= 1:
+                    A = 1.0 - 0.5 * self.du * pr[:n_imp]
+                    D = 1.0 + 0.5 * self.du * pr[1:n_imp + 1]
+                    B = -0.5 * self.du * (qsr[1:n_imp + 1] + qsr[:n_imp])
+                    C = A / D
+                    E = B / D
+                    LCp = np.concatenate(([0.0], np.cumsum(np.log(C))))
+                    Ep = np.concatenate(([0.0], E))
+                    Sv = np.cumsum(Ep * np.exp(-LCp))
+                    t_new[1:n_imp + 1] = np.exp(LCp[1:]) * (t_new[0] + Sv[1:])
+                # центральная зона: регулярность t = s
+                below_m = r_new < -r_reg
+                i_mirror = int(np.argmax(below_m)) if below_m.any() else len(pr)
+                i_end_cross = max(i_mirror, i_cross)
+                t_new[i_cross:i_end_cross] = st_new["s"][i_cross:i_end_cross]
+                # зеркало: явный марш
+                for i in range(i_end_cross, len(pr)):
+                    SC_im1 = -(st_new["p"][i - 1] * t_new[i - 1]
+                               + st_new["q"][i - 1] * st_new["s"][i - 1]) / r_safe[i - 1]
+                    t_new[i] = t_new[i - 1] + self.du * SC_im1
+                # чётная реконструкция центра (чистит расстройку маршей)
+                if self.heal_enabled:
+                    self._center_heal(t_new, st_new["s"], st_new["m"], r_new)
             st_new["t"] = t_new
             st_new["Phi"] = st["Phi"] + 0.5 * dv * (st["t"] + t_new)
             st_new["Phi"][0] = float(self._edge_Phi(np.array([v_new]))[0])
+            # ВАЖНО: w/d НЕ пересчитываем после марша t — иначе свежий мусор
+            # марша через w ~ s*t и cumtrapz расползается в d по всему зеркалу
+            # (w/d от предыдущей итерации — валидированное поведение).
             t_guess = t_new
         return st_new
 
@@ -499,7 +607,7 @@ class DoubleNullSolver:
 
     def _th_form(self, st):
         """(TH): omega_uv = alpha^2 m / (2 r^3) - (kappa/2) s t."""
-        r_safe = np.where(np.abs(st["r"]) < 1e-14, 1e-14, st["r"])
+        r_safe = np.where(np.abs(st["r"]) < self.r_floor, self.r_floor, st["r"])
         return st["alpha2"] * st["m"] / (2.0 * r_safe**3) - 0.5 * KAPPA * st["s"] * st["t"]
 
     def _cumtrapz_u(self, f):
