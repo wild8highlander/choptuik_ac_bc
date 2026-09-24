@@ -24,9 +24,11 @@ Termux, see §10) with Python ≥ 3.9, NumPy, SciPy, SymPy and pytest.
 7. [Multi-zoom regridding machine v2](#7-multi-zoom-regridding-machine-v2)
 8. [The depth wall: precise diagnosis and fix roadmap](#8-the-depth-wall)
 9. [Honest comparison with the b_Ch = γ hypothesis](#9-honest-comparison-with-the-b_Ch--γ-hypothesis)
-10. [Running everything (incl. Termux on Android)](#10-running-everything)
-11. [File map](#11-file-map)
-12. [References](#12-references)
+10. [v3.2: the spinor (even/odd) center closure](#10-v32-the-spinor-evenodd-center-closure)
+11. [Spinor analysis: the π/15 and π/30 exponents](#11-spinor-analysis-the-π15-and-π30-exponents)
+12. [Running everything (incl. Termux on Android)](#12-running-everything)
+13. [File map](#13-file-map)
+14. [References](#14-references)
 
 ---
 
@@ -273,15 +275,126 @@ percent-level `γ` and a reliable `Δ` from echo-peak spacing.
 | `γ` (literature, Choptuik 1993 / Gundlach) | `0.374 ± 0.004` | reference |
 | `b_Ch = 1 − cos(2π/7)` | `0.37651` | monograph hypothesis (+0.67 %) |
 | `γ` measured here (fixed grid) | `0.11 ± 0.11` | **invalid** — mass floor `M ≈ 4·du` |
-| `γ` measured here (zoom chain) | — | **not achieved**: depth wall at `z ≈ 5.2`, needs `z ≈ 10–12` |
-| `Δ` measured here | — | **not achieved**: echo peaks at `z ≤ 5.2` are dominated by restart transients |
+| `γ` measured here (zoom chain) | — | **not achieved**: depth wall at `z ≈ 5.9` (v3.2), needs `z ≈ 10–12` |
+| `Δ` measured here | — | **not achieved**: no clean echo train at `z ≤ 5.9` (see §11) |
 
 **Bottom line.** The 0.67 % gap between `b_Ch` and `γ` remains an *open
 numerical question* for this codebase. Nothing measured so far supports or
-refutes it; deciding it requires the v3 center-ODE treatment described in §8.
-This module deliberately refuses to fake the comparison.
+refutes it; deciding it requires the central Taylor patch (v5) described in
+§10. This module deliberately refuses to fake the comparison.
 
-## 10. Running everything
+Note however the **product compensation** discovered in §11: the spinor
+framework's `γ·Δ = b_Ch·(7π/30)` differs from the literature pair
+`γ·Δ` by only **0.04 %**, while `γ` and `Δ` separately differ by 0.6–0.7 %.
+
+## 10. v3.2: the spinor (even/odd) center closure
+
+The v2 wall diagnosis said: the clamp `t = s` imposes an *incomplete*
+regularity condition. This session implemented the complete one and
+re-examined the wall with it.
+
+**The regular center expansion** (with mirror coordinate `x = (v−u)/2 ~ r`):
+
+```
+Φ = Φ0(y) + a(y)·x² + …          (scalar field is EVEN in x)
+t = Φ_v = t0 + a·x + O(x³)       s = Φ_u = t0 − a·x + O(x³)
+     └── even part E = (t+s)/2 ──┘  └─ odd part O = (t−s)/2 = a·x ─┘
+slope link:  s₁ − t₁ = −2a        (a ≠ 0 — this is the killed sector!)
+p + q is ODD, (p+q)(0) = 0        m is ODD, m ~ m₃·r³
+c + d is EVEN with (c+d)(0) = c(0) = d(0) = 0
+```
+
+The v2 clamp `t = s` **forces a = 0** — it deletes the odd ("spinor")
+sector; during fast compression `s_v = −(p·t + q·s)/r ≈ 2c'·s/r` then
+blows up. The mirror map `(u,v) → (v,u)` (r → −r, s ↔ t, p ↔ −q, c ↔ d)
+is a Z₂ flip, and the E/O decomposition is exactly the parity expansion
+under it — the language of the monograph's spinor functions.
+
+**What v3.2 implements** (all flag-gated, base runs unchanged — 5/5 tests
+still pass, strong-field benchmark unchanged):
+
+1. `center_closure = "regular"` — per-row central-zone reconstruction:
+   even part `E` by paired half-sum averaging; odd part fitted on the
+   annulus `[R_zone, 4R_zone]` as `O(r) = a·r + C/r` (two-parameter LSQ);
+   the regular `a·r` kept, the parasitic `1/r` mode **discarded**.
+2. Smooth taper `w(k) = (1−(k/K)²)²` — no discontinuity at the zone edge
+   (v3.0 without the taper made the chain *shorter*; the zone edge itself
+   became a junk source — an instructive failure, kept in the log).
+3. Mass: cubic law `m = m₃r³` with `m₃` matched at the zone edge
+   (kills the constant mass offset whose `2Δm/r` diverges).
+4. Parity projection: even part of `(p+q)` removed (regularity: odd),
+   center value of `(c+d)` removed.
+5. Factor-2 bug fixed in the v2 `_center_heal` (it averaged the sums
+   `(t+s)` instead of the half-sums — the even part was doubled in the zone).
+
+**Results** (`results/zoom_campaign_v3.json`, `results/spinor_analysis.json`):
+
+| Metric | v2 (clamp) | v3.2 (regular) |
+|---|---|---|
+| junk `M_AH` explosion at stop | up to `3.56` | **`6.6·10⁻⁵`** (suppressed) |
+| ring `[R_zone, 4R_zone]` at stop | junky | **stable** until stop |
+| chain depth | `z ≈ 5.2` (3 zooms) | **`z ≈ 5.85` (4 zooms, ε=10⁻⁴)** |
+| `(p+q)` even-parity violation, inner ring | `1.00` | **`0.35`** (3× better) |
+| percent-level γ, Δ | not achieved | **still not achieved** |
+
+**The wall, restated in spinor language.** The zone reconstruction now
+keeps the spinor (odd) sector alive and the ring stays clean — but the
+*raw march outside any zone* carries O(1) parity violations
+(`s↔t: 0.93`, `m-odd: 1.00` at the outer ring), and the even part `E`
+at the center still runs away after 2–3 restarts. No *local* zone cleaner
+can fix a *global* march; the fix must be built into the evolution
+itself — the **central Taylor patch** (Choptuik 1993): evolve the
+expansion coefficients `(Φ0, a, …)` as the inner boundary condition.
+That is the v5 roadmap, and it matches the monograph's thesis: stable
+modes need *fundamental-level* derivations, not more regridding.
+
+## 11. Spinor analysis: the π/15 and π/30 exponents
+
+Per the author's guidance, the whole echo path is carried by **spinor
+functions with exponents π/15 and π/30 with parameter scaling**. Module
+`spinor_analysis.py` (output: `results/spinor_analysis.json`, figure
+`figures/*/fig_spinor.png`) tests what is testable today:
+
+**(a) Z₂ mirror parity of the center** — verified numerically at
+`A = 0.075` (sub-critical, strong compression): scalar pairs `s↔t`,
+`m ~ r³` hold to discretization accuracy inside the reconstruction zone;
+the clamp closure shows a maximal `(p+q)` even violation `1.00` (killed
+spinor sector), the v3 closure reduces it to `0.35`.
+
+**(b) Framework relations** (exact arithmetic, no fitting):
+
+| # | Relation | Value | Literature | Deviation |
+|---|---|---|---|---|
+| R1 | `γ = b_Ch = 1 − cos(2π/7)` | `0.376510` | `0.374` | `+0.67 %` |
+| R2 | `Δ = 7π/30` | `0.733038` | `0.7376` | `−0.62 %` |
+| R3 | `ω_wiggle = 4π/Δ = 120/7` | `17.142857` | `17.035` | `+0.63 %` |
+| R4 | `γ·Δ` (product) | `0.275996` | `0.275876` | **`+0.044 %`** |
+
+R3 is a sharp falsifiable prediction: the wiggle frequency becomes the
+**rational number 120/7** — the heptadic 7 reappears in the fine
+structure of the mass scaling. R4 is the curious fact that the R1 and R2
+deviations *compensate* in the product `γ·Δ` to 0.04 % — consistent with
+a common spinor normalization behind both constants.
+
+**(c) Δ from the zoom runs** — the geometric echo-train estimator
+(`v_n → v*`, `v* − v_n ~ e^{−nΔ}`) is implemented and applied; **no clean
+echo train exists in our data** (`z ≤ 5.9`): the detector now rejects
+noise trains honestly (Δ = n/a in the JSON). This is a data-depth limit,
+not a method limit.
+
+**(d) Parameter scaling** — the screaming-mode estimator `Q_n ~ e^{κζ_n}`
+is implemented; on the current data it is contaminated by restarts and is
+reported as order-of-magnitude only.
+
+**Honest resolution limit.** Modulations with frequencies π/15 and π/30
+in the log-scale variable ζ have periods 30 and 60 in ζ — i.e. ~40–80
+echoes. Our chain reaches 2–7 echoes (`z ≈ 3.6–5.9`); resolving the
+spinor modulation requires `z ≥ 30` — **one and a half orders of
+magnitude deeper** than today. This quantifies the author's point: the
+full path *requires* the spinor functions with π/15, π/30 exponents and
+parameter scaling; brute-force zooming alone cannot get there.
+
+## 12. Running everything (desktop and Termux)
 
 ### Desktop
 
@@ -291,6 +404,9 @@ pip install numpy scipy sympy pytest        # ~1 min
 pytest tests/ -q                            # validation, ~2 s
 python3 choptuik_scaling.py --n-bisect 800  # fixed-grid campaign, ~10 min
 python3 zoom_campaign.py                    # zoom prototype campaign, ~4 min
+python3 zoom_campaign_v3.py                 # v3.2 protocol campaign, ~5 min
+python3 spinor_analysis.py                  # spinor module: parity A/B, R1-R4, ~5 min
+python3 spinor_figures.py                   # spinor figures (RU/EN), ~10 s
 python3 figures.py                          # RU/EN figures, ~1 min
 ```
 
@@ -312,16 +428,20 @@ the push script stores a GitHub PAT once via `git credential store` and never
 echoes it. The full campaign runs on a phone in ~1–2 h; the reduced profile
 (`--quick`) takes ~15 min.
 
-## 11. File map
+## 13. File map
 
 ```
 einstein_direct/
 ├── sympy_derivation.py     # Hilbert action → 1+1 system, machine checks (mpmath 50 digits)
 ├── solver.py               # double-null characteristic solver (validated, 2nd order)
+│                           #   + v3.2 center closures: clamp | regular (spinor E/O)
 ├── roberts_test.py         # Roberts–Oshiro convergence harness
 ├── choptuik_scaling.py     # fixed-grid bisection A* + mass-scaling fit
-├── zoom_solver.py          # multi-zoom machine v2 + DSS tracking + echo peak tools
-├── zoom_campaign.py        # honest zoom campaign driver (staged, JSON output)
+├── zoom_solver.py          # multi-zoom machine + DSS tracking + echo peak tools
+├── zoom_campaign.py        # honest zoom campaign driver v2 (JSON output)
+├── zoom_campaign_v3.py     # v3.2 protocol campaign with spinor diagnostics
+├── spinor_analysis.py      # Z2 parity A/B, framework relations R1-R4, Δ/κ estimators
+├── spinor_figures.py       # fig_spinor RU/EN (parity bar + R1-R4 deviations)
 ├── figures.py              # RU/EN publication figures (300 dpi)
 ├── report_ru.pdf / .tex    # 7-page RU report (Tectonic)
 ├── report_en.pdf / .tex    # 7-page EN report (Tectonic)
@@ -330,19 +450,24 @@ einstein_direct/
     ├── derivation_results.json / derivation_log.txt   # machine derivation, residuals 1e-41
     ├── roberts_test.json                              # convergence orders
     ├── choptuik_scaling.json                          # A* = 0.0805333, fixed-grid floor analysis
-    └── zoom_campaign.json                             # zoom v2 campaign: z reached, verdicts, wall diagnosis
+    ├── zoom_campaign.json                             # zoom v2 campaign: z reached, verdicts, wall diagnosis
+    ├── zoom_campaign_v3.json                          # v3.2 protocol: spinor diagnostics at the wall
+    └── spinor_analysis.json                           # parity A/B, R1-R4, Δ/κ honest status
 ```
 
-## 12. References
+## 14. References
 
 1. Choptuik, *Critical Behavior in Gravitational Collapse*, PRL **70**, 9 (1993);
-   Phys. Rev. D **54**, 6040 (1996) — critical exponent, echoing, AMR method.
+   Phys. Rev. D **54**, 6040 (1996) — critical exponent, echoing, AMR method;
+   the central-regularity treatment that §10/§13 point toward.
 2. Gundlach, *Understanding critical collapse of a scalar field*, Phys. Rev. D
    **55**, 695 (1997) — `Δ = 0.7372841`, `κ = 0.18482`, `[γ = 0.37374]`.
 3. Roberts, Gen. Rel. Grav. **21**, 907 (1989); Oshiro et al. 1994; **Burko**,
    gr-qc/9608061 — corrected Roberts–Oshiro solution in double-null coordinates
    (the form validated here).
 4. Garfinkle & Duncan — critical collapse with regridding; the center-treatment
-   issues of §8 are the known hard part of characteristic regridding.
+   issues of §8/§10 are the known hard part of characteristic regridding.
 5. The monograph repository `choptuik_ac_bc` — the `b_Ch = 1 − cos(2π/7)`
-   hypothesis under test.
+   hypothesis under test, and the spinor framework with the π/15, π/30
+   exponents (§11).
+

@@ -36,6 +36,9 @@ else
   python3 choptuik_scaling.py --n-bisect 1200
 fi
 python3 zoom_campaign.py
+python3 zoom_campaign_v3.py
+python3 spinor_analysis.py
+python3 spinor_figures.py
 
 step "3/3 Results"
 ls -la results/

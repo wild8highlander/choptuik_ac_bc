@@ -80,6 +80,7 @@ class ZoomRunner:
         self.u_frac = u_frac            # фича на u_frac от левого края окна
         self.max_2m_over_r = max_2m_over_r
         self.verbose = verbose
+        self.dbg = None                 # опциональный колбэк диагностики строк
         self.diag = ZoomDiag()
         self._z_acc = 0.0
         # трекинг DSS
@@ -91,7 +92,7 @@ class ZoomRunner:
         self._new_stage(u_span=(U0, U1), v_span=(V0, V1))
 
     # ------------------------------------------------------------------
-    def _new_stage(self, u_span, v_span, row=None, edge=None):
+    def _new_stage(self, u_span, v_span, row=None, edge=None, du_parent=None):
         cfg = SolverConfig(n_u=self.n, n_v=self.n, u_range=u_span, v_range=v_span,
                            monitor_every=10 ** 9, max_2m_over_r=self.max_2m_over_r)
         if row is None:
@@ -102,24 +103,31 @@ class ZoomRunner:
             self.sol = DoubleNullSolver.from_fields(
                 cfg, np.linspace(*u_span, self.n), np.linspace(*v_span, self.n),
                 row, edge["r"], edge["Phi"], edge["t"])
+            # --- v3: регулярное замыкание центра на зум-стадиях ------------
+            # Связка наклонов s1-t1 = -2a (вместо клэмпа a=0), отброс
+            # паразитной 1/r-моды фитом O = a r + C/r, масса m ~ r^3 в зоне.
+            # R_heal = 5 du_parent — унаследованная клэмп-зона родителя:
+            # зона реконструкции R_zone = max(8 du_new, 1.2 R_heal) покрывает
+            # интерполяционный мусор рестарт-строки.
+            self.sol.center_closure = "regular"
+            self.sol.reg_m_rebuild = True
+            self.sol.reg_pq_project = True
+            if du_parent is not None:
+                self.sol.R_heal = 5.0 * du_parent
         self.u = self.sol.u
         self.v = self.sol.v
         self.du = self.sol.du
         self.dv = self.sol.dv
         self.stage_v = (self.v[0], self.v[-1])   # телескопический v-бюджет
         self.st = {k: getattr(self.sol, k).copy() for k in FIELDS}
-        if row is not None:
-            # ВНИМАНИЕ (эксперимент v2): глубокое лечение рестарт-строки
-            # (константа y0 в зоне [0, 5 du_parent]) СТАБИЛИЗИРУЕТ C1 на
-            # рестарте, но ослабляет центральное сжатие — сверхкритические
-            # забеги взрываются раньше (музорный 2m/r до горизонта).
-            # Отключено: цепочка без него устойчивее (3 зума, z~5).
-            # sol.R_heal остаётся 0; центральное ОДУ — план v3 (README).
-            pass
-        # лечение центра на стадиях зум-машины отключено целиком
-        # (экспериментально: с ним цепочка короче — см. results/zoom_campaign.json)
-        self.sol.heal_enabled = False
-        self._du_parent = self.du
+        # v2-лечение центра на зум-стадиях отключено: при closure="regular"
+        # диспатчер в _do_step и так уходит в v3; строка ниже держит clamp-ветку
+        # базовой стадии в v2-поведении (heal только на базовой стадии)
+        if row is None:
+            self.sol.heal_enabled = True
+        else:
+            self.sol.heal_enabled = False
+        self._du_parent = du_parent if du_parent is not None else self.du
         self.j = 0
         self.wh = []                    # история ширины (клетки) ТЕКУЩЕЙ стадии
         self.buffer_v = [self.v[0]]
@@ -183,6 +191,8 @@ class ZoomRunner:
                     self.buffer.pop(0)
 
                 mx, Q, width, u_focus = self._row_diag(st_new)
+                if self.dbg is not None:
+                    self.dbg(self, st_new, v_now, mx, Q)
                 tr = self.track
                 tr["v"].append(v_now); tr["mx"].append(mx); tr["Q"].append(Q)
                 tr["L"].append(self.L_grad * self.du)
@@ -365,7 +375,8 @@ class ZoomRunner:
 
         lam = du_old / du_new
         self._new_stage((u_lo, u_hi), (v_lo, v_hi), row=row,
-                        edge={"r": edge["r"], "Phi": edge["Phi"], "t": edge["t"]})
+                        edge={"r": edge["r"], "Phi": edge["Phi"], "t": edge["t"]},
+                        du_parent=du_old)
         self._z_acc += float(np.log(lam))
         self.diag.zooms += 1
         # контроль связей сразу после рестарта (качество интерполяции)
@@ -415,7 +426,9 @@ def echo_peaks(track, key="Q", min_rel_prom=0.02):
         lo = max(0, i - 40)
         hi = min(len(ys), i + 40)
         prom = ys[i] - min(ys[lo:i].min(initial=ys[i]), ys[i + 1:hi].min(initial=ys[i]))
-        if prom > min_rel_prom * max(abs(ys).max(), 1e-12) or prom > 0:
+        # (фикс v4): убран безусловный "or prom > 0" — он пропускал шумовые
+        # максимумы, что давало фальшивые поезда пиков и фальшивую Delta ~ 0.01
+        if prom > min_rel_prom * max(abs(ys).max(), 1e-12):
             sig.append(i)
     if not sig:
         return np.array([]), np.array([])

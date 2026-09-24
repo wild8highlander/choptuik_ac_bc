@@ -1,0 +1,122 @@
+{
+  "config": {
+    "n": 800,
+    "max_zooms": 4,
+    "family": "gaussian",
+    "v_p": 0.5,
+    "sigma": 0.1,
+    "center_closure": "regular (v3.2: s1-t1 link, m~r^3, pq/cd parity projection, taper)"
+  },
+  "a_star_source": "fixed-grid N=1600 bisection (validated, session 1)",
+  "a_star": 0.0805333,
+  "gamma_lit": 0.374,
+  "delta_lit": 0.737637,
+  "b_Ch": 0.3765101981412664,
+  "delta_spinor": 0.7330382858376184,
+  "status": "v3.2 PROTOCOL: center junk suppressed (mass junk 3.56 -> 6.6e-5), depth wall persists (z ~ 3.6-5.9); gamma/delta at percent level NOT achieved; spinor diagnostics recorded (see README sec. 13-14)",
+  "runs": [
+    {
+      "eps": 3e-05,
+      "A": 0.0805633,
+      "stop": "singularity",
+      "M_AH_frozen": 0.0,
+      "M_AH_max_seen": 0.0,
+      "zooms": 3,
+      "z_reached": 3.6389888503541847,
+      "mx_max": 3.270040868190756,
+      "v_last": 0.3668789836790116,
+      "runtime_s": 48.3,
+      "junk_diag_at_stop": {
+        "R_zone_over_du": 13.815561959650449,
+        "max_abs_t_zone": 5213.178681102201,
+        "max_abs_t_ring": 163.96544066958216,
+        "E_max_zone": 2684.7773400026094,
+        "O_max_zone": 0.7435256459011244
+      },
+      "Q_peaks_n": 1,
+      "Q_peaks_v": [
+        0.36373
+      ]
+    },
+    {
+      "eps": 0.0001,
+      "A": 0.0806333,
+      "stop": "singularity",
+      "M_AH_frozen": 0.0,
+      "M_AH_max_seen": 1.3278335681515896e-09,
+      "zooms": 4,
+      "z_reached": 5.854847789547577,
+      "mx_max": 574.8511096707235,
+      "v_last": 0.3637418900766092,
+      "runtime_s": 51.7,
+      "junk_diag_at_stop": {
+        "R_zone_over_du": 53.2666666665605,
+        "max_abs_t_zone": 1609295860779698.0,
+        "max_abs_t_ring": 136.7145505287577,
+        "E_max_zone": 1578990006394497.8,
+        "O_max_zone": 29522381033.4375
+      },
+      "Q_peaks_n": 0,
+      "Q_peaks_v": []
+    },
+    {
+      "eps": 0.001,
+      "A": 0.0815333,
+      "stop": "singularity",
+      "M_AH_frozen": 0.0,
+      "M_AH_max_seen": 0.0,
+      "zooms": 3,
+      "z_reached": 3.6904843998871937,
+      "mx_max": 2.198231693357678,
+      "v_last": 0.3683532596867268,
+      "runtime_s": 47.4,
+      "junk_diag_at_stop": {
+        "R_zone_over_du": 14.141592920358782,
+        "max_abs_t_zone": 487.888113158113,
+        "max_abs_t_ring": 464.8639627808856,
+        "E_max_zone": 428.05776051063435,
+        "O_max_zone": 133.71159108075793
+      },
+      "Q_peaks_n": 0,
+      "Q_peaks_v": []
+    },
+    {
+      "eps": 0.01,
+      "A": 0.0905333,
+      "stop": "singularity",
+      "M_AH_frozen": 0.0,
+      "M_AH_max_seen": 5.423218909642704e+43,
+      "zooms": 4,
+      "z_reached": 6.051904163173209,
+      "mx_max": Infinity,
+      "v_last": 0.37368908374577886,
+      "runtime_s": 49.0,
+      "junk_diag_at_stop": {
+        "R_zone_over_du": 42.80357142851409,
+        "max_abs_t_zone": 2.682041128741066e+78,
+        "max_abs_t_ring": 5.1401249785239285e+76,
+        "E_max_zone": 1.0713696437610396e+79,
+        "O_max_zone": 1.8489923635367054e+71
+      },
+      "Q_peaks_n": 0,
+      "Q_peaks_v": []
+    }
+  ],
+  "summary": {
+    "z_max_reached": 6.051904163173209,
+    "runs_with_frozen_AH": 0,
+    "gamma_measured": null,
+    "delta_measured": null,
+    "percent_level_achieved": false,
+    "v3_achievements": [
+      "массовый мусор у центра подавлен (max M_AH junk 3.56 -> 6.6e-5)",
+      "кольцо [R_zone, 4R_zone] стабильно до самого стопа",
+      "механизм стены уточнён: чётная мода E у центра + 1/r-связка через чётную добавку (p+q); сырое марширование вне зоны несёт O(1)-нарушение спинорных парностей (см. spinor_analysis.json)",
+      "глубина: z до 5.85 (4 зума, eps=1e-4)"
+    ],
+    "v5_roadmap": [
+      "центральный Тейлор-патч (Чоптюк 1993): эволюция коэффициентов регулярного разложения (t0, a, ...) как внутреннего ГУ",
+      "спинорная модуляция pi/15, pi/30 требует z >= 30 (>= 40 эхо)"
+    ]
+  }
+}

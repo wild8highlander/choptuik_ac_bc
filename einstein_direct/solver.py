@@ -171,6 +171,21 @@ class DoubleNullSolver:
         # внутреннее граничное условие t(i0) = s(i0); краевые данные не нужны
         self.march_from_center = False
         self.heal_enabled = True   # рутина лечения центра (отключается зум-машиной)
+        # --- v3: регулярное замыкание центра ------------------------------
+        # Регулярное разложение у центра (u=v, r~0):
+        #   Phi = Phi0(y) + a(y) x^2 + ...,  x = (v-u)/2 ~ r,
+        #   t = Phi_v = t0 + a x + O(x^3),  s = Phi_u = t0 - a x + O(x^3),
+        #   т.е. чётная часть E = (t+s)/2 = t0 + O(x^2), нечётная O = (t-s)/2 = a x:
+        #   СВЯЗКА НАКЛОНОВ s1 - t1 = -2a (клэмп t=s насильно ставит a=0 и
+        #   при быстром сжатии взрывается: s_v = -(pt+qs)/r ~ 2 c' s / r).
+        #   Паразитная однородная мода марша t: t_hom ~ C/r (1/r к центру) —
+        #   отделяется от регулярной a*r двухпараметрическим фитом
+        #   O(r) = a r + C/r на кольце и ОТБРАСЫВАЕТСЯ.
+        self.center_closure = "clamp"   # "clamp" (v2) | "regular" (v3)
+        self.reg_zone_du = 8.0          # радиус зоны реконструкции, клеток du
+        self.reg_annulus = 4.0          # кольцо фита: [R_zone, reg_annulus*R_zone]
+        self.reg_m_rebuild = False      # перестройка m ~ r^3 в зоне (зум-стадии)
+        self.reg_pq_project = False     # проекция чётных частей (p+q), (c+d)
         # сеточный пол для r в знаменателях (защита от деления на r~0:
         # эволюционный m в центральной клетке не согласован с r ~ 1e-14,
         # что давало всплески w = a2 m / (2 r_safe^3) ~ 1e20 и взрыв d)
@@ -321,6 +336,116 @@ class DoubleNullSolver:
         obj._edge_t_arr = np.asarray(edge_t, dtype=float)
         return obj
 
+    def _center_regular(self, t_arr, s_arr, m_arr, r_arr,
+                        p_arr=None, q_arr=None, c_arr=None, d_arr=None):
+        """v3.1: регулярная реконструкция центральной зоны (каждая строка).
+
+        Зона |r| <= R_zone, R_zone = max(reg_zone_du*du, 1.2*R_heal).
+        Шаги:
+          1. Чётная часть E(r_k) = 0.25[(t+s)(-r_k) + (t+s)(+r_k)] — парное
+             усреднение ПОЛОВИННЫХ сумм (убивает нечётный мусор марша,
+             включая 1/r-моду, и сохраняет вариацию E(r) ~ t0 + E2 r^2).
+          2. Нечётная часть: фит O(r) = (t-s)/2 = a r + C/r по физической
+             стороне (r > 0) на кольце [R_zone, reg_annulus*R_zone];
+             регулярная часть a*r оставляется, паразитная C/r отбрасывается.
+             (Гарантирует связку наклонов s1-t1 = -2a вместо a=0.)
+          3. Пересборка зоны С ГЛАДКИМ ТЕЙПЕРОМ w(k) = (1-(k/K)^2)^2:
+             y <- y + w * (y_reg - y) — нулевая производная на краю зоны,
+             НЕТ разрыва y/y_reg (иначе край зоны сам становится источником
+             мусора — так v3.0 дала цепочку КОРОЧЕ v2).
+          4. Масса: m3 согласована С КРАЕМ зоны (m3 = <m/r^3> на k=K+1..K+3,
+             вне родительской мусорной зоны) — непрерывность m на краю;
+             кубический закон убивает постоянную добавку dm (именно она даёт
+             2m/r ~ 2dm/r -> взрыв у центра).
+        """
+        R_zone = max(self.reg_zone_du * self.du,
+                     1.2 * float(getattr(self, "R_heal", 0.0)))
+        r_abs = np.abs(r_arr)
+        i0 = int(np.argmin(r_abs))
+        if r_abs[i0] > 3.0 * self.du:
+            return  # центр вне окна
+        n = len(r_arr)
+        K = int(round(R_zone / self.du))
+        K = min(K, i0 - 3, n - 4 - i0)   # кольцо m3: k = K+1..K+3 должно существовать
+        if K < 1:
+            return
+        # --- (2) фит нечётной части на кольце (физическая сторона r>0) ---
+        lo, hi = R_zone, self.reg_annulus * R_zone
+        idx = np.where((r_arr > lo) & (r_arr <= hi) & (np.arange(n) <= i0))[0]
+        a = 0.0
+        if idx.size >= 4:
+            rr = r_arr[idx]
+            O = 0.5 * (t_arr[idx] - s_arr[idx])
+            ok = np.isfinite(rr) & np.isfinite(O) & (rr > 0)
+            if int(ok.sum()) >= 4:
+                rr, O = rr[ok], O[ok]
+                Amat = np.stack([rr, 1.0 / rr], axis=1)
+                coef, *_ = np.linalg.lstsq(Amat, O, rcond=None)
+                if np.isfinite(coef[0]) and np.isfinite(coef[1]):
+                    a, C = float(coef[0]), float(coef[1])
+                    # --- guards (v3.2): фит не должен впрыскивать мусор -----
+                    resid = O - (a * rr + C / rr)
+                    rel_res = float(np.max(np.abs(resid)) /
+                                    max(float(np.max(np.abs(O))), 1e-30))
+                    # (i) большие остатки -> кольцо не описывается a r + C/r
+                    if rel_res > 0.30:
+                        a = 0.0
+                    # (ii) 1/r-мода доминирует на краю зоны -> a ненадёжен
+                    elif abs(C) > abs(a) * R_zone**2:
+                        a = 0.0
+        # --- (1)+(3) пересборка зоны с тейпером (векторно, k = 0..K) ------
+        ks = np.arange(0, K + 1)
+        ip = i0 - ks          # физическая сторона (r > 0)
+        im = i0 + ks          # зеркало (r < 0)
+        Gp = t_arr[ip] + s_arr[ip]
+        Gm = t_arr[im] + s_arr[im]
+        fin_p, fin_m = np.isfinite(Gp), np.isfinite(Gm)
+        E = np.where(fin_p & fin_m, 0.25 * (Gp + Gm),
+                     np.where(fin_p, 0.5 * Gp,
+                              np.where(fin_m, 0.5 * Gm, 0.0)))
+        rp, rm = r_arr[ip], r_arr[im]
+        tp_reg = E + a * rp
+        sp_reg = E - a * rp
+        tm_reg = E + a * rm
+        sm_reg = E - a * rm
+        w = (1.0 - (ks / float(K)) ** 2) ** 2   # тейпер: 1 в центре, 0 на краю
+        t_arr[ip] += w * (tp_reg - t_arr[ip])
+        s_arr[ip] += w * (sp_reg - s_arr[ip])
+        t_arr[im] += w * (tm_reg - t_arr[im])
+        s_arr[im] += w * (sm_reg - s_arr[im])
+        # --- (4) масса: кубический закон, m3 согласован с краем зоны ------
+        if self.reg_m_rebuild:
+            km = np.arange(K + 1, K + 4)
+            ipm, imm = i0 - km, i0 + km
+            cand = np.concatenate([m_arr[ipm] / r_arr[ipm] ** 3,
+                                   m_arr[imm] / r_arr[imm] ** 3])
+            cand = cand[np.isfinite(cand)]
+            if cand.size >= 2:
+                m3 = float(np.median(cand))
+                m_arr[ip] += w * (m3 * rp ** 3 - m_arr[ip])
+                m_arr[im] += w * (m3 * rm ** 3 - m_arr[im])
+        # --- (5) проекции чётных частей p+q и c+d (регулярность) ----------
+        # Зеркальный анализ (u,v)->(v,u): r -> -r, p <-> -q, s <-> t, c <-> d:
+        #   p+q НЕЧЁТЕН (регулярно O(x^3), (p+q)(0)=0), чётная добавка δ —
+        #   паразит: даёт источник s_v ⊃ E·δ/r (1/r-связка, взрыв E в зоне);
+        #   c+d ЧЁТЕН с (c+d)(0) = c(0)+d(0) = 0: убираем только центр. значение.
+        if self.reg_pq_project:
+            Sp = p_arr[ip] + q_arr[ip]
+            Sm = p_arr[im] + q_arr[im]
+            e_pq = 0.5 * (Sp + Sm)          # чётная часть (вся — паразитная)
+            p_arr[ip] -= w * 0.5 * e_pq
+            q_arr[ip] -= w * 0.5 * e_pq
+            p_arr[im] -= w * 0.5 * e_pq
+            q_arr[im] -= w * 0.5 * e_pq
+            Sc = c_arr[ip] + d_arr[ip]
+            Smc = c_arr[im] + d_arr[im]
+            e_cd = 0.5 * (Sc + Smc)         # чётная часть c+d
+            e0 = float(e_cd[0])             # (c+d)(0) — обязано быть 0
+            c_arr[ip] -= w * 0.5 * e0
+            d_arr[ip] -= w * 0.5 * e0
+            c_arr[im] -= w * 0.5 * e0
+            d_arr[im] -= w * 0.5 * e0
+
     def _center_heal(self, t_arr, s_arr, m_arr, r_arr, deep=False):
         """Регулярная реконструкция центральной зоны.
 
@@ -354,7 +479,10 @@ class DoubleNullSolver:
                 return
             A_plus = (t_arr[i0 - K:i0 + 1] + s_arr[i0 - K:i0 + 1])[::-1]  # k=0..K
             A_minus = t_arr[i0:i0 + K + 1] + s_arr[i0:i0 + K + 1]       # k=0..K
-            y = 0.5 * (A_plus + A_minus)
+            # ВНИМАНИЕ (фикс v3): усредняются ПОЛОВИННЫЕ суммы E=(t+s)/2:
+            # y = 0.25[(t+s)(-r) + (t+s)(+r)] = E(r); прежние 0.5 давали y = 2E
+            # (двойная чётная часть в зоне при E != 0).
+            y = 0.25 * (A_plus + A_minus)
             t_arr[i0 - K:i0 + 1] = y[::-1]
             s_arr[i0 - K:i0 + 1] = y[::-1]
             t_arr[i0:i0 + K + 1] = y
@@ -482,8 +610,13 @@ class DoubleNullSolver:
                     SC_im1 = -(st_new["p"][i - 1] * t_new[i - 1]
                                + st_new["q"][i - 1] * st_new["s"][i - 1]) / r_safe[i - 1]
                     t_new[i] = t_new[i - 1] + self.du * SC_im1
-                # чётная реконструкция центра (чистит расстройку маршей)
-                if self.heal_enabled:
+                # реконструкция центра: v3 регулярное замыкание (связка
+                # наклонов s1-t1) или v2 чётное усреднение (клэмп t=s)
+                if getattr(self, "center_closure", "clamp") == "regular":
+                    self._center_regular(t_new, st_new["s"], st_new["m"], r_new,
+                                         p_arr=st_new["p"], q_arr=st_new["q"],
+                                         c_arr=st_new["c"], d_arr=st_new["d"])
+                elif self.heal_enabled:
                     self._center_heal(t_new, st_new["s"], st_new["m"], r_new)
             st_new["t"] = t_new
             st_new["Phi"] = st["Phi"] + 0.5 * dv * (st["t"] + t_new)
