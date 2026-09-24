@@ -1,0 +1,185 @@
+{
+  "config": {
+    "n": 800,
+    "max_zooms": 3,
+    "family": "gaussian",
+    "v_p": 0.5,
+    "sigma": 0.1
+  },
+  "a_star_source": "fixed-grid N=1600 bisection (validated, session 1)",
+  "a_star": 0.0805333,
+  "gamma_lit": 0.374,
+  "delta_lit": 0.737,
+  "b_Ch": 0.3765101981412664,
+  "status": "PROTOTYPE: zoom chain reaches z~2-5; gamma/delta at percent level NOT achieved; wall diagnosed (see zoom_wall_diagnosis)",
+  "runs": [
+    {
+      "eps": 3e-05,
+      "A": 0.0805633,
+      "verdict": "ambiguous",
+      "stop": "singularity",
+      "M_AH_frozen": 0.0,
+      "M_AH_max_seen": 0.0,
+      "zooms": 3,
+      "z_reached": 5.162526713949996,
+      "mx_max": 0.08157749632774475,
+      "v_last": 0.3695652761306017,
+      "runtime_s": 29.1,
+      "Q_peaks_n": 5,
+      "Q_peaks_v": [
+        0.41495,
+        0.36552,
+        0.36402,
+        0.37416,
+        0.36945
+      ]
+    },
+    {
+      "eps": 0.0001,
+      "A": 0.0806333,
+      "verdict": "ambiguous",
+      "stop": "singularity",
+      "M_AH_frozen": 0.0,
+      "M_AH_max_seen": 0.0,
+      "zooms": 3,
+      "z_reached": 5.162526713949996,
+      "mx_max": 0.08172572098792322,
+      "v_last": 0.3695652761306017,
+      "runtime_s": 28.9,
+      "Q_peaks_n": 6,
+      "Q_peaks_v": [
+        0.41497,
+        0.36552,
+        0.36402,
+        0.37416,
+        0.37052,
+        0.36897
+      ]
+    },
+    {
+      "eps": 0.0003,
+      "A": 0.0808333,
+      "verdict": "ambiguous",
+      "stop": "singularity",
+      "M_AH_frozen": 0.0,
+      "M_AH_max_seen": 0.0,
+      "zooms": 3,
+      "z_reached": 5.162526713949996,
+      "mx_max": 3328468397.692481,
+      "v_last": 0.3695357769579377,
+      "runtime_s": 29.1,
+      "Q_peaks_n": 6,
+      "Q_peaks_v": [
+        0.41501,
+        0.36551,
+        0.36401,
+        0.37416,
+        0.36905,
+        0.36955
+      ]
+    },
+    {
+      "eps": 0.001,
+      "A": 0.0815333,
+      "verdict": "contaminated (junk 2m/r explosion before/without clean AH)",
+      "stop": "singularity",
+      "M_AH_frozen": 0.0,
+      "M_AH_max_seen": 1483561.3906615188,
+      "zooms": 3,
+      "z_reached": 5.196143324748929,
+      "mx_max": 160634091176.0534,
+      "v_last": 0.3708247296278919,
+      "runtime_s": 29.2,
+      "Q_peaks_n": 7,
+      "Q_peaks_v": [
+        0.41512,
+        0.36638,
+        0.36404,
+        0.37421,
+        0.36976,
+        0.36958,
+        0.37149
+      ]
+    },
+    {
+      "eps": 0.003,
+      "A": 0.0835333,
+      "verdict": "ambiguous",
+      "stop": "singularity",
+      "M_AH_frozen": 0.0,
+      "M_AH_max_seen": 0.0,
+      "zooms": 3,
+      "z_reached": 5.26239271029015,
+      "mx_max": 1.4622086208642865e+18,
+      "v_last": 0.3708192340864278,
+      "runtime_s": 30.4,
+      "Q_peaks_n": 6,
+      "Q_peaks_v": [
+        0.41519,
+        0.36642,
+        0.36283,
+        0.37416,
+        0.36937,
+        0.37081
+      ]
+    },
+    {
+      "eps": 0.01,
+      "A": 0.0905333,
+      "verdict": "ambiguous",
+      "stop": "singularity",
+      "M_AH_frozen": 0.0,
+      "M_AH_max_seen": 0.0,
+      "zooms": 2,
+      "z_reached": 3.3587425745646557,
+      "mx_max": 0.10429955581501855,
+      "v_last": 0.3789593580938283,
+      "runtime_s": 22.2,
+      "Q_peaks_n": 5,
+      "Q_peaks_v": [
+        0.41583,
+        0.3764,
+        0.37452,
+        0.37868,
+        0.37794
+      ]
+    },
+    {
+      "eps": 0.03,
+      "A": 0.1105333,
+      "verdict": "ambiguous",
+      "stop": "singularity",
+      "M_AH_frozen": 0.0,
+      "M_AH_max_seen": 0.0,
+      "zooms": 2,
+      "z_reached": 2.713968978288926,
+      "mx_max": 0.16094195969010094,
+      "v_last": 0.3881980369999005,
+      "runtime_s": 35.0,
+      "Q_peaks_n": 4,
+      "Q_peaks_v": [
+        0.41653,
+        0.47935,
+        0.37911,
+        0.38438
+      ]
+    }
+  ],
+  "summary": {
+    "z_max_reached": 5.26239271029015,
+    "clean_supercritical_runs": 0,
+    "clean_subcritical_runs": 0,
+    "contaminated_runs": 7,
+    "gamma_measured": null,
+    "delta_measured": null,
+    "percent_level_achieved": false
+  },
+  "zoom_wall_diagnosis": {
+    "symptom": "после рестарта на зуме #1-2 для сверхкритических A поля t,s взрываются у центра (2m/r ~ 60-5e10) до настоящего горизонта; бисекция зум-забегами смещается",
+    "root_cause_1": "клэмп t=s в зоне |r|<=5du навязывает неполное регулярное условие: точная регулярность требует pt+qs = O(r) и нетривиальной связки наклонов (s1-t1); при t=s возникает член s_v = (p+q)s/r ~ 2c's, взрывающийся при быстром сжатии (c' ~ 1/ell)",
+    "root_cause_2": "паразитная однородная мода ODE t_u = -(pt+qs)/r растёт как 1/r к центру; фильтрация неудовлетвори -тельна, т.к. физическая сходящаяся волна тоже усиливается ~ 1/r и не отделяется локально",
+    "root_cause_3": "интерполяционный рестарт переносит границу клэмп-зоны родителя (5 du_parent = 5 lambda du_new клеток) в область, которую лTreatment не покрывает",
+    "fix_roadmap": "центральное ОДУ (подход Чоптюка 1993): интегрировать регулярное разложение у центра (Phi0, s0=t0, вторые производные) как внутреннее ГУ и маршировать t наружу; тогда рестарты чисты и цепочка z>=10 (5-7 зумов) даёт gamma на уровне процента и delta",
+    "z_needed_for_percent_gamma": "z ~ 10-12 (eps_rel до 1e-5, 6-8 эхо)"
+  }
+}
