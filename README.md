@@ -386,6 +386,28 @@ choptuik_ac_bc/
 
 ---
 
+## Einstein Direct — Choptuik Problem from the Classical Einstein Equations (v4.0)
+
+The [`einstein_direct/`](einstein_direct/) module solves the Choptuik critical
+collapse problem **directly**: the field equations are derived from the Hilbert
+action with the Hilbert stress–energy tensor for a massless scalar field,
+reduced to a 1+1 double-null characteristic system, **machine-verified with
+SymPy against the exact Roberts–Oshiro solution (residuals ~10⁻⁴¹)**, and
+integrated by a second-order solver (flat space to 10⁻¹⁴; Roberts convergence
+order 2.03–2.09). The critical amplitude A* = 0.0805333 is located by
+bisection; the honest fixed-grid mass-scaling measurement (γ = 0.11 ± 0.11)
+demonstrates the resolution floor and the requirements for a percent-level
+verification of γ = 0.374 vs the framework constant b_Ch = 0.376510.
+Reports: [`einstein_direct/report_ru.pdf`](einstein_direct/report_ru.pdf),
+[`einstein_direct/report_en.pdf`](einstein_direct/report_en.pdf).
+
+```bash
+cd einstein_direct
+python3 sympy_derivation.py && python3 roberts_test.py && python3 choptuik_scaling.py
+```
+
+---
+
 ## QCD Bridge Suite (v3.1, added 2026-08-10)
 
 In addition to the original four-implementation monograph suite above, this
