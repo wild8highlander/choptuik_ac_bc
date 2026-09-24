@@ -146,3 +146,29 @@ Stage Summary:
 - Математика леммы Ш.3(i)-(ii) теперь полностью доказана аналитически (острый пол 5n/7, равенство охарактеризовано); единственная аналитическая программа — мост (iii).
 - PDF монографий заменили битые/устаревшие; ERRATA воспроизводится из исправленных docx одной командой пересборки.
 - Верификация автозапускается в CI; LICENSE не тронута; оригиналы — в _originals_backup/.
+
+---
+Task ID: 4
+Agent: main (Super Z session)
+Task: Direct solution of the Choptuik problem from the classical Einstein equations using Hilbert's formula for matter (einstein_direct module)
+
+Work Log:
+- Cloned and analyzed the repo; found that the framework's "Choptyuk problem" (γ ≈ 0.374 vs b_Ch = 1−cos(2π/7) = 0.3765) had no actual numerical relativity solution — only synthetic illustrations.
+- Clarified scope with the user: code + PDF report, analytic + SymPy derivation, full DSS attempt, all validations, honest b_Ch comparison, RU+EN.
+- Verified the literature basis: Burko gr-qc/9608061 (corrected Roberts–Oshiro solution in double-null coordinates; the original Roberts form contains a coordinate-transform error; Burko's α=1 system E1–E4 reproduced).
+- Wrote sympy_derivation.py: full symbolic derivation from the Hilbert action + Hilbert stress-energy tensor T_μν = ∂_μφ∂_νφ − ½g_μν(∇φ)², reduction to the 1+1 double-null system (SC/UV/C1/C2/TH with ω = ln α and the Misner–Sharp mass m). Machine checks: Hilbert identity ∇_μT^μ_ν = Φ_μ·□φ; R_φφ = sin²θ R_θθ; the Roberts–Oshiro solution satisfies ALL five equations with max residual 4·10⁻⁴¹ (mpmath 50 digits). NOTE: the constraint coefficient on ω_u r_u is 2 (r_uu = 2ω_u r_u − (κ/2)rΦ_u²) — hand derivations in the literature commentary often drop this factor.
+- Fixed two bugs in the verification chain (Φ_uv computed via mpmath.diff order; edge r_vv evaluated at u=0 instead of u0).
+- Wrote solver.py: double-null characteristic Goursat march (RK2-Heun with iterated corrector), implicit linear-ODE solve for t = Φ_v along u (vectorized log-cumsum recurrence), exact center regularity t = s, p = −q at r = 0, explicit march in the mirror region, Misner–Sharp mass evolved by the regularizing identities m_u,v = −κr²Φ²r/(α²) (no catastrophic cancellation), constraint monitors C1/C2/m-definition, resolved apparent-horizon detection (q = r_v = 0 crossing, r > 8du), AH-mass saturation stop, NaN-masking march (the characteristic structure protects the exterior from the interior singularity).
+- Debug iterations (documented for reproducibility): (1) t updated only by BDF2 history → degenerate frozen field; fixed by the SC-equation ODE march; (2) explicit-t evaluation in SC_new → O(dv²) local error, 1st-order global; fixed by the implicit trapezoid solve; (3) center stiffness of the t-ODE (homogeneous solution ~1/r) → center zone uses the exact regularity t = s; (4) AH detection artifacts at the center crossing → resolved-horizon threshold r > 8du.
+- Validation results: flat space preserved to 8.8·10⁻¹⁵; Roberts–Oshiro evolution gives 2nd-order convergence p = 2.03–2.09 (r), 1.99 (Φ); C1 constraint violation decreases quadratically; 5 pytest regression tests pass.
+- choptuik_scaling.py: bisection of the critical amplitude A* = 0.0805333 (Gaussian-pulse family, σ = 0.1, singularity criterion, grid 1600²); mass-scaling series measured by the saturated AH mass with sanity guards.
+- Honest negative result: the fixed-grid mass scaling floors at M ≈ 4du (horizon-nucleation threshold + critical slowing down of the near-critical echoes below the grid scale); the measured exponent γ_num = 0.11 ± 0.11 vs the universal 0.374. Analysis shows a percent-level verification of γ (and the 0.67% b_Ch vs γ gap) requires Choptuik-grade regridding over 3–4 decades in A − A*.
+- zoom_solver.py: multi-stage regridding prototype (buffer of rows, window recentering on the sharpest |s| feature, cubic interpolation, zoom-level z = Σ ln λ; triggers on the gradient scale L = max|Φ|/max|s| < 50du). One to three zooms chain; a stable multi-zoom campaign to the DSS regime requires further stabilization (documented as the experimental path; the DSS echoing period Δ was NOT measured this session).
+- figures.py: RU/EN figures (validation, scaling with the floor, sub/supercritical evolution snapshots), 300 dpi.
+- Reports: report_ru.tex/pdf (7 pp, Tectonic, repo LaTeX style), report_en.tex/pdf; both copied to /home/z/my-project/download/.
+- README.md of the repo updated with the einstein_direct section; module README written; 5 pytest tests added (all pass).
+
+Stage Summary:
+- New module choptuik_ac_bc/einstein_direct/: machine-verified Hilbert→1+1 derivation, validated 2nd-order characteristic solver, critical-point bisection (A* = 0.0805333), honest resolution-floor analysis for the γ vs b_Ch comparison, regridding prototype, RU+EN PDF reports, RU/EN figures, pytest suite.
+- Key deliverables: sympy_derivation.py + results/derivation_results.json (residuals 10⁻⁴¹), solver.py + tests, report_ru.pdf / report_en.pdf.
+- Open items: stable multi-zoom campaign for γ at percent level and the DSS period Δ ≈ 0.737; direct numerical test of b_Ch = γ remains open pending production regridding.

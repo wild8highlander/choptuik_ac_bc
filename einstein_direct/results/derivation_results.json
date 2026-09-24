@@ -1,0 +1,32 @@
+{
+  "title": "Symbolic derivation: Hilbert action -> double-null Einstein-scalar system",
+  "metric": "ds^2 = -alpha(u,v)^2 du dv + r(u,v)^2 dOmega^2",
+  "action": "S = (1/2kappa) int sqrt(-g) R + S_m,  S_m = -1/2 int sqrt(-g) (grad Phi)^2",
+  "hilbert_tensor": "T_{mu nu} = Phi_mu Phi_nu - 1/2 g_{mu nu} (grad Phi)^2",
+  "gradPhi2": "-4*Derivative(Phi(u, v), u)*Derivative(Phi(u, v), v)/alpha(u, v)**2",
+  "T_uv": "0",
+  "T_uu": "Derivative(Phi(u, v), u)**2",
+  "T_vv": "Derivative(Phi(u, v), v)**2",
+  "boxPhi": "4*(-r(u, v)*Derivative(Phi(u, v), u, v) - Derivative(Phi(u, v), u)*Derivative(r(u, v), v) - Derivative(Phi(u, v), v)*Derivative(r(u, v), u))/(alpha(u, v)**2*r(u, v))",
+  "hilbert_identity": {
+    "0": "4*(-r(u, v)*Derivative(Phi(u, v), u, v) - Derivative(Phi(u, v), u)*Derivative(r(u, v), v) - Derivative(Phi(u, v), v)*Derivative(r(u, v), u))*Derivative(Phi(u, v), u)/(alpha(u, v)**2*r(u, v))",
+    "1": "4*(-r(u, v)*Derivative(Phi(u, v), u, v) - Derivative(Phi(u, v), u)*Derivative(r(u, v), v) - Derivative(Phi(u, v), v)*Derivative(r(u, v), u))*Derivative(Phi(u, v), v)/(alpha(u, v)**2*r(u, v))",
+    "2": "0",
+    "3": "0"
+  },
+  "system_solved": {
+    "C1_r_uu": "-kappa*r(u, v)*Derivative(Phi(u, v), u)**2/2 + 2*Derivative(omega(u, v), u)*Derivative(r(u, v), u)",
+    "C2_r_vv": "-kappa*r(u, v)*Derivative(Phi(u, v), v)**2/2 + 2*Derivative(omega(u, v), v)*Derivative(r(u, v), v)",
+    "UV_r_uv": "(-exp(2*omega(u, v))/4 - Derivative(r(u, v), u)*Derivative(r(u, v), v))/r(u, v)",
+    "TH_omega_uv": "-kappa*Derivative(Phi(u, v), u)*Derivative(Phi(u, v), v)/2 - Derivative(r(u, v), u, v)/r(u, v)",
+    "UV_closed_r_uv": "(-exp(2*omega(u, v))/4 - Derivative(r(u, v), u)*Derivative(r(u, v), v))/r(u, v)"
+  },
+  "checks": {
+    "R_phiphi_spherical": true,
+    "roberts_solution_ok": true,
+    "roberts_max_residual": "4.0635e-41",
+    "burko_E1_ok": true
+  },
+  "units": "kappa = 8 pi G; numerical code uses kappa = 2 (4 pi G = 1, Burko normalization)",
+  "runtime_seconds": 1.9
+}

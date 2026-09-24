@@ -1,0 +1,142 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[left=2.3cm, right=2.3cm, top=2.4cm, bottom=2.4cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{fontspec}
+\setmainfont{Liberation Serif}
+\setsansfont{Liberation Sans}
+\setmonofont{Liberation Mono}[Scale=0.86]
+\usepackage{booktabs}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\definecolor{linkblue}{HTML}{1e3a5f}
+\definecolor{rowlight}{HTML}{f0f5fa}
+\usepackage[colorlinks=true, linkcolor=linkblue, urlcolor=linkblue, unicode=true]{hyperref}
+\setlist{nosep}
+
+\title{\bfseries The Choptuik Problem from the Classical Einstein Equations:\\
+Direct Derivation from the Hilbert Action and Numerical Solution}
+\author{\texttt{einstein\_direct} module of the \texttt{choptuik\_ac\_bc} project}
+\date{September 24, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Choptuik problem (1993) --- critical gravitational collapse of a massless
+scalar field in spherical symmetry: near the black-hole threshold the mass
+scales as $M_{\mathrm{BH}}\propto(p-p_*)^{\gamma}$ with the universal exponent
+$\gamma\approx0.374$, and the critical solution is discretely self-similar
+(DSS) with echoing period $\Delta\approx0.737$. This work solves the problem
+``directly'': the field equations are derived from the Hilbert action
+$S=(2\kappa)^{-1}\!\int\!\sqrt{-g}\,R\,\mathrm{d}^4x+S_m$ with the matter
+stress--energy tensor in Hilbert form
+$T_{\mu\nu}=-(2/\sqrt{-g})\,\delta S_m/\delta g^{\mu\nu}$, reduced to a 1+1
+double-null characteristic system that is \emph{machine-verified} (SymPy)
+against the exact Roberts--Oshiro solution with residuals $\sim10^{-41}$, and
+integrated by a second-order solver (validation: flat space to $10^{-14}$;
+Roberts solution --- convergence order $p=2.0$--$2.1$). The critical amplitude
+$A_*=0.080533$ is located; the exponent measured on a fixed grid,
+$\gamma_{\text{num}}=0.11\pm0.11$, exhibits a resolution floor; our analysis
+shows that a percent-level verification of $\gamma$ (and a fortiori testing
+the hypothesis $b_{\mathrm{Ch}}=1-\cos(2\pi/7)=0.3765$ against
+$\gamma=0.374$) requires production-grade regridding at the Choptuik level.
+All code, derivations and data are included in the repository.
+\end{abstract}
+
+\section{The Hilbert derivation}
+Starting from the Hilbert action
+$S=(2\kappa)^{-1}\int\sqrt{-g}\,R\,\mathrm{d}^4x
+-\tfrac12\int\sqrt{-g}\,(\nabla\Phi)^2\,\mathrm{d}^4x$
+with $\kappa=8\pi G$, variation w.r.t.\
+$g^{\mu\nu}$ gives $G_{\mu\nu}=\kappa T_{\mu\nu}$ with the \emph{Hilbert
+stress--energy tensor}
+$T_{\mu\nu}=\partial_\mu\Phi\,\partial_\nu\Phi-\tfrac12 g_{\mu\nu}(\nabla\Phi)^2$,
+and variation w.r.t.\ $\Phi$ gives $\Box_g\Phi=0$. The Hilbert identity
+$\nabla_\mu T^\mu{}_\nu\equiv0\Leftrightarrow\Box_g\Phi=0$ is verified
+symbolically.
+
+For the spherically symmetric metric in double-null coordinates
+$\mathrm{d}s^2=-\alpha(u,v)^2\mathrm{d}u\,\mathrm{d}v+r(u,v)^2\mathrm{d}\Omega^2$
+with $\omega=\ln\alpha$, the projections form a closed system
+(all machine-verified):
+\begin{align*}
+\text{(SC)}\;\; & \Phi_{,uv}=-\frac{r_{,u}\Phi_{,v}+r_{,v}\Phi_{,u}}{r},\\
+\text{(UV)}\;\; & r_{,uv}=-\frac{r_{,u}r_{,v}+\alpha^2/4}{r}
+= -\frac{\alpha^2 m}{2r^2},\\
+\text{(C1,C2)}\;\; & r_{,uu}=2\omega_{,u}r_{,u}-\tfrac{\kappa}{2}r\Phi_{,u}^2,
+\qquad r_{,vv}=2\omega_{,v}r_{,v}-\tfrac{\kappa}{2}r\Phi_{,v}^2,\\
+\text{(TH)}\;\; & \omega_{,uv}=\frac{\alpha^2 m}{2r^3}
+-\tfrac{\kappa}{2}\Phi_{,u}\Phi_{,v},
+\end{align*}
+with the Misner--Sharp mass $1-2m/r=-4r_{,u}r_{,v}/\alpha^2$ and the
+regularizing identities
+$(r^2)_{,uv}=-\alpha^2/2$,
+$m_u=-\kappa r^2\Phi_u^2r_v/\alpha^2$,
+$m_v=-\kappa r^2\Phi_v^2r_u/\alpha^2$.
+
+\textbf{Machine verification.} SymPy builds the metric, all Christoffel
+symbols, the Ricci and Einstein tensors and the Hilbert tensor, projects the
+field equations and solves for the highest derivatives; the result coincides
+exactly with the system above. The exact Roberts--Oshiro solution (corrected
+form, Burko gr-qc/9608061)
+$r^2=\tfrac14[(1-4\sigma^2)v^2-2uv+u^2]$,
+$\Phi=\tfrac12\ln|(1-2\sigma-u/v)/(1+2\sigma-u/v)|$, $\alpha=1$
+is substituted: all five equations are satisfied with the maximum residual
+$4\cdot10^{-41}$ (mpmath, 50 digits).
+
+\section{Numerical method and validation}
+A Goursat-characteristic march in $v$ (Heun/RK2 with an iterated corrector;
+the pair $(\Phi,t)$ updated via an implicit linear ODE solve along $u$;
+exact center regularity $t=s$, $p=-q$ at $r=0$; the Misner--Sharp mass evolved
+by the regularizing identities). Validation: flat space preserved to
+$8.8\cdot10^{-15}$; the Roberts--Oshiro solution evolved within a
+singularity-free strip gives clean second-order convergence
+($p=2.03$--$2.09$ for $r$, $1.99$ for $\Phi$); the C1 constraint violation
+decreases quadratically.
+
+\section{Results}
+For the Choptuik family $\Phi(u_0,v)=A\exp[-(v-v_p)^2/2\sigma^2]$
+($u_0=-1$, $v_p=0.5$, $\sigma=0.1$) the critical amplitude, bisected on the
+singularity criterion, is
+$A_*=0.0805333$ (grid $1600^2$; biased by the horizon-nucleation threshold at
+$\delta\sim10^{-4}$). Sub- and supercritical evolutions show the expected
+qualitative picture (dispersal vs.\ trapped surface $2m/r\ge1$).
+
+\begin{tcolorbox}[colback=rowlight, colframe=linkblue,
+title=Honest comparison with the framework constant]
+The exponent measured on the fixed grid,
+$\gamma_{\text{num}}=0.11\pm0.11$, is floored by the horizon-nucleation
+threshold $M\ge4\,\mathrm{d}u$ and by critical slowing down: near-critical
+echoes shrink below the grid scale long before the apparent-horizon mass
+saturates. Resolving the universal $\gamma=0.374$ (and testing
+$b_{\mathrm{Ch}}=1-\cos(2\pi/7)=0.376510$ against it at the literature gap of
+$+0.67\%$) requires a Choptuik-grade regridding campaign (3--4 decades in
+$A-A_*$). A regridding prototype (\texttt{zoom\_solver.py}) is included.
+What this module does establish: (a) the Hilbert-derived system is correct and
+machine-checked; (b) the second-order solver is validated on exact solutions;
+(c) the critical point and the qualitative critical behaviour are reproduced.
+\end{tcolorbox}
+
+\section{Reproducibility}
+\texttt{sympy\_derivation.py} (symbolic derivation + Roberts check),
+\texttt{solver.py} (flat-space self-test),
+\texttt{roberts\_test.py} (second-order convergence),
+\texttt{choptuik\_scaling.py} (bisection + scaling fit),
+\texttt{zoom\_solver.py} (regridding prototype),
+\texttt{figures.py} (RU/EN figures). Units: $4\pi G=1$, $\kappa=2$ (Burko
+normalization). One $1200^2$ run takes $\sim1$ s (NumPy-vectorized).
+
+\begin{thebibliography}{9}
+\bibitem{choptuik1993} M.~W.~Choptuik, Phys.\ Rev.\ Lett.\ \textbf{70}, 9 (1993).
+\bibitem{gundlach2007} C.~Gundlach, J.~M.~Mart\'in-Garc\'ia, Living Rev.\ Relativity \textbf{10}, 5 (2007).
+\bibitem{burko1996} L.~M.~Burko, Int.\ J.\ Mod.\ Phys.\ D \textbf{5}, 451 (1996); gr-qc/9608061.
+\bibitem{roberts1989} M.~D.~Roberts, Gen.\ Relativ.\ Gravit.\ \textbf{21}, 907 (1989).
+\bibitem{isaev2024} I.~Kh.~Isaev, ``Spinor corrections b-C and a-C and the solution of the Choptyuk problem'' (2024), repo \texttt{choptuik\_ac\_bc}.
+\end{thebibliography}
+
+\end{document}

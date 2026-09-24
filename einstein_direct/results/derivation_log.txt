@@ -1,0 +1,58 @@
+==============================================================================
+ШАГ 1. Метрика ds^2 = -alpha(u,v)^2 du dv + r(u,v)^2 dOmega^2
+==============================================================================
+  sqrt(-g) = sqrt(alpha(u, v)**4*r(u, v)**4)*Abs(sin(theta))/2
+  Кристоффели: вычислено 64 символов
+  R (скалярная кривизна) упрощена: 268 символов в выражении
+  G_{mu nu} вычислен для всех компонент
+  Проверка R_varphi varphi = sin^2(theta) R_thth: OK
+
+==============================================================================
+ШАГ 2. ТЭИ Гильберта T_{mu nu} = Phi_mu Phi_nu - 1/2 g_{mu nu} (grad Phi)^2
+==============================================================================
+  (grad Phi)^2 = -4*Derivative(Phi(u, v), u)*Derivative(Phi(u, v), v)/alpha(u, v)**2
+  T_uv = 0   (для безмассового скаляра должно быть 0)
+  T_uu = Derivative(Phi(u, v), u)**2
+  T_vv = Derivative(Phi(u, v), v)**2
+  T_thth = 2*r(u, v)**2*Derivative(Phi(u, v), u)*Derivative(Phi(u, v), v)/alpha(u, v)**2
+  box Phi = 4*(-r(u, v)*Derivative(Phi(u, v), u, v) - Derivative(Phi(u, v), u)*Derivative(r(u, v), v) - Derivative(Phi(u, v), v)*Derivative(r(u, v), u))/(alpha(u, v)**2*r(u, v))
+  nabla_mu T^mu_u / box Phi = Derivative(Phi(u, v), u)
+  nabla_mu T^mu_v / box Phi = Derivative(Phi(u, v), v)
+  nabla_mu T^mu_th / box Phi = 0
+  nabla_mu T^mu_ph / box Phi = 0
+
+==============================================================================
+ШАГ 3. Проекции G_{mu nu} = kappa T_{mu nu} → замкнутая 1+1 система
+==============================================================================
+  (C1)  r_uu = -kappa*r(u, v)*Derivative(Phi(u, v), u)**2/2 + 2*Derivative(omega(u, v), u)*Derivative(r(u, v), u)
+  (C2)  r_vv = -kappa*r(u, v)*Derivative(Phi(u, v), v)**2/2 + 2*Derivative(omega(u, v), v)*Derivative(r(u, v), v)
+  (SC)  Phi_uv + (r_u Phi_v + r_v Phi_u)/r = 0 ; проверка box Phi = -(4/alpha^2)*SC: 0
+  (UV)  r_uv = (-exp(2*omega(u, v))/4 - Derivative(r(u, v), u)*Derivative(r(u, v), v))/r(u, v)
+  (TH)  -kappa*Derivative(Phi(u, v), u)*Derivative(Phi(u, v), v)/2 - Derivative(r(u, v), u, v)/r(u, v)
+  (UV∘TH)  r_uv = (-exp(2*omega(u, v))/4 - Derivative(r(u, v), u)*Derivative(r(u, v), v))/r(u, v)
+
+==============================================================================
+ШАГ 4. Проверка: решение Робертса–Оширо (исправл. форма, Burko gr-qc/9608061)
+==============================================================================
+  r^2 = 1/4 [ (1-4s^2) v^2 - 2 u v + u^2 ],   Phi = 1/2 ln| 1 - 4s/(1+2s-u/v) |
+  (s = const — параметр решения; alpha = 1)
+    [SC] невязка = 6.68e-52
+    [C1] невязка = 1.63e-41
+    [C2] невязка = 1.58e-43
+    [UV] невязка = 4.06e-41
+    [TH] невязка = 1.79e-42
+  точка (u,v,s) = (0.13, 1.7, 0.2): max|невязка| = 4.06e-41
+    [SC] невязка = 1.67e-52
+    [C1] невязка = 1.32e-41
+    [C2] невязка = 6.83e-43
+    [UV] невязка = 1.01e-41
+    [TH] невязка = 3.59e-43
+  точка (u,v,s) = (-0.8, 2.3, -0.3): max|невязка| = 1.32e-41
+    [SC] невязка = 6.68e-52
+    [C1] невязка = 1.34e-41
+    [C2] невязка = 2.55e-43
+    [UV] невязка = 1.55e-43
+    [TH] невязка = 1.79e-42
+  точка (u,v,s) = (0.5, 3.1, 0.15): max|невязка| = 1.34e-41
+  ИТОГ: решение Робертса–Оширо удовлетворяет выведенной системе: ДА (макс. невязка 4.06e-41)
+  Проверка формы Burko E1 (r_uv + (r_u r_v + 1/4)/r = 0): OK
