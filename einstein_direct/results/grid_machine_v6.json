@@ -1,0 +1,91 @@
+{
+  "config": {
+    "n": 800,
+    "max_zooms": 14,
+    "family": "gaussian",
+    "v_p": 0.5,
+    "sigma": 0.1,
+    "annulus": true,
+    "ann_factor": 10.0,
+    "march_center": true,
+    "r_ah_du": 8.0,
+    "closure": "taylor (v5 patch) + annulus parity (v6)",
+    "eps_list_run": [
+      0.001
+    ]
+  },
+  "a_star": 0.0805333,
+  "a_star_source": "fixed-grid N=1600 bisection (validated, session 1)",
+  "gamma_lit": 0.374,
+  "b_Ch": 0.3765101981412664,
+  "delta_spinor": 0.7330382858376184,
+  "runs": [
+    {
+      "eps": 0.001,
+      "A": 0.0815333,
+      "stop": "singularity",
+      "M_AH_frozen": 0.0,
+      "M_AH_max_seen": 0.0,
+      "zooms": 2,
+      "z_reached": 3.831933394539332,
+      "mx_max": 3.3278665627363355,
+      "runtime_s": 18.9,
+      "stage_constraints": [
+        {
+          "zoom": 1,
+          "lam": 5.942,
+          "z": 1.7821,
+          "c1_max": 0.20090423151367823
+        },
+        {
+          "zoom": 2,
+          "lam": 7.767,
+          "z": 3.8319,
+          "c1_max": 0.08562941343084747
+        }
+      ],
+      "Q_peaks_n": 0,
+      "tau_fit": null,
+      "tau_css_checks": null,
+      "tau_rows_kept": 1,
+      "tau_rows_sample": [
+        {
+          "v": 0.36300942428715327,
+          "stage": 2,
+          "z_stage": 3.831933394539332,
+          "s_est": 0.184620392586604,
+          "z_cont": 1.6894534939647823,
+          "tau": 2.2654901019723303e-05,
+          "t0": 0.02578109827706235,
+          "P2": -0.046547942539209006,
+          "r_W": 0.0,
+          "r_M": 7.55419178798315e-09,
+          "d0s": 0.21061867383091362,
+          "g0": 0.7831650573321107
+        }
+      ],
+      "annulus_summary": {
+        "rows": 18,
+        "C_j_median": 1.0233701124925844e-06,
+        "M1_median": 2.3235490036984234e-08
+      }
+    }
+  ],
+  "tau_star_global": null,
+  "css_checks_global": null,
+  "gamma_wiggle": null,
+  "gamma_wiggle_dsp": null,
+  "gamma_tower": null,
+  "gamma_tower_error": "'part3'",
+  "summary": {
+    "z_max_reached": 3.831933394539332,
+    "tau_star_global": null,
+    "tau_star_err_rel": null,
+    "delta_fit_global": null,
+    "lambda_drift_global": null,
+    "gamma_wiggle": null,
+    "gamma_tower": null,
+    "percent_level_tau": false,
+    "v6_achievements": []
+  }
+}

@@ -61,6 +61,7 @@ class ZoomDiag:
     zooms: int = 0
     z_final: float = 0.0
     stopped: str = "incomplete"
+    stop_detail: dict = field(default_factory=dict)
     runtime: float = 0.0
     stage_constraints: list = field(default_factory=list)  # C1/C2/mdef по стадиям
 
@@ -71,7 +72,9 @@ class ZoomRunner:
     def __init__(self, A: float, n: int = 800, max_zooms: int = 12,
                  w_trigger: float = 45.0, w_factor: float = 5.0,
                  u_frac: float = 0.30, max_2m_over_r: float = 2.0,
-                 verbose: bool = False):
+                 verbose: bool = False,
+                 march_center: bool = True, annulus: bool = False,
+                 ann_factor: float = 10.0, r_ah_du: float = 8.0):
         self.A = A
         self.n = n
         self.max_zooms = max_zooms
@@ -80,7 +83,13 @@ class ZoomRunner:
         self.u_frac = u_frac            # фича на u_frac от левого края окна
         self.max_2m_over_r = max_2m_over_r
         self.verbose = verbose
+        # --- v6 -------------------------------------------------------------
+        self.march_center = march_center  # марш t от центра (было hardcode True)
+        self.annulus = annulus            # кольцевая чётность на зум-стадиях
+        self.ann_factor = ann_factor      # R_ann = ann_factor * R_zone
+        self.r_ah_du = r_ah_du            # порог детекции горизонта, клеток du
         self.dbg = None                 # опциональный колбэк диагностики строк
+        self._m3_relay = 0.0            # v6: |M3| родительской стадии (регуляризация m)
         self.diag = ZoomDiag()
         self._z_acc = 0.0
         self.tay_hist_all = []          # v5: тейлор-гистограммы ВСЕХ стадий
@@ -103,9 +112,21 @@ class ZoomRunner:
         else:
             # сохранить тейлор-гистограмму родительской стадии (v5)
             old = getattr(self, "sol", None)
+            old_tay_state = None
             if old is not None and getattr(old, "_tay", None):
                 self.tay_hist_all.extend(
                     dict(rec, stage=self.diag.zooms) for rec in old._tay["hist"])
+                # v6: РЕЛЕ СОСТОЯНИЯ ПАТЧА — t0/d0/P2/W2/R1 — физические
+                # величины, непрерывно продолжаются на новую стадию вместо
+                # пересева с грязной рестарт-строки (устраняет транзиент)
+                ot = old._tay
+                if ot.get("init"):
+                    old_tay_state = {k: ot.get(k, 0.0)
+                                     for k in ("t0", "d0", "P2", "W2", "R1",
+                                               "M3_prev")}
+            m3r = old_tay_state.get("M3_prev", 0.0) if old_tay_state else 0.0
+            self._m3_relay = abs(m3r) if (np.isfinite(m3r) and m3r != 0.0) \
+                else getattr(self, "_m3_relay", 0.0)
             self.sol = DoubleNullSolver.from_fields(
                 cfg, np.linspace(*u_span, self.n), np.linspace(*v_span, self.n),
                 row, edge["r"], edge["Phi"], edge["t"])
@@ -117,12 +138,21 @@ class ZoomRunner:
             # Состояние пересевается на каждой рестарт-строке (фиты кольца).
             self.sol.center_closure = "taylor"
             self.sol._tay = None            # ленивый пересев на этой стадии
+            if old_tay_state is not None:
+                self.sol._tay = {
+                    "init": True, "fallbacks": 0, "rows": 0, "hist": [],
+                    "x_prev": None, "v_prev": None, "xstar_prev": None,
+                    **old_tay_state,
+                }
             self.sol.reg_m_rebuild = False  # (ветка regular не используется)
             self.sol.reg_pq_project = False
             # v5: марш t ОТ центра наружу на обеих сторонах (мода 1/r
             # затухает наружу, внутреннее ГУ t(i0)=s(i0) задано патчем) —
-            # снижает зеркальную асимметрию сырого марша вне зоны
-            self.sol.march_from_center = True
+            # снижает зеркальную асимметрию сырого марша вне зоны;
+            # v6: режим параметризован + кольцевая чётность вне зоны
+            self.sol.march_from_center = self.march_center
+            self.sol.annulus_parity = self.annulus
+            self.sol.ann_factor = self.ann_factor
             if du_parent is not None:
                 self.sol.R_heal = 5.0 * du_parent
         self.u = self.sol.u
@@ -219,8 +249,8 @@ class ZoomRunner:
                 # постоянна (задаётся маской, а не физическим сжатием).
                 shrinking = len(self.wh) > 20 and w_cells < 0.85 * self.wh[-20]
 
-                # --- горизонт (разрешённый: r > 8 du) ----------------------
-                r_thresh = 8.0 * self.du
+                # --- горизонт (разрешённый: r > r_ah_du * du) --------------
+                r_thresh = self.r_ah_du * self.du
                 phys = st_new["r"] > r_thresh
                 qs = np.where(phys, st_new["q"], 1.0)
                 idx = np.where((qs[:-1] > 0) & (qs[1:] <= 0))[0]
@@ -260,6 +290,21 @@ class ZoomRunner:
                 tmr_res = np.where(phys, 2.0 * st_new["m"] /
                                    np.where(phys, st_new["r"], 1.0), 0.0)
                 if not np.isfinite(tmr_res).all() or tmr_res.max() > self.max_2m_over_r:
+                    bad = int(np.argmax(np.where(np.isfinite(tmr_res),
+                                                 tmr_res, 1e30)))
+                    diag.stop_detail = {
+                        "idx": bad, "r": float(st_new["r"][bad]),
+                        "m": float(st_new["m"][bad]),
+                        "q": float(st_new["q"][bad]),
+                        "a2": float(st_new["alpha2"][bad]),
+                        "t": float(st_new["t"][bad]),
+                        "s": float(st_new["s"][bad]),
+                        "p": float(st_new["p"][bad]),
+                        "c": float(st_new["c"][bad]),
+                        "d": float(st_new["d"][bad]),
+                        "n_nonfinite_rows": int((~np.isfinite(tmr_res)).sum()),
+                        "v": float(v_now), "du": float(self.du),
+                    }
                     stop_reason = "singularity"
                     break
 
@@ -397,6 +442,23 @@ class ZoomRunner:
                                                  posinf=1.0, neginf=1.0), 1e-8, 1e8)
             for k in FIELDS:
                 d_[k] = np.nan_to_num(d_[k], nan=0.0, posinf=0.0, neginf=0.0)
+
+        # v6: регуляризация m у центра ПЕРВОЙ строки новой стадии.
+        # Регулярность: m = M3 xi^3 + O(xi^5) (нечётная, m(0)=0). Сырой марш
+        # родителя несёт 1/r-моду (M1*xi) — интерполяция переносит её мусор
+        # (~1e-5 при физической m ~ 1e-10) в p_v = -a2 m/(2 r^2) -> взрыв p
+        # за 10-15 строк (трассировка v6). Гейт: |m| <= 50 |M3| |xi|^3 —
+        # башенный масштаб (M3 из реле, сам гейтован торновской связкой).
+        if self._m3_relay > 0:
+            v_row = float(vb_s[0])
+            x_row = (v_row - u_new) / 2.0
+            i0r = int(np.argmin(np.abs(row["r"])))
+            xi_row = x_row - x_row[i0r]
+            cap_m = 50.0 * self._m3_relay * np.abs(xi_row) ** 3 + 1e-300
+            m_old_row = row["m"]
+            row["m"] = np.where(
+                np.isfinite(m_old_row) & (np.abs(m_old_row) > cap_m),
+                np.sign(m_old_row) * cap_m, m_old_row)
 
         lam = du_old / du_new
         self._new_stage((u_lo, u_hi), (v_lo, v_hi), row=row,
