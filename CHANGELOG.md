@@ -249,3 +249,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Complete execution logging in all reports
 - CI/CD pipeline with GitHub Actions
 - Original monograph documents (EN/RU, DOCX/PDF)
+
+## [2.3.0] - 2026-09-25 (einstein_direct v5)
+
+### Added
+- **Machine-derived center hierarchy** (`einstein_direct/sympy_center.py`):
+  Taylor/spinor (even-odd) expansion of the regular center in double-null
+  coordinates with center drift chi; center ODEs O1-O5 + gauge relation
+  derived and machine-verified by SymPy (incl. two corrections to the hand
+  derivation: +W2 in O3, factor 2 in O5); numeric verification of the
+  measurement pipeline (Heun residuals O2 1.1e-3, O1 2.8e-2).
+- **Central Taylor patch v5** (`solver.py`, closure="taylor"): ODE-evolved
+  internal boundary data t0/d0 (Choptuik-1993 style), offset-aware projection
+  of the even (p+q) parasite (the E-mode explosion source), full-radius zone
+  (factor-2 cell fix), sanitized ring fits, center-outward t-march on zoom
+  stages, closure dispatch in both march modes.
+- **Zoom campaign v5** (`zoom_campaign_v5.py`): eps ladder with post-processed
+  M(eps) and gamma fit; honest verdicts. Depth record z = 7.19 (chaos-sensitive;
+  single-thread BLAS required); percent-level gamma/Delta still NOT achieved —
+  the wall moved outside the patch zone (mirror-parity breaking of the raw
+  march) and AH capture remains fragile (v6 roadmap documented).
+- **Spinor ladder** (`spinor_ladder.py`): the pi/15, pi/30 phase ladder
+  (quantum pi/30, echo = 7 quanta), mode-growth scaling fits, echo-harmonics
+  fitter, numeric O1/O3 residuals along zoom chains.
+
+## [2.4.0] - 2026-09-25 (einstein_direct v6-fundamentals)
+
+### Added
+- **Convergence and repulsion from first principles**
+  (`einstein_direct/center_modes.py` -> `results/center_modes.json`,
+  `figures/fig_{ru,en}/fig_modes.png`):
+  - Thorne/MTW mass route, machine-verified from the Hilbert-derived system
+    (residuals 0): null flux laws `m_v = -2 r^2 p t^2 / alpha^2`,
+    `m_u = -2 r^2 q s^2 / alpha^2`; central mass-slope link
+    `M3 = 2 R1 t0^2 / (3 (1-chi)^2)` (exact at every y); center gauge
+    `(1-chi^2) R1^2 = A0` from `m(0) = 0`; hoop radius `xi_AH = sqrt(R1/(2 M3))`.
+  - Log-time tower: machine reduction of the verified O1-O5 (s-purity
+    O1:2, O2:1, O3:2, O5:4, O4:2); CSS fixed point closed to ONE amplitude
+    parameter tau by the Thorne link (without it - two free moduli).
+  - Exact spectrum of the closed tower: `{0, -1, -1, -2, -3}` at tau->0
+    (integer convergence exponents of the stable modes); exactly one growing
+    root `lambda+(tau)` in the codim-1 window `0 < tau <= 27/80` (exact:
+    `char(0,tau) = 8 tau (80 tau - 27)/27`); `lambda+(27/80) = 1.5091`;
+    exact point `lambda+ = 2 at tau = 1/2` (`char(2) ~ (2 tau - 1)(8 tau - 45)`);
+    second growing mode beyond 27/80 (the blow-up channel).
+  - Anchors (no fitting): kappa_obs = Delta_sp/gamma = 1.947 (b_Ch) / 1.960
+    (gamma_lit) vs lambda+(27/80) = 1.509 -> deficit +0.44..+0.45 in kappa =
+    the quantitative contribution required from the deeper tower levels (O6+)
+    for percent-level gamma.
+  - Empirics: the Thorne link as a strict center-quality metric on regular
+    runs (M3/M3_pred ~ 1.6 median = the xi-junk/1/r-mode level in m);
+    xi_AH (hoop) median 4.83 on the v5 chain (O(1) in xi-units, as CSS
+    predicts); honest t0-transient diagnostics after zoom restarts.

@@ -29,6 +29,8 @@ Termux, see §10) with Python ≥ 3.9, NumPy, SciPy, SymPy and pytest.
 12. [Running everything (incl. Termux on Android)](#12-running-everything)
 13. [File map](#13-file-map)
 14. [References](#14-references)
+15. [v5: the central Taylor patch — machine-derived center hierarchy, ODE-internal boundary data, spinor ladder](#15-v5-the-central-taylor-patch)
+16. [v6-fundamentals: convergence and repulsion from first principles (Thorne/MTW mass route, log-time tower, exact spectrum)](#16-v6-fundamentals-convergence-and-repulsion-from-first-principles)
 
 ---
 
@@ -471,3 +473,196 @@ einstein_direct/
    hypothesis under test, and the spinor framework with the π/15, π/30
    exponents (§11).
 
+
+---
+
+## 15. v5: the central Taylor patch
+
+### 15.1 The machine-derived center hierarchy (sympy_center.py)
+
+Session 5's fundamental step: the REGULAR CENTER is described by a Taylor
+series in the signed radius `xi = x - x*(v)` (x = (v-u)/2, x*(v) -- the center
+worldline, chi = dx*/dy -- its drift), split by the Z2 mirror parity into the
+scalar (even) and SPINOR (odd) sectors:
+
+```
+r     = R1*xi + R3*xi^3          Phi = P0 + P2*xi^2 + P4*xi^4   (even)
+omega = W0 + W2*xi^2              m   = M3*xi^3                  (odd)
+```
+
+Substituting the series into all five bulk equations and expanding in xi
+(SymPy `sp.series` on the rational residuals -- `expand+coeff` is WRONG for
+them), each order gives an ODE/constraint. All forms are machine-verified
+(`results/center_hierarchy.json`, `hierarchy_forms_verified: true`):
+
+| Tag | Relation | Source |
+|-----|----------|--------|
+| O1 | `t0' = 3*P2 - 2*(R1'/R1)*t0 = 3*P2 - 4*d0*t0` | SC, order xi^0 |
+| O2 | `R1' = 2*d0*R1` | C2 (and C1 -- cross-checked), xi^0 |
+| O3 | `d0' = M3/R1 + W2 - kappa*t0^2` | TH, xi^0 (**+W2 found by the machine**, missed by hand derivation) |
+| O4 | `M3 = (R1'^2 - 6*R1*R3)/(2*R1) + R1*W2` | Mdef, xi^3 (gauge R1^2 = A0) |
+| O5 | `P2'' = 20*P4 + 8*R3*P2/R1 - 2*(R1'/R1)*P2' - 2*(R3'/R1)*P0' + 2*(R3*R1'/R1^2)*P0'` | SC, xi^2 -- the spinor-mode coupling |
+| gauge | `(1 - chi^2)*R1^2 = alpha2(0)` | Mdef, xi^1 |
+
+Checks: flat space (all residuals 0), flat symmetric wave (P0'' = 6*P2 gives
+SC xi^0 = 0), C1-C2 consistency at xi^0. Numeric verification of the
+measurement pipeline on a subcritical run (A = 0.02): one-step Heun residuals
+O2 ~= 1.1e-3, O1 ~= 2.8e-2 (median, relative).
+
+This is the "fundamental-level derivation for the stable modes": the E-mode
+amplitude t0 is DRIVEN by the spinor slope P2 (O1), and the spinor mode P2 is
+driven by the even sector (O5). Some solutions MUST blow up (decays/assemblies
+are critical special cases of the Einstein equations) -- the hierarchy
+separates the stable ladder from the blow-up sector.
+
+### 15.2 The patch (solver.py, center_closure="taylor")
+
+Per row on zoom stages:
+
+1. Ring fits (physical side, r in [R_zone, 4*R_zone], R_zone = max(8*du,
+   1.2*R_heal)): linear + linearized-cubic fit of r(x) -> R1, R3, x*; chi
+   from consecutive x*; paired even/odd fits in the zone with the EXACT xi
+   per point (offset-aware); (c+d)/2 -> d0; (d-c)/2 -> W2; M3 from m/xi^3.
+2. ODE evolution of the internal boundary data: t0 by O1 (Heun predictor +
+   0.5 relaxation to the fitted E0), d0 by O3. R1 is recorded as a DIAGNOSTIC
+   only -- writing p(i0) from the fitted R1 creates a feedback loop (fit of
+   the already-patched r-profile -> p(i0) -> new r-distortion), observed as
+   R1 drifting to 0.906 with C1 exploding to 0.5.
+3. Zone rebuild (v5-minimal, the scope that survives): t,s from E_zone (the
+   paired even part, k = 1..K; **E(0) = t0 -- the ODE-evolved value** -- the
+   key difference from v3.2) + O = P2*xi + P4o*xi^3 (the C/xi parasite mode
+   is separated by the fit and DISCARDED); m = M3*xi^3 (edge-matched
+   median); a hard projection of the even part of (p+q) -- the source of the
+   E-mode explosion E_v = -(p+q)*E/r -- with a 4-parameter fit that accounts
+   for the center offset x* (a naive projection injects a constant R1'*delta);
+   the center point: t = s = t0, c = d = d0. p, q, r, alpha2 are NOT touched:
+   their raw march maintains the discrete C1 constraint (a full series
+   rebuild of p,q breaks C1: 1e-8 -> 0.5 -- measured).
+4. Sanitize: every fit carries residual+boost guards; a failed fit disables
+   that block for the row instead of injecting junk (restart rows carry
+   interpolation junk -- an unguarded O-fit once injected P2 = 4.3e13 and
+   killed the run within 2 rows).
+
+Also new in v5: the zone covers the FULL radius (K = 2*R_zone/du cells --
+xi steps du/2 per cell, the v3.2 code covered only half), and the zoom
+stages march t OUTWARD from the center on both sides (`march_from_center`;
+the 1/r homogeneous mode decays outward). A subtle bug fixed on the way:
+the closure dispatch used to live inside the edge-march branch only, so
+activating march_from_center silently DISABLED the center closure.
+
+### 15.3 What v5 achieved, and what it did not (honest)
+
+Achieved:
+- Mass junk at the center: mdef ~ 2.9e-6 (super-clean); the gauge relation
+  R1^2 = alpha2(0) holds at the 1e-2 level along the chains.
+- Depth: z = 7.19 (7 zooms; patch with the edge-march configuration,
+  eps = 3e-5) vs the v3.2 record of 6.05. The final configuration
+  (patch + center-march) gives z ~ 4.2-4.5 on the same eps ladder: the
+  depth is CHAOS-sensitive, and single-threaded BLAS is required for
+  reproducibility (multithreaded LAPACK reshuffles near-critical AH
+  nucleation and changes the fate of the run).
+- The spinor ladder module (spinor_ladder.py): the pi/15, pi/30 phase
+  table (the ladder quantum is pi/30, an echo is 7 quanta, pi/15 is 2
+  quanta; resolving pi/15 needs z >= 30, pi/30 needs z >= 60), mode-growth
+  fits (kappa_t0, kappa_P2 -- order of magnitude only), an echo-harmonics
+  fitter, and numeric O1/O3 residuals along the chains.
+
+NOT achieved (the wall moved, it did not vanish):
+- Percent-level gamma and Delta: the AH capture is still unreliable -- the
+  q = 0 crossing either happens after the 2m/r > 2 stop fires, or is
+  junk-contaminated; M(eps) could be measured for only a fraction of the
+  eps ladder, and the gamma fit needs >= 3 clean points.
+- The depth wall is now OUTSIDE the patch zone: the raw march in the mirror
+  region breaks the mirror parity of m (m_mirror ~ -12.7 vs m_phys ~ +4.2)
+  at |r| ~ 100*du. The v6 roadmap: (a) parity projection in an ANNULUS
+  outside the zone (mirror-antisymmetrization of the raw march), (b) a
+  robust AH capture (store ALL sane crossings; freeze at the last sustained
+  one; relax the r > 8*du threshold).
+
+Files: `sympy_center.py`, `spinor_ladder.py`, `zoom_campaign_v5.py`,
+`results/center_hierarchy.json`, `results/spinor_ladder.json`,
+`results/zoom_campaign_v5.json`.
+
+---
+
+## 16. v6-fundamentals: convergence and repulsion from first principles
+
+Module: `center_modes.py` → `results/center_modes.json`,
+`figures/fig_ru/fig_modes.png`, `figures/fig_en/fig_modes.png`.
+
+The task (author's directive): return to the Hilbert equation, use the
+Kip Thorne / MTW-style mass bookkeeping, take the empirical constants as
+ANCHORS ONLY, and compute the convergence (stable modes) and the repulsion
+(unstable/blow-up channels) so that the numbers come out of first principles.
+No fitting anywhere; γ_lit, b_Ch, Δ_sp enter only as comparison anchors.
+
+### 16.1 The Thorne route: exact mass identities (machine-verified)
+
+Starting from the Hilbert-derived double-null system (Mdef, UV, C1, C2),
+SymPy derives (residuals exactly 0, with p eliminated through the Misner–Sharp
+definition and q_u = p_v via the mixed partial r_uv):
+
+- the null flux laws of the mass function:
+  **m_v = −2 r² p t²/α²** and **m_u = −2 r² q s²/α²**;
+- the central mass–slope link (regular center, general drift χ):
+  **M3 = 2 R1 t0² / (3 (1−χ)²)** — exact at EVERY y, not only in CSS;
+- the central gauge follows from m(0) = 0 (Mdef at ξ⁰):
+  **(1−χ²) R1² = A0**;
+- the hoop threshold 2m/r = 1 gives the horizon radius in center coordinates
+  **ξ_AH = sqrt(R1/(2 M3))** (s-free; CSS value sqrt(3/(4τ))).
+
+### 16.2 The log-time tower (machine reduction of the verified O1–O5)
+
+Substituting X = x̂(z)·s^(−p) (z = −ln s, s = y*−y; the exponent table
+p = 0,0,0,2,2,2,2,4) into the verified hierarchy is s-PURE — every term of
+every equation carries one power of s (machine-checked: O1:2, O2:1, O3:2,
+O5:4, O4:2). The autonomous z-tower has a CSS fixed point
+
+    d0* = 0,  t̂0* = 3P̂2*,  Ŵ2* = (4/3)τ,  M̂3*/R̂1* = (2/3)τ,  R̂3*/R̂1* = (2/9)τ,
+
+with τ = t̂0*² — WITHOUT the Thorne link the point has two free moduli; the
+mass-flux link closes it to exactly ONE amplitude parameter. This is the
+analytic role of the Thorne route: it closes the fundamental level.
+
+### 16.3 The spectrum: convergence and repulsion (exact)
+
+Linearization of the closed tower (levels 0–2, deep sources frozen):
+
+- **τ → 0:** char = λ(λ+1)²(λ+2)(λ+3) — the EXACT fundamental spectrum
+  **{0, −1, −1, −2, −3}**: integer convergence exponents — the
+  "fundamental-level conclusions for the stable modes" (the O-mode slope pair
+  −2, −3 is exact); the 0 is the family direction (deeper levels decide);
+- **τ > 0:** exactly ONE growing root λ⁺(τ) — the repulsion channel — inside
+  the codim-1 window 0 < τ ≤ **27/80** (char(0,τ) = 8τ(80τ−27)/27 → τ₂ = 27/80
+  EXACT); λ⁺(27/80) = 1.5091, so the closed tower alone gives
+  **γ = Δ_sp/λ⁺ ≥ 0.4857**;
+- **exact points:** char(2) = 8(2τ−1)(8τ−45)/27 → **λ⁺ = 2 at τ = 1/2** (and
+  τ = 45/8) — the same "2" as the Riccati coefficient 2d0² of O3;
+- **τ > 27/80:** a second growing root appears — the "decays/assemblies"
+  blow-up channel (the expected physics of the private cases).
+
+### 16.4 Anchors (comparison only, no fitting)
+
+- κ_obs = Δ_sp/γ: **1.947** (b_Ch) and **1.960** (γ_lit) vs λ⁺(τ₂) = 1.509:
+  the deficit **+0.44…+0.45 in κ** is the quantitative measure of what the
+  deeper tower levels (O6+) must contribute for the percent-level γ;
+- formal amplitudes where λ⁺ = κ_obs: τ ≈ 0.481–0.486 (outside the codim-1
+  window — there the truncation is already invalid; fixing τ is the job of
+  the full tower);
+- indicative: at τ = 0.48, γ_pred = 0.377 vs b_Ch = 0.376510 (0.13%) —
+  NOT a measurement (two-mode regime), a family-curve reading.
+
+### 16.5 Empirics
+
+- the Thorne link on clean regular runs (n = 800): M3/M3_pred median ≈ 1.6
+  with a wide spread — the exact identity becomes a STRICT center-quality
+  metric: ratio > 1 measures the ξ-junk (the 1/r mode, m/ξ³ = M1/ξ² + M3)
+  and the ring-fit systematics; tightening it to percent level is a v6 goal
+  (the same wall as the percent-level γ);
+- ξ_AH (hoop) on the v5 critical chain: median 4.83 — O(1) in ξ-units, as
+  the CSS prediction sqrt(3/(4τ)) demands;
+- numeric O1 residual on the chain: median 2.5e-2; the taylor-patch t0
+  transients after zoom restarts break the instantaneous identity (honest;
+  the identity is exact for solutions of the system).
+
+Run: `python3 center_modes.py` (~1 min; SymPy + one zoom chain).

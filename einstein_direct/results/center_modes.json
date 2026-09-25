@@ -1,0 +1,312 @@
+{
+ "config": {
+  "kappa": 2,
+  "A_star": 0.0805333,
+  "eps": 0.0001,
+  "delta_spinor": 0.7330382858376184,
+  "b_Ch": 0.3765101981412664,
+  "gamma_lit": 0.374,
+  "delta_lit": 0.737637,
+  "phi15": 0.20943951023931953,
+  "phi30": 0.10471975511965977
+ },
+ "route": "Hilbert -> double-null (sympy_derivation) -> center hierarchy O1-O5 (sympy_center) -> [I] Thorne/MTW mass bookkeeping -> [II] log-time tower -> [III] linear spectrum -> [IV] empirics",
+ "honest_notes": [],
+ "thorne": {
+  "flux_law_v": {
+   "expr": "m_v = -2 r^2 p t^2 / alpha^2",
+   "residual": "0",
+   "verified": true
+  },
+  "flux_law_u": {
+   "expr": "m_u = -2 r^2 q s^2 / alpha^2",
+   "residual": "0",
+   "verified": true
+  }
+ },
+ "thorne_center": {
+  "mass_slope_link": {
+   "expr": "M3 = 2 R1 t0^2 / (3 (1-chi)^2)",
+   "residual": "0",
+   "verified": true,
+   "note": "точно при каждой y (не только CSS)"
+  },
+  "gauge_center": {
+   "expr": "(1-chi^2) R1^2 = A0",
+   "a2_center": "(1 - Derivative(xs(y), y)**2)*R1(y)**2",
+   "verified": true
+  },
+  "hoop": {
+   "threshold": "2m/r = 1",
+   "xi_AH": "sqrt(R1/(2 M3))",
+   "css_value": "sqrt(3/(4 tau))  (chi=0)"
+  }
+ },
+ "tower": {
+  "p_table": {
+   "P0": 0,
+   "R1": 0,
+   "W0": 0,
+   "P2": 2,
+   "R3": 2,
+   "W2": 2,
+   "M3": 2,
+   "P4": 4
+  },
+  "purity_s_powers": {
+   "O1": 2,
+   "O2": 1,
+   "O3": 2,
+   "O5": 4,
+   "O4": 2
+  },
+  "z_system": {
+   "F1_dt0": "-4*D0h*T0h + 3*P2h - T0h",
+   "F2_dP2": "Qh",
+   "F3_ddQ": "-8*D0h*P2h - 4*D0h*Qh + 8*D0h*R3h*T0h/R1h - 6*P2h + 8*P2h*R3h/R1h + 20*P4h - 5*Qh - 8*R3h*T0h/R1h",
+   "F4_dD0": "2*D0h**2 - D0h - 2*T0h**2 + 2*W2h - 3*R3h/R1h",
+   "F5_dR1": "2 D0h R1h",
+   "M3_link_O4": "(A0*R3h + 2*R1h**3*W2h - 7*R1h**2*R3h + R1h*dR1h**2)/(2*A0)"
+  }
+ },
+ "spectrum": {
+  "char_poly_normalized": "(27*lambda**5 + 189*lambda**4 - 516*lambda**3*tau + 459*lambda**3 - 2328*lambda**2*tau + 459*lambda**2 + 1408*lambda*tau**2 - 3756*lambda*tau + 162*lambda + 640*tau**2 - 216*tau)/27",
+  "css_fixed_point": {
+   "d0": 0,
+   "t0": "3 P2",
+   "Q": 0,
+   "W2": "4 tau/3",
+   "M3_over_R1": "2 tau/3",
+   "R3_over_R1": "2 tau/9",
+   "P4": "(3+16*tau/9)*P2/10",
+   "verified": true,
+   "note": "без торновской связки у точки два свободных модуля; связка потока массы замыкает до одного (амплитуда tau)"
+  },
+  "tau0_factorization": "lambda*(lambda + 1)**2*(lambda + 2)*(lambda + 3)",
+  "fundamental_spectrum_exact": [
+   "-3",
+   "-2",
+   "-1",
+   "0"
+  ],
+  "exact_point_lambda2": {
+   "residual": "8*(2*tau - 1)*(8*tau - 45)",
+   "tau": [
+    "1/2",
+    "45/8"
+   ]
+  },
+  "char_at_lambda0": "8*tau*(80*tau - 27)/27",
+  "tau2_codim1_edge": {
+   "value": "27/80",
+   "numeric": 0.3375,
+   "lambda_plus": 1.5090958199234659,
+   "gamma_tower_min": 0.48574668099921886
+  },
+  "gamma_curve": [
+   {
+    "tau": 0.0001,
+    "lambda_plus": 0.00013355294297276286,
+    "n_growing": 1,
+    "gamma_pred": 5488.746781020888,
+    "monodromy_per_echo": 1.00009790421269
+   },
+   {
+    "tau": 0.001,
+    "lambda_plus": 0.0013556136577205214,
+    "n_growing": 1,
+    "gamma_pred": 540.742771115356,
+    "monodromy_per_echo": 1.0009942106119507
+   },
+   {
+    "tau": 0.003,
+    "lambda_plus": 0.004207148029593655,
+    "n_growing": 1,
+    "gamma_pred": 174.2363902295158,
+    "monodromy_per_echo": 1.0030887610021237
+   },
+   {
+    "tau": 0.01,
+    "lambda_plus": 0.015922872020164555,
+    "n_growing": 1,
+    "gamma_pred": 46.03681326517644,
+    "monodromy_per_echo": 1.0117404592803596
+   },
+   {
+    "tau": 0.03,
+    "lambda_plus": 0.07264526382702327,
+    "n_growing": 1,
+    "gamma_pred": 10.090654878521288,
+    "monodromy_per_echo": 1.0546951413980565
+   },
+   {
+    "tau": 0.1,
+    "lambda_plus": 0.4877201870988842,
+    "n_growing": 1,
+    "gamma_pred": 1.5029894296522044,
+    "monodromy_per_echo": 1.4297756872709175
+   },
+   {
+    "tau": 0.3375,
+    "lambda_plus": 1.5090958199234659,
+    "n_growing": 1,
+    "gamma_pred": 0.48574668099921886,
+    "monodromy_per_echo": 3.022925324370321
+   },
+   {
+    "tau": 0.4,
+    "lambda_plus": 1.7094960012119027,
+    "n_growing": 2,
+    "gamma_pred": 0.42880374409647637,
+    "monodromy_per_echo": 3.5012709052644815
+   },
+   {
+    "tau": 0.48,
+    "lambda_plus": 1.9443992559808576,
+    "n_growing": 2,
+    "gamma_pred": 0.37699987982552235,
+    "monodromy_per_echo": 4.159184816871355
+   },
+   {
+    "tau": 0.5,
+    "lambda_plus": 2.0000000000000004,
+    "n_growing": 2,
+    "gamma_pred": 0.36651914291880916,
+    "monodromy_per_echo": 4.332204659502366
+   },
+   {
+    "tau": 0.75,
+    "lambda_plus": 2.618728139091365,
+    "n_growing": 2,
+    "gamma_pred": 0.27992149123656834,
+    "monodromy_per_echo": 6.818421450231396
+   },
+   {
+    "tau": 1.0,
+    "lambda_plus": 3.1408446151354568,
+    "n_growing": 2,
+    "gamma_pred": 0.23338890510698007,
+    "monodromy_per_echo": 9.997742852445732
+   },
+   {
+    "tau": 1.5,
+    "lambda_plus": 4.018096486683764,
+    "n_growing": 2,
+    "gamma_pred": 0.18243421686536285,
+    "monodromy_per_echo": 19.01862117247671
+   },
+   {
+    "tau": 2.0,
+    "lambda_plus": 4.759109994363096,
+    "n_growing": 2,
+    "gamma_pred": 0.15402843949937317,
+    "monodromy_per_echo": 32.74040140918818
+   },
+   {
+    "tau": 3.0,
+    "lambda_plus": 6.004990479347969,
+    "n_growing": 2,
+    "gamma_pred": 0.12207151507710848,
+    "monodromy_per_echo": 81.60478724378484
+   },
+   {
+    "tau": 5.0,
+    "lambda_plus": 7.986648721253802,
+    "n_growing": 2,
+    "gamma_pred": 0.09178296322046586,
+    "monodromy_per_echo": 348.8071840216595
+   }
+  ],
+  "anchors": {
+   "kappa_obs_bCh": 1.946928103027326,
+   "kappa_obs_gamma_lit": 1.9599954166781242,
+   "deficit_kappa_vs_tower": [
+    0.43783228310386013,
+    0.4508995967546583
+   ],
+   "tau_formal_bCh": 0.4809008046229817,
+   "tau_formal_gamma_lit": 0.4855689583539271,
+   "note": "kappa_obs = Delta_sp/gamma > lambda+(27/80): наблюдаемое отталкивание сильнее, чем даёт замкнутая башня уровней 0-2 в codim-1 окне — дефицит есть мера вклада глубоких уровней (O6+)"
+  },
+  "spinor_ladder": {
+   "delta_spinor": 0.7330382858376184,
+   "quanta_per_echo": 7.000000000000001,
+   "phase_per_echo_pi30": 0.07676358978625056,
+   "phase_per_echo_pi15": 0.15352717957250112,
+   "wiggle_phase_per_echo": 12.566370614359172,
+   "monodromy_fundamental": {
+    "lam_-1": 0.48044703487413537,
+    "lam_-2": 0.23082935331934865,
+    "lam_-3": 0.11090127836419524
+   },
+   "note": "стабильные моды башни за эхо затухают как e^{lam*Delta} < 1 (сходимость); спинорные фазы pi/15, pi/30 дают вращение на эхо (лестница монографии)"
+  },
+  "honest_notes": [
+   "tau — единственный свободный модуль замкнутой башни (уровни 0-2); полная башня (O6+) должна фиксировать его — не сделано (честно).",
+   "Замороженные источники (W2*, R3*, P4*, dR3*=0) — стандартная линеаризация замкнутой башни; их динамика — уровни O6+.",
+   "z-башня выведена при chi=0; chi-поправки — в center_hierarchy.json."
+  ]
+ },
+ "empirics": {
+  "available": true,
+  "thorne_link_validation": {
+   "A=0.02": {
+    "n_rows": 10,
+    "flux_ratio_median": 1.7083515477476892,
+    "flux_ratio_p10": 1.1946977454860508,
+    "flux_ratio_p90": 2.540480661458332,
+    "flux_dev_median": 0.7083515477476892
+   },
+   "A=0.075": {
+    "n_rows": 15,
+    "flux_ratio_median": 1.6141297324895971,
+    "flux_ratio_p10": 0.11106918948410084,
+    "flux_ratio_p90": 2.4772356141950804,
+    "flux_dev_median": 0.9213022529360482
+   },
+   "note": "идентичность M3 = 2R1t0^2/(3(1-chi)^2) символически точна (невязка 0); на сетке n=800 (regular) ratio > 1 с дрейфом — это мера xi-junk в m (m/xi^3 = M1/xi^2 + M3: 1/r-мода завышает M3_fit на кольце) + систематика фитов. Строгая метрика качества центра; сжатие до процентов — цель v6 (та же стена, что и процентная gamma)."
+  },
+  "run": {
+   "A": 0.0806333,
+   "zooms": 3,
+   "stop": "singularity",
+   "z_reached": 4.493426693172882,
+   "n_tay_rows": 774
+  },
+  "xi_AH_hoop": {
+   "n": 714,
+   "median": 4.827420480184827,
+   "p10": 0.7660419105608568,
+   "p90": 42.57333999779905,
+   "note": "2m/r = 2(M3/R1)xi^2 = 1 при xi = sqrt(R1/(2M3)); в CSS xi_AH = sqrt(3/(4 tau)) — O(1) в xi-единицах"
+  },
+  "n_rows_consistent": 0,
+  "flux_diagnostic_chain": {
+   "n": 275,
+   "dev_median": 3082.0841233270085,
+   "dev_p90": 34780.645742806795
+  },
+  "ode_residuals": {
+   "O1": {
+    "n": 384,
+    "median": 0.025354750771978886,
+    "p90": 0.7193112000483652
+   },
+   "O3": {
+    "n": 384,
+    "median": 1.5861304135186018,
+    "p90": 15.07502727392718
+   }
+  },
+  "honest_notes": [
+   "Торновская связь M3 = 2R1t0^2/(3(1-chi)^2) валидирована на ЧИСТЫХ регулярных забегах (thorne_link_validation); на строках критической ЦЕПОЧКИ после зум-рестартов t0 тейлор-патча — транзиент внутреннего ГУ, мгновенная identity нарушается (flux_diagnostic_chain) — это мера незарелаксированности патча, а не опровержение связи (связь точна для решений системы).",
+   "tau_row значим только на консистентных строках (flux_ratio в [0.2, 5]); на цепочке v5 их мало — CSS-амплитуда на z~4.5 не измеряется, нужен z>=30 (v6).",
+   "xi_AH (Хуп) — s-свободная величина, O(1) в xi-единицах, как и предсказывает CSS: sqrt(3/(4 tau))."
+  ]
+ },
+ "figures": [
+  "figures/fig_ru/fig_modes.png",
+  "figures/fig_en/fig_modes.png"
+ ],
+ "runtime_s": 58.9
+}
