@@ -74,7 +74,8 @@ class ZoomRunner:
                  u_frac: float = 0.30, max_2m_over_r: float = 2.0,
                  verbose: bool = False,
                  march_center: bool = True, annulus: bool = False,
-                 ann_factor: float = 10.0, r_ah_du: float = 8.0):
+                 ann_factor: float = 10.0, r_ah_du: float = 8.0,
+                 ann_relax_gate: float = 2.5, ann_cross: bool = True):
         self.A = A
         self.n = n
         self.max_zooms = max_zooms
@@ -88,6 +89,13 @@ class ZoomRunner:
         self.annulus = annulus            # кольцевая чётность на зум-стадиях
         self.ann_factor = ann_factor      # R_ann = ann_factor * R_zone
         self.r_ah_du = r_ah_du            # порог детекции горизонта, клеток du
+        # v6.1: гейт G/D-проекций кольца (канал j=19-20: O(1) чётный мусор
+        # D = t-s при дрейфе сырого марша t; консервативный гейт 0.5 его
+        # не пускает). Агрессивный режим зум-стадий: 2.5.
+        self.ann_relax_gate = ann_relax_gate
+        # v6.1: CROSS-режим: t := mirror(s) на кольце (точное CSS-соотношение,
+        # устраняет битву марша/проекции — канал смерти j=19-20)
+        self.ann_cross = ann_cross
         self.dbg = None                 # опциональный колбэк диагностики строк
         self._m3_relay = 0.0            # v6: |M3| родительской стадии (регуляризация m)
         self.diag = ZoomDiag()
@@ -153,6 +161,8 @@ class ZoomRunner:
             self.sol.march_from_center = self.march_center
             self.sol.annulus_parity = self.annulus
             self.sol.ann_factor = self.ann_factor
+            self.sol.ann_relax_gate = self.ann_relax_gate
+            self.sol.ann_cross = self.ann_cross
             if du_parent is not None:
                 self.sol.R_heal = 5.0 * du_parent
         self.u = self.sol.u
@@ -265,8 +275,13 @@ class ZoomRunner:
                     # мусорные всплески дают M_max ~ 1e2 (ядовитый фит gamma)
                     phys_idx = np.where(phys)[0]
                     m_out = float(st_new["m"][phys_idx[-1]]) if phys_idx.size else 0.0
+                    # v6.1: физический фильтр горизонта 2m/r ~ 1 (условие
+                    # ловушки). Без него q-мусор кольца (m раздавлен
+                    # башенным блендом ~ 1e-10) давал ложные "AH formed"
+                    # стопы с M_frozen ~ 1e-10 (пробник cross eps=1e-3).
+                    tmr_ah = 2.0 * m_ah / max(r_ah, 1e-300)
                     sane = (np.isfinite(m_ah) and 0 < m_ah < 1.2 * max(m_out, 1e-12)
-                            and r_ah > 0)
+                            and r_ah > 0 and abs(tmr_ah - 1.0) < 0.5)
                     if sane:
                         self.m_ah_hist.append((v_now, m_ah))
                         if m_ah > diag.m_ah_max:

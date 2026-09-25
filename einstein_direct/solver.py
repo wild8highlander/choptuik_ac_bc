@@ -222,6 +222,21 @@ class DoubleNullSolver:
         self.ann_do_cd = True           # проекция (c+d)/(d-c) в кольце
         self.ann_do_cpar = True         # гашение C/xi-моды в O = (t-s)/2
         self.ann_do_m1 = True           # гашение 1/r-моды массы (M1*xi)
+        # v6.1: гейт G/D-проекций кольца в единицах локального масштаба поля.
+        # 0.5 (v6) — консервативно; трассировка eps=1e-3 показала: сырой марш
+        # t дрейфует (t_out -> 0 при s_out ~ 1), чётный мусор D = t-s достигает
+        # O(1) = локального масштаба, гейт 0.5 его НЕ пускает -> компаундинг ->
+        # взрыв t_out (0.001 -> 3.18 -> 1.3e3) и смерть стадии на j=11-12.
+        # 2.5 (агрессивный режим зум-машины) пускает O(1)-проекцию: t,s
+        # переслаживаются к зеркально-согласованной паре на первой же строке,
+        # дальше правки малы и гейт снова в консервативном диапазоне.
+        self.ann_relax_gate = 0.5
+        # v6.1: CROSS-режим кольца: t := mirror(s) — точное CSS-соотношение
+        # t(xi) = s(-xi) (s не трогается — эволюционируемое поле, источник
+        # истины). Устраняет БИТВУ марша (t сжимается к 0 снаружи зоны) и
+        # проекции (тянет t к O(1)): обе правки действуют только на t,
+        # G/D-чётности выполняются точно, C/xi-мода марша заменяется.
+        self.ann_cross = False
         self._ann_hist = []             # диагностика кольца (cap 256)
         self._init_fields()
 
@@ -363,7 +378,23 @@ class DoubleNullSolver:
         q_loc = float(np.median(np.abs(st["q"][0:5])))
         q_use = st["q"][0] if abs(st["q"][0]) > 0.2 * max(q_loc, 1e-12) \
             else (st["q"][1] if abs(st["q"][1]) > 1e-12 else q_loc)
-        return (r_vv + 0.5 * KAPPA * st["r"][0] * st["t"][0] ** 2) / (2.0 * q_use)
+        d_edge_raw = (r_vv + 0.5 * KAPPA * st["r"][0] * st["t"][0] ** 2) / (2.0 * q_use)
+        # v6.1: ФИЗИЧЕСКИЙ КАП d_edge (канал j=19-20, трассировка eps=1e-3).
+        # d_edge = omega_v на краю — вторая производная интерполированной
+        # краевой колонки r(v): усиление шума ~ 1/dv^2 = 3e8 на глубокой
+        # стадии. Мусор d_edge ~ -1e4..-1e6 действует на q[0] как q' = 2dq
+        # (|2 dv d| > 1 уже при d ~ -6e3): q краевой колонки осциллирует
+        # через ноль -> q_use -> 0 -> d_edge ещё больше — ПОЛОЖИТЕЛЬНАЯ
+        # обратная связь (трассировка: q0: 0.53 -> 0.14 -> 0.0024 -> -0.23 ->
+        # +2.68 при d_edge: -6e3 -> -9e5), d-колонка -2.3e5, alpha2_v = 2a2 d
+        # флипает знак a2 за одну строку — смерть стадии на j=11.
+        # Физический масштаб omega_v на краю O(1-30); кап 1e3 касается
+        # только мусора и размыкает петлю.
+        cap_edge = 1.0e3
+        if np.isfinite(d_edge_raw) and abs(d_edge_raw) > cap_edge:
+            self._d_edge_clipped = getattr(self, "_d_edge_clipped", 0) + 1
+            d_edge_raw = float(np.sign(d_edge_raw)) * cap_edge
+        return d_edge_raw
 
     # ------------------------------------------------------- main march
     @classmethod
@@ -548,7 +579,12 @@ class DoubleNullSolver:
         early = tay["rows"] <= 6     # v6: рестарт-строки — фиты грязны
 
         # --- 1. фит r на кольце (физическая сторона): R1, x*, R3 ----------
-        ringm = (r_arr > ring_lo) & (r_arr < ring_hi) & (np.arange(n) <= i0)
+        # v6.1: кольцо ОБЕ стороны (|r|): односторонний фит (маска r > ring_lo,
+        # i <= i0) смещал интерсепт x* кубической волной кольца на ~10 du
+        # (профиль стадии смерти: x* - x[i0] = 10.5 du) — все пары/проекции/
+        # cross строились вокруг НЕВЕРНОЙ оси зеркала и инжектировали O(1).
+        # Двусторонний фит: r(xi) нечётен — интерсепт якорится симметрией.
+        ringm = (np.abs(r_arr) > ring_lo) & (np.abs(r_arr) < ring_hi)
         nr = int(ringm.sum())
         ok = nr >= 6
         R1 = R3 = x_star = chi = 0.0
@@ -565,6 +601,10 @@ class DoubleNullSolver:
                 R1, R3 = float(c2[0]), float(c2[1])
                 res_r = float(np.max(np.abs(rr - A2m @ c2)) / max(np.max(np.abs(rr)), 1e-30))
                 ok = np.isfinite(R1) and np.isfinite(R3) and R1 > 0.2 and res_r < 0.3
+        # v6.1: гейт сходимости оси: центр сетки (argmin|r|) обязан совпадать
+        # с фитованным x* в ~2 du, иначе пары/проекции вокруг неверной оси
+        if ok and abs(x[i0] - x_star) > 2.5 * du:
+            ok = False
         if not ok:
             tay["fallbacks"] += 1
             self._center_regular(t_arr, s_arr, m_arr, r_arr,
@@ -619,6 +659,8 @@ class DoubleNullSolver:
             return bool(np.all(np.isfinite(coef)) and res < max_res
                         and boost < max_boost), res, boost
         e_ok, res_E, boost_E = fit_ok(cE, AE, ye)
+        # v6.1: диагностика гейтов E-фита (канал P2=0/tau-строк)
+        dbg_e = (float(boost_E), float(res_E))
         # нечётный фит O = P2 xi + P4o xi^3 + C/xi (паразитная 1/xi-мода)
         xo = np.concatenate([xi_p[fin], xi_m[fin]])
         yo = np.concatenate([O_pair[fin], -O_pair[fin]])
@@ -626,6 +668,7 @@ class DoubleNullSolver:
         cO, *_ = np.linalg.lstsq(AO, yo, rcond=None)
         P2, P4o, C_par = (float(v) for v in cO)
         o_ok, res_O, boost_O = fit_ok(cO, AO, yo)
+        dbg_o = (float(boost_O), float(res_O))
         # v6: буст-гейт В ТОЧКАХ ЗОНЫ. Базис [xi, xi^3, xi^5, 1/xi] ил-обусло-
         # влен: на данных кольца модель с канселем P2*xi - C/xi хороша, но
         # ВНУТРИ зоны P2*xi взрывается (трассировка v6: P2=1.4e9 при данных
@@ -635,8 +678,10 @@ class DoubleNullSolver:
         o_zone_val = abs(P2) * xi_min_z + abs(P4o) * xi_min_z ** 3
         o_zone_scale = max(float(np.max(np.abs(E_pair[fin])))
                            + abs(tay.get("t0", 0.0)), 1e-30)
+        dbg_zone = (float(o_zone_val), float(o_zone_scale))
         if o_ok and o_zone_val > 50.0 * o_zone_scale:
             o_ok = False
+            dbg_o = dbg_o + ("zone_boost",)
         if not (e_ok and o_ok):
             # фиты зоны не описывают данные (рестарт-строка/мусор):
             # НЕ пересобираем t,s из ряда — только точный центр t=s=t0;
@@ -755,7 +800,15 @@ class DoubleNullSolver:
             e_sane = (abs(E0_free) < 5.0 * (scale_e + abs(tay["t0"]))) \
                 and (abs(E0_free) < 1e2 * (abs(t0_pred) + scale_e))
             if np.isfinite(E0_free) and e_sane and jump < 0.75 * scale:
-                tay["t0"] = t0_pred + self.tay_relax * (E0_free - t0_pred)
+                t0_relax = t0_pred + self.tay_relax * (E0_free - t0_pred)
+                # v6.1: темповой кап t0: у CSS t0 ~ e^z растает ~1.5%/строку
+                # (z += 1 за ~эхо ~ 45 строк); удвоение за строку — мусор
+                # (трассировка: t0 x2/строку через E0_free-релаксацию)
+                t0_rate = 1.5 * abs(tay["t0"]) + 0.2 * scale_e + 1e-300
+                if abs(t0_relax - tay["t0"]) > t0_rate:
+                    t0_relax = tay["t0"] \
+                        + np.sign(t0_relax - tay["t0"]) * t0_rate
+                tay["t0"] = t0_relax
             elif (np.isfinite(t0_pred)
                   and abs(t0_pred - tay["t0"]) < 10.0 * (abs(tay["t0"]) + scale)):
                 tay["t0"] = t0_pred
@@ -782,7 +835,13 @@ class DoubleNullSolver:
                   and abs(d0_pred - tay["d0"]) < 10.0 * (abs(tay["d0"]) + scale_d)):
                 tay["d0"] = d0_pred
             # иначе: d0 заморожена (мусорная строка)
-        tay["P2"] = tay["P2"] if early else P2
+        tay["P2"] = P2 if (o_ok or not early) else tay["P2"]
+        # v6.1: early-accept — успешный фит рестарт-строки (свежая
+        # интерполяция, ЛУЧШИЕ данные стадии) раньше отбрасывался правилом
+        # early (tay_rows <= 6) -> реле P2=0 самозапиралось: перестройка
+        # зоны с P2=0 гасила нечётную структуру -> следующие фиты видели
+        # плоскость (res_O ~ 1.0) -> P2=0 навсегда -> ноль tau-строк.
+        # Теперь гейты (res/boost/zone-boost) сами решают годность фита.
         tay["W2"] = W2
         tay["v_prev"] = v_new
         tay["xstar_prev"] = x_star
@@ -805,6 +864,18 @@ class DoubleNullSolver:
         #     марш держит дискретную C1 (полная пересборка ряда p,q даёт
         #     C1 1e-8 -> 0.5 — проверено).
         do_m_row = True
+        # v6.1: гейт ПЕРЕСТРОЙКИ — при отказе фитов (мусорные пары) зона
+        # НЕ пересобирается из сырых парных средних (раньше E_zone считался
+        # безусловно и инжектировал мусор в зону даже при проваленных
+        # гейтах — канал смерти j=53-55, cross-пробник eps=1e-3). Зона
+        # держит предыдущую серию, центр — t=s=t0. Плюс темповой гейт:
+        # E0_free (экстраполяция данных зоны к xi=0) физически ~ t0;
+        # рост E0_free вдвое за строку — петля положительной обратной
+        # связи перестройки (t0: 0.065 -> 35 за 8 строк) — блокируется.
+        scale_e_row = max(float(np.max(np.abs(E_pair[fin]))), 1e-30)
+        do_ts_row = bool(
+            e_ok and o_ok
+            and abs(E0_free) < 3.0 * (abs(tay.get("t0", 0.0)) + scale_e_row))
         ks_all = np.arange(0, K + 1)
         ipa = i0 - ks_all
         ima = i0 + ks_all
@@ -820,7 +891,7 @@ class DoubleNullSolver:
         # кольца на рестарт-строках грязны: P2-фит дал 1.4e9 на чистых
         # данных из-за канселя с 1/xi; вторая итерация корректора усиливает
         # свой же мусор). Центр держится t=s=t0, c=d=d0; P2 — из реле.
-        if self.tay_do_ts and not early:
+        if self.tay_do_ts and not early and do_ts_row:
             for idx, xq, Ez in ((ipa, xia, E_zone), (ima, xib, E_zone)):
                 t_ser = Ez + O_of(xq)
                 s_ser = Ez - O_of(xq)
@@ -833,7 +904,7 @@ class DoubleNullSolver:
         # Это даёт точную компенсацию pt+qs -> O(xi) у центра (источник SC
         # регулярен), необходимую перемаршу t; C1 на краю зоны держится
         # тейпером (нулевой наклон на краю).
-        if self.tay_do_pq_series and not early:
+        if self.tay_do_pq_series and not early and do_ts_row:
             R1p_s = 2.0 * d0 * R1
             p_ser_a = (-(1.0 + chi) * 0.5 * R1 + 0.5 * R1p_s * xia
                        - 1.5 * (1.0 + chi) * R3 * xia ** 2)
@@ -916,6 +987,8 @@ class DoubleNullSolver:
             "tay_rows": int(tay["rows"]),
             "C0_gauge": float(abs(R1**2 - a2_c) / max(a2_c, 1e-300)),
             "res_r": res_r, "res_E": res_E, "res_O": res_O,
+            "dbg_E_boost_res": dbg_e, "dbg_O_boost_res": dbg_o,
+            "dbg_zone": dbg_zone,
             "pq_even_max": float(np.max(np.abs(pq_even))) if pq_even.size else 0.0,
         }
         tay["hist"].append(rec)
@@ -1015,11 +1088,16 @@ class DoubleNullSolver:
                               - 0.5 * du * (qsr_m[i - 1] + qsr_m[i])) \
                         / (1.0 + fac_m[i])
                     tq[i] = t_next
-                # T-cap вне зоны: физический |t| снаружи ~ O(max|t| зоны)
-                # (CSS-профиль), компаундинг мусора даёт 1e8+ — клипуется
+                # T-cap вне зоны: физический |t| снаружи ~ O(max|s| строки)
+                # (CSS-соотношение t(xi) = s(-xi) — зеркало ДОВЕРЕННОГО
+                # эволюционируемого поля s, а не зоны: кап на t_zone_max
+                # самоуничтожался при грязной зоне — канал j=54)
+                s_row_max = float(np.nanmax(np.abs(st["s"][np.isfinite(st["s"])]))) \
+                    if np.isfinite(st["s"]).any() else 0.0
                 t_zone_max = float(np.nanmax(np.abs(tq[i_a:i_b + 1]))) \
                     if Kzm > 0 else 0.0
-                cap_t = 20.0 * t_zone_max + 20.0 * abs(tay0.get("t0", 0.0)) + 10.0
+                cap_t = 20.0 * max(t_zone_max, s_row_max) \
+                    + 20.0 * abs(tay0.get("t0", 0.0)) + 10.0
                 tq[:i_a] = np.clip(tq[:i_a], -cap_t, cap_t)
                 tq[i_b + 1:] = np.clip(tq[i_b + 1:], -cap_t, cap_t)
                 tq = np.where(np.isfinite(tq), tq, st["t"])
@@ -1036,7 +1114,8 @@ class DoubleNullSolver:
             if (abs(last.get("v", 1e18) - v_new) <= 1.5 * self.dv
                     and last.get("tay_rows", 0) > 6
                     and np.isfinite(last.get("x_star", float("nan")))
-                    and np.isfinite(res_r) and res_r < 0.15):
+                    and np.isfinite(res_r) and res_r < 0.15
+                    and abs(float(x[i0]) - float(last["x_star"])) <= 2.5 * du):
                 x_star = float(last["x_star"])
         if x_star is None:
             return
@@ -1077,22 +1156,52 @@ class DoubleNullSolver:
             xi_sm = np.where(np.abs(xi_m) > 1e-12, xi_m, 1e-12)
             C_j = float("nan"); M1 = float("nan")
 
-            # --- (t,s): парная проекция чётности ---------------------------
+            # --- (t,s): CROSS или парная проекция чётности -----------------
             G_odd = 0.5 * (G[ip] - G[im])       # нечётный мусор в G
             D_even = 0.5 * (D[ip] + D[im])      # чётный мусор в D
             dG_ip = -w * G_odd                  # на im — зеркально (+w G_odd)
             dD_ip = -w * D_even
             dD_im = -w * D_even
-            # v6-гейт: правка не должна превышать половину локального поля
-            scale_G = float(np.max(np.abs(G[ip][fin]))) + float(np.max(np.abs(G[im][fin])))
-            scale_D = float(np.max(np.abs(D[ip][fin]))) + float(np.max(np.abs(D[im][fin])))
-            if scale_G > 0 and float(np.max(np.abs(dG_ip))) > 0.5 * scale_G:
-                dG_ip = np.zeros_like(dG_ip); gated.append("G")
-            if scale_D > 0 and float(np.max(np.abs(dD_ip))) > 0.5 * scale_D:
-                dD_ip = np.zeros_like(dD_ip); dD_im = np.zeros_like(dD_im)
-                gated.append("D")
-            if self.ann_do_cpar:
+            if getattr(self, "ann_cross", False):
+                # v6.1 CROSS: t(xi) := s(-xi) с тейпером w; s НЕ трогается.
+                # Точное CSS-соотношение: на CSS-профиле h(xi) = g(-xi),
+                # поэтому cross-assign удовлетворяет ОБЕИМ чётностям (G =
+                # s+s_mirror чётно, D = s_mirror-s нечётно) и не воюет с
+                # эволюцией s. Битва марша/проекции (канал j=19-20)
+                # устранена: марш t нужен только ВНУТРИ зоны (внутреннее
+                # ГУ t(i0)=s(i0)), снаружи t срежется к зеркалу s.
+                s_ip = s_arr[ip]; s_im = s_arr[im]
+                okc = np.isfinite(s_ip) & np.isfinite(s_im) & fin
+                dG_ip = np.where(okc, w * (s_im - t_arr[ip]), 0.0)
+                dG_im = np.where(okc, w * (s_ip - t_arr[im]), 0.0)
+                t_arr[ip] += dG_ip
+                t_arr[im] += dG_im
+                dD_ip = dG_ip
+                dD_im = dG_im
+                scale_G = float(np.max(np.abs(G[ip][fin]))) + float(np.max(np.abs(G[im][fin])))
+                scale_D = scale_G
+            else:
+                # v6-гейт: правка не должна превышать долю локального поля
+                # (ann_relax_gate: 0.5 консервативно, 2.5 — агрессивный режим;
+                # см. комментарий в __init__ — канал j=19-20)
+                scale_G = float(np.max(np.abs(G[ip][fin]))) + float(np.max(np.abs(G[im][fin])))
+                scale_D = float(np.max(np.abs(D[ip][fin]))) + float(np.max(np.abs(D[im][fin])))
+                gate = float(getattr(self, "ann_relax_gate", 0.5))
+                if scale_G > 0 and float(np.max(np.abs(dG_ip))) > gate * scale_G:
+                    dG_ip = np.zeros_like(dG_ip); gated.append("G")
+                if scale_D > 0 and float(np.max(np.abs(dD_ip))) > gate * scale_D:
+                    dD_ip = np.zeros_like(dD_ip); dD_im = np.zeros_like(dD_im)
+                    gated.append("D")
+                t_arr[ip] += 0.5 * (dG_ip + dD_ip)
+                s_arr[ip] += 0.5 * (dG_ip - dD_ip)
+                dG_im = -dG_ip
+                t_arr[im] += 0.5 * (dG_im + dD_im)
+                s_arr[im] += 0.5 * (dG_im - dD_im)
+            G_odd_max = float(np.max(np.abs(w * G_odd))) if scale_G > 0 else 0.0
+            D_even_max = float(np.max(np.abs(w * D_even))) if scale_D > 0 else 0.0
+            if self.ann_do_cpar and not getattr(self, "ann_cross", False):
                 # однородная мода марша O_hom ~ C/xi (нечётная): фит на кольце
+                # (в CROSS-режиме не нужна: t := mirror(s) заменяет C/xi)
                 O_pair = 0.25 * (D[ip] - D[im])             # = O(xi_p)
                 ok = fin & np.isfinite(O_pair)
                 if int(ok.sum()) >= max(len(ks) // 2, 4):
@@ -1101,7 +1210,7 @@ class DoubleNullSolver:
                     cO, *_ = np.linalg.lstsq(AO[ok], O_pair[ok], rcond=None)
                     C_j = float(cO[3])
                     corr_c = w * 2.0 * C_j / xi_sp
-                    if float(np.max(np.abs(corr_c))) <= 0.5 * max(scale_D, 1e-300):
+                    if float(np.max(np.abs(corr_c))) <= gate * max(scale_D, 1e-300):
                         dD_ip = dD_ip - corr_c
                         dD_im = dD_im - w * 2.0 * C_j / xi_sm
                     else:
@@ -1163,6 +1272,8 @@ class DoubleNullSolver:
         self._ann_hist.append({
             "v": float(v_new), "K_zone": int(K_zone), "K_A": int(K_A),
             "corr_ts_max": float(np.max(np.abs(dG_ip))),
+            "corr_D_max": float(np.max(np.abs(dD_ip))) if np.size(dD_ip) else 0.0,
+            "G_odd_max": G_odd_max, "D_even_max": D_even_max,
             "corr_m_max": float(abs(M1) * float(np.max(np.abs(xi_p))))
                 if np.isfinite(M1) else 0.0,
             "C_j": float(C_j), "M1": float(M1),
@@ -1351,13 +1462,25 @@ class DoubleNullSolver:
                                      c_arr=st_new["c"], d_arr=st_new["d"])
             elif self.heal_enabled:
                 self._center_heal(t_new, st_new["s"], st_new["m"], r_new)
-            # v6: кольцевая чётность ВНЕ зоны (после замыкания, до Phi —
-            # та же схема, что у патча: правки действуют на СЛЕДУЮЩУЮ строку)
-            if getattr(self, "annulus_parity", False):
-                self._annulus_parity(st_new, v_new)
+            # v6.1: ПОРЯДОК ИСПРАВЛЕН (канал j=19-20, трассировка eps=1e-3).
+            # Было: st_new["t"] алиасился с родительским массивом -> перемарш/
+            # чётность мутировали РОДИТЕЛЬСКИЙ t, результат выбрасывался
+            # (st_new["t"] = t_new), а Phi впитывал полувпрыск из мутированного
+            # родителя — сэндвич t портился, наружный t не чистился никогда.
+            # Теперь: t_new -> Phi (по чистому родителю) -> чётность/перемарш
+            # на НОВОМ t -> согласование Phi с правкой (дискретный сэндвич
+            # Phi_v = (t_old + t_new)/2 сохраняется точно).
             st_new["t"] = t_new
             st_new["Phi"] = st["Phi"] + 0.5 * dv * (st["t"] + t_new)
             st_new["Phi"][0] = float(self._edge_Phi(np.array([v_new]))[0])
+            if getattr(self, "annulus_parity", False):
+                t_pre = t_new.copy()
+                self._annulus_parity(st_new, v_new)
+                dT = st_new["t"] - t_pre
+                if np.isfinite(dT).all() and np.any(dT != 0.0):
+                    st_new["Phi"] += 0.5 * dv * dT
+                    st_new["Phi"][0] = float(
+                        self._edge_Phi(np.array([v_new]))[0])
             # ВАЖНО: w/d НЕ пересчитываем после марша t — иначе свежий мусор
             # марша через w ~ s*t и cumtrapz расползается в d по всему зеркалу
             # (w/d от предыдущей итерации — валидированное поведение).

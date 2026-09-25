@@ -1,0 +1,105 @@
+{
+  "config": {
+    "method": "raw-coefficient fixed point + nsolve multi-seed",
+    "kappa": 2,
+    "zero_flows": [
+      "dT0",
+      "dD0",
+      "ddQ",
+      "dR1",
+      "dW2",
+      "dR3",
+      "dP4",
+      "Q"
+    ]
+  },
+  "honest_notes": [
+    "nsolve не нашёл точку: сырая система может быть несовместной — это означало бы, что CSS-анзац уровня O6+ не имеет точного решения (усечение противоречиво)"
+  ],
+  "verify": {
+    "O1_form": "0",
+    "O2_form": "0",
+    "O3_form_gauge": "0",
+    "O5_form": "0"
+  },
+  "levels_found": {
+    "SC_xi4": {
+      "target": "P4'",
+      "verify": "-(16*P2(y)*R1(y)*R5(y) - 8*P2(y)*R3(y)**2 + 16*P4(y)*R1(y)*R3(y) - R1(y)**2*Derivative(P4(y), (y, 2)) + 2*R1(y)*R3(y)*Derivative(P2(y), y)*Derivative(W0(y), y) + 2*R1(y)*R5(y)*Derivative(P0(y), y)*Derivative(W0(y), y) - 2*R1(y)*Derivative(P0(y), y)*Derivative(R5(y), y) - 2*R1(y)*Derivative(P2(y), y)*Derivative(R3(y), y) - 2*R3(y)**2*Derivative(P0(y), y)*Derivative(W0(y), y) + 2*R3(y)*Derivative(P0(y), y)*Derivative(R3(y), y))*Derivative(W0(y), (y, 2))/(8*R1(y)**2*Derivative(W0(y), y)**2) - (16*P2(y)*R1(y)*R5(y) - 8*P2(y)*R3(y)**2 + 16*P4(y)*R1(y)*R3(y) - R1(y)**2*Derivative(P4(y), (y, 2)) + 2*R1(y)*R3(y)*Derivative(P2(y), y)*Derivative(W0(y), y) + 2*R1(y)*R5(y)*Derivative(P0(y), y)*Derivative(W0(y), y) - 2*R1(y)*Derivative(P0(y), y)*Derivative(R5(y), y) - 2*R1(y)*Derivative(P2(y), y)*Derivative(R3(y), y) - 2*R3(y)**2*Derivative(P0(y), y)*Derivative(W0(y), y) + 2*R3(y)*Derivative(P0(y), y)*Derivative(R3(y), y))*Derivative(R1(y), y)/(4*R1(y)**3*Derivative(W0(y), y)) + (16*P2(y)*R1(y)*Derivative(R5(y), y) - 16*P2(y)*R3(y)*Derivative(R3(y), y) + 16*P2(y)*R5(y)*Derivative(R1(y), y) + 16*P4(y)*R1(y)*Derivative(R3(y), y) + 16*P4(y)*R3(y)*Derivative(R1(y), y) - R1(y)**2*Derivative(P4(y), (y, 3)) + 2*R1(y)*R3(y)*Derivative(P2(y), y)*Derivative(W0(y), (y, 2)) + 2*R1(y)*R3(y)*Derivative(P2(y), (y, 2))*Derivative(W0(y), y) + 16*R1(y)*R3(y)*Derivative(P4(y), y) + 2*R1(y)*R5(y)*Derivative(P0(y), y)*Derivative(W0(y), (y, 2)) + 2*R1(y)*R5(y)*Derivative(P0(y), (y, 2))*Derivative(W0(y), y) + 16*R1(y)*R5(y)*Derivative(P2(y), y) + 2*R1(y)*Derivative(P0(y), y)*Derivative(R5(y), y)*Derivative(W0(y), y) - 2*R1(y)*Derivative(P0(y), y)*Derivative(R5(y), (y, 2)) - 2*R1(y)*Derivative(P0(y), (y, 2))*Derivative(R5(y), y) + 2*R1(y)*Derivative(P2(y), y)*Derivative(R3(y), y)*Derivative(W0(y), y) - 2*R1(y)*Derivative(P2(y), y)*Derivative(R3(y), (y, 2)) - 2*R1(y)*Derivative(P2(y), (y, 2))*Derivative(R3(y), y) - 2*R1(y)*Derivative(P4(y), (y, 2))*Derivative(R1(y), y) - 2*R3(y)**2*Derivative(P0(y), y)*Derivative(W0(y), (y, 2)) - 2*R3(y)**2*Derivative(P0(y), (y, 2))*Derivative(W0(y), y) - 8*R3(y)**2*Derivative(P2(y), y) - 4*R3(y)*Derivative(P0(y), y)*Derivative(R3(y), y)*Derivative(W0(y), y) + 2*R3(y)*Derivative(P0(y), y)*Derivative(R3(y), (y, 2)) + 2*R3(y)*Derivative(P0(y), (y, 2))*Derivative(R3(y), y) + 2*R3(y)*Derivative(P2(y), y)*Derivative(R1(y), y)*Derivative(W0(y), y) + 2*R5(y)*Derivative(P0(y), y)*Derivative(R1(y), y)*Derivative(W0(y), y) - 2*Derivative(P0(y), y)*Derivative(R1(y), y)*Derivative(R5(y), y) + 2*Derivative(P0(y), y)*Derivative(R3(y), y)**2 - 2*Derivative(P2(y), y)*Derivative(R1(y), y)*Derivative(R3(y), y))/(8*R1(y)**2*Derivative(W0(y), y)) - Derivative(P4(y), (y, 2))/4"
+    },
+    "UV_xi3": {
+      "target": "R5",
+      "verify": "0"
+    },
+    "C2_xi2": {
+      "target": "W2'",
+      "verify": "0"
+    },
+    "C2_xi3": {
+      "target": "W2'",
+      "verify": "0"
+    },
+    "TH_xi2": {
+      "target": "M5",
+      "verify": "0"
+    },
+    "C1_xi2": {
+      "target": "W2'",
+      "verify": "0"
+    },
+    "C1_xi3": {
+      "target": "W2'",
+      "verify": "0"
+    },
+    "Mdef_xi5": {
+      "target": "R3'",
+      "verify": "0"
+    }
+  },
+  "n_equations": 12,
+  "equations": {
+    "SC_xi4": "-2*D0h*P2h*R1h*R3h + 4*D0h*P4h*R1h**2 - 2*D0h*R1h*R5h*T0h + 2*D0h*R3h**2*T0h + 2*P2h*R1h*R3h - 4*P2h*R1h*R5h + 2*P2h*R3h**2 - 4*P4h*R1h*R3h - 2*R3h**2*T0h",
+    "UV_xi1": "R1h*W2h/2 - 3*R3h",
+    "UV_xi3": "M5h*R1h + 2*R1h**2*W2h**2 - 8*R1h*R3h*W2h - 10*R1h*R5h + 6*R3h**2",
+    "C2_xi1": "-2*D0h**2*R1h + R1h*T0h**2 - R1h*W2h + 3*R3h/2",
+    "C2_xi2": "-2*D0h*R1h*W2h - 3*D0h*R3h + 2*P2h*R1h*T0h - R1h*W2h + 3*R3h",
+    "C2_xi3": "-2*D0h*R1h*W2h - 2*D0h*R3h + P2h**2*R1h + 2*P2h*R1h*T0h + R3h*T0h**2 - 3*R3h*W2h + 5*R5h",
+    "TH_xi2": "-M5h*R1h - 2*P2h**2*R1h**2 + 4*P2h*R1h**2*T0h - 2*R1h**2*W2h**2 + 9*R1h*R3h*W2h - 9*R3h**2",
+    "C1_xi1": "-2*D0h**2*R1h + R1h*T0h**2 - R1h*W2h + 3*R3h/2",
+    "C1_xi2": "2*D0h*R1h*W2h + 3*D0h*R3h - 2*P2h*R1h*T0h + R1h*W2h - 3*R3h",
+    "C1_xi3": "-2*D0h*R1h*W2h - 2*D0h*R3h + P2h**2*R1h + 2*P2h*R1h*T0h + R3h*T0h**2 - 3*R3h*W2h + 5*R5h",
+    "Mdef_xi3": "-2*D0h**2*R1h",
+    "Mdef_xi5": "8*D0h**2*R1h**2*W2h - 4*D0h**2*R1h*R3h - 8*D0h*R1h*R3h + 2*M5h*R1h + 2*R1h**2*W2h**2 - 14*R1h*R3h*W2h + 10*R1h*R5h + 15*R3h**2"
+  },
+  "denominator_conditions": {
+    "SC_xi4": "R1h**2",
+    "UV_xi3": "2*R1h",
+    "TH_xi2": "2*R1h**2",
+    "Mdef_xi5": "2*R1h"
+  },
+  "solutions": [],
+  "pinning": {
+    "tau_pinned": false,
+    "verdict": "сырая система неподвижной точки НЕСОВМЕСТНА: ветвь UV_xi3 даёт T0^2=9/4 (tau=2.25), ветвь Mdef_xi5 даёт T0^2=9/16 (tau=0.5625), совместно — только тривиальное R3=0. Точного CSS-решения усечение O6+ не имеет: динамика источников W2/R3/P4 не замораживается.",
+    "branch_UV3_tau": 2.25,
+    "branch_Mdef5_tau": 0.5625,
+    "lsq_minimizer": {
+      "tau": 0.002500000000000001,
+      "T0": 0.05000000000000001,
+      "max_eq_residual": 0.0005941028195956908,
+      "values": {
+        "T0h": 0.05000000000000001,
+        "P2h": 0.0014957219926077462,
+        "D0h": -0.017183210216378923,
+        "W2h": 0.002582937240546597,
+        "R3h": 0.0006285238132896631,
+        "P4h": 2.722781518507405e-05,
+        "R5h": -1.5569727298392206e-05,
+        "M5h": 4.4792330671414174e-05
+      },
+      "note": "минимум невязки при T0>0 (тривиальная ветка T0=0 исключена границами)"
+    },
+    "note": "связывание амплитуды требует полного (неусечённого) анализа; непротиворечивый уровень — O1-O5 (один свободный параметр)"
+  },
+  "runtime_s": 14.2
+}

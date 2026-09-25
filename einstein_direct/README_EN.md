@@ -31,6 +31,7 @@ Termux, see §10) with Python ≥ 3.9, NumPy, SciPy, SymPy and pytest.
 14. [References](#14-references)
 15. [v5: the central Taylor patch — machine-derived center hierarchy, ODE-internal boundary data, spinor ladder](#15-v5-the-central-taylor-patch)
 16. [v6-fundamentals: convergence and repulsion from first principles (Thorne/MTW mass route, log-time tower, exact spectrum)](#16-v6-fundamentals-convergence-and-repulsion-from-first-principles)
+17. [v6.1: closing the depth-wall channels — stable stages, the Thorne link seen in data, and the O6+ verdict](#17-v61-closing-the-depth-wall-channels)
 
 ---
 
@@ -666,3 +667,110 @@ Linearization of the closed tower (levels 0–2, deep sources frozen):
   the identity is exact for solutions of the system).
 
 Run: `python3 center_modes.py` (~1 min; SymPy + one zoom chain).
+
+---
+
+## 17. v6.1: closing the depth-wall channels
+
+**Session goal.** v6 mapped the full v5 death chain and left one killer
+channel: the compounding of the raw t-march at rows j≈19–20 of a zoom stage.
+This session closed that channel with seven principled fixes (v6.1) and ran
+the O6+ numeric analysis. No fitting anywhere — every fix is a discrete
+image of an exact continuum statement.
+
+### 17.1 The seven fixes (each traced to a measured death mechanism)
+
+1. **Annulus wiring (aliasing bug).** In the v6 corrector `st_new["t"]`
+   aliased the parent row's array: the annulus re-march mutated the PARENT
+   t, its result was then discarded (`st_new["t"] = t_new`), and Phi absorbed
+   a half-weight injection from the mutated parent (broken t-sandwich).
+   Now: `t_new` → Phi (from the clean parent) → annulus acts on the NEW t →
+   Phi corrected consistently (`Phi += 0.5 dv Δt`), the discrete sandwich
+   `Phi_v = (t_old+t_new)/2` holds exactly.
+2. **d_edge feedback cap.** The edge Goursat data for omega
+   (`d_edge = (r_vv + κ/2 r t²)/(2q)`) is a SECOND derivative of interpolated
+   data — noise amplification ~1/dv² ≈ 3e8 at deep stages. Junk d_edge ≈
+   −1e4…−1e6 drove the edge q as q′ = 2dq (|2 dv d| > 1 already at d ≈ −6e3):
+   q oscillated through zero (0.53 → 0.14 → 0.0024 → −0.23 → +2.68 measured),
+   the small q made d_edge larger — a positive feedback loop that flipped
+   alpha² sign within one row. Physical scale of ω_v at the edge is O(1–30);
+   the cap |d_edge| ≤ 1e3 touches only junk and opens the loop.
+3. **AH trap filter.** The apparent-horizon detection accepted junk q-crossings
+   of the annulus (m crushed by the tower blend to ~1e-10) — false
+   "AH formed" stops with M_frozen ≈ 1e-10. Added the physical trapping
+   condition |2m/r − 1| < 0.5 at the crossing.
+4. **P2 early-accept.** A passing O-fit on a restart row (the BEST data of a
+   stage — fresh interpolation) was discarded by the early-rows rule
+   (tay_rows ≤ 6). The relayed P2 = 0 then self-locked: the zone rebuild with
+   P2 = 0 flattened the odd structure, subsequent fits saw a plane
+   (res_O ≈ 1.0 measured), P2 stayed 0 forever → zero tau-rows. Now the
+   res/boost/zone-boost gates alone decide fit validity.
+5. **Zone-rebuild gate.** The t,s series rebuild used RAW pair averages
+   unconditionally (the fit gates protected only the coefficients) — junk
+   pairs were injected into the zone. Plus a rate gate: E0_free (the ξ→0
+   extrapolation of the zone data) is physically ~t0; doubling per row was
+   a rebuild feedback loop (t0: 0.065 → 35 in 8 rows measured). The zone
+   now keeps its previous series on a failed/junk-fit row.
+6. **Cross mode: t := mirror(s).** The fundamental conflict: the raw march
+   crushed t outside the zone (t_out → 0.002 while s_out ≈ 1 — an O(1)
+   mirror-asymmetric pair), while the parity projection pulled t back to
+   O(1) — a march/projection battle (t_out: 0.002 → 3.0 → 1.3e3 in two rows).
+   The exact CSS relation t(ξ) = s(−ξ) resolves it: s is the trusted evolved
+   field (not touched), t is re-slaved to its mirror with the annulus taper.
+   This satisfies BOTH parities exactly and removes the march's C/ξ mode.
+7. **Two-sided r-fit + axis gate.** The x* intercept was fitted on the +r
+   side only — the cubic wave on the ring biased the intercept by ~10 du
+   (measured: x* − x[i0] = 10.5 du at the death stage) — every pair,
+   projection and cross-assign was built around a WRONG mirror axis and
+   injected O(1). Now the ring uses |r| (both sides; r(ξ) is odd, anchoring
+   the intercept), and a gate requires |x[i0] − x*| ≤ 2.5 du.
+
+### 17.2 Result: stable stages, record depth, the Thorne link in data
+
+- The j≈19–20 channel is CLOSED: eps = 1e-2 and 1e-3 runs end by
+  **v-exhaustion, not death** — 5 zooms, z = 9.10 / 9.35 (record; v6 died at
+  z = 3.83 after 2 zooms, v5 at z ≈ 4.2–4.5).
+- P2 unlocked → 40–181 tau-rows per stable run, continuous z_cont up to 7.9
+  (v6: exactly 1 tau-row).
+- **The Thorne link is visible in discrete data for the first time**
+  (eps = 1e-2): M3/(R1 t0²) = 0.6687 vs the exact 2/3 = 0.6667 — 0.3%
+  agreement (v6 empirical median was ≈ 1.6, i.e. the junk level).
+- |d0·s| → 4e-5 (CSS target 0) on the same run.
+
+### 17.3 Honest: tau* is still NOT measured
+
+- The W2 measurement is still crushed (W2/t0² → 0 against the CSS target
+  4/3): the (d−c) ring signal is buried under the cumtrapz-junk floor of d.
+  With W2 off the tower manifold, tau_row = t0⁴/(9 P2²) is an off-manifold
+  proxy — the tau* fits return garbage (honestly recorded in
+  `results/grid_machine_v6.json`).
+- Small eps (3e-4, 1e-4) and 3e-3 die at zoom 1 (z = 1.78): the near-critical
+  branch is the next fix cycle (v7: source dynamics W2/R3/P4 — the machine
+  is now stable enough to iterate on it).
+- BLAS is pinned to 1 thread in the campaign/probe modules (reproducibility:
+  multi-thread LAPACK reshuffles near-critical trajectories).
+
+### 17.4 The O6+ verdict (nsolve): no exact CSS point in the truncated tower
+
+`sympy_center_o6.py` machine-derived 7 verified source-dynamics levels
+(all residuals 0: SC[ξ⁴]→P4′, UV[ξ³]→R5, C2[ξ²,ξ³]/C1[ξ²,ξ³]→W2′,
+TH[ξ²]→M5, Mdef[ξ⁵]→R3′). `sympy_center_o6_nsolve.py` builds the fixed-point
+system from the RAW purified z-coefficients (the first attempt used the
+solved N-levels, which divide by dR1 — poles/zoo at the fixed point; lesson
+recorded). Verdict, machine-exact:
+
+- the O1–O5 subsystem is consistent: D0*=0, P2h*=T0/3, W2h*=(4/3)tau,
+  R3h*=(2/9)tau all DERIVE as equations — one free amplitude (tau), as in
+  §16;
+- adding UV[ξ³] forces **T0² = 9/4** (tau = 2.25); adding Mdef[ξ⁵] forces
+  **T0² = 9/16** (tau = 0.5625); together — only the trivial R3 = 0 branch.
+  The system is INCOMPATIBLE: the truncated tower has NO exact CSS fixed
+  point;
+- interpretation: the W2/R3/P4 sources never freeze — the source dynamics is
+  essential, and binding the amplitude requires the full (untruncated)
+  analysis. This is the quantitative form of the "+0.44 kappa deficit"
+  localization of §16.
+
+Run: `python3 sympy_center_o6_nsolve.py` (~1 min; `results/center_o6_nsolve.json`).
+Campaign: `python3 grid_machine_v6.py 1e-2,3e-3,1e-3,3e-4,1e-4`
+(`results/grid_machine_v6.json`).

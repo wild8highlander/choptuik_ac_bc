@@ -47,6 +47,12 @@ import os
 import sys
 import time
 
+# v6.1: однопоточный BLAS — воспроизводимость (многопоточный LAPACK
+# перетасовывает near-critical бисекцию/нуклеацию горизонта)
+for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
+           "NUMEXPR_NUM_THREADS"):
+    os.environ.setdefault(_v, "1")
+
 import numpy as np
 
 from zoom_solver import (ZoomRunner, echo_peaks, echo_period_from_peaks,
@@ -297,7 +303,8 @@ def lambda_plus_interp(tau, curve):
 # 5. КАМПАНИЯ
 # ==============================================================================
 def run_chunk(eps_list, n=800, max_zooms=14, annulus=True, ann_factor=10.0,
-              march_center=True, r_ah_du=8.0, verbose=False):
+              march_center=True, r_ah_du=8.0, ann_relax_gate=0.5,
+              ann_cross=True, verbose=False):
     """Прогнать eps-чанк, влить в OUT_PATH, пересчитать фиты, сохранить."""
     t_start = time.time()
     out = {
@@ -305,7 +312,8 @@ def run_chunk(eps_list, n=800, max_zooms=14, annulus=True, ann_factor=10.0,
                    "v_p": V_P, "sigma": SIGMA,
                    "annulus": annulus, "ann_factor": ann_factor,
                    "march_center": march_center, "r_ah_du": r_ah_du,
-                   "closure": "taylor (v5 patch) + annulus parity (v6)",
+                   "ann_relax_gate": ann_relax_gate, "ann_cross": ann_cross,
+                   "closure": "taylor (v5 patch) + annulus parity cross (v6.1)",
                    "eps_list_run": eps_list},
         "a_star": A_STAR,
         "a_star_source": "fixed-grid N=1600 bisection (validated, session 1)",
@@ -335,7 +343,8 @@ def run_chunk(eps_list, n=800, max_zooms=14, annulus=True, ann_factor=10.0,
         t0 = time.time()
         r = ZoomRunner(A=A, n=n, max_zooms=max_zooms, verbose=verbose,
                        annulus=annulus, ann_factor=ann_factor,
-                       march_center=march_center, r_ah_du=r_ah_du)
+                       march_center=march_center, r_ah_du=r_ah_du,
+                       ann_relax_gate=ann_relax_gate, ann_cross=ann_cross)
         d = r.run()
         zs = stage_z_map(d.stage_constraints)
         tau_rows = extract_tau_rows(r.tay_hist_all, zs)
