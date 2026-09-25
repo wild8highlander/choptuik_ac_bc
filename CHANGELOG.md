@@ -273,6 +273,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (quantum pi/30, echo = 7 quanta), mode-growth scaling fits, echo-harmonics
   fitter, numeric O1/O3 residuals along zoom chains.
 
+## [2.5.0] - 2026-09-25 (einstein_direct v6.1: depth-wall channels closed)
+
+### Fixed
+- **The j≈19-20 death channel CLOSED (7 principled fixes, all traced to
+  measured mechanisms — see einstein_direct/README_EN.md §17.1):**
+  annulus t-aliasing wiring (parent mutation + discarded re-march + broken
+  t-sandwich); d_edge positive-feedback cap (second derivative of
+  interpolated edge data, noise ~1/dv^2, alpha^2 sign flip per row); AH
+  trapping filter (|2m/r - 1| < 0.5 — no more false M_frozen ~ 1e-10 stops);
+  P2 early-accept (restart-row O-fit no longer discarded; the P2 = 0
+  self-lock broken); zone-rebuild gate + E0_free rate gate (no junk-pair
+  injection; t0 x2/row loop blocked); cross mode t := mirror(s) (the exact
+  CSS relation resolves the march/projection battle); two-sided r-ring fit
+  + axis gate (the one-sided fit biased x* by ~10 du and poisoned every
+  mirror pair).
+
+### Changed
+- Zoom stages end by v-exhaustion, not death: eps = 1e-2/1e-3 reach
+  z = 9.10/9.35 (record; v6 died at z = 3.83). P2 unlocked: 40-181 tau-rows
+  per stable run (v6: 1), z_cont up to 7.9.
+- **Thorne link seen in discrete data (first time): M3/(R1 t0^2) = 0.6687
+  vs exact 2/3 = 0.6667 (0.3%) at eps = 1e-2** (v6 empirical median ~ 1.6 =
+  junk level); |d0*s| -> 4e-5.
+- BLAS pinned to 1 thread in campaign/probe modules (reproducibility).
+
+### Added
+- `sympy_center_o6_nsolve.py` + `results/center_o6_nsolve.json`: the O6+
+  fixed point built from RAW purified z-coefficients (lesson: the solved
+  N-levels divide by dR1 -> poles/zoo at the fixed point). Machine-exact
+  verdict: the O1-O5 subsystem derives D0*=0, P2h*=T0/3, W2h*=(4/3)tau,
+  R3h*=(2/9)tau as equations (one free amplitude); UV[xi^3] forces
+  T0^2 = 9/4, Mdef[xi^5] forces T0^2 = 9/16, together only trivial R3 = 0 —
+  **the truncated tower has NO exact CSS fixed point; the W2/R3/P4 source
+  dynamics never freezes** (the quantitative form of the +0.44 kappa
+  deficit localization).
+- `probe_v6_channel.py`: per-row death-tracing probe (fields, tower state,
+  annulus gates, d_edge) — the debugging instrument behind §17.1.
+
+### Honest
+- **tau* NOT measured (percent level not reached):** W2/t0^2 -> 0 (target
+  4/3) — the (d-c) ring signal is buried under the d-field junk floor;
+  tau_row is an off-manifold proxy. Near-critical eps (3e-4, 1e-4, 3e-3)
+  still die at zoom 1 (chaos-sensitive 2m/r trigger). Next cycle (v7):
+  source-dynamics measurement (W2/R3/P4), near-critical branch.
+
 ## [2.4.0] - 2026-09-25 (einstein_direct v6-fundamentals)
 
 ### Added
