@@ -83,6 +83,7 @@ class ZoomRunner:
         self.dbg = None                 # опциональный колбэк диагностики строк
         self.diag = ZoomDiag()
         self._z_acc = 0.0
+        self.tay_hist_all = []          # v5: тейлор-гистограммы ВСЕХ стадий
         # трекинг DSS
         self.track = {"v": [], "mx": [], "Q": [], "L": [], "width": [],
                       "u_focus": [], "du": [], "z": [], "w_cells": []}
@@ -100,18 +101,28 @@ class ZoomRunner:
                                      u0=u_span[0], v0=v_span[0])
             self.sol = DoubleNullSolver(cfg, data)
         else:
+            # сохранить тейлор-гистограмму родительской стадии (v5)
+            old = getattr(self, "sol", None)
+            if old is not None and getattr(old, "_tay", None):
+                self.tay_hist_all.extend(
+                    dict(rec, stage=self.diag.zooms) for rec in old._tay["hist"])
             self.sol = DoubleNullSolver.from_fields(
                 cfg, np.linspace(*u_span, self.n), np.linspace(*v_span, self.n),
                 row, edge["r"], edge["Phi"], edge["t"])
-            # --- v3: регулярное замыкание центра на зум-стадиях ------------
-            # Связка наклонов s1-t1 = -2a (вместо клэмпа a=0), отброс
-            # паразитной 1/r-моды фитом O = a r + C/r, масса m ~ r^3 в зоне.
-            # R_heal = 5 du_parent — унаследованная клэмп-зона родителя:
-            # зона реконструкции R_zone = max(8 du_new, 1.2 R_heal) покрывает
-            # интерполяционный мусор рестарт-строки.
-            self.sol.center_closure = "regular"
-            self.sol.reg_m_rebuild = True
-            self.sol.reg_pq_project = True
+            # --- v5: центральный Тейлор-патч на зум-стадиях ---------------
+            # Коэффициенты регулярного разложения (t0, R1, d0) эволюционируют
+            # по машино-выведенным ОДУ центра (sympy_center.py) как внутреннее
+            # ГУ (подход Чоптюка 1993); зона пересобирается из ряда Тейлора;
+            # чётная паразита (p+q) — источник взрыва E-моды — проектируется.
+            # Состояние пересевается на каждой рестарт-строке (фиты кольца).
+            self.sol.center_closure = "taylor"
+            self.sol._tay = None            # ленивый пересев на этой стадии
+            self.sol.reg_m_rebuild = False  # (ветка regular не используется)
+            self.sol.reg_pq_project = False
+            # v5: марш t ОТ центра наружу на обеих сторонах (мода 1/r
+            # затухает наружу, внутреннее ГУ t(i0)=s(i0) задано патчем) —
+            # снижает зеркальную асимметрию сырого марша вне зоны
+            self.sol.march_from_center = True
             if du_parent is not None:
                 self.sol.R_heal = 5.0 * du_parent
         self.u = self.sol.u
@@ -219,15 +230,24 @@ class ZoomRunner:
                     f = q0 / (q0 - q1) if q0 != q1 else 0.0
                     m_ah = st_new["m"][i] * (1 - f) + st_new["m"][i + 1] * f
                     r_ah = st_new["r"][i] * (1 - f) + st_new["r"][i + 1] * f
-                    self.m_ah_hist.append((v_now, m_ah))
-                    if m_ah > diag.m_ah_max and np.isfinite(m_ah):
-                        diag.m_ah_max = m_ah
-                    if m_ah > 0.2 * diag.m_ah_max and np.isfinite(m_ah):
+                    # санитарность (как в базовом солвере): масса горизонта
+                    # не может превышать полную массу строки m_out; иначе
+                    # мусорные всплески дают M_max ~ 1e2 (ядовитый фит gamma)
+                    phys_idx = np.where(phys)[0]
+                    m_out = float(st_new["m"][phys_idx[-1]]) if phys_idx.size else 0.0
+                    sane = (np.isfinite(m_ah) and 0 < m_ah < 1.2 * max(m_out, 1e-12)
+                            and r_ah > 0)
+                    if sane:
+                        self.m_ah_hist.append((v_now, m_ah))
+                        if m_ah > diag.m_ah_max:
+                            diag.m_ah_max = m_ah
                         self._ah_rows += 1
                     else:
                         self._ah_rows = 0
-                    # первый устойчивый горизонт -> замораживаем массу
-                    if self._m_ah_frozen == 0.0 and self._ah_rows >= 6:
+                    # первый устойчивый горизонт (2 строки подряд) ->
+                    # заморозка массы (6 строк слишком долго на глубоких
+                    # стадиях: стоп 2m/r>2 обгоняет заморозку)
+                    if self._m_ah_frozen == 0.0 and self._ah_rows >= 2:
                         self._m_ah_frozen = m_ah
                         diag.m_ah = m_ah
                         diag.r_ah = r_ah
@@ -266,6 +286,11 @@ class ZoomRunner:
         diag.stopped = stop_reason or "completed"
         diag.runtime = time.time() - t0
         diag.z_final = self._z_acc
+        # v5: сохранить гистограмму Тейлор-патча ПОСЛЕДНЕЙ стадии
+        old = getattr(self, "sol", None)
+        if old is not None and getattr(old, "_tay", None):
+            self.tay_hist_all.extend(
+                dict(rec, stage=self.diag.zooms) for rec in old._tay["hist"])
         for k in FIELDS:
             setattr(self.sol, k, self.st[k])
         self.sol.v_final = self.v[min(self.j, self.n - 1)]

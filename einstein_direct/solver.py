@@ -181,7 +181,7 @@ class DoubleNullSolver:
         #   Паразитная однородная мода марша t: t_hom ~ C/r (1/r к центру) —
         #   отделяется от регулярной a*r двухпараметрическим фитом
         #   O(r) = a r + C/r на кольце и ОТБРАСЫВАЕТСЯ.
-        self.center_closure = "clamp"   # "clamp" (v2) | "regular" (v3)
+        self.center_closure = "clamp"   # "clamp" (v2) | "regular" (v3) | "taylor" (v5)
         self.reg_zone_du = 8.0          # радиус зоны реконструкции, клеток du
         self.reg_annulus = 4.0          # кольцо фита: [R_zone, reg_annulus*R_zone]
         self.reg_m_rebuild = False      # перестройка m ~ r^3 в зоне (зум-стадии)
@@ -190,6 +190,23 @@ class DoubleNullSolver:
         # эволюционный m в центральной клетке не согласован с r ~ 1e-14,
         # что давало всплески w = a2 m / (2 r_safe^3) ~ 1e20 и взрыв d)
         self.r_floor = 0.5 * self.du
+        # --- v5: центральный Тейлор-патч (closure="taylor") -----------------
+        # Машино-выведенная иерархия центра (sympy_center.py, верифицирована):
+        #   (O1) t0' = 3 P2 - 2 (R1'/R1) t0 = 3 P2 - 4 d0 t0
+        #   (O2) R1' = 2 d0 R1
+        #   (O3) d0' = M3/R1 + W2 - kappa t0^2
+        #   калибровка регулярности: (1-chi^2) R1^2 = alpha2(0)
+        # Коэффициенты (t0, R1, d0) ЭВОЛЮЦИОНИРУЮТ как внутреннее ГУ (Чоптюк
+        # 1993), P2/E2/W2/M3/R3/x*/chi измеряются фитом на чистом кольце;
+        # зона |r| <= R_zone пересобирается ИЗ РЯДА Тейлора (без клэмпа и
+        # без чётного усреднения сырого центра).
+        self._tay = None                # состояние патча (ленивая инициализация)
+        self.tay_relax = 0.5            # релаксация t0/d0 к фит-значению
+        self.tay_verbose = False
+        # A/B-флаги блоков патча (бисекция C1-всплеска)
+        self.tay_do_ts = True           # (a) пересборка t,s из E/O
+        self.tay_do_m = True            # (b) пересборка m = M3 xi^3
+        self.tay_do_pq = True           # (c) проекция чётной части (p+q)
         self._init_fields()
 
     # ------------------------------------------------------------------ init
@@ -446,6 +463,309 @@ class DoubleNullSolver:
             c_arr[im] -= w * 0.5 * e0
             d_arr[im] -= w * 0.5 * e0
 
+    # ------------------------------------------------------------------
+    def _center_taylor(self, t_arr, st, v_new):
+        """v5: ЦЕНТРАЛЬНЫЙ ТЕЙЛОР-ПАТЧ (подход Чоптюка 1993).
+
+        Коэффициенты регулярного разложения у центра ЭВОЛЮЦИОНИРУЮТ по
+        машино-выведенным ОДУ (sympy_center.py, все формы верифицированы):
+            (O1) t0' = 3 P2 - 4 d0 t0          [SC, порядок xi^0]
+            (O2) R1' = 2 d0 R1                 [C2/C1, порядок xi^0]
+            (O3) d0' = M3/R1 + W2 - kappa t0^2 [TH, порядок xi^0]
+        и служат ВНУТРЕННИМ ГУ; зона |r| <= R_zone пересобирается из ряда:
+            E(xi) = t0 + E2 xi^2 + E4 xi^4        (чётная, скалярная часть)
+            O(xi) = P2 xi + P4o xi^3              (нечётная, СПИНОРНАЯ часть)
+            t = E + O,  s = E - O,  r = R1 xi + R3 xi^3,
+            p = -(1+chi) R1/2 + (R1'/2) xi - (3(1+chi)/2) R3 xi^2,
+            q = +(1-chi) R1/2 + (R1'/2) xi + (3(1-chi)/2) R3 xi^2,
+            m = M3 xi^3,
+        где xi = x - x*(v), x = (v-u)/2, chi = dx*/dy (дрейф центра).
+        P2, E2, E4, W2, M3, R3, x* измеряются фитами на чистом кольце
+        [R_zone, 4 R_zone] (как в v3.2), чётная паразита (p+q) в зоне
+        уничтожается проекцией (источник взрыва E: E_v = -(p+q)E/r).
+
+        Отличие от v3.2 "regular": E(0) = t0 — эволюционирующая величина,
+        а не шумное парное среднее сырого центра; зона — точный ряд, а не
+        тейперная смесь; (p+q) — точная проекция с учётом смещения x*.
+        При отказе фит-ов — откат к v3.2 "regular" на этой строке.
+        """
+        du = self.du
+        r_arr = st["r"]; s_arr = st["s"]; p_arr = st["p"]; q_arr = st["q"]
+        m_arr = st["m"]; a2_arr = st["alpha2"]; c_arr = st["c"]; d_arr = st["d"]
+        u = self.u
+        n = len(r_arr)
+        x = (v_new - u) / 2.0
+        r_abs = np.abs(r_arr)
+        i0 = int(np.argmin(r_abs))
+        if r_abs[i0] > 3.0 * du:
+            return
+        ring_lo = max(self.reg_zone_du * du, 1.2 * float(getattr(self, "R_heal", 0.0)))
+        ring_hi = self.reg_annulus * ring_lo
+        # ЗОНА В КЛЕТКАХ: xi = k*du/2 (x меняется на du/2 за клетку), поэтому
+        # |xi| <= ring_lo соответствует k <= 2*ring_lo/du (фактор 2!).
+        K = int(round(2.0 * ring_lo / du))
+        # запас под краевое кольцо m3 (k = K+1..K+3 с ОБЕИХ сторон)
+        K = min(K, i0 - 4, n - 5 - i0)
+        if K < 4:
+            return
+        if self._tay is None:
+            self._tay = {"init": False, "t0": 0.0, "R1": 1.0, "d0": 0.0,
+                         "P2": 0.0, "x_prev": None, "v_prev": None,
+                         "xstar_prev": None, "hist": [], "fallbacks": 0, "rows": 0}
+        tay = self._tay
+        tay["rows"] += 1
+
+        # --- 1. фит r на кольце (физическая сторона): R1, x*, R3 ----------
+        ringm = (r_arr > ring_lo) & (r_arr < ring_hi) & (np.arange(n) <= i0)
+        nr = int(ringm.sum())
+        ok = nr >= 6
+        R1 = R3 = x_star = chi = 0.0
+        res_r = float("nan")
+        if ok:
+            xr = x[ringm]; rr = r_arr[ringm]
+            A1 = np.stack([xr, np.ones_like(xr)], axis=1)
+            c1, *_ = np.linalg.lstsq(A1, rr, rcond=None)
+            if np.isfinite(c1).all() and abs(c1[0]) > 1e-8:
+                x_star = float(-c1[1] / c1[0])
+                xi_r = xr - x_star
+                A2m = np.stack([xi_r, xi_r**3], axis=1)
+                c2, *_ = np.linalg.lstsq(A2m, rr, rcond=None)
+                R1, R3 = float(c2[0]), float(c2[1])
+                res_r = float(np.max(np.abs(rr - A2m @ c2)) / max(np.max(np.abs(rr)), 1e-30))
+                ok = np.isfinite(R1) and np.isfinite(R3) and R1 > 0.2 and res_r < 0.3
+        if not ok:
+            tay["fallbacks"] += 1
+            self._center_regular(t_arr, s_arr, m_arr, r_arr,
+                                 p_arr=p_arr, q_arr=q_arr,
+                                 c_arr=c_arr, d_arr=d_arr)
+            return
+
+        # --- 2. дрейф центра chi ------------------------------------------
+        if tay["xstar_prev"] is not None and tay["v_prev"] is not None:
+            u_star = v_new - 2.0 * x_star
+            u_prev = tay["v_prev"] - 2.0 * tay["xstar_prev"]
+            dvv = v_new - tay["v_prev"]
+            duo = u_star - u_prev
+            den = dvv + duo
+            if abs(den) > 1e-14:
+                chi = (dvv - duo) / den
+            chi = float(np.clip(chi, -0.45, 0.45))
+        tay["xstar_prev"] = x_star
+        tay["v_prev"] = v_new
+
+        # --- 3. парные фиты в зоне (k = 1..K, обе стороны, точные xi) -----
+        ks = np.arange(1, K + 1)
+        ip = i0 - ks
+        im = i0 + ks
+        xi_p = x[ip] - x_star
+        xi_m = x[im] - x_star
+        G = t_arr + s_arr          # = 2E + нечётный мусор
+        D = t_arr - s_arr          # = 2O + чётный мусор
+        E_pair = 0.25 * (G[ip] + G[im])          # чётная часть E(xi)
+        O_pair = 0.25 * (D[ip] - D[im])          # нечётная часть O(xi)
+        fin = np.isfinite(E_pair) & np.isfinite(O_pair) \
+            & np.isfinite(xi_p) & np.isfinite(xi_m)
+        if int(fin.sum()) < K // 2:
+            tay["fallbacks"] += 1
+            self._center_regular(t_arr, s_arr, m_arr, r_arr,
+                                 p_arr=p_arr, q_arr=q_arr,
+                                 c_arr=c_arr, d_arr=d_arr)
+            return
+        # чётный фит E = E0 + E2 xi^2 + E4 xi^4 (обе стороны, точные xi)
+        xe = np.concatenate([xi_p[fin], xi_m[fin]])
+        ye = np.concatenate([E_pair[fin], E_pair[fin]])
+        AE = np.stack([np.ones_like(xe), xe**2, xe**4], axis=1)
+        cE, *_ = np.linalg.lstsq(AE, ye, rcond=None)
+        E0_free, E2, E4 = (float(v) for v in cE)
+        res_E = float(np.max(np.abs(ye - AE @ cE)) / max(np.max(np.abs(ye)), 1e-30))
+        # НЕРАЗРЫВНОСТЬ/САНИТАРНОСТЬ фитов (защита от впрыска мусора):
+        # модель не должна превышать данные и должна их описывать
+        def fit_ok(coef, Amat, ydat, max_boost=50.0, max_res=0.30):
+            model = Amat @ coef
+            res = float(np.max(np.abs(ydat - model)) / max(np.max(np.abs(ydat)), 1e-30))
+            boost = float(np.max(np.abs(model)) / max(np.max(np.abs(ydat)), 1e-30))
+            return bool(np.all(np.isfinite(coef)) and res < max_res
+                        and boost < max_boost), res, boost
+        e_ok, res_E, boost_E = fit_ok(cE, AE, ye)
+        # нечётный фит O = P2 xi + P4o xi^3 + C/xi (паразитная 1/xi-мода)
+        xo = np.concatenate([xi_p[fin], xi_m[fin]])
+        yo = np.concatenate([O_pair[fin], -O_pair[fin]])
+        AO = np.stack([xo, xo**3, 1.0 / np.where(np.abs(xo) > 1e-14, xo, 1e-14)], axis=1)
+        cO, *_ = np.linalg.lstsq(AO, yo, rcond=None)
+        P2, P4o, C_par = (float(v) for v in cO)
+        o_ok, res_O, boost_O = fit_ok(cO, AO, yo)
+        if not (e_ok and o_ok):
+            # фиты зоны не описывают данные (рестарт-строка/мусор):
+            # НЕ пересобираем t,s из ряда — только точный центр t=s=t0;
+            # P2 для ОДУ не обновляем мусором
+            if not o_ok:
+                P2 = tay.get("P2", 0.0)
+                P4o = 0.0
+                C_par = float("nan")
+            E2 = E4 = 0.0
+            res_E = res_O = float("nan")
+        # (c+d): чётная часть -> d0; (d-c): нечётная -> W2
+        cd = c_arr + d_arr
+        dc = d_arr - c_arr
+        yc = np.concatenate([cd[ip[fin]], cd[im[fin]]])
+        AC = np.stack([np.ones_like(xe), xe, xe**2, xe**3], axis=1)
+        cC, *_ = np.linalg.lstsq(AC, yc, rcond=None)
+        d0_fit = float(0.5 * cC[0])
+        yw = np.concatenate([dc[ip[fin]], -dc[im[fin]]])
+        AW = np.stack([xo, xo**3], axis=1)
+        cW, *_ = np.linalg.lstsq(AW, yw, rcond=None)
+        W2 = float(cW[0])
+        # M3: фит m/xi^3 = M3 + M5 xi^2 на кольце [ring_lo, 2 ring_lo]
+        ring_m3 = (r_arr > ring_lo) & (r_arr < 2.0 * ring_lo) & (np.arange(n) <= i0)
+        M3 = 0.0
+        if int(ring_m3.sum()) >= 4:
+            xm3 = x[ring_m3] - x_star
+            ym3 = m_arr[ring_m3] / np.where(np.abs(xm3) > 1e-14, xm3, 1e-14)**3
+            finm = np.isfinite(ym3) & (ym3 > -1e6) & (ym3 < 1e6)
+            if int(finm.sum()) >= 4:
+                AM3 = np.stack([np.ones_like(xm3[finm]), xm3[finm]**2], axis=1)
+                cM, *_ = np.linalg.lstsq(AM3, ym3[finm], rcond=None)
+                M3_cand = float(cM[0])
+                # санитарность: m на краю зоны после пересборки не должна
+                # превышать сырую массу кольца (иначе мусорный M3 ядовит)
+                m_ring_max = float(np.max(np.abs(m_arr[ring_m3])))
+                if (np.isfinite(M3_cand)
+                        and abs(M3_cand) * ring_lo**3 < 10.0 * max(m_ring_max, 1e-30)):
+                    M3 = M3_cand
+
+        # --- 4. эволюция коэффициентов (ОДУ O1-O3, релаксация) -------------
+        # dv_ode считается ДО обновления v_prev (иначе всегда 0)
+        dv_ode = (v_new - tay["v_prev"]) if (tay["v_prev"] is not None
+                                             and tay["init"]) else self.dv
+        if not tay["init"]:
+            tay["init"] = True
+            scale_e0 = max(float(np.max(np.abs(E_pair))), 1e-30)
+            tay["t0"] = E0_free if abs(E0_free) < 1e2 * scale_e0 else 0.0
+            scale_cd0 = max(float(np.max(np.abs(yc))), 1e-30)
+            tay["d0"] = d0_fit if abs(d0_fit) < 1e2 * scale_cd0 else 0.0
+            tay["R1"] = R1
+        else:
+            # санитарные масштабы данных строки (абсолютная защита от скачков)
+            scale_e = max(float(np.max(np.abs(E_pair[fin]))), 1e-30)
+            scale_cd = max(float(np.max(np.abs(yc))), 1e-30)
+            # O1: t0' = 3 P2_prev - 4 d0 t0 (предиктор) + релаксация к E0_free
+            t0_pred = tay["t0"] + dv_ode * (3.0 * tay["P2"] - 4.0 * tay["d0"] * tay["t0"])
+            jump = abs(E0_free - t0_pred)
+            scale = max(abs(t0_pred), abs(E0_free), 1e-12)
+            e_sane = abs(E0_free) < 1e2 * (abs(t0_pred) + scale_e)
+            if np.isfinite(E0_free) and e_sane and jump < 0.75 * scale:
+                tay["t0"] = t0_pred + self.tay_relax * (E0_free - t0_pred)
+            elif np.isfinite(t0_pred):
+                tay["t0"] = t0_pred
+            # O2: R1' = 2 d0 R1 — R1 хранится как ДИАГНОСТИКА (фит),
+            # ОБРАТНОЙ ЗАПИСИ p(i0) через R1 НЕТ (петля обратной связи:
+            # фит искажённого патчем r-профиля -> p(i0) -> новый перекос r)
+            tay["R1"] = R1
+            # O3: d0' = M3/R1 + W2 - kappa t0^2 + релаксация к d0_fit
+            d0_pred = tay["d0"] + dv_ode * (M3 / R1 + W2 - KAPPA * tay["t0"] ** 2)
+            jump_d = abs(d0_fit - d0_pred)
+            scale_d = max(abs(d0_pred), abs(d0_fit), 1e-12)
+            d_sane = abs(d0_fit) < 1e2 * (abs(d0_pred) + scale_cd)
+            if np.isfinite(d0_fit) and d_sane and jump_d < 0.75 * scale_d:
+                tay["d0"] = d0_pred + self.tay_relax * (d0_fit - d0_pred)
+            elif np.isfinite(d0_pred):
+                tay["d0"] = d0_pred
+        tay["P2"] = P2
+        tay["v_prev"] = v_new
+        tay["xstar_prev"] = x_star
+        t0 = tay["t0"]
+        d0 = tay["d0"]
+        R1p = 2.0 * d0 * R1                       # O2: R1' = 2 d0 R1
+        M3_series = (R1p ** 2 - 6.0 * R1 * R3) / (2.0 * R1) + R1 * W2
+
+        # --- 5. пересборка зоны (v5-минимум, объём v3.2 + upgrades) --------
+        # (a) t, s: чётная часть E — парные средние k=1..K (полная структура,
+        #     без экстраполяционной ошибки фита -> C1 не ломается); в центре
+        #     E(0) = t0 — ЭВОЛЮЦИОНИРУЮЩАЯ величина (ОДУ O1), а не шумное
+        #     парное среднее сырого центра (главное отличие от v3.2);
+        #     нечётная часть O = P2 xi + P4o xi^3 — точный ряд (C/xi-мода
+        #     отделяется фитoм и ОТБРАСЫВАЕТСЯ);
+        # (b) m = M3 xi^3, M3 — медиана m/xi^3 на краевом кольце (v3.2);
+        # (c) чётная паразита (p+q) — источник взрыва E-моды — проекция с
+        #     учётом смещения x* (иначе вбрасывается константа R1' * delta);
+        # (d) p, q, r, a2 НЕ трогаются (кроме точки i0 для c, d) — сырой
+        #     марш держит дискретную C1 (полная пересборка ряда p,q даёт
+        #     C1 1e-8 -> 0.5 — проверено).
+        ks_all = np.arange(0, K + 1)
+        ipa = i0 - ks_all
+        ima = i0 + ks_all
+        xia = x[ipa] - x_star
+        xib = x[ima] - x_star
+        gamma = (1.0 - (ks_all / float(K)) ** 2) ** 2   # гладкий тейпер v3.2:
+        # нулевая производная на краю зоны; ступенчатый гамма-рамп (0.5/0)
+        # даёт corr/du ~ O(0.1) в p_u -> всплеск C1 (проверено)
+        O_of = lambda xq: P2 * xq + P4o * xq**3
+        E_zone = 0.25 * ((t_arr[ipa] + s_arr[ipa]) + (t_arr[ima] + s_arr[ima]))
+        E_zone[0] = t0                            # якорь ОДУ O1
+        if self.tay_do_ts:
+            for idx, xq, Ez in ((ipa, xia, E_zone), (ima, xib, E_zone)):
+                t_ser = Ez + O_of(xq)
+                s_ser = Ez - O_of(xq)
+                t_arr[idx] += gamma * (t_ser - t_arr[idx])
+                s_arr[idx] += gamma * (s_ser - s_arr[idx])
+        # (b) масса: m = M3 xi^3 (краевое кольцо), с тейпером
+        ks_e = np.arange(K + 1, K + 4)
+        ipm, imm = i0 - ks_e, i0 + ks_e
+        cand = np.concatenate([m_arr[ipm] / np.where(np.abs(r_arr[ipm]) > 1e-14,
+                                                     r_arr[ipm], 1e-14) ** 3,
+                               m_arr[imm] / np.where(np.abs(r_arr[imm]) > 1e-14,
+                                                     r_arr[imm], 1e-14) ** 3])
+        cand = cand[np.isfinite(cand)]
+        M3 = float(np.median(cand)) if cand.size >= 2 else M3
+        if self.tay_do_m:
+            m_ser = M3 * xia**3
+            m_arr[ipa] += gamma * (m_ser - m_arr[ipa])
+            m_arr[ima] += gamma * (M3 * xib**3 - m_arr[ima])
+        # (c) проекция чётной части (p+q) в зоне (k=1..K): 4-параметровый фит
+        # учитывает смещение x*; коррекция пополам на p и q, p-q сохраняется
+        ks1 = np.arange(1, K + 1)
+        ip1 = i0 - ks1
+        im1 = i0 + ks1
+        pq_even = np.zeros(2 * K)
+        if self.tay_do_pq:
+            pq = p_arr + q_arr
+            xpq = np.concatenate([x[ip1] - x_star, x[im1] - x_star])
+            ypq = np.concatenate([pq[ip1], pq[im1]])
+            APQ = np.stack([np.ones_like(xpq), xpq, xpq**2, xpq**3], axis=1)
+            cPQ, *_ = np.linalg.lstsq(APQ, ypq, rcond=None)
+            pq_even = cPQ[0] + cPQ[2] * xpq**2        # чётная часть (паразита)
+            corr = 0.5 * np.concatenate([gamma[1:], gamma[1:]]) * pq_even
+            sum_pq = pq[ip1] - corr[:K]
+            dif_pq = pq[ip1] - 2.0 * q_arr[ip1]       # p - q сохраняем
+            p_arr[ip1] = 0.5 * (sum_pq + dif_pq)
+            q_arr[ip1] = 0.5 * (sum_pq - dif_pq)
+            sum_pq = pq[im1] - corr[K:]
+            dif_pq = pq[im1] - 2.0 * q_arr[im1]
+            p_arr[im1] = 0.5 * (sum_pq + dif_pq)
+            q_arr[im1] = 0.5 * (sum_pq - dif_pq)
+        # центральная точка: t = s = t0, c = d = d0 (только эти; p, q, r,
+        # a2 в точке i0 НЕ трогаются — защита от петли обратной связи)
+        t_arr[i0] = t0
+        s_arr[i0] = t0
+        c_arr[i0] = d0
+        d_arr[i0] = d0
+
+        # --- 6. диагностика -------------------------------------------------
+        a2_c = 0.5 * (a2_arr[i0 - 1] + a2_arr[i0 + 1]) if i0 >= 1 and i0 < n - 1 \
+            else float(a2_arr[i0])
+        rec = {
+            "v": float(v_new), "t0": float(t0), "R1": float(R1), "d0": float(d0),
+            "P2": float(P2), "W2": float(W2), "M3": float(M3),
+            "M3_series": float(M3_series), "x_star": float(x_star), "chi": float(chi),
+            "E0_free": float(E0_free), "C_par": float(C_par),
+            "C0_gauge": float(abs(R1**2 - a2_c) / max(a2_c, 1e-300)),
+            "res_r": res_r, "res_E": res_E, "res_O": res_O,
+            "pq_even_max": float(np.max(np.abs(pq_even))) if pq_even.size else 0.0,
+        }
+        tay["hist"].append(rec)
+        if len(tay["hist"]) > 512:
+            tay["hist"].pop(0)
+
     def _center_heal(self, t_arr, s_arr, m_arr, r_arr, deep=False):
         """Регулярная реконструкция центральной зоны.
 
@@ -610,14 +930,17 @@ class DoubleNullSolver:
                     SC_im1 = -(st_new["p"][i - 1] * t_new[i - 1]
                                + st_new["q"][i - 1] * st_new["s"][i - 1]) / r_safe[i - 1]
                     t_new[i] = t_new[i - 1] + self.du * SC_im1
-                # реконструкция центра: v3 регулярное замыкание (связка
-                # наклонов s1-t1) или v2 чётное усреднение (клэмп t=s)
-                if getattr(self, "center_closure", "clamp") == "regular":
-                    self._center_regular(t_new, st_new["s"], st_new["m"], r_new,
-                                         p_arr=st_new["p"], q_arr=st_new["q"],
-                                         c_arr=st_new["c"], d_arr=st_new["d"])
-                elif self.heal_enabled:
-                    self._center_heal(t_new, st_new["s"], st_new["m"], r_new)
+            # реконструкция центра (ОБА режима марша): v5 Тейлор-патч
+            # (эволюция коэффициентов как внутреннего ГУ), v3 регулярное
+            # замыкание (связка наклонов s1-t1) или v2 клэмп t=s
+            if getattr(self, "center_closure", "clamp") == "taylor":
+                self._center_taylor(t_new, st_new, v_new)
+            elif getattr(self, "center_closure", "clamp") == "regular":
+                self._center_regular(t_new, st_new["s"], st_new["m"], r_new,
+                                     p_arr=st_new["p"], q_arr=st_new["q"],
+                                     c_arr=st_new["c"], d_arr=st_new["d"])
+            elif self.heal_enabled:
+                self._center_heal(t_new, st_new["s"], st_new["m"], r_new)
             st_new["t"] = t_new
             st_new["Phi"] = st["Phi"] + 0.5 * dv * (st["t"] + t_new)
             st_new["Phi"][0] = float(self._edge_Phi(np.array([v_new]))[0])

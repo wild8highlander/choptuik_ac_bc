@@ -406,6 +406,26 @@ cd einstein_direct
 python3 sympy_derivation.py && python3 roberts_test.py && python3 choptuik_scaling.py
 ```
 
+### v6-fundamentals: convergence and repulsion from first principles
+
+[`einstein_direct/center_modes.py`](einstein_direct/center_modes.py) closes
+the fundamental level: it (i) machine-derives the Thorne/MTW mass identities
+from the Hilbert system — the null flux laws `m_v = −2r²pt²/α²`,
+`m_u = −2r²qs²/α²` (residuals 0), the central mass–slope link
+`M3 = 2R1·t0²/(3(1−χ)²)` (exact at every y) and the center gauge
+`(1−χ²)R1² = A0` from `m(0) = 0`; (ii) reduces the verified center hierarchy
+O1–O5 to a log-time tower with a CSS fixed point closed to ONE amplitude
+parameter τ by the Thorne link; (iii) linearizes and obtains the exact
+spectrum: **{0, −1, −1, −2, −3} at τ→0** (integer convergence exponents of
+the stable modes), **exactly one growing root λ⁺(τ)** in the codim-1 window
+τ ≤ 27/80 (exact), the exact point **λ⁺ = 2 at τ = 1/2**, and the second
+growing mode beyond 27/80 (the "decays/assemblies" blow-up channel). The
+empirical anchors are not fitted: κ_obs = Δ_sp/γ ≈ 1.95–1.96 vs λ⁺(27/80) =
+1.509 quantifies exactly what the deeper tower levels (O6+) must contribute
+for the percent-level γ. Results:
+[`results/center_modes.json`](einstein_direct/results/center_modes.json),
+figures `fig_ru/fig_modes.png`, `fig_en/fig_modes.png`.
+
 ---
 
 ## QCD Bridge Suite (v3.1, added 2026-08-10)
