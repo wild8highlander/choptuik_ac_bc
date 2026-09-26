@@ -1108,3 +1108,65 @@ phantom-ladder proximity stays at 2.6-3.5%, and the echo book remains a
 measurement, not a derivation.
 
 Run: `python3 sympy_spinor_corrections.py` (~15 s).
+
+## 23. v12: the baryon-asymmetry reading + the one-brick phantom test
+
+Machine: `s4_berry_one_brick.py` -> `results/spinor_corrections_one_brick.json`.
+
+**The hypothesis (author).** "Maybe it is all about baryon asymmetry:
+everything rises evenly, and the deviation happens in ONE brick of the tower,
+so that complete annihilation does not occur. Pure mathematics is far from
+physics."
+
+**Sakharov mapping (structural; mechanism, NOT numbers).** The three
+conditions of matter survival have exact tower counterparts, all
+machine-established in previous sessions:
+1. *departure from equilibrium* <-> criticality / the limit cycle: the
+   frozen point tau* is spectrally inert (no real modes, not an attractor);
+   the dynamics lives in the second flows (DSS) — the system never settles;
+2. *C/CP violation* <-> the spinor phases delta_A = pi/2, delta_B = pi/3,
+   delta_C = pi/7: the machine lets exactly ONE correction survive the
+   admissible embedding — bC = pi^2/98, the Berry brick of the pi/7 phase
+   (the septimal sector of b_Ch) — while asymmetric static insertion of the
+   others is lethal (C1 residual 0.386): "one brick deviates";
+3. *B-violation* <-> monodromy != 1: statically the six-station contour
+   returns EXACTLY (product of ratios = 1, log-sum 1.2e-125) — complete
+   phase annihilation, the sterile "pure mathematics" world the author
+   warns about. A non-exact return can only be produced by the dynamic
+   sector.
+
+**Machine facts (this run).**
+- The REAL sector annihilates EXACTLY in every corrected point: zero real
+  exponential modes; the 4 genuine modes are numerically-zero neutral
+  oscillations (|lambda| ~ 2e-3). What survives the annihilation is the
+  imaginary (phase) sector — the 12 "phantoms" of the session-12 protocol.
+- Under the baryon-asymmetry reading this INVERTS the phantom verdict:
+  the phantom sector is not garbage to filter but the surviving asymmetric
+  residue of the spectrum — the tower's own "baryon asymmetry". (Labeled
+  as interpretation, not derivation.)
+- Phantom Im lambda vs the spinor ladder k*pi/30 across schemes:
+  baseline +3.10%, monograph-sign +3.43% (9pi/30: -2.85%), two-brick
+  screening +2.60%, and — the previously MISSING run — the one-brick
+  additive Berry scheme kappa = 2 - bC (tau* = 7.10792):
+  **Im lambda = 0.107731 = +2.88%** from pi/30 (k = 6: +3.15%,
+  k = 8: +4.94%). The one brick moves the residue TOWARD the ladder;
+  no closure (nothing within 1%; multiple-testing caveat on all scheme
+  comparisons).
+
+**Verdict.** The hypothesis is machine-consistent in both halves that can
+be tested statically: the surviving one-brick structure is real (the
+machine's own admissibility theorem), and "complete annihilation" is the
+exact static fact (monodromy = 1, no real modes). But a STATIC brick cannot
+close pi/30: the residual ~2.9% gap is exactly the part of the asymmetry
+that statics cannot produce — it must live in the second flows / limit
+cycle, where a phase residue can accumulate from cycle to cycle (the
+tower's "B-violation") without killing the point. That is the next
+campaign: O6+ second flows as limit-cycle variables, with the sharp
+question — does the cycle generate a monodromy phase residue delta_mono
+!= 0, and is it the same residue as the phantom Im lambda gap?
+
+Caveats: eta_b ~ 6e-10 is a measured number of a different universe — we
+borrow the mechanism, not the number; no numerology is claimed anywhere.
+
+Run: `python3 s4_berry_one_brick.py` (~20 s; rebuilds the symbolic payload,
+runs the pencil at the one-brick point).

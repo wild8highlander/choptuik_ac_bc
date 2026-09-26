@@ -8,6 +8,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Author:** Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович) — aslan08_05@mail.ru
 **Repository:** https://github.com/wild8highlander/choptuik_ac_bc
 
+## [2.11.0] - 2026-09-26
+
+### Added
+- **einstein_direct v12 (`s4_berry_one_brick.py`)** — the baryon-asymmetry
+  reading of the towers and the previously missing one-brick phantom test:
+  - hypothesis (author): everything rises evenly and the deviation happens
+    in ONE brick of the tower, so that complete annihilation does not occur;
+    pure mathematics is far from physics — mapped structurally onto the
+    Sakharov conditions (mechanism, NOT numbers; eta_b ~ 6e-10 is a measured
+    number of a different universe, no numerology);
+  - machine facts: the REAL sector annihilates exactly in all corrected
+    points (zero real exponential modes; the 4 genuine modes are neutral
+    oscillations |lambda| ~ 2e-3); the surviving residue is the imaginary
+    (phase) sector, clustered near k*pi/30 (2.6–3.5%) in every scheme;
+  - NEW run (the S4 gap): one-brick scheme kappa = 2 - bC = 2 - pi^2/98
+    (tau* = 7.10792): Im lambda = 0.107731 = **+2.88%** from pi/30
+    (baseline +3.10%, two-brick screen +2.60%, monograph-sign +3.43%) —
+    the one brick moves the phantom TOWARD the ladder, no closure
+    (nothing within 1%; multiple-testing caveat);
+  - static monodromy stays EXACTLY 1 under uniform embedding
+    (log-sum 1.2e-125, machine check) — "complete annihilation" is the
+    STATIC world; a non-exact return (the tower's "B-violation") can only
+    come from the O6+ second flows / limit cycle — the next campaign.
+- Results: `einstein_direct/results/spinor_corrections_one_brick.json`;
+  README_EN section 23, README.md RU section.
+
 ## [2.10.0] - 2026-09-26
 
 ### Added
