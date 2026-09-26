@@ -8,6 +8,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Author:** Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович) — aslan08_05@mail.ru
 **Repository:** https://github.com/wild8highlander/choptuik_ac_bc
 
+## [2.13.0] - 2026-09-26
+
+### Added
+- **einstein_direct v14 (session 18)** — the three honest next steps of v13,
+  all executed: third-order tables, the justified dd-closure, delta_mono
+  measured by the march:
+  - `sympy_third_order.py` -> `results/third_order_tables.json` (~12 s):
+    WEIGHT-RULE THEOREM (exact, SymPy) — the n-th table of a weight-p
+    profile factorizes as (l+p)...(l+p+n-1)F for all (p, n) in
+    {0,1,2,4}x{1,2,3}; the coefficient-1 choice of the dd-slots is DERIVED
+    (all generations: third, second, machine ddQ precedent); NEW third-order
+    tables W2-3rd/R3-3rd (l+2)(l+3)(l+4), P4-3rd (l+4)(l+5)(l+6),
+    R5-2nd (l+4)(l+5) — each the EXACT y-derivative of the previous table;
+    cubic pencil of the prolonged system: M3 = [M2; l*M2] =>
+    M3^T M3 = (1+l^2) M2^T M2 EXACTLY, char3 = (1+l^2)^9 char2 —
+    PROLONGATION-INVARIANCE of the spectrum; +/-i candidates PHANTOM
+    (mpmath 40-digit); the third order adds NO genuine linear dynamics;
+  - `sympy_dd_closure.py` -> `results/dd_closure.json` (~36 s): the
+    INDEPENDENT dd-EVOLUTION LAW justified, not fitted: justification chain
+    d/dy = (1/s) d/dtau on purified forms -> y-prolongation ==
+    tau-prolongation == constraint preservation (exact); prolongation
+    unknowns (9): M5h', ddT0, ddD0, ddQ, ddR1, ddR5, dddW2, dddR3, dddP4;
+    rank Uk = 9 EXACTLY — the closure is UNIQUE; hidden constraints
+    Op (v, dd) = 0 rank 5; iterative index reduction: level-2 manifold
+    3-dim -> level-3 violations rank 1 -> dim M2 = 2, level-4 invariant
+    EXACTLY; the closed evolution on M2: B = [[0, -350/61], [0, 0]] EXACTLY,
+    B^2 = 0, spec {0,0} — NILPOTENT JORDAN-2 (statics + linear secular
+    drift); one-brick: same structure (numeric float64, clean gaps);
+    alternatives by machine facts: C0 (dd=0) only on the frozen set
+    (common branch factor 4T0h^2 - 27, R1h flat — 1-dim manifold),
+    C-chain only the frozen point (session 13), C-prolongation the ONLY
+    justified closure; three routes agree: exact pencil (char = 9 l^4 Q18),
+    exact index reduction, march;
+  - `march_delta_mono.py` -> `results/march_delta_mono.json` (~37 s):
+    delta_mono MEASURED (v10-generation instrumentation) by two independent
+    marches (coordinate y' = B y; ambient x' = V(x) with the closure
+    re-implemented from raw matrices + projection): growth law log-log
+    slope 1.02 (0.96) -> LINEAR secular (Jordan-2), no exponentials, no
+    oscillations; propagator over one echo Delta_sp = 0.7330382858376652:
+    coordinate eig = (1, 1) EXACTLY; ambient eig = 1 +/- 2.7e-8 i
+    (1 +/- 2.3e-7 i) — the DEFECTIVE-eigenvalue roundoff floor ~sqrt(eps),
+    not a signal; delta_mono per echo: growth < 2.8e-14 (9.3e-14), phase <
+    2.7e-8 (2.3e-7); m1-vs-m2 4.7e-12 (6.6e-11); constraint drift 1.5e-12
+    (1.7e-11); the phantom-gap scale 3.0e-3 is 1e4..1e5 LARGER than the
+    march bound — the ~2.9% gap to pi/30 is NOT reproduced by the linear
+    dynamics;
+- tests: 3 new (weight rule, nilpotent Jordan-2, march bounds) — 8/8 pass.
+
+### Verdict
+- the pattern (l+a)(l+b)(l+c)F generalizes EXACTLY and adds nothing to the
+  linear spectrum (prolongation-invariance); the dd-law is FORCED (unique
+  prolongation closure, no fitting); delta_mono is now MEASURED = 0 with
+  honest bounds. The tower's baryon-asymmetry residue is a FINITE-AMPLITUDE
+  phenomenon: the entire linear world annihilates exactly. Next campaign:
+  the nonlinear march of the DAE.
+
 ## [2.12.0] - 2026-09-26
 
 ### Added

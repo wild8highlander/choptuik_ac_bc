@@ -1242,3 +1242,122 @@ pi/30 remains a pseudospectral observation, not a linear residue.
 
 Run: `python3 sympy_second_flows.py` (~40 s), then
 `python3 second_flows_exact.py` (~35 s, the decisive instrument).
+
+## 25. v14: third-order tables, the justified dd-closure, delta_mono measured by the march
+
+The three honest next steps of §24, all executed. Machines:
+`sympy_third_order.py` -> `results/third_order_tables.json` (~12 s);
+`sympy_dd_closure.py` -> `results/dd_closure.json` (~36 s);
+`march_delta_mono.py` -> `results/march_delta_mono.json` (~37 s).
+
+### 25.1 (a) Third-order tables: the weight-rule theorem
+
+**Theorem (exact, SymPy).** For a profile of weight p, f(tau)*s^-p with
+ds/dy = -1 (tau = -ln s), the n-th y-derivative table is
+d^n/dy^n[f s^-p] = s^-p-n * Sum_k c_{n,k}(p) f^(k)(tau), where the
+coefficients c_{n,k}(p) are CONSTANTS (purity is part of the theorem) and in
+the mode basis factorize EXACTLY as (l+p)(l+p+1)...(l+p+n-1). Verified for
+all (p, n) in {0,1,2,4}x{1,2,3}; in particular c_{n,n} = 1 for ALL (n, p):
+**the coefficient-1 choice of the dd-slots (session 17, borrowed from the
+ddQ precedent) is now DERIVED, not borrowed.**
+
+All machine tables (P0/T0, W0/D0, P2/ddQ, W2, R3, P4, R5) are re-derived
+from the profile ansatz as theorems, and the NEW third-order tables are
+built — each one is the EXACT y-derivative of the second-order table
+(d/dy[G s^-k] = (G' + kG) s^-k-1):
+- W2''' / R3''' -> (ddd + 9 dd + 26 d + 24 amp)/s^5 — (l+2)(l+3)(l+4);
+- P4''' -> (ddd + 15 dd + 74 d + 120 amp)/s^7 — (l+4)(l+5)(l+6);
+- R5'' -> (dd + 9 d + 20 amp)/s^6 — (l+4)(l+5).
+Regression: the leading slot coefficient is 1 in ALL generations (third,
+second, machine ddQ); dd = 0 reduces the second tables to the adiabatic
+audit tables exactly.
+
+### 25.2 The cubic pencil: prolongation-invariance of the spectrum
+
+The prolonged system {F = 0, dF/dtau = 0} has the cubic pencil
+M3(l) = [M2(l); l*M2(l)] (36x9), hence M3^T M3 = (1 + l^2) M2^T M2 EXACTLY
+(structural identity, verified on exact rational l and on an exact small
+matrix): **char3 = (1 + l^2)^9 * char2; rank drops of M3 == rank drops of
+M2.** The candidates l = +/-i spawned by (1 + l^2) are PHANTOMS (mpmath
+40-digit sigma_min filter: rel40 = 2.3e-05); l = 0 stays GENUINE.
+**The third order adds NO genuine linear dynamics — delta_mono = 0 is
+robust to the third-order closure. The ~2.9% phantom gap to pi/30 is out of
+linear statics' reach.**
+
+### 25.3 (b) The independent dd-evolution law: the prolongation closure
+
+The state is x = (a[9], v[8], dd[3]) = 20 with constraints J1s x = 0
+(J1s = [Ja | Jv | J2], 18x20, rank 14) and kinematics a' = P~v (M5h' free).
+Justification chain (exact): the residuals are Bianchi-reduced Einstein
+identities in y -> their y-prolongation is an identity -> on purified forms
+d/dy = (1/s) d/dtau (weight rule) -> the y-prolongation IS the
+tau-prolongation = constraint preservation. The closure is therefore NOT a
+choice: differentiate the constraints and solve.
+
+Machine facts (baseline kappa = 2, EXACT in Q(sqrt3); one-brick numeric
+float64 with clean singular gaps):
+- the prolongation d/dtau(J1s x) = 0 has 9 unknowns (M5h', ddT0, ddD0, ddQ,
+  ddR1, ddR5, dddW2, dddR3, dddP4; the derivatives of dW2/dR3/dP4 ARE the
+  state dd); the unknown matrix Uk (18x9) has rank 9 EXACTLY — **the
+  closure is UNIQUE**;
+- solvability = hidden constraints Op (v, dd) = 0, rank 5 (9x11);
+- the level-2 manifold ker[J1s; Op'] is 3-dimensional; the level-3
+  violations Op (v', dd') have rank 1 on it and cut it to **dim M2 = 2**;
+  on M2 the evolution is invariant (level-4 violations = 0 EXACTLY);
+- **the closed evolution on M2 is B = [[0, -350/61], [0, 0]] EXACTLY:
+  B^2 = 0, spec(B) = {0, 0}** — a nilpotent Jordan block of size 2 (statics
+  + LINEAR secular drift, no exponentials, no oscillations);
+- one-brick: the same structure (rank Uk = 9, dim M2 = 2, |B^2| = 3.9e-13
+  at ||B||^2-scaled tolerance, eigenvalues ~ 2.5e-7 ~ 0);
+- alternatives (machine facts): C0 (dd = 0) is admissible ONLY on the
+  frozen set (the branch equations UV_xi3 = -16 R1h^3 T0h^2 (4T0h^2-27)/27
+  and Mdef_xi5 = -8 R1h^2 T0h^2 (4T0h^2-27)/27 share the factor 4T0h^2-27;
+  the C1 rows vanish identically; R1h is the flat direction — a 1-dimensional
+  frozen manifold); C-chain (flows slaved to the chain) gives only the
+  frozen point (session 13, honest citation); **C-prolongation is the ONLY
+  justified closure.**
+
+The three routes now agree: the exact pencil (char = 9 l^4 Q18), the exact
+index reduction (dim M2 = 2, Jordan-2), and the march (25.4).
+
+### 25.4 (c) delta_mono MEASURED by the march (v10-generation instrumentation)
+
+Two independent marches of the closed linear DAE:
+- (m1) coordinate: y' = B y on M2 (B exact from 25.3);
+- (m2) ambient: x' = V(x) in R^20 with the closure RE-IMPLEMENTED from the
+  raw matrices (Uk-solve at every RK4 stage + projection onto M2), with
+  constraint-drift monitoring.
+
+Measurements (baseline; one-brick in parentheses):
+- growth law: log-log slope 1.0225 (0.9587) -> asymptotically 1: LINEAR
+  secular growth (Jordan-2), NOT an exponential, NOT an oscillation;
+- the propagator over one echo Delta_sp = 0.7330382858376652 (v8, model B):
+  coordinate eig = (1, 1) EXACTLY at baseline; ambient
+  eig = 1 +/- 2.7e-8 i (1 +/- 2.3e-7 i) — the splitting of a DEFECTIVE
+  double eigenvalue under roundoff is ~sqrt(eps), an honest numerical FLOOR,
+  not a signal; |eig| - 1 < 2.8e-14 (9.3e-14);
+- **delta_mono per echo: growth < 2.8e-14 (9.3e-14), phase < 2.7e-8
+  (2.3e-7)** — the march CONFIRMS the derived verdict delta_mono = 0 by an
+  independent pipeline (ODE integration instead of the spectral one);
+- cross-validation m1 vs m2: relative max 4.7e-12 (6.6e-11); constraint
+  drift 1.5e-12 (1.7e-11); projection corrections ~1e-13;
+- the phantom-gap scale 3.0e-3 (2.9% of pi/30) is 1e4..1e5 times LARGER
+  than the march bound — **the gap is NOT reproduced by the linear
+  dynamics; it is not a linear monodromy residue.**
+
+### 25.5 Verdict of the session
+
+(a) the pattern (l+a)(l+b)(l+c)F generalizes EXACTLY (weight rule); the
+third-order tables exist and are verified — and add nothing to the linear
+spectrum (prolongation-invariance); (b) the independent dd-law EXISTS and is
+FORCED: the prolongation closure is the unique solution of the identity-
+derived constraint preservation (rank Uk = 9), alternatives are degenerate
+by machine facts, no fitting anywhere; (c) delta_mono is now MEASURED, not
+only derived: 0 with honest bounds (growth ~1e-13, phase ~1e-7 per echo —
+the phase bound set by the defectiveness floor). **The baryon-asymmetry
+residue of the tower is a FINITE-AMPLITUDE phenomenon: the entire linear
+world (statics + de-adiabatized second flows + third-order prolongation)
+annihilates exactly. Next campaign: the nonlinear march of the DAE.**
+
+Run: `python3 sympy_third_order.py`, `python3 sympy_dd_closure.py`
+(requires the .npy export for (c)), `python3 march_delta_mono.py`.
