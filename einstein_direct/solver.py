@@ -573,7 +573,8 @@ class DoubleNullSolver:
         if self._tay is None:
             self._tay = {"init": False, "t0": 0.0, "R1": 1.0, "d0": 0.0,
                          "P2": 0.0, "x_prev": None, "v_prev": None,
-                         "xstar_prev": None, "hist": [], "fallbacks": 0, "rows": 0}
+                         "xstar_prev": None, "hist": [], "fallbacks": 0, "rows": 0,
+                         "T0_seed": 0.0}
         tay = self._tay
         tay["rows"] += 1
         early = tay["rows"] <= 6     # v6: рестарт-строки — фиты грязны
@@ -607,23 +608,38 @@ class DoubleNullSolver:
             ok = False
         if not ok:
             tay["fallbacks"] += 1
+            # v8: при откате dv-часы не должны дублировать шаг на следующей
+            # строке (tay_ode_fix: v_prev обновляется здесь — выход на строку
+            # финальной записи не достигается)
+            if getattr(self, "tay_ode_fix", False):
+                tay["v_prev"] = v_new
             self._center_regular(t_arr, s_arr, m_arr, r_arr,
                                  p_arr=p_arr, q_arr=q_arr,
                                  c_arr=c_arr, d_arr=d_arr)
             return
 
         # --- 2. дрейф центра chi ------------------------------------------
-        if tay["xstar_prev"] is not None and tay["v_prev"] is not None:
+        # v8: СТАРОЕ значение v_prev ловится ДО перезаписи (v_prev_row).
+        # Legacy (tay_ode_fix=False): tay["v_prev"] = v_new ниже — поведение
+        # v6.1, при котором dv_ode (ОДУ O1/O3) вырождается в 0 после первой
+        # строки стадии: часы мертвы, t0/d0 живут только через relax-каналы
+        # (диагноз v8: замороженные tau-строки, lambda_drift на краю сетки).
+        # v8 (tay_ode_fix=True): перезапись отложена до конца патча — ОДУ
+        # получают настоящий dv = v_new - v_prev, как и задумано (см.
+        # комментарий у ОДУ: "dv_ode считается ДО обновления v_prev").
+        v_prev_row = tay["v_prev"]
+        if tay["xstar_prev"] is not None and v_prev_row is not None:
             u_star = v_new - 2.0 * x_star
-            u_prev = tay["v_prev"] - 2.0 * tay["xstar_prev"]
-            dvv = v_new - tay["v_prev"]
+            u_prev = v_prev_row - 2.0 * tay["xstar_prev"]
+            dvv = v_new - v_prev_row
             duo = u_star - u_prev
             den = dvv + duo
             if abs(den) > 1e-14:
                 chi = (dvv - duo) / den
             chi = float(np.clip(chi, -0.45, 0.45))
         tay["xstar_prev"] = x_star
-        tay["v_prev"] = v_new
+        if not getattr(self, "tay_ode_fix", False):
+            tay["v_prev"] = v_new
 
         # --- 3. парные фиты в зоне (k = 1..K, обе стороны, точные xi) -----
         ks = np.arange(1, K + 1)
@@ -667,6 +683,7 @@ class DoubleNullSolver:
         AO = np.stack([xo, xo**3, 1.0 / np.where(np.abs(xo) > 1e-14, xo, 1e-14)], axis=1)
         cO, *_ = np.linalg.lstsq(AO, yo, rcond=None)
         P2, P4o, C_par = (float(v) for v in cO)
+        P2_raw = float(P2)      # v8: сырое значение ДО гейтов (измерение)
         o_ok, res_O, boost_O = fit_ok(cO, AO, yo)
         dbg_o = (float(boost_O), float(res_O))
         # v6: буст-гейт В ТОЧКАХ ЗОНЫ. Базис [xi, xi^3, xi^5, 1/xi] ил-обусло-
@@ -703,6 +720,8 @@ class DoubleNullSolver:
         AW = np.stack([xo, xo**3], axis=1)
         cW, *_ = np.linalg.lstsq(AW, yw, rcond=None)
         W2 = float(cW[0])
+        W2_raw = float(W2)      # v8: сырое значение ДО гейтов (диагностика)
+        W2_gate = ""            # v8: причина гейта (boost/jump/cap)
         # v6: санитарность W2 (идёт в ОДУ O3 напрямую; мусорный W2 ~ 1e13
         # взрывает d0 и убивает строку — механика стены v5 на eps >= 1e-3):
         # (a) boost-гейт: модель W2*xi не должна превышать данные кольца;
@@ -712,10 +731,14 @@ class DoubleNullSolver:
         w_data = float(np.max(np.abs(yw))) if yw.size else 0.0
         W2_ok = np.isfinite(W2)
         if W2_ok and w_data > 0:
-            W2_ok = abs(W2) * float(np.max(np.abs(xo))) <= 30.0 * w_data
+            if abs(W2) * float(np.max(np.abs(xo))) > 30.0 * w_data:
+                W2_ok = False
+                W2_gate = "boost"
         if W2_ok and np.isfinite(W2_prev) and abs(W2_prev) > 0:
-            W2_ok = abs(W2) < 20.0 * max(
-                abs(W2_prev), 1.0 / max(ring_lo, 1e-30) ** 2)
+            if abs(W2) >= 20.0 * max(
+                    abs(W2_prev), 1.0 / max(ring_lo, 1e-30) ** 2):
+                W2_ok = False
+                W2_gate = "jump"
         if not W2_ok:
             W2 = W2_prev if np.isfinite(W2_prev) else 0.0
             tay["W2_gated"] = tay.get("W2_gated", 0) + 1
@@ -726,6 +749,7 @@ class DoubleNullSolver:
         # в O3 — допустимо (d0' = M3/R1 - kappa t0^2 остаётся ограниченной).
         W2_cap = 10.0 * abs(tay.get("t0", 0.0)) ** 2 + 1.0
         if abs(W2) > W2_cap:
+            W2_gate = (W2_gate + "+cap") if W2_gate else "cap"
             W2 = W2_prev if np.isfinite(W2_prev) and abs(W2_prev) <= W2_cap else 0.0
             tay["W2_gated"] = tay.get("W2_gated", 0) + 1
         # M3: фит m/xi^3 = M3 + M5 xi^2 на кольце [ring_lo, 2 ring_lo]
@@ -762,6 +786,32 @@ class DoubleNullSolver:
                         M3 = 0.0              # не rebuild'им m этим M3
                         tay["M3_gated"] = tay.get("M3_gated", 0) + 1
 
+        # v8: CSS-ЧАСЫ БАШНИ (tay_ode_fix). Самореферентность зоны (перестройка
+        # серией с замороженным P2 => фит видит собственную серию) рвёт
+        # CSS-отношение чёт/нечёт структуры при живом t0 (смоук v8: t0 x30,
+        # ранняя смерть). Машино-верифицированная связь неподвижной точки
+        # T0 = 3 P2h (center_modes [II]) => P2_css = t0/(3 s_clock).
+        # ЧАСЫ: s_clock = s_seed * rel, rel = width(v)/width_seed — ЭМПИРИЧЕСКИЕ
+        # часы ширины (runner), непрерывные через зумы (координаты базовые).
+        # Риккати-часы (s' = -1 в v стадии) отвергнуты: сид t0/(3P2) нормирован
+        # под неподвижную точку, а строка сида в транзиенте => v* на 5 строк
+        # вперёд (смоук v8: t0 -> 97 за стадию). Фазовая рябь часов O(1) —
+        # честная оговорка (учитывается в ошибке Δ).
+        P2_css = float("nan")
+        if getattr(self, "tay_ode_fix", False) and tay["init"]:
+            rel = getattr(self, "_s_clock_rel", 1.0)
+            if not (np.isfinite(rel) and rel > 0.0):
+                rel = 1.0
+            if tay.get("s_seed", 0.0) <= 0.0 and abs(P2) > 1e-300 \
+                    and abs(tay.get("t0", 0.0)) > 1e-300:
+                tay["s_seed"] = abs(tay["t0"]) / (3.0 * abs(P2))
+            if tay.get("s_seed", 0.0) > 0.0:
+                s_clock = tay["s_seed"] * rel
+                P2_css = tay["t0"] / (3.0 * s_clock)
+            else:
+                s_clock = float("nan")
+        else:
+            s_clock = float("nan")
         # --- 4. эволюция коэффициентов (ОДУ O1-O3, релаксация) -------------
         # dv_ode считается ДО обновления v_prev (иначе всегда 0)
         dv_ode = (v_new - tay["v_prev"]) if (tay["v_prev"] is not None
@@ -779,6 +829,12 @@ class DoubleNullSolver:
         tay["M3_prev"] = M3_tower
         M3_fit_diag = M3
         M3 = M3_tower
+        # v8: диагностика ветвей эволюции коэффициентов (инструментация)
+        t0_pred_v8 = float("nan")
+        d0_pred_v8 = float("nan")
+        t0_branch = "init"
+        d0_branch = "init"
+        W2_css = float("nan")
         if not tay["init"]:
             tay["init"] = True
             scale_e0 = max(float(np.max(np.abs(E_pair))), 1e-30)
@@ -791,7 +847,12 @@ class DoubleNullSolver:
             scale_e = max(float(np.max(np.abs(E_pair[fin]))), 1e-30)
             scale_cd = max(float(np.max(np.abs(yc))), 1e-30)
             # O1: t0' = 3 P2_prev - 4 d0 t0 (предиктор) + релаксация к E0_free
-            t0_pred = tay["t0"] + dv_ode * (3.0 * tay["P2"] - 4.0 * tay["d0"] * tay["t0"])
+            # v8: в fix-режиме P2 в ОДУ — CSS-часы P2_css (не самореферентный
+            # фит/реле): dt0/dv = t0/s_clock - 4 d0 t0 (CSS-рост t0 ~ 1/s)
+            P2_ode = P2_css if np.isfinite(P2_css) else tay["P2"]
+            t0_pred = tay["t0"] + dv_ode * (3.0 * P2_ode - 4.0 * tay["d0"] * tay["t0"])
+            t0_pred_v8 = float(t0_pred)   # v8: диагностика
+            t0_branch = "frozen"
             jump = abs(E0_free - t0_pred)
             scale = max(abs(t0_pred), abs(E0_free), 1e-12)
             # v6: E(0) не может превышать данные кольца в ~5 раз (мягкая
@@ -800,6 +861,7 @@ class DoubleNullSolver:
             e_sane = (abs(E0_free) < 5.0 * (scale_e + abs(tay["t0"]))) \
                 and (abs(E0_free) < 1e2 * (abs(t0_pred) + scale_e))
             if np.isfinite(E0_free) and e_sane and jump < 0.75 * scale:
+                t0_branch = "relax"
                 t0_relax = t0_pred + self.tay_relax * (E0_free - t0_pred)
                 # v6.1: темповой кап t0: у CSS t0 ~ e^z растает ~1.5%/строку
                 # (z += 1 за ~эхо ~ 45 строк); удвоение за строку — мусор
@@ -810,7 +872,16 @@ class DoubleNullSolver:
                         + np.sign(t0_relax - tay["t0"]) * t0_rate
                 tay["t0"] = t0_relax
             elif (np.isfinite(t0_pred)
-                  and abs(t0_pred - tay["t0"]) < 10.0 * (abs(tay["t0"]) + scale)):
+                  and abs(t0_pred - tay["t0"]) < 10.0 * (abs(tay["t0"]) + scale)
+                  # v8: pred-ветка НЕ может игнорировать данные кольца:
+                  # слепой ОДУ с самореферентным (замороженным) P2 уводил t0
+                  # (смоуки v8: t0 -> 0.55 / 97 / 440 за 1-2 стадии — три
+                  # механизма: линейный дрейф 3P2, Риккати-часы, часы ширины).
+                  # Данные кольца (E0_free) — единственный честный якорь
+                  # near-critical амплитуды.
+                  and abs(t0_pred) < 5.0 * (scale_e + abs(E0_free)
+                                            + abs(tay["t0"]))):
+                t0_branch = "pred"
                 tay["t0"] = t0_pred
             # иначе: t0 заморожена (мусорная строка — не впрыскиваем предиктор)
             # O2: R1' = 2 d0 R1 — R1 хранится как ДИАГНОСТИКА (фит),
@@ -818,7 +889,19 @@ class DoubleNullSolver:
             # фит искажённого патчем r-профиля -> p(i0) -> новый перекос r)
             tay["R1"] = R1
             # O3: d0' = M3/R1 + W2 - kappa t0^2 (M3 — торновская связка)
-            d0_pred = tay["d0"] + dv_ode * (M3 / R1 + W2 - KAPPA * tay["t0"] ** 2)
+            # v8 (tay_ode_fix): W2 в динамике — ЭНФОРСМЕНТ машино-верифициро-
+            # ванного CSS-уравнения O3: W2* = kappa t0^2 - M3*/R1 (при chi=0
+            # W2*/t0^2 = 4/3 — кольцо гексцикла). Сырой W2-фит (d-c) лежит под
+            # полом d-мусора на ~8 порядков (смоуки v6/v8: gates=cap на 100%
+            # строк); с мусорным W2=0 ОДУ давал положительную петлю
+            # d0 < 0 -> -4 d0 t0 -> t0 x30 за стадию (смоук v8). Отклонение
+            # W2_true - W2_css измеряется ОТДЕЛЬНО: дрейф d0_field (канал
+            # d0-clock) и dc-пара — см. diag_v8.
+            W2_css = KAPPA * tay["t0"] ** 2 - M3_tower / R1
+            W2_dyn = W2_css if getattr(self, "tay_ode_fix", False) else W2
+            d0_pred = tay["d0"] + dv_ode * (M3 / R1 + W2_dyn - KAPPA * tay["t0"] ** 2)
+            d0_pred_v8 = float(d0_pred)   # v8: диагностика (до капа)
+            d0_branch = "frozen"
             # v6: башенный масштаб d0 (d0/t0 = D0/T0 -> 0 у CSS; d0 ~ O(t0)
             # вдали): предиктор выше 20*|t0|+1 — мусор ОДУ. БЕЗ |d0| в cap —
             # самоподогрев (урок трассировки v6)
@@ -830,9 +913,11 @@ class DoubleNullSolver:
             scale_d = max(abs(d0_pred), abs(d0_fit), 1e-12)
             d_sane = abs(d0_fit) < 1e2 * (abs(d0_pred) + scale_cd)
             if np.isfinite(d0_fit) and d_sane and jump_d < 0.75 * scale_d:
+                d0_branch = "relax"
                 tay["d0"] = d0_pred + self.tay_relax * (d0_fit - d0_pred)
             elif (np.isfinite(d0_pred)
                   and abs(d0_pred - tay["d0"]) < 10.0 * (abs(tay["d0"]) + scale_d)):
+                d0_branch = "pred"
                 tay["d0"] = d0_pred
             # иначе: d0 заморожена (мусорная строка)
         tay["P2"] = P2 if (o_ok or not early) else tay["P2"]
@@ -884,7 +969,7 @@ class DoubleNullSolver:
         gamma = (1.0 - (ks_all / float(K)) ** 2) ** 2   # гладкий тейпер v3.2:
         # нулевая производная на краю зоны; ступенчатый гамма-рамп (0.5/0)
         # даёт corr/du ~ O(0.1) в p_u -> всплеск C1 (проверено)
-        O_of = lambda xq: P2 * xq + P4o * xq**3
+        O_of = lambda xq: (P2_css if np.isfinite(P2_css) else P2) * xq + P4o * xq**3
         E_zone = 0.25 * ((t_arr[ipa] + s_arr[ipa]) + (t_arr[ima] + s_arr[ima]))
         E_zone[0] = t0                            # якорь ОДУ O1
         # v6: на ранних строках стадии пересборки t,s/p,q НЕ делаем (фиты
@@ -991,9 +1076,173 @@ class DoubleNullSolver:
             "dbg_zone": dbg_zone,
             "pq_even_max": float(np.max(np.abs(pq_even))) if pq_even.size else 0.0,
         }
+        # v8: инструментация измерений (флаг _tay_diag_v8; на динамику не
+        # влияет — только доп. поля в hist для post-hoc анализа W2/часов)
+        if getattr(self, "_tay_diag_v8", False):
+            rec["diag_v8"] = {
+                "dv_ode": float(dv_ode),
+                "W2_raw": float(W2_raw), "W2_gate": W2_gate,
+                "W2_cap": float(W2_cap), "w_data": float(w_data),
+                "P2_raw": float(P2_raw),
+                "d0_field": float(d0_fit),
+                "dc_pair": [float(dc[ip[0]]), float(dc[im[0]])],
+                "xi_pair": [float(xi_p[0]), float(xi_m[0])],
+                "t0_branch": t0_branch, "d0_branch": d0_branch,
+                "t0_pred": float(t0_pred_v8), "d0_pred": float(d0_pred_v8),
+                "W2_css": float(W2_css),
+                "s_clock": float(s_clock),
+                "P2_css": float(P2_css),
+                "T0_clock": float(tay["t0"] * s_clock) if np.isfinite(s_clock) else float("nan"),
+                "M3_over_R1": float(M3 / R1), "early": bool(early),
+            }
+        # v9: ЗЕРКАЛЬНЫЕ КОЛЬЦЕВЫЕ ПАРЫ (xi, -xi) — чистое d-поле [P4-B].
+        # Теория (sympy_p4_einstein_hilbert.parity_level): (d-c) = omega_xi =
+        # 2 W2 xi — НЕЧЁТНЫЙ профиль; экстрактор [(d-c)(xi)-(d-c)(-xi)]/(4 xi)
+        # гасит ЧЁТНЫЙ d-мусор ТОЧНО при строго зеркальных точках. Здесь:
+        # дамп кольца (k=1..K, обе стороны, точные xi) + кубическая
+        # интерполяция каждой стороны ОТДЕЛЬНО в зеркальные цели +-xi_t.
+        # Только измерение — динамику не трогает (как _tay_diag_v8).
+        if getattr(self, "_tay_diag_v9", False):
+            try:
+                rec["diag_v9"] = self._mirror_probe_v9(
+                    x, x_star, i0, K, c_arr, d_arr, t0,
+                    fits={"R1": R1, "R3": R3, "E0": E0_free, "E2": E2,
+                          "E4": E4, "P2": P2, "P4o": P4o, "d0": d0,
+                          "chi": chi, "kappa": KAPPA,
+                          "e_ok": bool(e_ok), "o_ok": bool(o_ok),
+                          "W2_css": float(W2_css)})
+            except Exception:  # noqa: BLE001 — инструментация не убивает марш
+                rec["diag_v9"] = {"ok": False, "reason": "exception"}
         tay["hist"].append(rec)
         if len(tay["hist"]) > 512:
             tay["hist"].pop(0)
+
+    def _mirror_probe_v9(self, x, x_star, i0, K, c_arr, d_arr, t0,
+                         fits=None):
+        """v9 [P4-B]: зеркальные кольцевые пары (xi, -xi) и экстрактор W2.
+
+        Теория (sympy_p4_einstein_hilbert.parity_level, машинно): (d-c) =
+        omega_xi = 2 W2 xi — нечётный по xi профиль; ЧЁТНЫЙ мусор гасится
+        ТОЧНО экстрактором [(d-c)(xi)-(d-c)(-xi)]/(4 xi) при СТРОГО
+        зеркальных точках. Протокол:
+          1) дамп кольца k=1..K обеих сторон (точные xi, dc = d-c, cd = c+d)
+             — сырьё для offline joint-parity фита (W2 = наклон нечётной
+             части, чётные коэффициенты = мусор);
+          2) цели xi_t = |xi_p|; на каждой стороне ОТДЕЛЬНО кубический
+             стенсил 4 точек -> (d-c)(+xi_t) и (d-c)(-xi_t);
+             W2_pair = [(d-c)(+xi_t)-(d-c)(-xi_t)]/(4 xi_t).
+          3) КАНАЛ B (чистый, без марш-мусора): серия c_ser(xi) из
+             машино-верифицированных рядов строки:
+               r = R1 xi + R3 xi^3,  s = E - O,  E = E0+E2 xi^2+E4 xi^4,
+               O = P2 xi + P4o xi^3,
+               p = -(1+chi)R1/2 + (R1'/2)xi - 3(1+chi)R3 xi^2/2,
+               r_uu = (3/2) R3 xi  (chi=0),  R1' = 2 d0 R1,
+               c_ser = (r_uu + (kappa/2) r s^2) / (2 p)   [C1-форма];
+             зеркальный фит нечётной части [xi, xi^3] -> W2_ser = -a1/2
+             (теория: c_odd = -W2 xi - 2 W4 xi^3). Канал НЕ использует
+             марш-поля c/d и W2_css — независимая проверка кольца 4/3.
+        Пары с экстраполяцией за край стороны помечены (extrap_m) и
+        отфильтровываются offline. Измерение — без влияния на динамику.
+        """
+        du = self.du
+        dc = d_arr - c_arr
+        cd = c_arr + d_arr
+        xi = x - x_star
+        ksv = np.arange(1, K + 1)
+        ipv = i0 - ksv
+        imv = i0 + ksv
+        xp, xm = xi[ipv], xi[imv]
+        dcp, dcm = dc[ipv], dc[imv]
+        cdp, cdm = cd[ipv], cd[imv]
+        fin = (np.isfinite(xp) & np.isfinite(xm) & np.isfinite(dcp)
+               & np.isfinite(dcm) & (xp > 0) & (xm < 0))
+        if int(fin.sum()) < 4:
+            return {"ok": False, "reason": "ring<4"}
+        xp, xm = xp[fin], xm[fin]
+        dcp, dcm = dcp[fin], dcm[fin]
+        cdp, cdm = cdp[fin], cdm[fin]
+
+        def _cubic(xs, ys, x0):
+            """Локальный кубический стенсил: 4 ближайших точки стороны."""
+            o = np.argsort(np.abs(xs - x0))[:4]
+            o = o[np.argsort(xs[o])]
+            if not np.isfinite(ys[o]).all() or xs[o][-1] <= xs[o][0]:
+                return float("nan")
+            cf = np.polyfit(xs[o], ys[o], 3)
+            return float(np.polyval(cf, x0))
+
+        pairs = []
+        for xt in xp:
+            q_p = _cubic(xp, dcp, xt)
+            q_m = _cubic(xm, dcm, -xt)
+            if not (np.isfinite(q_p) and np.isfinite(q_m)):
+                continue
+            extrap = bool((-xt) < xm.min() or (-xt) > xm.max()
+                          or xt > xp.max() or xt < xp.min())
+            pairs.append({
+                "xi": float(xt), "dc_p": q_p, "dc_m": q_m,
+                "W2_pair": (q_p - q_m) / (4.0 * xt),
+                "even_pair": 0.5 * (q_p + q_m),
+                "extrap_m": extrap,
+            })
+        out = {
+            "ok": True, "t0": float(t0), "K": int(K),
+            "ring_xi_p": [float(v) for v in xp],
+            "ring_xi_m": [float(v) for v in xm],
+            "ring_dc_p": [float(v) for v in dcp],
+            "ring_dc_m": [float(v) for v in dcm],
+            "ring_cd_p": [float(v) for v in cdp],
+            "ring_cd_m": [float(v) for v in cdm],
+            "mirror_pairs": pairs,
+            "fits": {k_: (bool(v_) if isinstance(v_, (bool, np.bool_))
+                          else float(v_) if np.isscalar(v_)
+                          and np.isfinite(v_) else v_)
+                     for k_, v_ in (fits or {}).items()},
+        }
+        # --- канал B: серия c_ser(xi) из верифицированных рядов строки -----
+        # (чистый аналог (d-c): c_odd = -W2 xi - 2 W4 xi^3; без марш-мусора)
+        try:
+            f = fits or {}
+            R1v = float(f.get("R1", 0.0))
+            R3v = float(f.get("R3", 0.0))
+            E0v = float(f.get("E0", 0.0))
+            E2v = float(f.get("E2", 0.0))
+            E4v = float(f.get("E4", 0.0))
+            P2v = float(f.get("P2", 0.0))
+            P4v = float(f.get("P4o", 0.0))
+            d0v = float(f.get("d0", 0.0))
+            chv = float(f.get("chi", 0.0))
+            kav = float(f.get("kappa", 2.0))
+            if (np.isfinite(R1v) and R1v > 0.2 and np.isfinite(E0v)
+                    and abs(E0v) > 0 and np.isfinite(P2v)):
+                R1p = 2.0 * d0v * R1v
+                def c_ser(xq):
+                    rq = R1v * xq + R3v * xq**3
+                    Eq = E0v + E2v * xq**2 + E4v * xq**4
+                    Oq = P2v * xq + P4v * xq**3
+                    sq = Eq - Oq                       # s = Phi_u
+                    pq = (-(1.0 + chv) * 0.5 * R1v + 0.5 * R1p * xq
+                          - 1.5 * (1.0 + chv) * R3v * xq**2)
+                    ruu = 1.5 * R3v * xq               # r_uu = r''/4 (chi=0)
+                    return (ruu + 0.5 * kav * rq * sq * sq) / (2.0 * pq)
+                xt9 = np.asarray([p_["xi"] for p_ in pairs])
+                if xt9.size >= 4:
+                    cd_p = c_ser(xt9)
+                    cd_m = c_ser(-xt9)
+                    D = cd_p - cd_m                    # = -(2W2 xi + 4W4 xi^3)
+                    # нечётный фит D = a1 xi + a3 xi^3 -> W2_ser = -a1/2
+                    A9 = np.stack([xt9, xt9**3], axis=1)
+                    c9, *_ = np.linalg.lstsq(A9, D, rcond=None)
+                    out["chanB"] = {
+                        "W2_ser": float(-0.5 * c9[0]),
+                        "W4_ser": float(-0.25 * c9[1]),
+                        "res_max": float(np.max(np.abs(D - A9 @ c9))
+                                         / max(np.max(np.abs(D)), 1e-300)),
+                        "n": int(xt9.size),
+                    }
+        except Exception:  # noqa: BLE001
+            out["chanB_error"] = True
+        return out
 
     def _annulus_parity(self, st, v_new):
         """v6: КОЛЬЦЕВАЯ ЧЁТНОСТЬ — проекция зеркальной чётности ВНЕ зоны.
