@@ -1170,3 +1170,75 @@ borrow the mechanism, not the number; no numerology is claimed anywhere.
 
 Run: `python3 s4_berry_one_brick.py` (~20 s; rebuilds the symbolic payload,
 runs the pencil at the one-brick point).
+
+## 24. v13: second flows as limit-cycle variables — the linear verdict
+
+Machine: `sympy_second_flows.py` -> `results/second_flows_limit_cycle.json`;
+verification: `second_flows_verify.py` (Newton + mpmath) and
+`second_flows_exact.py` -> `results/second_flows_verified.json`,
+`results/second_flows_exact.json`.
+
+**The question (author, after the baryon-asymmetry reading).** Does the
+dynamic sector produce a monodromy phase residue delta_mono != 0 — the
+tower's "B-violation" — and is it the same residue as the ~2.9% phantom
+gap to pi/30?
+
+**(0) Construction: the de-adiabatized source tables.** The session-11 audit
+closed the second z-coefficients of the sources adiabatically:
+W2'' -> (5 dW2 + 6 W2h)/S^4 etc. The coefficient structure 5,6 = (l+2)(l+3)
+and 9,20 = (l+4)(l+5) shows the adiabatic table is the true polynomial form
+(l^2 + 5l + 6)F with the l^2 term dropped; the machinery itself contains the
+precedent P2'' -> (ddQ + 5Q + 6P2h)/S^4. De-adiabatization with coefficient 1:
+W2'' -> (ddW2 + 5 dW2 + 6 W2h)/S^4, R3'' -> (ddR3 + ...)/S^4,
+P4'' -> (ddP4 + 9 dP4 + 20 P4h)/S^6, dd* := d^2(amp)/dtau^2. T0/D0/R1 are NOT
+touched (their tables are exact lower levels, not adiabatic closures); ddQ is
+a vestige (P2'' is pre-substituted by the exact O5 — no equation contains it).
+- regression: dd = 0 reproduces the adiabatic system EXACTLY (12/12);
+- frozen-point residuals 1e-23..1e-24 at both points (kappa = 2 and the
+  one-brick 2 - pi^2/98, tau* = 27/(2 kappa));
+- **the l^2-sector is LIVE: rank C = 3 EXACTLY (symbolic) at both points.**
+
+**(1) The true quadratic pencil.** With the limit-cycle ansatz
+A(tau) = A* + a e^{l tau} (flows = l a, second flows = l^2 a) the 18-equation
+system (12 tower + 6 prolongs) becomes the polynomial pencil
+M(l) = Ja + l*Jv*P + l^2*J2*P2 (18x9). Rank drops = genuine modes.
+
+**(2) The verification instrument (three layers, honest).**
+- session-14 protocol (rel sigma_min < 1e-8 on float candidates) is NOT
+  calibrated for the l^2-sector: at |l| ~ 1e5 the l^2-dominance makes the
+  relative test too lenient (the "7 genuine modes" of the first run were
+  threshold artifacts);
+- Newton polish of l on sigma_min(M(l)) + mpmath: every nonzero candidate
+  STALLS at rel 1e-9..1e-13 (12+ orders above the true-kernel behavior
+  1e-21..0) — near-zeros, not modes;
+- **the exact instrument (baseline, all values in Q(sqrt3)):** the char
+  polynomial det(M^T M) built by exact rational interpolation (45 points,
+  cross-checked at l = 1/2): **char = 9 l^4 Q18(l), degree 22, multiplicity
+  of l = 0 is 4 — EXACTLY the lambda^4 structure of the session-14 linear
+  pencil.** The de-adiabatization did NOT change the kernel.
+
+**(3) Verdict.**
+- the ONLY genuine mode at both points is **l = 0** (the marginal scale
+  direction; at one-brick rel40 = 0 exactly);
+- all 18 nonzero exact roots at baseline are PHANTOMS (rel40 = 2.3e-06..
+  3.8e-04 — 24+ orders above the genuine floor 1e-30);
+- **delta_mono = 0 at linear order**: no true complex pair means no
+  amplitude-independent monodromy residue per echo. The tower's
+  "B-violation" is NOT a linear phenomenon;
+- the near-pi/30 structure of the phantoms (sessions 14-16) is a property of
+  the NEAR-KERNEL GEOMETRY (pseudospectrum), not of true dynamics: the
+  softest baseline phantom sits at l = -0.102 +/- 0.122i (rel40 2.3e-06);
+  observation, no claim.
+
+**Consequence for the baryon-asymmetry reading.** The static world is
+"completely annihilated" at linear order EVEN with live second flows: the
+exact spectrum contains only the marginal direction. If the DSS limit cycle
+exists (the session-10 picture), it is a FINITE-AMPLITUDE nonlinear object.
+Honest next options: (a) third-order tables (the pattern (l+a)(l+b)(l+c)F
+generalizes); (b) an independent dd-evolution law (a closure choice — to be
+justified, not fitted); (c) measure delta_mono directly from the march
+(v10/v11 instrumentation) instead of deriving it. The ~2.9% phantom gap to
+pi/30 remains a pseudospectral observation, not a linear residue.
+
+Run: `python3 sympy_second_flows.py` (~40 s), then
+`python3 second_flows_exact.py` (~35 s, the decisive instrument).

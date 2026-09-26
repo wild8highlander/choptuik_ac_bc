@@ -8,6 +8,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Author:** Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович) — aslan08_05@mail.ru
 **Repository:** https://github.com/wild8highlander/choptuik_ac_bc
 
+## [2.12.0] - 2026-09-26
+
+### Added
+- **einstein_direct v13 (`sympy_second_flows.py`, `second_flows_verify.py`,
+  `second_flows_exact.py`)** — the O6+ campaign "second flows as limit-cycle
+  variables" with the delta_mono != 0 test:
+  - de-adiabatized source tables: the coefficient structure 5,6 = (l+2)(l+3)
+    and 9,20 = (l+4)(l+5) shows the adiabatic table is (l^2+5l+6)F with l^2
+    dropped; dd-slots introduced with coefficient 1 (ddQ precedent):
+    W2''/R3''/P4'' -> (dd* + ... + amp)/S^(p+1), dd* := d^2(amp)/dtau^2;
+    regression dd = 0 == adiabatic EXACTLY (12/12); frozen-point residuals
+    1e-23..1e-24; **the l^2-sector is LIVE: rank C = 3 exactly (symbolic)
+    at both points** (kappa = 2 and one-brick 2 - pi^2/98);
+  - true quadratic pencil M(l) = Ja + l Jv P + l^2 J2 P2 (18x9) from the
+    limit-cycle ansatz; three-layer honest verification: session-14 float
+    filter shown uncalibrated for the l^2-sector ("7 genuine" = threshold
+    artifacts); Newton + mpmath: every nonzero candidate stalls at rel
+    1e-9..1e-13; **exact char polynomial at baseline (rational interpolation
+    in Q(sqrt3), cross-checked): char = 9 l^4 Q18(l), degree 22, multiplicity
+    of l = 0 is 4 — exactly the session-14 linear-pencil structure**;
+  - VERDICT: the only genuine mode at both points is l = 0 (marginal);
+    all nonzero roots phantoms (rel40 >= 2.3e-06, 24+ orders above floor);
+    **delta_mono = 0 at linear order — the tower's "B-violation" is NOT a
+    linear phenomenon**; the near-pi/30 phantom proximity is pseudospectral
+    (near-kernel geometry), not dynamics; if the DSS cycle exists it is
+    finite-amplitude; next options: third-order tables, an independent
+    dd-evolution law, or direct march measurement of delta_mono.
+- Results: `einstein_direct/results/second_flows_limit_cycle.json`,
+  `second_flows_verified.json`, `second_flows_exact.json`;
+  README_EN section 24, README.md RU section.
+
 ## [2.11.0] - 2026-09-26
 
 ### Added
