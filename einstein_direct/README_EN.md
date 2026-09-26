@@ -774,3 +774,337 @@ recorded). Verdict, machine-exact:
 Run: `python3 sympy_center_o6_nsolve.py` (~1 min; `results/center_o6_nsolve.json`).
 Campaign: `python3 grid_machine_v6.py 1e-2,3e-3,1e-3,3e-4,1e-4`
 (`results/grid_machine_v6.json`).
+
+## 18. v8: the Poincare hexagonal transformation cycle (dynamics instead of the truncated tower)
+
+The O6 verdict of section 17's analysis: the UV[xi^3] branch forces
+T0^2 = 9/4 (tau3 = (3/2)^2), the Mdef[xi^5] branch forces T0^2 = 9/16
+(tau5 = (3/4)^2); together only the trivial R3 = 0 survives — the truncated
+tower has no exact CSS solution, the sources are fundamentally dynamical.
+`sympy_hexcycle.py` formalizes the answer: instead of a static truncation, a
+dynamical six-station cycle (pyramid -> cone -> truncated cone -> parabolic
+pivot -> bowl -> log closure -> pyramid) circulating on a C6 shape dial by
+the Poincare quasi-velocity equations. The two incompatible branches become
+steps of two DIFFERENT books of the cycle:
+
+- **amplitude book**: the CORE pair (3/2)^2 = tau3, the ring pairs
+  (4/3)^2 = 1/tau5, the full cycle kappa_cyc = ln(tau3/tau5^2) = ln(64/9) =
+  1.9617 vs the anchor kappa_obs = Delta_sp/gamma = 1.9600 (+0.085%); the
+  frozen-tower deficit lambda+(27/80) = 1.5091 (+0.451 in kappa) is filled
+  to 100.4%;
+- **echo clock**: -ln(tau5) = ln(16/9) per hexagon side,
+  Delta_cyc = 6 ln(16/9) = 12 ln(4/3) = 24 ln(2/sqrt3) = 3.4522 vs
+  Delta = 3.44 (Choptuik 1993; inside the +/-0.02 corridor);
+- **hexagonal log computations are exact geometry**: the ring step 4/3 =
+  (2/sqrt3)^2 — the square of the hexagon's own circumradius/inradius ratio;
+  the O6 branches are themselves squares (sqrt(tau3) = 3/2, sqrt(tau5) = 3/4,
+  ratio 2 — the pyramid doubling);
+- **gamma_cyc = Delta_sp/kappa_cyc = 0.373683** (gamma_lit = 0.374, -0.085%;
+  b_Ch -0.75%);
+- **the attractor is a limit cycle (DSS, not CSS)**: the return map lands on
+  the pyramid exactly (max-norm error 0), the scale drops by e^Delta ~ 31.6
+  per cycle — a structural explanation of Choptuik's observation.
+
+The machine: 15/15 symbolic identities; Poincare = Euler-Lagrange (abelian
+dial group), the locking V'(k*pi/3) = 0 of all six stations, p_theta = const
+in the free circulation; the free-circulation period equals Delta_cyc
+exactly (<1e-12), the locked one (V6 = 0.05) shifts by +0.253% (an honest
+O(V6) effect); the per-cycle book step is measured numerically to 1e-9.
+Model axioms (the 2+4 zone split, the global clock) and limitations are
+stated honestly. Reports: `hexcycle_report_ru.pdf` /
+`hexcycle_report_en.pdf`; RU/EN 300-dpi figures (`fig_hexcycle*.png`).
+
+```bash
+python3 sympy_hexcycle.py        # the cycle machine: symbols + books + circulation, ~5 s
+python3 hexcycle_figures.py      # RU/EN 300-dpi figures, ~30 s
+```
+
+## 19. v8-campaign: checking kappa = ln(64/9) and W2/t0^2 -> 4/3
+
+The hexcycle (section 18) made two quantitative predictions for the
+near-critical tau* campaign: the amplitude book kappa = ln(64/9) =
+1.9616585 and the ring W2/t0^2 -> 4/3 = 1/sqrt(tau5). `grid_machine_v8.py`
+runs the check on the stable v6.1 chains (z ~ 9.1-9.35) with full
+measurement instrumentation, and it changed the diagnosis of everything
+that was blocking the tau* measurement:
+
+- **clock bug**: `dv_ode == 0` after the first row of every stage (the
+  chi section overwrote `tay["v_prev"]` before the ODE read it) — the
+  center ODEs O1/O3 were dead since v5. Flag-fixed (`tay_ode_fix`);
+  legacy is reproduced exactly.
+- **gate freeze**: the E/O fit gates use a max-res metric that the zone
+  edge (dynamic range ~1000) crushes to ~1 on deep rows, so the gates
+  fail everywhere and the P2/W2 relays freeze at stage-1 values. The
+  fresh book is therefore built from RAW pre-gate fits:
+  tau_fresh = E0_free^4/(9 P2_raw^2), with MAD outlier rejection.
+- **live tower**: with the clock alive, three closures of the center
+  dynamics (blind ODE with self-referential P2; Riccati clock; width
+  clock) all blow up t0 within 1-2 stages, because the E0_free anchor is
+  poisoned by the zone rebuild (E_zone[0] = t0). The center book on this
+  grid is always series-mediated — the v5 wall reopened at the P4 level;
+  an independent dynamical confirmation of the O6 source-dynamics
+  verdict. In the live tower W2 is enforced by the machine-verified CSS
+  equation W2* = kappa t0^2 - M3*/R1 (4/3 at chi=0).
+
+Verdicts (results/grid_machine_v8.json, honest statuses):
+- kappa = ln(64/9): **blocked** — the unstable-mode departure does not
+  grow inside the deep window (lambda_fit at the grid edge; the chain
+  rides the DSS limit cycle and departs only inside the final junk
+  explosion); the M(eps) gamma channel is unavailable (AH never
+  nucleates, M_frozen = 0).
+- Delta: **indicative** — model B Delta = 0.73 (-0.4% vs Delta_sp =
+  7pi/30), model A 0.77 (+5.0%); the book is noisy (amp ~ 3 in ln tau).
+  The geometric Q-peak echo on the zoom-ladder clock gives Delta =
+  1.732 +/- 0.451, i.e. Delta_cyc/Delta_Q ~ 2.0 — the pyramid doubling
+  of the hexcycle book (indicative, 26% error).
+- W2/t0^2 -> 4/3: **blocked** — the raw (d-c) signal is ~1e13 t0^2
+  above the target under the d-junk floor in all three channels (raw
+  fit, dc-pair, d0-clock). The channel requires P4 dynamics (O6+) or a
+  clean d-field.
+
+Run: `python3 grid_machine_v8.py` (~3 min; `results/grid_machine_v8.json`),
+figures: `python3 v8_figures.py`.
+
+## 20. P4 closure (O6+): the shape cycle in Einstein and Hilbert equations
+
+Machine: `sympy_p4_einstein_hilbert.py` -> `results/p4_einstein_hilbert.json`.
+
+**How the cycle lives in the classical Einstein equations (all SymPy-exact):**
+
+- The double-null residuals ARE `G = kappa T`: `G_uu - kappa T_uu = -(2/r) * C1-form`,
+  `G_vv - kappa T_vv = -(2/r) * C2-form`, `G_uv = -(2/r) * (UV + r(TH - st))`,
+  `Mdef` = mass constraint, `SC = -(alpha^2/4) box Phi`. The six stations are
+  regimes of ONE tensor, not new physics.
+- `T_uv == 0` identically: the null-null sector of the Hilbert tensor is empty;
+  the scalar sources enter only through the uu/vv sectors (C1/C2) and the TH mixing.
+- Hilbert identity (fresh 4D derivation): `nabla_mu T^{mu}_nu = (box Phi) nabla_nu Phi`
+  — the source dynamics IS the Bianchi/Hilbert conservation law. This is where
+  "sources must flow" lives in the classical equations.
+
+**The ring and the clock are derived, not postulated** (core O1-O5 chain on the
+frozen point): `Mdef[xi^3] -> D0 = 0`; `{UV[xi^1], C2[xi^1]} -> R3h = (2/9) T0^2 R1h`,
+`W2h = (4/3) T0^2 R1h` (the ring `4/3 = (2/sqrt 3)^2`); `C2[xi^2] -> P2h = T0/3` (clock).
+
+**AUDIT of the session-8 fixed point (important correction).** The old raw-coefficient
+build silently zeroed the second derivatives of the sources (`W2''`, `R3''`, `P4''`)
+and `R5'`: the `TBL_F` substitution `R5(y) -> R5h/S^4` collapses `Derivative(R5(y),y)`
+to 0, and only `P2''` had an explicit z-table. With corrected adiabatic tables
+(`F'' -> (5 dF + 6 F)/S^(p+1)`, second flows = 0):
+
+- the `UV[xi^3]` and `Mdef[xi^5]` branches MERGE into one common root
+  **tau* = 27/4**: the frozen CSS point of the O6 tower EXISTS (unique);
+- the session-8 incompatibility (tau = 9/4 vs 9/16) and the two-branch book
+  construction `kappa_cyc = ln(64/9)` built on it were artifacts of that drop;
+- at tau* = 27/4 the amplitudes are `T0h = 3 sqrt(3)/2`, `W2h = 9`, `R3h = 3/2`,
+  `P2h = sqrt(3)/2 = sin(pi/3)` — the hexagonal ratio appears on its own;
+- spectrum: `lambda+(tau)` is monotone; `lambda+ = kappa_obs ~ 1.96` at
+  `tau ~ 0.486`; at `tau* = 27/4` (off-grid) `lambda+ ~ 8` — the truncated-tower
+  point is NOT the critical attractor by spectrum.
+
+**Prolongation (O7) closes the adiabatic dynamics.** Preserving the core along the
+flow (`dW2 = (8/3) T0 dT0 R1 + (4/3) T0^2 dR1`, etc.) kills the drifting-source
+points: V1/V2 (tower alone) violate preservation (`sigma_W2 - 2 sigma_T0 - sigma_R1
+= -1.53`), V3 (tower + prolongation, 18 eq / 17 unk) finds exactly ONE closed
+point — the frozen one at `tau* = 27/4` (all flows 0). Genuine source dynamics
+therefore requires second-order flows (dd != 0): a genuine LIMIT CYCLE (DSS),
+not a drifting CSS point.
+
+**Pure d-field (ring parity on (d-c)).** `c = d_u omega, d = d_v omega`; the mirror
+`(u,v) -> (v,u)` swaps c and d; `(d-c) = omega_xi = 2 W2 xi` is odd on the ring.
+Extractor `W2 = [(d-c)(xi) - (d-c)(-xi)]/(4 xi)` kills even junk EXACTLY (SymPy
+check). v8 rows: the measured dc-pairs are asymmetric (`leak ~ 0.92`) and
+even-dominated (`odd/even ~ 0.28`) — the W2/t0^2 channel needs exact mirror pairs
+(v9 instrumentation).
+
+Honest notes: the hexcycle book FORMULAS of session 11 (`ln(64/9)`, `6 ln(16/9)`)
+were built on the artifact branches and need rework; the ring `4/3`, the DSS
+picture and the v8 Delta-signals do not depend on the audit.
+
+Run: `python3 sympy_p4_einstein_hilbert.py` (~15 s; `results/p4_einstein_hilbert.json`).
+
+## 21. v9 mirror-ring pairs + exact char polynomial at tau* + monodromy books
+
+Machines: `grid_machine_v9.py` -> `results/grid_machine_v9.json`;
+`sympy_spectrum_tau_star.py` -> `results/spectrum_tau_star.json`.
+
+**(1) v9 instrumentation (`solver._mirror_probe_v9`, flag `tay_diag_v9`, measurement-only).**
+Per row: the ring dump (k = 1..K, both sides, exact xi, dc = d-c, cd = c+d) and
+STRICT mirror pairs: cubic interpolation of each side SEPARATELY into the mirror
+targets +-xi_t, then the P4-B extractor
+`W2_pair = [(d-c)(+xi) - (d-c)(-xi)]/(4 xi)`. Channel B (junk-free): the series
+`c_ser = (r_uu + (kappa/2) r s^2)/(2 p)` built from the row fits (C1 form), with
+the mirror fit `D = c_ser(xi) - c_ser(-xi) = -(2 W2 xi + 4 W4 xi^3)` -> `W2_ser`.
+
+Results (legacy legs eps = 1e-3 / 1e-2, live leg eps = 1e-2):
+- the EVEN junk is side-symmetric to a median relative difference of
+  `3.2e-8 .. 3.8e-7` (against `leak ~ 0.92` of the v8 pairs) and is killed by the
+  extractor EXACTLY — the mirror instrumentation works as designed;
+- the W2/t0^2 measurement stays **BLOCKED**: the ODD marsh junk of (d-c) is
+  chaotic (per-row fits of the mirror differences do not close, res ~ 0.4-0.6),
+  its linear-in-xi component is degenerate with the signal `2 W2 xi`, and the
+  per-pair floor `|W2_pair|/t0^2` is 1.4 (eps=1e-3) to 2.3e+2 (eps=1e-2) against
+  the target 4/3;
+- channel B is symbolically EXACT (see below) but its input `R3` (the cubic
+  coefficient of the ring r-fit) is junk on marsh data (`R3/t0^2 ~ 1e3..1e5`
+  against CSS 2/9) and enters the linear coefficient degenerately.
+
+**(2) C1 route to the ring (new machine identity, SymPy-exact).** The series
+reconstruction of `c = omega_u = (r_uu + (kappa/2) r s^2)/(2 p)` gives
+`c_lin = -[(3/2) R3 + (kappa/2) R1 E0^2]/[(1+chi) R1]`, hence at the CSS inputs
+(`R3 = (2/9) tau R1`, `E0 = t0`, `chi = 0`, `kappa = 2`):
+`W2 = -c_lin = (4/3) t0^2` — the ring 4/3 from the C1 null equation, a THIRD
+machine route (after the O3 route `W2* = kappa t0^2 - M3*/R1` and the corrected
+chain `W2h/T0h^2 = 4/3`), independent of R1 and d0.
+
+**(3) Exact char polynomial at tau* = 27/4.**
+- OLD core (torne link, sources frozen at CSS): substituting `tau = 27/4` into
+  the stored quintic gives the exact polynomial with real roots
+  `{-11.587049, -6.634885, -0.590872, +2.399389, +9.413416}`;
+  **lambda+_old(27/4) = 9.4134160947** (the session-11 log-grid interpolation
+  ~7.99 was low; and it was an artifact of freezing the sources).
+- CORRECTED tower (audit tables, 12 tower equations with live first flows + 6
+  chain-preservation prolongations = 18 equations on 9 amplitudes + 8 flows;
+  the pencil `M(lam) = J_a + lam J_v P` with the flow->amplitude projection P,
+  since `M5h` has no flow): the exact characteristic polynomial
+  `char(lam) = det(M^T M)` (Cauchy-Binet sum of squared 9x9 minors; computed by
+  EXACT rational interpolation on 25 points over Q(sqrt 3)) is
+  `lam^4 * Q12(lam)` with Q12 of degree 12 irreducible over Q.
+  Real-rank-drop set on the real axis: **{0} only** (verified twice: sigma_min
+  scan and nroots; `dim ker J_a = 1` marginal direction). ALL complex roots of
+  char are PHANTOMS: `sum(minors)^2` may vanish over C without a rank drop, and
+  the complex-lambda SVD check shows full rank for every one of them
+  (rel sigma_min ~ 1e-4..1e-6; max 3.4e-4).
+
+**Verdict: the corrected tower point tau* = 27/4 is spectrally INERT — an
+isolated algebraic vertex of the constraint landscape (no real exponential
+modes at all), not an exponential repeller.** The old-core `lambda+ = 9.41`
+was an artifact of frozen sources. Consequently there is no `gamma_pred` from
+the point: the cycle dynamics lives in the LIMIT CYCLE (DSS), not in the
+vertex — consistent with the session-11 prolongation verdict and with the v8
+campaign signals.
+
+**(4) Monodromy books of the corrected system (replacing the two-branch books).**
+- amplitude book: `kappa_book = ln(tau*) = ln(27/4) = 3 ln 3 - 2 ln 2
+  = 4 ln(3/2) + ln(4/3)` (both decompositions machine-checked) = 1.9095425,
+  i.e. -2.57% against `kappa_obs(gamma_lit) = 1.9599954` and -1.92% against the
+  b_Ch anchor — the single-branch replacement of the artifact `ln(64/9)`;
+- station ladder of the corrected chain at tau* (exact):
+  `W2h/R3h = 6 = 2*3`, `W2h/T0h^2 = 4/3`, `R3h/T0h^2 = 2/9`, `P2h/T0h = 1/3`,
+  `T0h/P2h = 3`, `P2h = sin(pi/3)`, `R5h = 183/40`, `M5h = -105/4`,
+  `P4h = 153 sqrt(3)/10`;
+- monodromy identity: the product of the six loop ratios
+  `R1h -> T0h -> P2h -> R3h -> W2h -> R5h -> R1h` equals **1 exactly**
+  (machine-checked) — the amplitude monodromy around the six-station cycle is
+  the identity (return to the pyramid);
+- the clock book is NOT derivable from the chain (honest): the measured clocks
+  of the v8 campaign stand (model B Delta ~ 0.73 ~ Delta_sp - 0.4%; Q-echo
+  doubling `Delta_cyc/Delta_Q ~ 2`); `Delta_cyc = 6 ln(16/9)` of session 11 is
+  an artifact-book. Surviving books: the ring 4/3, the DSS picture, the v8
+  Delta-signals, the tent-lattice observation.
+
+Honest notes: the W2/t0^2 -> 4/3 prediction remains closed at the marsh level
+(dynamics-level reconstruction = O6+ is required); the C1 route gives the ring
+as an identity of the CSS series, not as an independent marsh measurement.
+
+Run: `python3 grid_machine_v9.py` (~110 s) and `python3 sympy_spectrum_tau_star.py`
+(~15 s); tests 5/5 pass.
+
+## 22. v11: the three repo corrections (b-C, a-C, a-B) embedded in the towers
+
+Machine: `sympy_spinor_corrections.py` -> `results/spinor_corrections.json`.
+
+**The question (author).** Maybe there is an "error" somewhere in the Einstein
+equations, to be repaired so that the closure on pi/30 works — and the real
+gap is that we deliberately never embedded the three computed corrections of
+the repository (b-C Berry, a-C braking, a-B) as natural functions and
+formulas. Maybe they will correct the towers?
+
+**(0) The corrections as exact functions (repo anchors, machine cross-check OK).**
+Spinor phases of Gamma(2,3,7): `delta_A = pi/2, delta_B = pi/3, delta_C = pi/7`.
+Berry `beta(d) = d^2/2`, braking `alpha(d) = d^5/22` (k = b2(K3) = 22):
+`bC = pi^2/98 = 0.100710`, `aC = (pi/7)^5/22 = 8.2763e-4 (~1/1200)`,
+`aB = (pi/3)^5/22 = 0.057243` — cross-checked against
+`docs/monograph/verification_results_enhanced.json` to < 1e-9.
+
+**(1) Doors audit: there is NO error in the equations — there is a STRUCTURE.**
+With per-channel couplings (kappa_C1 in C1: (k/2) r s^2, kappa_C2 in C2:
+(k/2) r t^2, kappa_TH in TH: (k/2) s t) the symbolic rebuild shows:
+- **SC/UV/Mdef are kappa-FREE** (zero leaks): the wave equation, the
+  cross-constraint and the Misner-Sharp definition are pure geometry —
+  nothing to "repair" there;
+- the channel map is exact: C1_xi{1,2,3} <- kappa_C1 only; C2_xi{1,2,3} <-
+  kappa_C2 only; TH_xi2 <- kappa_TH only;
+- **RING CONSISTENCY (new machine theorem):** the C1 residuals at the chain
+  point vanish if and only if **kappa_C1 = kappa_C2** (machine factored);
+- **BRANCH CONSISTENCY:** the residual branches
+  `UV_xi3 = -2 T0h^2 (8 k2^2 T0h^2 - 93 k2 - 15 kT)` and
+  `Mdef_xi5 = -2 T0h^2 (4 k2^2 T0h^2 - 39 k2 - 15 kT)` share their positive
+  root if and only if **kappa_C2 = kappa_TH** (difference
+  `15 (k2 - kT)/(8 k2^2)`).
+
+**Consequence: a holonomy correction can modify the tower ONLY as a UNIFORM
+renormalization kappa -> kappa_hol of the scalar coupling in all three
+channels.** Any asymmetric embedding (e.g. a-B in C1 only) kills the CSS
+point: the C1 residual becomes 0.386 at the uncorrected point (machine
+demonstration), the branches split. This is a PREDICTION of the tower about
+the admissible form of the corrections — obtained, not assumed.
+
+**(2) The corrected family is EXACT: `tau*(kappa) = 27/(2 kappa)`.**
+Under the uniform renormalization the corrected point exists for every
+kappa > 0 and the chain gives:
+- `T0h^2 = 27/(2 kappa)` (so the uncorrected point is the kappa = 2 member);
+- **holonomy-invariant station ladder** (kappa-free at the point):
+  `R3h = 3/2`, `W2h = 9`, `R5h = 183/40`, `M5h = -105/4`,
+  mass link `M3*/R1* = 9/2`, clock `P2h/T0h = 1/3`;
+- what MOVES: the log-time base `tau*` itself, hence `P2h = T0h/3`,
+  `P4h ~ kappa^{-1/2}`, and the T0h-relative ratios
+  `W2h/T0h^2 = 2 kappa/3` (the ring 4/3 is the kappa = 2 member —
+  the v9 target becomes `2 kappa_hol/3`), `R3h/T0h^2 = kappa/9`;
+- amplitude book: `ln tau* = ln(27/(2 kappa))`.
+
+**(3) Do the corrections close the books? (honest numbers, no fitting).**
+The book closure `ln tau* = kappa_obs` requires `kappa_req = 27/(2 e^{kappa_obs})`
+= **1.901597** (gamma_lit anchor; 1.926609 for the b_Ch anchor) — i.e. a
+**uniform shift Delta kappa / kappa = -4.92%** from the bare kappa = 2:
+- multiplicative monograph-sign embedding `kappa = 2(1 + bC - aC)` = 2.19976:
+  book -7.43% (moves AWAY);
+- opposite sign (screening) `kappa = 2(1 - bC + aC)` = 1.80024: book +2.79%
+  (overshoots);
+- **additive Berry screening `kappa = 2 - bC` = 2 - pi^2/98** = 1.899290:
+  `tau* = 7.10792`, book = 1.961210 = **+0.062%** against
+  kappa_obs(gamma_lit) (and -0.12% coupling distance to kappa_req); with the
+  braking terms subtracted as well (`2 - bC + aC`, `2 - bC/2 - aC`): +0.11%,
+  +0.43%... — the b_C-sized uniform screening lands ON the book closure;
+- braking-only embeddings (`2(1 - aB)`, `2(1 - aC - aB)`): +0.43% / +0.48%;
+- sign-combination scan over the four correction values (81 combos,
+  **multiple-testing caveat**): best -0.26%..-0.43%; the additive-Berry
+  screening is not one of the 81 (it is a half-weight scheme) and beats them
+  all.
+  All these are OBSERVATIONS of distance, not derivations: the sign and the
+  add/multiply convention of the holonomy coupling are NOT fixed by the
+  monograph; what the machine fixes is (a) the uniformity requirement and
+  (b) the response family tau* = 27/(2 kappa).
+
+**(4) pi/30 closure tests.**
+- the tower chain still does NOT produce pi/30 exactly: the clock 1/3 and the
+  station ladder are rational; the echo book remains measured (v8);
+- the pencil spectrum in the corrected points (numeric QEP + sigma_min
+  phantom filter, session-14 protocol reproduced: 4 genuine lambda = 0 modes
+  + 12 phantoms in ALL points): the phantom Im lambda sit NEAR the spinor
+  ladder — baseline best hit `Im lambda = 0.1080 ~ 1*pi/30` (3.10%),
+  screening point `0.10745` (2.60%), monograph-sign point `0.91564 ~
+  9*pi/30` (2.85%) — proximity, NOT closure (nothing within 1%).
+
+**Verdict.** (i) The Einstein equations need no repair: SC/UV/Mdef are
+coupling-free geometry and the derivation is machine-clean. (ii) The towers
+are corrected by the repo corrections in exactly ONE admissible way — a
+uniform holonomy renormalization of the scalar coupling; the corrected family
+`tau* = 27/(2 kappa)` is exact, the station ladder is invariant. (iii) The
+corrections are of the RIGHT SIZE to close the kappa book: a uniform
+screening of b_C = pi^2/98 moves ln(tau*) from -2.57% to +0.06% of
+kappa_obs — an observation-level closure with the convention (add vs
+multiply, sign) honestly open. (iv) No exact pi/30 identity appears: the
+phantom-ladder proximity stays at 2.6-3.5%, and the echo book remains a
+measurement, not a derivation.
+
+Run: `python3 sympy_spinor_corrections.py` (~15 s).

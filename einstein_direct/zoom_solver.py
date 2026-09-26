@@ -75,7 +75,9 @@ class ZoomRunner:
                  verbose: bool = False,
                  march_center: bool = True, annulus: bool = False,
                  ann_factor: float = 10.0, r_ah_du: float = 8.0,
-                 ann_relax_gate: float = 2.5, ann_cross: bool = True):
+                 ann_relax_gate: float = 2.5, ann_cross: bool = True,
+                 tay_ode_fix: bool = False, tay_diag_v8: bool = False,
+                 tay_diag_v9: bool = False):
         self.A = A
         self.n = n
         self.max_zooms = max_zooms
@@ -96,8 +98,20 @@ class ZoomRunner:
         # v6.1: CROSS-режим: t := mirror(s) на кольце (точное CSS-соотношение,
         # устраняет битву марша/проекции — канал смерти j=19-20)
         self.ann_cross = ann_cross
+        # v8: фикс dv-часов ОДУ O1/O3 (dv_ode считался после перезаписи
+        # v_prev -> всегда 0) и инструментация измерений (W2_raw, dc-пара,
+        # d0_field, ветки t0/d0). Оба — флаги: база/legacy не тронуты.
+        self.tay_ode_fix = tay_ode_fix
+        self.tay_diag_v8 = tay_diag_v8
+        # v9: зеркальные кольцевые пары (xi, -xi) — чистое d-поле [P4-B]
+        self.tay_diag_v9 = tay_diag_v9
         self.dbg = None                 # опциональный колбэк диагностики строк
         self._m3_relay = 0.0            # v6: |M3| родительской стадии (регуляризация m)
+        # v8: эмпирические часы ширины для CSS-часов патча (tay_ode_fix):
+        # s_clock = s_seed * width(v)/width_seed; ширина в базовых координатах
+        # (regrid сохраняет координаты, сжимая окно/шаг) — непрерывна через зумы
+        self._w_seed = None
+        self._s_rel = 1.0
         self.diag = ZoomDiag()
         self._z_acc = 0.0
         self.tay_hist_all = []          # v5: тейлор-гистограммы ВСЕХ стадий
@@ -131,7 +145,7 @@ class ZoomRunner:
                 if ot.get("init"):
                     old_tay_state = {k: ot.get(k, 0.0)
                                      for k in ("t0", "d0", "P2", "W2", "R1",
-                                               "M3_prev")}
+                                               "M3_prev", "s_seed")}
             m3r = old_tay_state.get("M3_prev", 0.0) if old_tay_state else 0.0
             self._m3_relay = abs(m3r) if (np.isfinite(m3r) and m3r != 0.0) \
                 else getattr(self, "_m3_relay", 0.0)
@@ -163,6 +177,11 @@ class ZoomRunner:
             self.sol.ann_factor = self.ann_factor
             self.sol.ann_relax_gate = self.ann_relax_gate
             self.sol.ann_cross = self.ann_cross
+            # v8: флаги часов/инструментации на зум-стадиях
+            self.sol.tay_ode_fix = self.tay_ode_fix
+            self.sol._tay_diag_v8 = self.tay_diag_v8
+            # v9: зеркальные пары (xi, -xi) в инструментации
+            self.sol._tay_diag_v9 = self.tay_diag_v9
             if du_parent is not None:
                 self.sol.R_heal = 5.0 * du_parent
         self.u = self.sol.u
@@ -232,6 +251,8 @@ class ZoomRunner:
                         continue
                     stop_reason = "v_exhausted"
                     break
+                # v8: часы ширины для патча (лаг 1 строка — ширина предыдущей)
+                self.sol._s_clock_rel = self._s_rel
                 st_new = self.sol._do_step(self.st, self.j)
                 self.st = st_new
                 v_now = self.v[self.j]
@@ -242,6 +263,13 @@ class ZoomRunner:
                     self.buffer.pop(0)
 
                 mx, Q, width, u_focus = self._row_diag(st_new)
+                # v8: обновление часов ширины (только на зум-стадиях, где
+                # патч активен; width — в базовых координатах, непрерывна)
+                if self.diag.zooms >= 1 and width > 0.0:
+                    if self._w_seed is None:
+                        self._w_seed = float(width)
+                    else:
+                        self._s_rel = float(width / self._w_seed)
                 if self.dbg is not None:
                     self.dbg(self, st_new, v_now, mx, Q)
                 tr = self.track

@@ -1,0 +1,1070 @@
+{
+  "title": "Three spinor corrections (bC, aC, aB) in the towers",
+  "question": "does embedding the repo corrections as natural coupling renormalizations correct the towers and close on pi/30?",
+  "S0_corrections": {
+    "functions": {
+      "beta": "d^2/2",
+      "alpha": "d^5/22, k=b2(K3)=22"
+    },
+    "values": {
+      "delta_A": 1.5707963267948966,
+      "delta_B": 1.0471975511965979,
+      "delta_C": 0.4487989505128276,
+      "bC_berry_pi7": 0.10071024899070774,
+      "aC_braking_pi7": 0.0008276304915843546,
+      "bB_berry_pi3": 0.5483113556160755,
+      "aB_braking_pi3": 0.0572427393911862,
+      "bA_berry_pi2": 1.2337005501361697,
+      "aA_braking_pi2": 0.43468705225182025
+    },
+    "values_exact": {
+      "delta_A": "pi/2",
+      "delta_B": "pi/3",
+      "delta_C": "pi/7",
+      "bC_berry_pi7": "pi**2/98",
+      "aC_braking_pi7": "pi**5/369754",
+      "bB_berry_pi3": "pi**2/18",
+      "aB_braking_pi3": "pi**5/5346",
+      "bA_berry_pi2": "pi**2/8",
+      "aA_braking_pi2": "pi**5/704"
+    },
+    "repo_crosscheck": {
+      "Delta_bC_minus_lambdaD2_equals_bC": true,
+      "delta_eff_equals_aC_absdiff": 1.0842021724855044e-19,
+      "gamma_equals_dC4_over_22_absdiff": 4.336808689942018e-19,
+      "status": "OK"
+    }
+  },
+  "S1_doors": {
+    "channel_map": {
+      "SC_xi4": "-",
+      "UV_xi1": "-",
+      "UV_xi3": "-",
+      "C2_xi1": "C2",
+      "C2_xi2": "C2",
+      "C2_xi3": "C2",
+      "TH_xi2": "TH",
+      "C1_xi1": "C1",
+      "C1_xi2": "C1",
+      "C1_xi3": "C1",
+      "Mdef_xi3": "-",
+      "Mdef_xi5": "-"
+    },
+    "kappa_leaks_in_geometry": [],
+    "n_equations": 12,
+    "chain_symbolic": {
+      "D0h": "0",
+      "R3h": "K2*R1h*T0h**2/9",
+      "W2h": "2*K2*T0h**2/3",
+      "P2h": "T0h/3",
+      "R5h": "K2*R1h*T0h**2*(3*K2*T0h**2 - 10)/90",
+      "M5h": "-R1h*T0h**2*(3*K2**2*T0h**2 - 18*K2 - 5*KT)/9",
+      "P4h": "2*K2*T0h**3*(44*K2*T0h**2 - 135)/(135*(4*K2*T0h**2 - 45))"
+    },
+    "chain_matches_stored_at_kappa2": 3,
+    "c1_ring_consistency": {
+      "C1_xi1": {
+        "expr": "R1h*T0h**2*(K1 - K2)/2",
+        "vanishes_at_K1_eq_K2": true,
+        "cofactor_over_K1_minus_K2": "R1h*T0h**2/2"
+      },
+      "C1_xi2": {
+        "expr": "-R1h*T0h**2*(K1 - K2)/3",
+        "vanishes_at_K1_eq_K2": true,
+        "cofactor_over_K1_minus_K2": "-R1h*T0h**2/3"
+      },
+      "C1_xi3": {
+        "expr": "R1h*T0h**2*(K1 - K2)*(K2*T0h**2 + 7)/18",
+        "vanishes_at_K1_eq_K2": true,
+        "cofactor_over_K1_minus_K2": "R1h*T0h**2*(K2*T0h**2 + 7)/18"
+      }
+    },
+    "nonzero_equations_at_K1_eq_K2": [
+      "Mdef_xi5",
+      "UV_xi3"
+    ],
+    "branch_UV_xi3": "-2*T0h**2*(8*K2**2*T0h**2 - 93*K2 - 15*KT)",
+    "branch_Mdef_xi5": "-2*T0h**2*(4*K2**2*T0h**2 - 39*K2 - 15*KT)",
+    "branch_check_at_kappa2_is_neg16T2_4T2_27": true,
+    "resultant_UV3_Mdef5": "0",
+    "gcd_UV3_Mdef5": "2*T0h**2",
+    "runtime_s": 10.929419994354248
+  },
+  "S2_schemes": {
+    "family": {
+      "T0h2_UV_formula": "3*(31*K2 + 5*KT)/(8*K2**2)",
+      "T0h2_Mdef_formula": "3*(13*K2 + 5*KT)/(4*K2**2)",
+      "common_root_condition": "15*(K2 - KT)/(8*K2**2)",
+      "uniform_family_tau_star": "27/(2*K2)",
+      "uniform_family_is_27_over_2kappa": true,
+      "residual_checks_UV_Mdef": [
+        "0",
+        "0"
+      ],
+      "kappa_required_for_book_closure": {
+        "gamma_lit": 1.9015973980470877,
+        "b_Ch": 1.9266092305085016
+      }
+    },
+    "S0_baseline": {
+      "kappa_uniform": 2.0,
+      "kappa_exact": "2",
+      "tau_star_corrected": 6.75,
+      "ln_tau_star": 1.9095425048844386,
+      "max_residual_at_point": 7.573064690121713e-29,
+      "point_exists": true,
+      "ring_W2_over_T0h2": 1.3333333333332575,
+      "clock_P2_over_T0h": 0.3333333333333144,
+      "M5h": -26.25,
+      "kappa_book_ln_tau": 1.9095425048844386,
+      "dev_vs_kappa_obs_gamma_lit_pct": -2.5741341710090637,
+      "dev_vs_kappa_obs_b_Ch_pct": -1.9202351681888103,
+      "delta_ln_vs_baseline_pct": 6.302686370164752e-30,
+      "kappa_dev_vs_required_glit_pct": 5.174733728170395
+    },
+    "H_mono_(1+bC-aC)_screening_off": {
+      "kappa_uniform": 2.199765236998246,
+      "kappa_exact": "-(-369754 - 3773*pi**2 + pi**5)/184877",
+      "tau_star_corrected": 6.137018520404394,
+      "ln_tau_star": 1.8143390412294216,
+      "max_residual_at_point": 0.0,
+      "point_exists": true,
+      "ring_W2_over_T0h2": 1.466510157998755,
+      "clock_P2_over_T0h": 0.3333333333333144,
+      "M5h": -26.25,
+      "kappa_book_ln_tau": 1.8143390412294216,
+      "dev_vs_kappa_obs_gamma_lit_pct": -7.431465104222298,
+      "dev_vs_kappa_obs_b_Ch_pct": -6.810167342424393,
+      "delta_ln_vs_baseline_pct": -4.985668733716011,
+      "kappa_dev_vs_required_glit_pct": 15.679861530661583
+    },
+    "H_screen_(1-bC+aC)": {
+      "kappa_uniform": 1.800234763001754,
+      "kappa_exact": "(-3773*pi**2 + pi**5 + 369754)/184877",
+      "tau_star_corrected": 7.499021948387324,
+      "ln_tau_star": 2.0147726051568577,
+      "max_residual_at_point": 5.048709793414476e-29,
+      "point_exists": true,
+      "ring_W2_over_T0h2": 1.2001565086677601,
+      "clock_P2_over_T0h": 0.3333333333333144,
+      "M5h": -26.25,
+      "kappa_book_ln_tau": 2.0147726051568577,
+      "dev_vs_kappa_obs_gamma_lit_pct": 2.794761050492525,
+      "dev_vs_kappa_obs_b_Ch_pct": 3.4846947863698006,
+      "delta_ln_vs_baseline_pct": 5.51074930280447,
+      "kappa_dev_vs_required_glit_pct": -5.330394074320793
+    },
+    "H_brakes_(1-aC-aB)": {
+      "kappa_uniform": 1.8838592602344306,
+      "kappa_exact": "-2*(-4084101 + 775*pi**5)/4084101",
+      "tau_star_corrected": 7.166140425118506,
+      "ln_tau_star": 1.9693672147162309,
+      "max_residual_at_point": 1.0097419586828951e-28,
+      "point_exists": true,
+      "ring_W2_over_T0h2": 1.2559061734896204,
+      "clock_P2_over_T0h": 0.3333333333333144,
+      "M5h": -26.25,
+      "kappa_book_ln_tau": 1.9693672147162309,
+      "dev_vs_kappa_obs_gamma_lit_pct": 0.47815407905727625,
+      "dev_vs_kappa_obs_b_Ch_pct": 1.1525393072515726,
+      "delta_ln_vs_baseline_pct": 3.1329341791570187,
+      "kappa_dev_vs_required_glit_pct": -0.9328019609674811
+    },
+    "H_brakeC_only_(1-aC)": {
+      "kappa_uniform": 1.9983447390168294,
+      "kappa_exact": "-(-369754 + pi**5)/184877",
+      "tau_star_corrected": 6.755591133210522,
+      "ln_tau_star": 1.9103704780512234,
+      "max_residual_at_point": 7.573064690121713e-29,
+      "point_exists": true,
+      "ring_W2_over_T0h2": 1.3322298260111438,
+      "clock_P2_over_T0h": 0.3333333333333144,
+      "M5h": -26.25,
+      "kappa_book_ln_tau": 1.9103704780512234,
+      "dev_vs_kappa_obs_gamma_lit_pct": -2.531890545040369,
+      "dev_vs_kappa_obs_b_Ch_pct": -1.8777080122381449,
+      "delta_ln_vs_baseline_pct": 0.043359766248613596,
+      "kappa_dev_vs_required_glit_pct": 5.087687909603119
+    },
+    "H_berry_only_(1+bC)": {
+      "kappa_uniform": 2.2014204979814167,
+      "kappa_exact": "(pi**2 + 98)/49",
+      "tau_star_corrected": 6.132404060186945,
+      "ln_tau_star": 1.8135868525416974,
+      "max_residual_at_point": 2.524354896707238e-29,
+      "point_exists": true,
+      "ring_W2_over_T0h2": 1.4676136653208687,
+      "clock_P2_over_T0h": 0.3333333333333144,
+      "M5h": -26.25,
+      "kappa_book_ln_tau": 1.8135868525416974,
+      "dev_vs_kappa_obs_gamma_lit_pct": -7.469842165708542,
+      "dev_vs_kappa_obs_b_Ch_pct": -6.848801977932453,
+      "delta_ln_vs_baseline_pct": -5.025059774518013,
+      "kappa_dev_vs_required_glit_pct": 15.766907349228859
+    },
+    "H_brakeB_only_(1-aB)": {
+      "kappa_uniform": 1.8855145212176012,
+      "kappa_exact": "-(-5346 + pi**5)/2673",
+      "tau_star_corrected": 7.159849392876577,
+      "ln_tau_star": 1.968488946236881,
+      "max_residual_at_point": 5.048709793414476e-29,
+      "point_exists": true,
+      "ring_W2_over_T0h2": 1.2570096808117341,
+      "clock_P2_over_T0h": 0.3333333333333144,
+      "M5h": -26.25,
+      "kappa_book_ln_tau": 1.968488946236881,
+      "dev_vs_kappa_obs_gamma_lit_pct": 0.43334435811266303,
+      "dev_vs_kappa_obs_b_Ch_pct": 1.1074288357049227,
+      "delta_ln_vs_baseline_pct": 3.0869405195116997,
+      "kappa_dev_vs_required_glit_pct": -0.8457561442628503
+    },
+    "H_berry_half_down_(1-bC/2)": {
+      "kappa_uniform": 1.8992897510092916,
+      "kappa_exact": "-(-14 + pi)*(pi + 14)/98",
+      "tau_star_corrected": 7.10792020692263,
+      "ln_tau_star": 1.9612096844165967,
+      "max_residual_at_point": 1.7670484276950664e-28,
+      "point_exists": true,
+      "ring_W2_over_T0h2": 1.266193167339452,
+      "clock_P2_over_T0h": 0.3333333333333144,
+      "M5h": -26.25,
+      "kappa_book_ln_tau": 1.9612096844165967,
+      "dev_vs_kappa_obs_gamma_lit_pct": 0.06195258052321151,
+      "dev_vs_kappa_obs_b_Ch_pct": 0.7335443645715714,
+      "delta_ln_vs_baseline_pct": 2.70573602989316,
+      "kappa_dev_vs_required_glit_pct": -0.12135308142751455
+    },
+    "H_berry_half_brakes_(1-bC/2-aC-aB)": {
+      "kappa_uniform": 1.7831490112437223,
+      "kappa_exact": "-(-16336404 + 83349*pi**2 + 3100*pi**5)/8168202",
+      "tau_star_corrected": 7.570875969913313,
+      "ln_tau_star": 2.0243087767274774,
+      "max_residual_at_point": 2.524354896707238e-29,
+      "point_exists": true,
+      "ring_W2_over_T0h2": 1.1887660074958148,
+      "clock_P2_over_T0h": 0.3333333333333144,
+      "M5h": -26.25,
+      "kappa_book_ln_tau": 2.0243087767274774,
+      "dev_vs_kappa_obs_gamma_lit_pct": 3.2813015542924404,
+      "dev_vs_kappa_obs_b_Ch_pct": 3.974500834941864,
+      "delta_ln_vs_baseline_pct": 6.010144919157028,
+      "kappa_dev_vs_required_glit_pct": -6.228888772428036
+    },
+    "H_berry_half_brakeC_(1-bC/2-aC)": {
+      "kappa_uniform": 1.897634490026121,
+      "kappa_exact": "-(-739508 + 2*pi**5 + 3773*pi**2)/369754",
+      "tau_star_corrected": 7.114120274982014,
+      "ln_tau_star": 1.962081580184303,
+      "max_residual_at_point": 1.5146129380243427e-28,
+      "point_exists": true,
+      "ring_W2_over_T0h2": 1.2650896600173382,
+      "clock_P2_over_T0h": 0.3333333333333144,
+      "M5h": -26.25,
+      "kappa_book_ln_tau": 1.962081580184303,
+      "dev_vs_kappa_obs_gamma_lit_pct": 0.10643716249614954,
+      "dev_vs_kappa_obs_b_Ch_pct": 0.7783275162801147,
+      "delta_ln_vs_baseline_pct": 2.751395959407091,
+      "kappa_dev_vs_required_glit_pct": -0.20839889789931476
+    },
+    "violation_demo": {
+      "scheme": "aB in C1 only: (k1,k2,kT) = (2(1-aB), 2, 2)",
+      "kappa": {
+        "C1": 1.8855145212176012,
+        "C2": 2.0,
+        "TH": 2.0
+      },
+      "C1_xi1_residual_at_uncorrected_point": 0.38638849089050686,
+      "tau_UV": 6.75,
+      "tau_Mdef": 6.75,
+      "branch_split": 0.0,
+      "verdict": "асимметричное встраивание (a-B только в C1): C1-невязка ненулевая, ветви расходятся — точка умирает; поправка обязана быть равномерной по трём каналам"
+    }
+  },
+  "S3_closure": {
+    "anchors": {
+      "Delta_sp": "7*pi/30",
+      "kappa_obs_gamma_lit": 1.9599954166781242,
+      "kappa_obs_b_Ch": 1.9469281030273256
+    },
+    "family_scan_book_vs_anchors": {
+      "note": "СКАЧ знаковых комбинаций поправок в равномерной связи kappa = 2(1+x) (multiple testing!): не доказательство, а таблица расстояний; база без поправок: dev -2.57% / -1.92%; принципиальные схемы (H_mono: +bC-aC, H_screen: -bC+aC, H_brakes: -aC-aB) см. S2",
+      "top6": [
+        {
+          "combo": "-1*bC -1*aC +0*bB +1*aB",
+          "x": -0.044295140091108465,
+          "kappa_corr": 1.9114097198178115,
+          "tau_star": 7.062849926956915,
+          "book": 1.9548486424248932,
+          "dev_gamma_lit_pct": -0.26259113708510995,
+          "dev_b_Ch_pct": 0.40682238759472966
+        },
+        {
+          "combo": "-1*bC +0*aC +0*bB +1*aB",
+          "x": -0.04346750959952317,
+          "kappa_corr": 1.913064980800982,
+          "tau_star": 7.0567388643266895,
+          "book": 1.9539830275543038,
+          "dev_gamma_lit_pct": -0.30675526428967714,
+          "dev_b_Ch_pct": 0.3623618413694203
+        },
+        {
+          "combo": "-1*bC +1*aC +0*bB +1*aB",
+          "x": -0.04263987910793787,
+          "kappa_corr": 1.9147202417841527,
+          "tau_star": 7.05063836762929,
+          "book": 1.95311816132483,
+          "dev_gamma_lit_pct": -0.3508811956271529,
+          "dev_b_Ch_pct": 0.31793974759057164
+        },
+        {
+          "combo": "+0*bC +1*aC +0*bB -1*aB",
+          "x": -0.056415108899599886,
+          "kappa_corr": 1.8871697822007718,
+          "tau_star": 7.153569396526109,
+          "book": 1.96761144843624,
+          "dev_gamma_lit_pct": 0.3885739576071501,
+          "dev_b_Ch_pct": 1.062357945367694
+        },
+        {
+          "combo": "+0*bC +0*aC +0*bB -1*aB",
+          "x": -0.05724273939118518,
+          "kappa_corr": 1.8855145212176012,
+          "tau_star": 7.159849392876822,
+          "book": 1.968488946236881,
+          "dev_gamma_lit_pct": 0.43334435811266303,
+          "dev_b_Ch_pct": 1.1074288357049227
+        },
+        {
+          "combo": "+0*bC -1*aC +0*bB -1*aB",
+          "x": -0.05807036988277048,
+          "kappa_corr": 1.8838592602344306,
+          "tau_star": 7.166140425118101,
+          "book": 1.9693672147162309,
+          "dev_gamma_lit_pct": 0.47815407905727625,
+          "dev_b_Ch_pct": 1.1525393091142178
+        }
+      ]
+    },
+    "nsimplify_tau_corrected": {
+      "S0_baseline": {
+        "tau": 6.75,
+        "nsimplify": {},
+        "tau_over_27_4": 1.0,
+        "tau_minus_27_4": 0.0,
+        "ln_tau_dev_glit_pct": -2.5741341710090637
+      },
+      "H_mono_(1+bC-aC)_screening_off": {
+        "tau": 6.137018520404394,
+        "nsimplify": {},
+        "tau_over_27_4": 0.9091879289487991,
+        "tau_minus_27_4": -0.6129814795956063,
+        "ln_tau_dev_glit_pct": -7.431465104222298
+      },
+      "H_screen_(1-bC+aC)": {
+        "tau": 7.499021948387324,
+        "nsimplify": {},
+        "tau_over_27_4": 1.1109662145758998,
+        "tau_minus_27_4": 0.7490219483873242,
+        "ln_tau_dev_glit_pct": 2.794761050492525
+      },
+      "H_brakes_(1-aC-aB)": {
+        "tau": 7.166140425118506,
+        "nsimplify": {},
+        "tau_over_27_4": 1.0616504333508898,
+        "tau_minus_27_4": 0.41614042511850613,
+        "ln_tau_dev_glit_pct": 0.47815407905727625
+      },
+      "H_brakeC_only_(1-aC)": {
+        "tau": 6.755591133210522,
+        "nsimplify": {},
+        "tau_over_27_4": 1.0008283160311884,
+        "tau_minus_27_4": 0.005591133210521626,
+        "ln_tau_dev_glit_pct": -2.531890545040369
+      },
+      "H_berry_only_(1+bC)": {
+        "tau": 6.132404060186945,
+        "nsimplify": {},
+        "tau_over_27_4": 0.9085043052128808,
+        "tau_minus_27_4": -0.6175959398130546,
+        "ln_tau_dev_glit_pct": -7.469842165708542
+      },
+      "H_brakeB_only_(1-aB)": {
+        "tau": 7.159849392876577,
+        "nsimplify": {},
+        "tau_over_27_4": 1.0607184285743076,
+        "tau_minus_27_4": 0.40984939287657696,
+        "ln_tau_dev_glit_pct": 0.43334435811266303
+      },
+      "H_berry_half_down_(1-bC/2)": {
+        "tau": 7.10792020692263,
+        "nsimplify": {},
+        "tau_over_27_4": 1.0530252158403897,
+        "tau_minus_27_4": 0.35792020692263016,
+        "ln_tau_dev_glit_pct": 0.06195258052321151
+      },
+      "H_berry_half_brakes_(1-bC/2-aC-aB)": {
+        "tau": 7.570875969913313,
+        "nsimplify": {},
+        "tau_over_27_4": 1.1216112548019723,
+        "tau_minus_27_4": 0.8208759699133132,
+        "ln_tau_dev_glit_pct": 3.2813015542924404
+      },
+      "H_berry_half_brakeC_(1-bC/2-aC)": {
+        "tau": 7.114120274982014,
+        "nsimplify": {},
+        "tau_over_27_4": 1.0539437444417799,
+        "tau_minus_27_4": 0.3641202749820138,
+        "ln_tau_dev_glit_pct": 0.10643716249614954
+      }
+    },
+    "ladder_k_pi_over_30": {
+      "1*pi/30": 0.10471975511966036,
+      "2*pi/30": 0.20943951023932073,
+      "3*pi/30": 0.3141592653589669,
+      "4*pi/30": 0.41887902047864145,
+      "5*pi/30": 0.523598775598316,
+      "6*pi/30": 0.6283185307179338,
+      "7*pi/30": 0.7330382858376652,
+      "8*pi/30": 0.8377580409572829,
+      "9*pi/30": 0.9424777960769006,
+      "10*pi/30": 1.047197551196632,
+      "11*pi/30": 1.1519173063163635,
+      "12*pi/30": 1.2566370614358675,
+      "13*pi/30": 1.361356816555599,
+      "14*pi/30": 1.4660765716753303,
+      "15*pi/30": 1.5707963267948344
+    },
+    "monodromy_note": "монодромия за эхо mu = e^{lambda+ * Delta}; Delta = 7*pi/30 (спинорная лестница) vs Delta_lit = 0.737637 (GHS 1993), разрыв 0.63%"
+  },
+  "S4_pencil_baseline": {
+    "scheme": "S0_baseline",
+    "tau_star": 6.75,
+    "max_residual_at_point": 9.926167350636332e-24,
+    "n_QEP_roots": 16,
+    "genuine_modes": [
+      {
+        "lambda": [
+          -2.121137361045712e-05,
+          0.0018656127901556581
+        ],
+        "rel_sigma_min": 1.3994555514854632e-09
+      },
+      {
+        "lambda": [
+          0.0019277378311075076,
+          1.3443462202167734e-05
+        ],
+        "rel_sigma_min": 1.5123445077868448e-09
+      },
+      {
+        "lambda": [
+          -0.001859307326130106,
+          4.06426443030314e-05
+        ],
+        "rel_sigma_min": 1.3745436864572431e-09
+      },
+      {
+        "lambda": [
+          -4.7248001345329934e-05,
+          -0.0019196956611499851
+        ],
+        "rel_sigma_min": 1.4822063664309222e-09
+      }
+    ],
+    "n_phantoms": 12,
+    "phantoms": [
+      {
+        "lambda": [
+          -7.920361066518389,
+          34.05015459113877
+        ],
+        "rel_sigma_min": 0.00029267098851436485
+      },
+      {
+        "lambda": [
+          -7.9203610665187325,
+          -34.05015459113884
+        ],
+        "rel_sigma_min": 0.00029267098851436485
+      },
+      {
+        "lambda": [
+          4.716827003385542,
+          21.045554394996724
+        ],
+        "rel_sigma_min": 0.00033956755857693995
+      },
+      {
+        "lambda": [
+          4.716827003482831,
+          -21.045554395069875
+        ],
+        "rel_sigma_min": 0.00033956755857611313
+      },
+      {
+        "lambda": [
+          -0.12119549012249019,
+          3.639086811264058
+        ],
+        "rel_sigma_min": 0.00013640544352639465
+      },
+      {
+        "lambda": [
+          -0.12119549013441956,
+          -3.6390868112567896
+        ],
+        "rel_sigma_min": 0.00013640544352625991
+      },
+      {
+        "lambda": [
+          0.7916470816163137,
+          0.8919302472586625
+        ],
+        "rel_sigma_min": 2.0116384682382325e-05
+      },
+      {
+        "lambda": [
+          0.7916470816139973,
+          -0.8919302472575668
+        ],
+        "rel_sigma_min": 2.011638468234808e-05
+      },
+      {
+        "lambda": [
+          -0.07481362842074386,
+          0.650497346176804
+        ],
+        "rel_sigma_min": 1.4455929671197348e-05
+      },
+      {
+        "lambda": [
+          -0.07481362842081318,
+          -0.6504973461767634
+        ],
+        "rel_sigma_min": 1.4455929671197475e-05
+      },
+      {
+        "lambda": [
+          -0.10864220649609153,
+          0.10796860434117339
+        ],
+        "rel_sigma_min": 2.1148994136379435e-06
+      },
+      {
+        "lambda": [
+          -0.10864220229618018,
+          -0.10796860791170257
+        ],
+        "rel_sigma_min": 2.1148994458858777e-06
+      }
+    ],
+    "phantom_Im_vs_ladder_top": [
+      {
+        "lambda": [
+          -0.10864220649609153,
+          0.10796860434117339
+        ],
+        "nearest_ladder": 0.10471975511965978,
+        "k_over_30": 1,
+        "rel_diff_pct": 3.1024224777848834,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.10864220229618018,
+          -0.10796860791170257
+        ],
+        "nearest_ladder": 0.10471975511965978,
+        "k_over_30": 1,
+        "rel_diff_pct": 3.102425887389092,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.07481362842081318,
+          -0.6504973461767634
+        ],
+        "nearest_ladder": 0.6283185307179586,
+        "k_over_30": 6,
+        "rel_diff_pct": 3.5298681121917164,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.07481362842074386,
+          0.650497346176804
+        ],
+        "nearest_ladder": 0.6283185307179586,
+        "k_over_30": 6,
+        "rel_diff_pct": 3.529868112198183,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          0.7916470816163137,
+          0.8919302472586625
+        ],
+        "nearest_ladder": 0.9424777960769379,
+        "k_over_30": 9,
+        "rel_diff_pct": 5.363261503738281,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          0.7916470816139973,
+          -0.8919302472575668
+        ],
+        "nearest_ladder": 0.9424777960769379,
+        "k_over_30": 9,
+        "rel_diff_pct": 5.363261503854548,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.12119549013441956,
+          -3.6390868112567896
+        ],
+        "nearest_ladder": 1.5707963267948966,
+        "k_over_30": 15,
+        "rel_diff_pct": 131.6714617408165,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.12119549012249019,
+          3.639086811264058
+        ],
+        "nearest_ladder": 1.5707963267948966,
+        "k_over_30": 15,
+        "rel_diff_pct": 131.67146174127922,
+        "match_1pct": false
+      }
+    ],
+    "note": "QEP-корни с rel sigma_min >= 1e-8 — фантомы (протокол сеанса 14); сопоставление Im lambda с k*pi/30 — тест связки фантомов со спинорной лестницей",
+    "runtime_s": 1.5425541400909424
+  },
+  "S4_pencil_H_mono_(1+bC-aC)_screening_off": {
+    "scheme": "H_mono_(1+bC-aC)_screening_off",
+    "tau_star": 6.137018520404394,
+    "max_residual_at_point": 2.6382543003479785e-14,
+    "n_QEP_roots": 16,
+    "genuine_modes": [
+      {
+        "lambda": [
+          8.322684371024555e-06,
+          0.0020700183251285975
+        ],
+        "rel_sigma_min": 1.7071892821557794e-09
+      },
+      {
+        "lambda": [
+          0.0020546829895209296,
+          -3.621669660006627e-06
+        ],
+        "rel_sigma_min": 1.7035876817085514e-09
+      },
+      {
+        "lambda": [
+          -0.002075756369481993,
+          -7.75565038116942e-06
+        ],
+        "rel_sigma_min": 1.694339459234705e-09
+      },
+      {
+        "lambda": [
+          1.2710540976230285e-05,
+          -0.0020586394203518416
+        ],
+        "rel_sigma_min": 1.6885620273075974e-09
+      }
+    ],
+    "n_phantoms": 12,
+    "phantoms": [
+      {
+        "lambda": [
+          -7.937979354816377,
+          33.98954211367347
+        ],
+        "rel_sigma_min": 0.00029206816944215365
+      },
+      {
+        "lambda": [
+          -7.937979354816465,
+          -33.98954211367364
+        ],
+        "rel_sigma_min": 0.0002920681694421528
+      },
+      {
+        "lambda": [
+          4.791377371149734,
+          20.991502287904858
+        ],
+        "rel_sigma_min": 0.00033846772408281607
+      },
+      {
+        "lambda": [
+          4.791377371215871,
+          -20.99150228794934
+        ],
+        "rel_sigma_min": 0.00033846772408229115
+      },
+      {
+        "lambda": [
+          -0.19345400960639414,
+          3.5173584648315193
+        ],
+        "rel_sigma_min": 0.0001344368618153635
+      },
+      {
+        "lambda": [
+          -0.19345400961636489,
+          -3.5173584648303
+        ],
+        "rel_sigma_min": 0.000134436861815527
+      },
+      {
+        "lambda": [
+          0.7874118971811916,
+          0.915643466900024
+        ],
+        "rel_sigma_min": 2.1062393618470936e-05
+      },
+      {
+        "lambda": [
+          0.7874118971783739,
+          -0.9156434668985156
+        ],
+        "rel_sigma_min": 2.106239361842082e-05
+      },
+      {
+        "lambda": [
+          -0.0731547519553055,
+          0.6549835755188688
+        ],
+        "rel_sigma_min": 1.4828351915931108e-05
+      },
+      {
+        "lambda": [
+          -0.07315475195531243,
+          -0.6549835755189021
+        ],
+        "rel_sigma_min": 1.4828351915932631e-05
+      },
+      {
+        "lambda": [
+          -0.11267382166538366,
+          0.108314902973071
+        ],
+        "rel_sigma_min": 2.1771962718085516e-06
+      },
+      {
+        "lambda": [
+          -0.11267381901326187,
+          -0.10831490455181579
+        ],
+        "rel_sigma_min": 2.1771962813373157e-06
+      }
+    ],
+    "phantom_Im_vs_ladder_top": [
+      {
+        "lambda": [
+          0.7874118971811916,
+          0.915643466900024
+        ],
+        "nearest_ladder": 0.9424777960769379,
+        "k_over_30": 9,
+        "rel_diff_pct": 2.847210755373953,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          0.7874118971783739,
+          -0.9156434668985156
+        ],
+        "nearest_ladder": 0.9424777960769379,
+        "k_over_30": 9,
+        "rel_diff_pct": 2.8472107555339945,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.11267382166538366,
+          0.108314902973071
+        ],
+        "nearest_ladder": 0.10471975511965978,
+        "k_over_30": 1,
+        "rel_diff_pct": 3.4331133120996773,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.11267381901326187,
+          -0.10831490455181579
+        ],
+        "nearest_ladder": 0.10471975511965978,
+        "k_over_30": 1,
+        "rel_diff_pct": 3.433114819689899,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.0731547519553055,
+          0.6549835755188688
+        ],
+        "nearest_ladder": 0.6283185307179586,
+        "k_over_30": 6,
+        "rel_diff_pct": 4.243873687831694,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.07315475195531243,
+          -0.6549835755189021
+        ],
+        "nearest_ladder": 0.6283185307179586,
+        "k_over_30": 6,
+        "rel_diff_pct": 4.243873687836994,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.19345400961636489,
+          -3.5173584648303
+        ],
+        "nearest_ladder": 1.5707963267948966,
+        "k_over_30": 15,
+        "rel_diff_pct": 123.92199452154509,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.19345400960639414,
+          3.5173584648315193
+        ],
+        "nearest_ladder": 1.5707963267948966,
+        "k_over_30": 15,
+        "rel_diff_pct": 123.92199452162271,
+        "match_1pct": false
+      }
+    ],
+    "note": "QEP-корни с rel sigma_min >= 1e-8 — фантомы (протокол сеанса 14); сопоставление Im lambda с k*pi/30 — тест связки фантомов со спинорной лестницей",
+    "runtime_s": 0.7009696960449219
+  },
+  "S4_pencil_H_screen_(1-bC+aC)": {
+    "scheme": "H_screen_(1-bC+aC)",
+    "tau_star": 7.499021948387324,
+    "max_residual_at_point": 4.171537066523725e-14,
+    "n_QEP_roots": 16,
+    "genuine_modes": [
+      {
+        "lambda": [
+          0.001745054697533219,
+          3.152072030411972e-07
+        ],
+        "rel_sigma_min": 1.2494293092704657e-09
+      },
+      {
+        "lambda": [
+          1.9893188972030147e-06,
+          0.0017802931123735107
+        ],
+        "rel_sigma_min": 1.2863074009322208e-09
+      },
+      {
+        "lambda": [
+          -0.0017836159881485395,
+          -3.316634241654277e-05
+        ],
+        "rel_sigma_min": 1.2771570906077027e-09
+      },
+      {
+        "lambda": [
+          3.6549108829240675e-05,
+          -0.0017474410935615654
+        ],
+        "rel_sigma_min": 1.2400960472854913e-09
+      }
+    ],
+    "n_phantoms": 12,
+    "phantoms": [
+      {
+        "lambda": [
+          -7.897313531509256,
+          34.12283630490659
+        ],
+        "rel_sigma_min": 0.0002933138141900067
+      },
+      {
+        "lambda": [
+          -7.897313531509788,
+          -34.122836304906826
+        ],
+        "rel_sigma_min": 0.00029331381419000623
+      },
+      {
+        "lambda": [
+          4.6265191557396275,
+          21.110222452911554
+        ],
+        "rel_sigma_min": 0.00034078576097339375
+      },
+      {
+        "lambda": [
+          4.626519155870078,
+          -21.110222452880866
+        ],
+        "rel_sigma_min": 0.00034078576097319643
+      },
+      {
+        "lambda": [
+          -0.034897527510229336,
+          3.77525349763964
+        ],
+        "rel_sigma_min": 0.00013833886824954426
+      },
+      {
+        "lambda": [
+          -0.03489752755444555,
+          -3.7752534976074963
+        ],
+        "rel_sigma_min": 0.00013833886824871934
+      },
+      {
+        "lambda": [
+          0.7966847508241238,
+          0.8659949339943405
+        ],
+        "rel_sigma_min": 1.9109522962076143e-05
+      },
+      {
+        "lambda": [
+          0.7966847508241232,
+          -0.8659949339943416
+        ],
+        "rel_sigma_min": 1.910952296207813e-05
+      },
+      {
+        "lambda": [
+          -0.07643961064206979,
+          0.6456646969557017
+        ],
+        "rel_sigma_min": 1.405273423106156e-05
+      },
+      {
+        "lambda": [
+          -0.07643961064205332,
+          -0.6456646969557136
+        ],
+        "rel_sigma_min": 1.4052734231060484e-05
+      },
+      {
+        "lambda": [
+          -0.1041540786750454,
+          0.10744731585117771
+        ],
+        "rel_sigma_min": 2.04417797606069e-06
+      },
+      {
+        "lambda": [
+          -0.10415407744444385,
+          -0.10744731666541943
+        ],
+        "rel_sigma_min": 2.044177982024401e-06
+      }
+    ],
+    "phantom_Im_vs_ladder_top": [
+      {
+        "lambda": [
+          -0.1041540786750454,
+          0.10744731585117771
+        ],
+        "nearest_ladder": 0.10471975511965978,
+        "k_over_30": 1,
+        "rel_diff_pct": 2.6046286380265506,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.10415407744444385,
+          -0.10744731666541943
+        ],
+        "nearest_ladder": 0.10471975511965978,
+        "k_over_30": 1,
+        "rel_diff_pct": 2.604629415570114,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.07643961064206979,
+          0.6456646969557017
+        ],
+        "nearest_ladder": 0.6283185307179586,
+        "k_over_30": 6,
+        "rel_diff_pct": 2.7607281004305593,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.07643961064205332,
+          -0.6456646969557136
+        ],
+        "nearest_ladder": 0.6283185307179586,
+        "k_over_30": 6,
+        "rel_diff_pct": 2.76072810043245,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          0.7966847508241238,
+          0.8659949339943405
+        ],
+        "nearest_ladder": 0.8377580409572782,
+        "k_over_30": 8,
+        "rel_diff_pct": 3.370530828304181,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          0.7966847508241232,
+          -0.8659949339943416
+        ],
+        "nearest_ladder": 0.8377580409572782,
+        "k_over_30": 8,
+        "rel_diff_pct": 3.3705308283043136,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.03489752755444555,
+          -3.7752534976074963
+        ],
+        "nearest_ladder": 1.5707963267948966,
+        "k_over_30": 15,
+        "rel_diff_pct": 140.34010222767995,
+        "match_1pct": false
+      },
+      {
+        "lambda": [
+          -0.034897527510229336,
+          3.77525349763964
+        ],
+        "nearest_ladder": 1.5707963267948966,
+        "k_over_30": 15,
+        "rel_diff_pct": 140.3401022297263,
+        "match_1pct": false
+      }
+    ],
+    "note": "QEP-корни с rel sigma_min >= 1e-8 — фантомы (протокол сеанса 14); сопоставление Im lambda с k*pi/30 — тест связки фантомов со спинорной лестницей",
+    "runtime_s": 0.7033653259277344
+  },
+  "verdict": [
+    "геометрия SC/UV/Mdef без kappa: утечек НЕТ — 'ошибки' в уравнениях нет",
+    "структурная связка кольца: C1-невязки обнуляются ТОЛЬКО при kappa_C1 = kappa_C2 — голономная поправка обязана быть ДИАГОНАЛЬНОЙ (одной для обоих нулевых каналов); асимметричное встраивание убивает CSS-точку",
+    "схем с живой точкой: 10/12; мертвые: ['family', 'violation_demo']",
+    "лучшая книга: H_berry_half_down_(1-bC/2): ln(tau*) = ln(7.107920), dev vs kappa_obs(gamma_lit) = +0.06% (базовая ln(27/4): -2.57%)",
+    "S4_pencil_baseline: лучший хит фантомов к лестнице k*pi/30: Im lambda = 0.10797 ~ 1*pi/30 (3.10%)",
+    "S4_pencil_H_mono_(1+bC-aC)_screening_off: лучший хит фантомов к лестнице k*pi/30: Im lambda = 0.91564 ~ 9*pi/30 (2.85%)",
+    "S4_pencil_H_screen_(1-bC+aC): лучший хит фантомов к лестнице k*pi/30: Im lambda = 0.10745 ~ 1*pi/30 (2.60%)"
+  ],
+  "runtime_s": 15.0
+}

@@ -1,0 +1,209 @@
+{
+  "config": {
+    "model": "гексагональный Пуанкаре-цикл трансформаций (динамика вместо усечённой башни)",
+    "stations": [
+      {
+        "k": 0,
+        "ru": "Пирамида",
+        "en": "Pyramid",
+        "zone": "CORE/UV",
+        "shape": "1-|xi| (tent, излом в вершине)",
+        "step": "ln(3/2)",
+        "map_note": "наклон 2 — решётка удвоений"
+      },
+      {
+        "k": 1,
+        "ru": "Конус",
+        "en": "Cone",
+        "zone": "CORE/UV",
+        "shape": "1-|xi| (азимутально гладкий)",
+        "step": "ln(3/2)",
+        "map_note": "пара закрывает UV: (3/2)^2 = tau3 = 9/4"
+      },
+      {
+        "k": 2,
+        "ru": "Усечённый конус",
+        "en": "Truncated cone",
+        "zone": "RING/Mdef",
+        "shape": "max(1/4, 1-|xi|), кольцо 4:3",
+        "step": "ln(4/3)",
+        "map_note": "верхний радиус 3/4 = sqrt(tau5)"
+      },
+      {
+        "k": 3,
+        "ru": "Параболический пивот",
+        "en": "Parabolic pivot",
+        "zone": "RING/Mdef",
+        "shape": "1-xi^2 (излом разрешается)",
+        "step": "ln(4/3) (книга); мультипликатор 1",
+        "map_note": "нейтральный пивот фокусировки/дефокусировки"
+      },
+      {
+        "k": 4,
+        "ru": "Чаша",
+        "en": "Bowl",
+        "zone": "RING/Mdef",
+        "shape": "xi^2-1 (переворот)",
+        "step": "ln(4/3) (модуль)",
+        "map_note": "мультипликатор -1: переворот книги (чаща)"
+      },
+      {
+        "k": 5,
+        "ru": "Лог-замыкание",
+        "en": "Log closure",
+        "zone": "RING/Mdef",
+        "shape": "пирамида нового масштаба e^{-Delta_cyc}",
+        "step": "ln(4/3)",
+        "map_note": "6-угольные лог-вычисления: (2/sqrt3)^2 = 4/3"
+      }
+    ],
+    "clock": "глобальные часы эха: -ln(tau5) за сторону, 6 сторон = эхо",
+    "zones": "CORE-пара (пирамида, конус) = UV[xi^3]; RING-квартет = Mdef[xi^5]"
+  },
+  "anchors": {
+    "tau3": 2.25,
+    "tau5": 0.5625,
+    "b_Ch": 0.3765101981412664,
+    "Delta_sp": 0.7330382858376184,
+    "gamma_lit": 0.374,
+    "Delta_lit": 0.737637,
+    "lambda_plus_tower": 1.5090958199234659,
+    "kappa_obs_gamma_lit": 1.9599954166781242,
+    "kappa_obs_b_Ch": 1.946928103027326,
+    "Delta_GHS": 3.44,
+    "Delta_GHS_err": 0.02,
+    "delta_Feigenbaum": 4.66920160910299
+  },
+  "o6_verdict_input": "сырая система неподвижной точки НЕСОВМЕСТНА: ветвь UV_xi3 даёт T0^2=9/4 (tau=2.25), ветвь Mdef_xi5 даёт T0^2=9/16 (tau=0.5625), совместно — только тривиальное R3=0. Точного CSS-решения усечение O6+ не имеет: динамика источников W2/R3/P4 не замораживается.",
+  "sym_checks": {
+    "tau3_is_(3/2)^2": true,
+    "tau5_is_(3/4)^2": true,
+    "branch_ratio_4": true,
+    "sqrt_ratio_2 (удвоение пирамиды)": true,
+    "ring_step_1/sqrt(tau5)": true,
+    "hexagon_(R/a)^2=4/3": true,
+    "core_pair_closes_UV": true,
+    "ring_pair_closes_Mdef": true,
+    "cycle_book_tau3/tau5^2=64/9": true,
+    "kappa_cyc=2ln(3/2)+4ln(4/3)=ln(64/9)": true,
+    "Delta_cyc=-6ln(tau5)": true,
+    "Delta_cyc=12ln(4/3)": true,
+    "Delta_cyc=24ln(2/sqrt3)": true,
+    "anchor_tau3_machine": true,
+    "anchor_tau5_machine": true
+  },
+  "poincare": {
+    "poincare_abelian_equals_EL": true,
+    "poincare_eq_manual_form": true,
+    "station_lock_k_pi_3": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "free_circulation_p_theta_const": true,
+    "note": "группа циферблата абелева: структурные константы c^k_{ij}=0, уравнения Пуанкаре = уравнения Эйлера-Лагранжа; C6-потенциал V=-(V6/6)cos(6 theta) запирает шесть станций theta=k*pi/3",
+    "station_lock_all": true
+  },
+  "closure": {
+    "kappa_cyc": 1.9616585060234522,
+    "kappa_cyc_exact": "ln(64/9) = 2 ln(3/2) + 4 ln(4/3)",
+    "kappa_obs_gamma_lit": 1.9599954166781242,
+    "kappa_obs_b_Ch": 1.946928103027326,
+    "kappa_dev_vs_gamma_lit_pct": 0.08485169563032259,
+    "kappa_dev_vs_b_Ch_pct": 0.7565971734252279,
+    "gamma_cyc": 0.3736829237029571,
+    "gamma_cyc_exact": "Delta_sp / kappa_cyc",
+    "gamma_dev_vs_lit_pct": -0.084779758567625,
+    "gamma_dev_vs_b_Ch_pct": -0.7509157659651312,
+    "Delta_cyc": 3.452184869421371,
+    "Delta_cyc_exact": "-6 ln(tau5) = 6 ln(16/9) = 12 ln(4/3) = 24 ln(2/sqrt3)",
+    "Delta_dev_vs_GHS_pct": 0.3542113203886881,
+    "Delta_in_GHS_band": true,
+    "tent_lattice_ratio": 4.980449991346125,
+    "tent_lattice_dev_pct": -0.3910001730774924,
+    "cycle_book_tau3_over_tau5_sq": 7.111111111111111,
+    "clock_rate_per_side": 0.5753641449035618,
+    "clock_note": "часы эха глобальные: одна сторона гексагона = -ln(tau5) = ln(16/9) log-времени; 6 сторон = эхо",
+    "lambda_plus_tower": 1.5090958199234659,
+    "deficit_tower": 0.4508995967546583,
+    "deficit_filled_by_cycle": 0.4525626860999863,
+    "deficit_fill_quality_pct": 100.36883806446004,
+    "kappa_tower_vs_cycle_note": "замороженная башня lambda+(27/80) = 1.5091 давала дефицит +0.45 в kappa; цикл (динамика источников) даёт kappa_cyc = 1.9617 — дефицит заполнен на 100.4%",
+    "Delta_cyc_over_Delta_sp": 4.709419598018232,
+    "Delta_norm_note": "Delta_cyc=3.4522 живёт в CSS-нормировке (GHS 3.44±0.02); спинор-фреймворк репо использует Delta_sp=7*pi/30=0.7330 (R2, -0.62% к delta_lit). Отношение Delta_cyc/Delta_sp = 4.7094 ~ delta_Feigenbaum = 4.6692 (+0.86%) — вопрос нормировки книг, НЕ утверждается"
+  },
+  "numeric": {
+    "omega0_dial_rate": 1.8200604964220024,
+    "omega0_exact": "(pi/3)/ln(16/9)",
+    "period_free": 3.4521848694213713,
+    "period_free_equals_Delta_cyc": true,
+    "period_locked_V6_0.05": 3.460918797581245,
+    "period_locked_rel_shift_pct": 0.25299711603620134,
+    "kicks_per_cycle": 6,
+    "book_step_per_cycle": 1.9616585060234522,
+    "book_step_measured": 1.9616585060234522,
+    "book_step_measured_ok": true,
+    "ladder": [
+      {
+        "n": 0,
+        "z": 0.0,
+        "r_book": 0.0
+      },
+      {
+        "n": 1,
+        "z": 3.452184869421371,
+        "r_book": 1.9616585060234522
+      },
+      {
+        "n": 2,
+        "z": 6.904369738842742,
+        "r_book": 3.9233170120469043
+      },
+      {
+        "n": 3,
+        "z": 10.356554608264112,
+        "r_book": 5.884975518070356
+      },
+      {
+        "n": 4,
+        "z": 13.808739477685483,
+        "r_book": 7.846634024093809
+      },
+      {
+        "n": 5,
+        "z": 17.260924347106855,
+        "r_book": 9.80829253011726
+      },
+      {
+        "n": 6,
+        "z": 20.713109216528224,
+        "r_book": 11.769951036140712
+      },
+      {
+        "n": 7,
+        "z": 24.165294085949597,
+        "r_book": 13.731609542164165
+      },
+      {
+        "n": 8,
+        "z": 27.617478955370967,
+        "r_book": 15.693268048187617
+      }
+    ],
+    "return_shape_max_err": 0.0,
+    "morph_midpoint_max_err": 0.0,
+    "morph_note": "морф нормирован (sum w = 1); на сечении theta=0 морф == пирамида точно; в середине стороны — среднее соседей"
+  },
+  "honest_notes": [
+    "модель — bookkeeping ПОВЕРХ машино-верифицированных ветвей (tau3=9/4, tau5=9/16 из sympy_center_o6_nsolve.json); это НЕ вывод из уравнений Эйнштейна, а структура источ-динамики, которую те ветви требуют",
+    "аксиомы модели: (1) разбиение 2+4 (CORE/RING) по зонам UV/Mdef; (2) глобальные часы эха = -ln(tau5) за сторону; остальное — теоремы/тождества внутри модели",
+    "статическая несовместимость (tau3 != tau5 в одной точке) растворяется: ветви — шаги РАЗНЫХ книг цикла (амплитудной и эха), а не два кандидата одной амплитуды",
+    "цикл даёт предельный цикл (DSS), а не CSS-точку — согласуется с тем, что Чоптюк наблюдал дискретную самоподобность",
+    "Delta_cyc = 3.4522 — в CSS-нормировке (GHS 3.44±0.02); спинор-нормировка репо (Delta_sp = 7pi/30 = 0.733, R2) — другая книга; отношение 4.7096 ~ delta_F (~+0.9%) не утверждается",
+    "подлинный тест — численная кампания tau* (v7+: измерение W2/t0^2 -> 4/3 на near-critical ветви); модель предсказывает: kappa = ln(64/9) = 1.9617, Delta_CSS = 6 ln(16/9) = 3.4522"
+  ],
+  "runtime_s": 4.6
+}
