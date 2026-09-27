@@ -155,3 +155,67 @@ def test_nonlinear_flow_exits_b2_branch():
         assert 5.0 < r1 < 500.0                       # сход O(A), != 0
         assert abs(r2 / r1 - 1.0) < 0.5               # линейность по A
         assert t3["A0.01"]["march_rows"] == 1         # срыв на 1-й стадии
+
+
+# ==================== сессия 20: HEXCYCLE-DAE (цикл фигур) ====================
+
+def _load_hexcycle_dae():
+    import json as _json
+    res_dir = os.path.join(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__))), "results")
+    with open(os.path.join(res_dir, "hexcycle_dae.json"),
+              encoding="utf-8") as fh:
+        return _json.load(fh)
+
+
+def test_hexcycle_dae_compensated_book_in_S():
+    """Сессия 20 T1c: компенсированная книга цикла фигур — статические
+    решения на ВСЕХ масштабах книги (коллапс 12/12, обдув 6/6), лежат в
+    S = {F=0, r=0} — глобальные статические компоненты S (ответ на оговорку
+    v15); дегенератный угол R1h->0 отбракован; дефект возврата линейки
+    delta_R1h < 0.1 за цикл; полюс P4h — мягкая дегенерация."""
+    res = _load_hexcycle_dae()
+    for key in ("baseline_kappa2", "one_brick_2-bC"):
+        pt = res["points"][key]
+        walk = pt["T1c_ruler_walk"]
+        for tag, n_exp in (("collapse", 12), ("blowup", 6)):
+            rows = walk[tag]
+            ok = [v for v in rows.values()
+                  if v.get("converged") and not v.get("degenerate")]
+            assert len(ok) == n_exp, (key, tag, len(ok))
+            nS = sum(1 for v in ok if v.get("in_S"))
+            assert nS >= n_exp - 1, (key, tag, nS)
+        assert pt["delta_R1h_one_cycle"] < 0.1
+        for b in pt["pole_barriers"]:
+            assert not b["hard_barrier"]
+
+
+def test_hexcycle_dae_pure_book_static_defect():
+    """Сессия 20 T1a: чистая книга (R1h == 1) статически НЕ точна вне
+    критического масштаба (F до 2.7e2 коллапс / 2.7e5 обдув), но станция 0
+    (пирамида) = x* точно — якорь вложения."""
+    res = _load_hexcycle_dae()
+    for key in ("baseline_kappa2", "one_brick_2-bC"):
+        pt = res["points"][key]
+        assert pt["T1_static_collapse"]["F_max"] > 1.0
+        assert pt["T1_static_blowup"]["F_max"] > 1e3
+        assert pt["T1_static_collapse"]["F_max_station0"] < 1e-10
+        assert pt["station0_is_x_star"] < 1e-13
+
+
+def test_hexcycle_dae_kinetic_annihilation():
+    """Сессия 20 T2/T3: пролонгация гомотетической кинематики точна
+    (<= 1e-11, по построению), но замыкание несовместимо с ходьбой
+    (r_max > 1); все L1-посадки с |V| > 1e-3 имеют exit_rate > 1 — поток
+    покидает S (вердикт v15 продолжается глобально)."""
+    res = _load_hexcycle_dae()
+    for key in ("baseline_kappa2", "one_brick_2-bC"):
+        pt = res["points"][key]
+        for tag in ("collapse", "blowup"):
+            kin = pt["T2_kinetic"][tag]
+            assert kin["prolong_max"] < 1e-11
+            assert kin["r_max"] > 1.0
+        for tag in ("collapse", "blowup"):
+            for v in pt["T3_landings"][tag]["L1_free"].values():
+                if v.get("converged") and (v.get("V_norm") or 0) > 1e-3:
+                    assert v["exit_rate"] > 1.0, (key, tag, v)

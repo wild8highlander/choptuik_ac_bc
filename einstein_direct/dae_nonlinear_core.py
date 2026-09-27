@@ -103,8 +103,9 @@ def build_nonlinear_system(kv, validate=True):
     tv = sp.simplify(27 / (2 * kv))
     t0v = sp.sqrt(tv)
     point = {T0h: t0v, R1h: sp.Integer(1), D0h: sp.Integer(0)}
-    chain = {"R3h": (R3h, r3), "W2h": (W2h, w2), "P2h": (P2h, p2),
-             "R5h": (R5h, r5), "M5h": (M5h, m5), "P4h": (P4h, p4v)}
+    chain = {"D0h": (D0h, d0), "R3h": (R3h, r3), "W2h": (W2h, w2),
+             "P2h": (P2h, p2), "R5h": (R5h, r5), "M5h": (M5h, m5),
+             "P4h": (P4h, p4v)}
     for k_, (sym_, form) in chain.items():
         point[sym_] = sp.simplify(sp.expand(form).subs(T0h, t0v).subs(R1h, 1))
     for f_ in (p4.dT0, p4.dD0, p4.Qh, p4.dR1, p4.dW2, p4.dR3, p4.dP4, p4.dR5):
