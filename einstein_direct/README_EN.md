@@ -1361,3 +1361,77 @@ annihilates exactly. Next campaign: the nonlinear march of the DAE.**
 
 Run: `python3 sympy_third_order.py`, `python3 sympy_dd_closure.py`
 (requires the .npy export for (c)), `python3 march_delta_mono.py`.
+
+---
+
+## 26. v15: the nonlinear DAE march — the solution set through the critical point is the flat line
+
+**Question (v14 verdict).** The entire *linear* world annihilates exactly;
+the baryon-asymmetry residue (the phantom gap ~2.9% to π/30, δ_mono) was
+declared a *finite-amplitude* phenomenon. Does the finite amplitude produce
+it? This required the nonlinear march of the DAE — integrating the full
+nonlinear system at finite amplitude.
+
+### 26.1 The nonlinear DAE and its machinery (`dae_nonlinear_core.py`)
+
+The full nonlinear system is built symbolically and lambdified (build ~8 s,
+evaluation 0.08 ms, cross-check of the lambdified Jacobians against the exact
+session-17 matrices rel ~1e-15):
+
+- **constraints** F(x) = 0 — 18 equations (12 tower + 6 chain-prolongation),
+  polynomial/rational in the state x = (a[9], v[8], dd[3]);
+- **closure** — the *exact* nonlinear generalization of the session-18b
+  prolongation: dF/dτ = J_a(x)a′ + J_v(x)v′ + J₂(x)dd′ = 0 by the CHAIN RULE
+  (no linearization), with the same kinematics and the same 9 unknowns;
+  Uk(x) u = −Known(x)(v, dd), all matrices evaluated at the current x;
+- **compatibility** r(x) = 0 — the component of −Known(x)(v,dd) outside
+  range(Uk(x)) (Procrustes-aligned left kernel, norm basis-invariant): the
+  nonlinear analog of the hidden constraints Op(v,dd) = 0;
+- RK4 (dt = 2e-3, as v14), min-norm Newton projections onto {F=0} and {r=0},
+  monitors: rank Uk, lstsq residual, F-drift, alignment angle.
+
+Machine facts established on the way (both points κ = 2 and 2 − π²/98):
+
+- rank DF(x*) = 14 (the linearization degeneracy of session 18b), but rank DF
+  rises to 15 at finite amplitude — x* is a *singular* point of the constraint
+  set;
+- **[T1] THE FLAT LINE.** The ker-B direction is a-pure (v = dd = 0 exactly;
+  the R1h–R3h–R5h–M5h chain walk) and carries F = 0, r = 0, V = 0 EXACTLY
+  (machine zero up to radius |x − x*| ~ 26): a line of EXACT equilibria of
+  the nonlinear DAE; an 8-echo march from it drifts by 0 (baseline) / 8.6e-12
+  (one-brick).
+- **[T2] STATICS OF S = {F=0} ∩ {r=0}.** (a) The M2 direction e2 does NOT
+  touch S: the cokernel residual |P_coker G(x*+h·e2)|/|G| is CONSTANT in h
+  (0.058 baseline, 5.9e-4 one-brick — no O(h) decay, so no C² branch can
+  bend it away); the joint Newton from an e2-point collapses toward x*/the
+  line (radius 0.265 → 0.081). (b) BUT the zero set contains a SECOND
+  direction b2, which is 97–99% t3 — the direction the LINEAR level-3
+  analysis of session 18b killed! The b2-branch EXISTS statically: the joint
+  Newton holds the radius (×1.03–1.04) with |F|, |r| ~ 1e-14 at all tested
+  amplitudes up to |x − x*| ≈ 1.35.
+- **[T3] THE FLOW ON THE BRANCHES.** On the line V = 0 (equilibria). From
+  the b2-branch the closure is compatible AT the point (r ~ 1e-14) but the
+  flow LEAVES S immediately: the level-3 exit rate |Dr(x0)·V(x0)| = (39.2 ±
+  0.2)·A at BOTH points (linear in A), the closure breaks down in the first
+  RK4 stage. The b2-branch carries NO solutions.
+
+### 26.2 Verdict of the session
+
+**The only solution manifold of the nonlinear de-adiabatized DAE through the
+critical point is the flat line of equilibria. The nonlinear march off the
+line is impossible ALGEBRAICALLY — the set of consistent non-stationary
+initial data of finite amplitude is empty (e2 — statically, b2 —
+dynamically) — not numerically. The linear M2 dynamics (nilpotent Jordan-2,
+secular drift, δ_mono = 0) is a linearization artifact: it is the
+linearization of NO nonlinear flow. The "baryon asymmetry" annihilation
+extends to the nonlinear level: the derived (not fitted) second-flow dynamics
+produces NO finite-amplitude residue near the critical point.**
+
+Honest caveats: (i) Puiseux (non-C²) branches are not excluded; (ii) global
+components of S away from x* were not searched (shooting/nsolve — the next
+campaign); (iii) the rigidity is a property of the TRUNCATED tower with the
+derived dd-law (weight rule) — the full PDE machine (v6–v9) remains the
+carrier of the echo physics.
+
+Run: `python3 march_dae_nonlinear.py` (uses `dae_nonlinear_core.py` and the
+v14 `.npy` exports; ~55 s) → `results/march_dae_nonlinear.json`.

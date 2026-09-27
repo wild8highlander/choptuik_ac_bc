@@ -100,3 +100,58 @@ def test_march_delta_mono_bounds():
         assert d["phase"] < 1e-6
         assert res[key]["m2_vs_m1_relative_max"] < 1e-9
         assert res[key]["gap_over_march_bound"] > 1e3
+
+
+# ============================ сессия 19: нелинейный марш DAE =================
+
+def _load_nonlinear_march():
+    import json as _json
+    res_dir = os.path.join(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__))), "results")
+    with open(os.path.join(res_dir, "march_dae_nonlinear.json"),
+              encoding="utf-8") as fh:
+        return _json.load(fh)
+
+
+def test_nonlinear_flat_line_of_equilibria():
+    """Сессия 19 T1: плоская линия ker B — точные равновесия нелинейной DAE
+    (v = dd = 0, F = r = V ~ 0 на всей амплитуде; марш стационарен)."""
+    res = _load_nonlinear_march()
+    for key in ("baseline_kappa2", "one_brick_2-bC"):
+        pt = res["points"][key]
+        assert pt["line_direction_vdd_max"] < 1e-10
+        t1 = pt["T1_flat_line"]
+        assert max(v["V_norm"] for v in t1["samples"].values()) < 1e-9
+        assert max(v["r_max"] for v in t1["samples"].values()) < 1e-11
+        assert t1["march_8_echoes"]["dist_drift_max"] < 1e-9
+
+
+def test_nonlinear_branch_exclusion():
+    """Сессия 19 T2: M2-направление e2 не касается S = {F=0, r=0}
+    (кокоядро-невязка константна по h и != 0); b2-ветвь (~t3) существует
+    статически (joint-Ньютон держит радиус)."""
+    res = _load_nonlinear_march()
+    for key in ("baseline_kappa2", "one_brick_2-bC"):
+        t2 = res["points"][key]["T2_static_S"]
+        rats = t2["coker_ratio_e2"]
+        assert min(rats) > 1e-5                       # препятствие реально
+        assert (max(rats) - min(rats)) < 0.1 * max(rats)  # константа по h
+        assert max(t2["coker_ratio_line"]) < 1e-5     # линия — точная ветвь
+        assert max(t2["coker_ratio_b2"]) < 1e-5       # b2 — точная ветвь
+        assert t2["b2_t3_fraction"] > 0.9             # b2 ~ t3 (вне M2)
+        brec = t2["b2_branch"]["A0.01"]
+        assert 0.9 < brec["radius_ratio"] < 1.2       # радиус удержан
+        assert brec["r_max"] < 1e-12
+
+
+def test_nonlinear_flow_exits_b2_branch():
+    """Сессия 19 T3: поток с b2-ветви немедленно покидает S — level-3 сход
+    |Dr V| линеен по A и != 0; марш срывается на первой стадии."""
+    res = _load_nonlinear_march()
+    for key in ("baseline_kappa2", "one_brick_2-bC"):
+        t3 = res["points"][key]["T3_flow_exit"]
+        r1 = t3["A0.001"]["exit_rate_over_A"]
+        r2 = t3["A0.01"]["exit_rate_over_A"]
+        assert 5.0 < r1 < 500.0                       # сход O(A), != 0
+        assert abs(r2 / r1 - 1.0) < 0.5               # линейность по A
+        assert t3["A0.01"]["march_rows"] == 1         # срыв на 1-й стадии
