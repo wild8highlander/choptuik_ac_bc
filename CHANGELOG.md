@@ -8,6 +8,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Author:** Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович) — aslan08_05@mail.ru
 **Repository:** https://github.com/wild8highlander/choptuik_ac_bc
 
+## [2.14.0] - 2026-09-26
+
+### Added
+- **einstein_direct v15 (session 19)** — the NONLINEAR DAE march, the test
+  v14 assigned: does the finite amplitude produce the baryon-asymmetry
+  residue? Answer: the march is impossible ALGEBRAICALLY — and that is the
+  result:
+  - `dae_nonlinear_core.py`: full nonlinear system F(x) = 0 (12 tower + 6
+    chain-prolongation equations) lambdified with its x-dependent Jacobians
+    (cross-check vs the exact session-17 matrices rel ~1e-15); the EXACT
+    nonlinear prolongation closure Uk(x) u = -Known(x)(v,dd) (chain rule
+    dF/dtau = 0, no linearization); compatibility r(x) = 0 (Procrustes-
+    aligned left kernel — the nonlinear hidden constraints); RK4 + min-norm
+    Newton projections {F=0}, {r=0}; joint Newton on [F; r]; cokernel
+    branch-exclusion test; machine monitors throughout;
+  - `march_dae_nonlinear.py` -> `results/march_dae_nonlinear.json` (~55 s),
+    both points (kappa = 2, 2 - pi^2/98):
+    [T1] FLAT LINE: ker B is a-pure (v = dd = 0) and carries F = r = V = 0
+    EXACTLY to radius ~26 — a line of exact equilibria; march from it
+    frozen (drift 0 / 8.6e-12);
+    [T2] STATICS of S = {F=0} cap {r=0}: the M2 direction e2 does NOT touch
+    S (cokernel residual CONSTANT in h: 0.058 baseline, 5.9e-4 one-brick —
+    no C2 branch; joint Newton collapses 0.265 -> 0.081); BUT a SECOND zero
+    direction b2 exists (~97-99% t3 — the direction killed by the LINEAR
+    level-3 analysis of 18b!): the b2-branch holds the radius statically
+    (x1.03-1.04, |F|, |r| ~ 1e-14) up to |x-x*| ~ 1.35;
+    [T3] FLOW: from b2 the closure is compatible AT the point but the flow
+    LEAVES S immediately — level-3 exit rate |Dr V| = (39.2 +- 0.2)*A at
+    BOTH points (linear in A), closure breakdown in the first RK4 stage;
+  - 3 new tests (flat line, branch exclusion, flow exit) -> 11/11 pass.
+
+### Verdict
+- The only solution manifold of the nonlinear de-adiabatized DAE through the
+  critical point is the FLAT LINE of equilibria. The linear M2 dynamics
+  (nilpotent Jordan-2, secular drift, delta_mono = 0) is a linearization
+  artifact — the linearization of NO nonlinear flow. The baryon-asymmetry
+  annihilation extends to the nonlinear level: the derived (not fitted)
+  second-flow dynamics produces NO finite-amplitude residue near the
+  critical point. Honest caveats: Puiseux branches not excluded; global
+  components of S away from x* not searched (shooting/nsolve — next
+  campaign); the rigidity is a property of the truncated tower with the
+  derived dd-law; the full PDE machine remains the carrier of the echo
+  physics.
+
 ## [2.13.0] - 2026-09-26
 
 ### Added
