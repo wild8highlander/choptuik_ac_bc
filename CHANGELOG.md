@@ -8,6 +8,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Author:** Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович) — aslan08_05@mail.ru
 **Repository:** https://github.com/wild8highlander/choptuik_ac_bc
 
+## [2.15.0] - 2026-09-27
+
+### Added
+- **einstein_direct v16 (session 20)** — HEXCYCLE-DAE: the figure cycle
+  (pyramid -> cone -> truncated cone -> parabolic pivot -> bowl -> log
+  closure) embedded in the nonlinear DAE tower as a GLOBAL predictor,
+  answering the v15 caveat (global components of S away from x*).
+  - Embedding axioms E1-E3 (amplitude book steps from the machine's own
+    tau3 = 9/4, tau5 = 9/16; ruler R1h = 1 in the pure book; exact chain
+    forms + homothetic kinematics tau = T0h^2, dT0h/dtau = 1/(2 T0h)).
+  - [T1a] the PURE book is statically off: F up to 2.7e1 (collapse) /
+    2.7e5 (blowup), worst eqs {0,2}/{2,6}; station 0 = x* exactly.
+  - [T1b] the P4h chain pole (tau = 45/8 = 5.625; moves to 5.923 in the
+    one-brick point) is a SOFT degeneracy: the static branch passes.
+  - [T1c] THE COMPENSATED BOOK EXISTS: minimal-correction static landings
+    converge at ALL booked scales (12/12 collapse + 6/6 blowup, both
+    points); 32 states have F = 0 AND r = 0 — the FIRST GLOBAL STATIC
+    COMPONENTS OF S away from x*; the locked ruler R1h dips to 0.687 at the
+    ring stations and relaxes back to 1 (delta_R1h = 0.064 per cycle, dip
+    non-periodic); blowup selection slides toward the near-degenerate
+    corner (R1h ~ 0.06-0.1, flagged).
+  - [T1d] on-chain R1h-compensation impossible (residual vanishes only at
+    the degenerate corner R1h -> 0, ~ R1h^3).
+  - [T2] kinetic layer annihilates: prolongation exact by construction
+    (<= 1.2e-13) but closure incompatible (r_max 2.1/9.7 and 1.6/8.3),
+    breakdowns 7/7.
+  - [T3] global shooting: 14/24 free landings; every |V| > 1e-3 point has
+    exit_rate 62..8e5 — the flow leaves S (v15 verdict extends globally).
+  - VERDICT: the figures carry the STATES, not the MOTION — the compensated
+    book is the static backbone (CSS-like equilibria), the echo dynamics
+    remains with the PDE machine (v6-v9).
+  - New machine `hexcycle_dae.py`, results `hexcycle_dae.json`; tests
+    14/14 (3 new); README_EN s27, README RU v16.
+
 ## [2.14.0] - 2026-09-26
 
 ### Added

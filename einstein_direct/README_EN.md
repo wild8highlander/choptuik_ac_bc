@@ -1435,3 +1435,86 @@ carrier of the echo physics.
 
 Run: `python3 march_dae_nonlinear.py` (uses `dae_nonlinear_core.py` and the
 v14 `.npy` exports; ~55 s) → `results/march_dae_nonlinear.json`.
+
+## 27. v16: HEXCYCLE-DAE — the figure cycle as a global predictor (session 20)
+
+**Question (v15 verdict + author's proposal).** v15 proved that the local DAE
+march near x* is algebraically impossible (the only solution manifold through
+the critical point is the flat line of equilibria) and left a caveat: *global
+components of S away from x* were not searched*. The author proposed to use
+the dynamic geometric cycle itself — pyramid → cone → truncated cone →
+parabolic pivot → bowl → log closure (`sympy_hexcycle.py`) — as the GLOBAL
+predictor: a finite-amplitude route through the figures.
+
+### 27.1 The embedding (axioms E1–E3, all flagged, no fitting)
+
+- **E1 (amplitude book).** The scale T0h moves by the cycle steps:
+  T0h_k = T0h*·exp(∓r_k), r_k = Σ STEPS — the pair closures (3/2)² = τ3 = 9/4
+  (CORE, UV[ξ³]) and (4/3)² = 1/τ5 = 16/9 (RING, Mdef[ξ⁵]) are the machine's
+  own ladder numbers; station 0 (pyramid) = the critical scale; station names
+  cycle with period 6.
+- **E2 (ruler).** The pure book keeps R1h = 1; ruler compensation is tested
+  separately (T1c/T1d).
+- **E3 (chain + kinematics).** Amplitudes = the exact chain forms of v15
+  (D0h ≡ 0 verified); the homothetic walk uses τ = T0h², dT0h/dτ = 1/(2T0h)
+  with flows/dd by the exact chain rule.
+
+### 27.2 Machine facts (both points κ = 2 and 2 − π²/98)
+
+- **[T1a] The pure book is statically OFF.** F(chain(T0h_k, 1), 0, 0) reaches
+  2.7e1 (collapse, 13 stations) and 2.7e5 (blowup); worst equations {0, 2}
+  (baseline) / {2, 6} (one-brick). Station 0 = x* exactly (anchor).
+- **[T1b] The P4h pole is SOFT.** The chain form P4h has a genuine pole at
+  τ = 45/8 = 5.625 (baseline; T0h = 3√10/4 ≈ 2.3717 — inside the first ring
+  side of the collapse walk); at the one-brick point the pole MOVES to
+  τ ≈ 5.923. Multistart Newton with free amplitudes at the pole scale reaches
+  F ~ 1e−15: the static branch PASSES through the pole scale — the pole is an
+  artifact of the solved chain representation, not a barrier of the book.
+- **[T1c] THE COMPENSATED BOOK EXISTS — global static components of S.**
+  Minimal-correction static landings (min-norm Newton from the pure book,
+  T0h pinned, degenerate corner R1h → 0 with R3h = R5h = M5h = 0 rejected)
+  converge at ALL booked scales: 12/12 collapse + 6/6 blowup at both points.
+  **32 compensated states have F = 0 AND r = 0** (r ≡ 0 on the static slice,
+  verified): the first GLOBAL components of S = {F=0} ∩ {r=0} away from x* —
+  the v15 caveat is answered. The local dimension of the static set at pinned
+  scale is 0–1 (isolated points / curves).
+- **The locked ruler.** In the collapse direction R1h(k) dips at the ring
+  stations (min 0.687 at the truncated-cone scale) and RELAXES back to 1
+  (0.9997 by station 12); the one-cycle return defect δ_R1h = 0.064; the dip
+  does NOT repeat in cycle 2 (max |R1h(k+6) − R1h(k)| = 0.31 — a transient,
+  selection path-dependent). In the blowup direction the selection slides
+  toward the near-degenerate corner (R1h ~ 0.056–0.1) — the half-annihilated
+  branch attracts the blow-up book (interpretive asymmetry, flagged).
+- **[T1d] On-chain compensation is impossible.** Scanning R1h at fixed chain
+  amplitudes, the residual vanishes only toward the degenerate corner
+  (R1h → 0, residual ∝ R1h³): the non-degenerate compensation necessarily
+  leaves the chain manifold.
+- **[T2] The kinetic layer annihilates.** The prolongation equations are
+  exact along the homothetic walk BY CONSTRUCTION (≤ 1.2e−13), but the
+  closure is incompatible with it: r_max = 2.1/9.7 (baseline collapse/blowup),
+  1.6/8.3 (one-brick); closure breakdown at all kinetic stations (7/7). The
+  homothetic book-walk is NOT a DAE solution.
+- **[T3] Global shooting.** Free joint-Newton [F; r] landings: 14/24
+  converged; every landed point with |V| > 1e−3 has exit_rate 62…8e5 — the
+  flow leaves S immediately (the v15 T3 verdict extends globally); points
+  with tiny |V| (1e−8…1e−4) are equilibrium dust (exit ~ 1e−14…1e−10).
+  Pinned-T0h joint floors ~10 are solver stalls, superseded by [T1c]
+  (static compensated states ARE in S with pinned T0h).
+
+### 27.3 Verdict
+
+**The figures carry the STATES, not the MOTION.** Statically the shape cycle
+embeds in the derived nonlinear DAE: the compensated book is a family of
+CSS-like equilibria covering all booked scales — the first global components
+of S away from x* (v15's caveat closed). Dynamically the cycle is annihilated:
+the closure is incompatible with the walk (r ≠ 0) and every finite-|V| point
+of S exits S instantly (exit-rate test). The echo/cycle dynamics therefore
+remains with the PDE machine (v6–v9); the figure cycle serves as the static
+backbone + the books (κ_cyc = ln(64/9), Δ_cyc = 6 ln(16/9)) already
+established in the hexcycle model.
+
+Caveats: the selection among the static fan is Newton-path-dependent
+(min-norm from the pure book is canonical but not unique); branch jumps at
+the soft pole are not excluded; E1–E3 are axioms; the figure profiles
+(tent/parabola/bowl) remain the model's visualization layer — the cycle
+enters the DAE through its books (steps/zones/stations).
