@@ -8,6 +8,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Author:** Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович) — aslan08_05@mail.ru
 **Repository:** https://github.com/wild8highlander/choptuik_ac_bc
 
+## [2.17.0] - 2026-09-28
+
+### Added
+- **einstein_direct v17 (session 21)** — CLOCK-CLOSURE-T1C: closing the
+  clocks through the one-brick (kappa = 2 - pi^2/98) T1c source form
+  instead of the incompatible naive O6+ (9/4 vs 9/16), plus the B4
+  remnant test at greater delta-sensitivity. Machine
+  `clock_closure_t1c.py` -> `results/clock_closure_t1c.json`.
+  - **ERRATUM to v16 [T1c]**: `static_landing` did not pin T0h (dx[0] != 0
+    despite the docstring) — the v16 "compensated book" landings were
+    TRIVIAL-BRANCH captures (T0h -> 0, ring amplitudes ~ 1e-22; at
+    station 1 T0h_land = 3.2e-6 instead of 1.732); reproduced audit: 0
+    book-like of 36 landings (35 trivial captures, 1 half-tower). The
+    v16 "static backbone of CSS-like equilibria" verdict is retracted;
+    the pin-independent v16 layers (T1a, T1d, T2, exit tests) stand.
+  - [A1] honest static map with a HARD-pinned T0h (multi-start, 5 R1h
+    seeds): 0/18 non-degenerate static states at the booked scales in
+    BOTH points — all landings fall into the half-tower R1h -> 0; the
+    clocks have no static carrier away from the critical scale.
+  - [C1] CLOCK-PAIR THEOREM (exact, SymPy): on the chain the branch
+    equations UV_xi3 and Mdef_xi5 have a UNIQUE common positive root
+    tau*(kappa) = 27/(2kappa) — baseline GCD = T0h^2(4T0h^2-27)/4
+    (tau* = 27/4), one-brick GCD factor ((196-pi^2)T0h^2 - 1323)
+    (tau* = 1323/(196-pi^2) = 7.107920); exact zero test at tau*,
+    uniqueness verified. The naive 9/4-vs-9/16 incompatibility is an
+    adiabatic artifact dissolved by de-adiabatization; one brick moves
+    the unique clock to the observed value (ln tau* closure to +0.062%).
+  - [C2] clock books at x* are EXACT in both points: W2h/T0h^2 = 2k/3,
+    UV book 9R3h/(2R1hT0h^2) = k/2, ladder R3h = 3/2 exactly (the
+    holonomy-invariant ladder of v11 in the data), s = 3P2h/T0h = 1.
+  - [C3] B4 remnant (delta-sensitivity): the kernel (v,dd) -> r at fixed
+    amplitudes is 5-dimensional at x* (both points), but lifting the
+    kernel kinematics onto {F=0, r=0} stalls (F ~ 1e-13..1e-7, r ~
+    O(kick), closure breakdown); the one-brick obstruction is ~1.7-3x
+    smaller — the remnant depends on the brick; fine 24-scale grid: book
+    defect F up to 2.7e1, homothetic r up to 1.26.
+  - VERDICT: the clock closure through the one-brick T1c source form
+    succeeded AS A PAIR BOOK (unique common clocks tau*(kappa), moved to
+    the observed value by one brick) and failed AS A STATIC CARRIER
+    (0/18 non-degenerate states; linear tick freedom does not lift;
+    living clocks remain with the PDE machine v6-v9).
+- Tests: +3 (clock-pair uniqueness; T1c erratum + honest static map;
+  exact books + tick obstruction with delta-sensitivity) -> 17/17.
+- Docs: README_EN s28, README RU v17.
+
 ## [2.15.0] - 2026-09-27
 
 ### Added

@@ -219,3 +219,69 @@ def test_hexcycle_dae_kinetic_annihilation():
             for v in pt["T3_landings"][tag]["L1_free"].values():
                 if v.get("converged") and (v.get("V_norm") or 0) > 1e-3:
                     assert v["exit_rate"] > 1.0, (key, tag, v)
+
+
+# ============= сессия 21: CLOCK-CLOSURE-T1C (часы + B4-remnant) ==============
+
+def _load_clock_closure():
+    import json as _json
+    res_dir = os.path.join(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__))), "results")
+    with open(os.path.join(res_dir, "clock_closure_t1c.json"),
+              encoding="utf-8") as fh:
+        return _json.load(fh)
+
+
+def test_clock_pair_unique_closure_scale():
+    """Сессия 21 C1: пара часов (UV_xi3, Mdef_xi5) на цепочке имеет
+    ЕДИНСТВЕННЫЙ общий положительный корень tau*(kappa) = 27/(2kappa):
+    27/4 (baseline), 1323/(196-pi^2) (one-brick); GCD в tau* обращается
+    в нуль ТОЧНО (SymPy) — наивная несовместимость 9/4 vs 9/16 растворена
+    де-адиабатизованной (T1c-)формой источников."""
+    res = _load_clock_closure()
+    for key, tau_ref in (("baseline_kappa2", 6.75),
+                         ("one_brick_2-bC", 7.10792020692263)):
+        c1 = res["points"][key]["C1_clock_pair_theorem"]
+        assert c1["gcd_at_tau_star_zero"] is True, key
+        assert c1["unique_common_clock"] is True, key
+        assert abs(c1["tau_star_numeric"] - tau_ref) < 1e-9, key
+        assert len(c1["gcd_positive_roots"]) == 1, key
+
+
+def test_t1c_erratum_and_honest_static_map():
+    """Сессия 21 A0/A1 (ERRATUM к v16): посадки [T1c] v16 — захваты
+    тривиальной ветви (T0h не был приколот в static_landing), книжноподобных
+    посадок 0; с ЖЁСТКИМ пином T0h недегенератных статических состояний на
+    забронированных масштабах нет (0/18 в обеих точках) — часы не имеют
+    статического носителя вне критического масштаба."""
+    res = _load_clock_closure()
+    for key in ("baseline_kappa2", "one_brick_2-bC"):
+        pt = res["points"][key]
+        stats = pt["A0_erratum_audit"]["stats"]
+        n_book = sum(s.get("book_like", 0) for s in stats.values())
+        assert n_book == 0, key
+        a1 = pt["A1_honest_static_map"]
+        assert "0/18" in a1["verdict"], key
+
+
+def test_clock_books_exact_and_tick_obstruction():
+    """Сессия 21 C2/C3: книги в x* точны (W2/T0^2 = 2k/3, UV 9R3/(2R1T0^2)
+    = k/2, лестница R3h = 3/2 голономно-инвариантна, s = 3P2/T0 = 1);
+    кернел (v,dd)->r 5-мерен (линейная свобода тика), но подъём на
+    совместное многообразие остановывается (r ~ O(kick)); one-brick
+    препятствие МЕНЬШЕ baseline — дельта-чувствительность remnant'а."""
+    res = _load_clock_closure()
+    obs = {}
+    for key in ("baseline_kappa2", "one_brick_2-bC"):
+        pt = res["points"][key]
+        c2 = pt["C2_clock_carriers"]["x_star"]
+        assert abs(c2["W2_defect"]) < 1e-12, key
+        assert abs(c2["UV_defect"]) < 1e-9, key
+        assert abs(c2["R3h_ladder_3/2"] - 1.5) < 1e-9, key
+        assert abs(c2["s_clock_3P2/T0"] - 1.0) < 1e-12, key
+        c3 = pt["C3_b4_remnant"]
+        assert c3["kernel_at_x_star"]["dim_kernel"] >= 4, key
+        t01 = c3["tick_test"]["eps0.01"]
+        assert t01["start_r_max"] > 1e-3, key      # остановка реальна
+        obs[key] = t01["start_r_max"]
+    assert obs["one_brick_2-bC"] < obs["baseline_kappa2"]

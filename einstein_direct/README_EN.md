@@ -1518,3 +1518,86 @@ Caveats: the selection among the static fan is Newton-path-dependent
 the soft pole are not excluded; E1–E3 are axioms; the figure profiles
 (tent/parabola/bowl) remain the model's visualization layer — the cycle
 enters the DAE through its books (steps/zones/stations).
+
+## 28. v17: CLOCK-CLOSURE-T1C — closing the clocks through the one-brick T1c source form + the B4 remnant (session 21)
+
+**Question (author's directive).** Physics-wise the next step is an attempt
+to close the clocks through the one-brick (kappa = 2 - pi^2/98) T1c source
+form — instead of the incompatible naive O6+ (recorded anchor: the UV[xi^3]
+branch forces tau = 9/4, the Mdef[xi^5] branch forces tau = 9/16, jointly
+only the trivial R3 = 0) — or the B4 remnant test on data with greater
+delta-sensitivity. Both layers were executed.
+
+### ERRATUM to v16 (found while preparing v17)
+
+`static_landing` (v16) did NOT pin T0h: the Newton step updated all 9
+amplitudes (dx[0] != 0) although the docstring claims "T0h pinned". The
+v16 [T1c] landings converged to the TRIVIAL branch (T0h -> 0, the whole
+tower annihilates: at station 1 T0h_land = 3.2e-6 instead of 1.732; the
+ring amplitudes W2h..M5h ~ 1e-22) — hence chain_dev up to 1e6, missed by
+the degeneracy filter (which watched only R1h). The v17 machine ([A0])
+reproduced all 36 landings: 0 book-like, 35 trivial captures, 1 half-tower.
+The v16 verdict "the compensated book = a static backbone of CSS-like
+equilibria covering the book scales" is RETRACTED; the clean v16 layers
+(T1a direct evaluations, T1d scan, T2 kinetics, exit tests) do not depend
+on the pin and stand.
+
+### Machine facts (both points kappa = 2 and 2 - pi^2/98)
+
+- **[A1] The honest static map.** Multi-start Newton (5 R1h seeds) with a
+  HARD-pinned T0h (dx[0] = 0) at every booked scale: 0/18 non-degenerate
+  static states in BOTH points — every landing (except station 0 = x*)
+  falls into the half-tower R1h -> 0 (F ~ 1e-14..1e-27 at R1h ~ 1e-15,
+  ring sector R3h = R5h = M5h = 0). The clocks have NO static carrier
+  away from the critical scale.
+- **[C1] THE CLOCK-PAIR THEOREM (exact, SymPy).** On the chain the branch
+  equations UV[xi^3] and Mdef[xi^5] have a UNIQUE common positive root
+  tau*(kappa) = 27/(2kappa): baseline UV_xi3 = -16T0h^2(4T0h^2-27)/27,
+  Mdef_xi5 = -8T0h^2(4T0h^2-27)/27, GCD = T0h^2(4T0h^2-27)/4, tau* = 27/4;
+  one-brick GCD = T0h^2(196-pi^2)(-T0h^2 + 1323/(196-pi^2)), tau* =
+  1323/(196-pi^2) = 7.107920. The zero test at tau* is EXACT; uniqueness
+  holds. The naive 9/4-vs-9/16 incompatibility is dissolved by the
+  de-adiabatized (T1c) source form: both branches close on ONE clock, and
+  one brick moves that clock 27/4 -> 1323/(196-pi^2) — the ln tau*
+  closure from -2.57% to +0.062% (consistent with v11).
+- **[C2] Clock carriers.** At x* the books are EXACT in both points:
+  W2h/T0h^2 = 2kappa/3 (defect 0), the UV book 9R3h/(2R1hT0h^2) = kappa/2
+  (defect 0; R3h = 3/2 EXACTLY in both points — the holonomy-invariant
+  ladder of v11 visible in the data), s = 3P2h/T0h = 1. Away from x* the
+  carrier annihilates (half-tower: ring amplitudes = 0 — the ring clock
+  is dead).
+- **[C3] The B4 remnant (greater delta-sensitivity).** The kernel
+  M_r: (v,dd) -> r at fixed amplitudes is 5-dimensional at x* in both
+  points (rank 6 of 11; clean singular values). Lifting the kernel
+  kinematics onto the joint manifold {F=0, r=0} STALLS: F ~ 1e-13..1e-7
+  but r ~ O(kick) (baseline 3.4e-2 at kick 0.27, 1.6e-1 at kick 1.33;
+  closure breakdown) — the linear tick freedom does not lift to a
+  nonlinear maneuver (consistent with the v15 T2 cokernel obstruction).
+  Delta-sensitivity: in the one-brick point the obstruction is ~1.7-3x
+  SMALLER (5.3e-2 vs 1.6e-1 at kick 0.05*scale) — the remnant genuinely
+  depends on the brick. Fine grid (24 scales of the first cycle): book
+  defect F up to 2.7e1, homothetic r up to 1.26, both points.
+
+### Verdict
+
+**Closing the clocks through the one-brick T1c source form succeeded AS A
+PAIR BOOK and failed AS A STATIC CARRIER.** The clock pair (UV[xi^3],
+Mdef[xi^5]) on the T1c source form has unique common clocks tau*(kappa) =
+27/(2kappa) — the naive O6+ incompatibility is an adiabatic-truncation
+artifact dissolved by de-adiabatization; one brick moves the unique clock
+to the observed value (+0.062% of ln tau*). There is no static carrier
+away from the critical scale (0/18 non-degenerate states; the v16
+landings were trivial captures — erratum), and the 5-dimensional linear
+tick freedom does not lift onto the joint manifold (r ~ O(kick),
+closure breakdown) — the LIVING CLOCK remains with the PDE machine v6-v9.
+
+Caveats: multi-start Newton is local — non-degenerate static branches far
+from the book/starts are not excluded (a global search is a separate
+machine); the anchors tau3 = 9/4, tau5 = 9/16 remain inputs of the
+hexcycle book (in the de-adiabatized form they are not roots of the
+branch equations); the rigidity is a property of the truncated tower; the
+brick-dependence of the tick obstruction (measured at two points) is a
+candidate for a dedicated campaign with intermediate bricks.
+
+Run: `python3 clock_closure_t1c.py` (~50 s) ->
+`results/clock_closure_t1c.json`. Tests: +3 -> 17/17.
