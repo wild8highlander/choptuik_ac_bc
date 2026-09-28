@@ -20,7 +20,8 @@ considered results of equal standing with the positive ones.
 A much larger, per-campaign verification dossier with all key numbers, tables,
 verdicts and reproduction commands lives in
 [`verification/README.md`](../verification/README.md). The deep technical
-ledger with all 29 sections is [README_EN.md](README_EN.md) in this folder.
+ledger with all 33 sections is [README_EN.md](README_EN.md) in this folder
+(§30–§33 = the OPEN9 v19–v22 campaigns).
 
 ---
 
@@ -192,10 +193,12 @@ sector fact.
 |---|---|
 | `results/*.json` | machine-readable results of every campaign (one JSON per machine) |
 | `figures/fig_ru/`, `figures/fig_en/` | 300 dpi figures, Russian and English variants |
-| `tests/test_einstein_direct.py` | the pytest verification suite (21 tests) covering all major machine theorems |
-| `tests/test_open_questions.py` | the OPEN9 (v19) + v20 regression suite: 26 tests over the nine machines and the two v20 campaigns |
+| `tests/test_einstein_direct.py` | the pytest verification suite (58 tests: 21 core + 22 OPEN9 + 4 v20 + 5 v21 + 6 v22) covering all major machine theorems |
+| `tests/test_open_questions.py` | the OPEN9 + deep-campaign regression suite: 37 tests (22 OPEN9 + 4 v20 + 5 v21 + 6 v22) over the nine q-machines and the three campaign generations v20/v21/v22 |
 | `amplitude_ladder.py` | v20a: the amplitude ladder over the PDE machine (Q2 follow-up) |
 | `depth_z30.py` | v20b: depth z >= 30 — certified linear sector, floor budget, percentile ladder (Q3 follow-up) |
+| `deep_echo_v21.py` | v21: the Section 5 deep-echo protocol (junk gates, rollback, checkpoints) — the window-policy wall |
+| `deep_echo_v22.py` | v22: the v-budget diagnosis + root anchoring — the z = 8.56 record and the 4th echo peak |
 | `report_en.pdf`, `report_ru.pdf` (+ `.tex`) | the first written report of the folder |
 | `hexcycle_report_en.pdf`, `hexcycle_report_ru.pdf` (+ `.tex`) | the hexcycle report |
 

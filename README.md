@@ -15,7 +15,7 @@
 [![Security](https://img.shields.io/badge/Security-Scorecard%20Monitored-yellow.svg)](https://securityscorecards.dev/viewer/?uri=github.com/wild8highlander/choptuik_ac_bc)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Codecov](https://img.shields.io/badge/Coverage-Codecov-f39f37?logo=codecov)](https://codecov.io/gh/wild8highlander/choptuik_ac_bc)
-[![Tests](https://img.shields.io/badge/Tests-47%2F47%20passing-brightgreen.svg)](einstein_direct/tests/)
+[![Tests](https://img.shields.io/badge/Tests-58%2F58%20passing-brightgreen.svg)](einstein_direct/tests/)
 
 > **Monograph**: *Spinor corrections b-C and a-C and the solution of the Choptyuk problem*
 > by **Ishak Khamzatovich Isaev** (GitHub: [@wild8highlander](https://github.com/wild8highlander), sole author and maintainer)
@@ -28,7 +28,125 @@
 
 ---
 
-## ★ 2026-09-28: campaign v22 — the v-budget wall BROKEN by root anchoring (z-record 8.56, 4th echo peak reached)
+## ★ Where the project stands now (updated 2026-09-28) / Нынешнее положение проекта
+
+**RU — нынешнее положение, подробно.** Программа верификации прошла полный цикл
+по открытым вопросам: все девять вопросов главы 7 монографии **закрыты машинными
+вердиктами** (кампания OPEN9 v19 — по каждому вопросу своя детерминированная
+машина: однопоточная BLAS, JSON-вердикт, честные оговорки; ключевые факты
+закреплены тестами). №1 получил доказанный структурный барьер (алгебраические
+книги не выбирают π/7), №5/№6 — два новых точных факта (тождество
+τ*(δ_C) = 1323/(196−π²) = τ*_T1c; полюс 45/8 как точное совпадение с корнем
+char(2) при конечном линейном ярусе), №7 — мусорный пол вместо растущей
+1/r-моды, №9 — сертифицированную перепись Кравчика (ноль новых ветвей),
+№4 — количественный блок (фон, а не выброс: 6/172 строки против бутстрап-нулля
+5.3). Дальше серия углубляющих кампаний. v20a исполнила лестницу амплитуд и
+честно зафиксировала отрицательный исход на текущей машине (стена глубины
+приходит раньше дискриминатора показателя p); v20b выдала замкнутый сертификат
+линейного сектора до z = 30 (фаза точно 0, светской рост ~126) и бюджет
+подавления пола. Протокол раздела 5 монографии open9 **исполнен** кампанией
+v21 (джанк-гейт q7 на активных строках, откат стадии с уплотнением окна,
+чекпоинты после каждого эха, стоп по цели/стене) и принёс главный факт:
+**стена глубины чувствительна к оконной политике** — z 1.78 → 7.20 при нуля
+джанк-инвазий; следующая стена — v-бюджет, а не джанк. Кампания v22
+диагностировала v-бюджетную стену механизм за механизмом ([F1] телескопический
+кап не связан; [F2] финальная стадия — вакуум; [F3] v-extension мёртв по
+построению; [F4] храповик покрытия), отвергла гипотезу заказа данными и
+перенесла рычаг НАЗАД: **корневой якорь (k1 на зуме 1) + якорь на пол покрытия
+срыли стену — z-рекорд 8.56 (+19%)**, **4-й пик эха достигнут** (7 пиков, 4 на
+одной стадии); Δ_eff = 0.611 ± 0.446 — честно **НЕ DSS** (3.44 исключена на
+6.3σ, совместимо с нулём); новая стена — корневой пол. Текущее положение:
+**13 машин, 58 тестов pytest (+10 автономных), 47 JSON-вердиктов**, монография
+открытых вопросов в четырёх форматах (RU/EN × docx/pdf). Рубеж: **v23** —
+полный протокол [P1]–[P5] с джанк-гейтами на принятой корневой политике,
+тонкая развёртка k1 (0.50–0.70), охота на 5-й пик и чистый DSS-тест Δ ≈ 3.44.
+
+**EN — the current position, in full.** The verification programme has run the
+full cycle on the open questions: all nine questions of monograph Chapter 7
+are **closed with machine verdicts** (campaign OPEN9 v19 — one deterministic
+machine per question: BLAS single-threaded, a JSON verdict, honest caveats;
+the key facts are pinned by tests). No. 1 received a proved structural barrier
+(the algebraic books cannot select π/7), No. 5/No. 6 — two new exact facts
+(the identity τ*(δ_C) = 1323/(196−π²) = τ*_T1c; the 45/8 pole as an exact
+coincidence with the char(2) root while the linear level stays finite),
+No. 7 — a junk floor instead of a growing 1/r mode, No. 9 — a certified
+Krawczyk census (zero new branches), No. 4 — a quantitative block (background,
+not outlier: 6/172 rows against a bootstrap null of 5.3). Then came the
+deepening campaigns. v20a executed the amplitude ladder and honestly recorded
+its negative outcome on the current machine (the depth wall arrives before the
+exponent-p discriminator); v20b produced the closed-form certificate of the
+linear sector up to z = 30 (phase exactly 0, secular growth ~126) and the
+floor-suppression budget. The Section 5 protocol of the open9 monograph is
+**EXECUTED** by v21 (the q7 junk gate on active rows, stage rollback with
+window tightening, per-echo checkpoints, stop by target/wall) and delivered
+the headline: **the depth wall is window-policy sensitive** — z 1.78 → 7.20
+with zero junk invasions; the next wall is the v-budget, not junk. v22
+diagnosed the v-budget wall mechanism by mechanism ([F1] the telescope cap
+never binds; [F2] the final stage is vacuum; [F3] v-extension is dead code by
+construction; [F4] a coverage ratchet), rejected the order hypothesis against
+the data and moved the lever to the BACK: **a root anchor (k1 on zoom 1) plus
+a coverage-floor anchor broke the wall — depth record z = 8.56 (+19%)**, the
+**4th echo peak reached** (7 peaks, 4 on one stage); Δ_eff = 0.611 ± 0.446 is
+honestly **NOT DSS** (3.44 excluded at 6.3σ, compatible with zero); the new
+wall is the root floor. Current position: **13 machines, 58 pytest tests
+(+10 standalone), 47 JSON verdicts**, the open-questions monograph in four
+formats (RU/EN × docx/pdf). The frontier: **v23** — the full junk-gated
+protocol [P1]–[P5] on the accepted root-anchor policy, a fine k1 sweep
+(0.50–0.70), the 5th-peak hunt and a clean DSS test of Δ ≈ 3.44.
+
+### Counters right now / Счётчики на сейчас
+
+| Counter | Value |
+|---|---|
+| Open questions (monograph Ch. 7) | **9/9 closed** with machine verdicts (the verdict map sits in the campaign ledger below) |
+| Deterministic machines (BLAS = 1) | **13**: q1–q9 (OPEN9 v19) + `amplitude_ladder` + `depth_z30` + `deep_echo_v21` + `deep_echo_v22` |
+| pytest suite | **58/58 passing** = 21 core + 22 OPEN9 + 4 v20 + 5 v21 + 6 v22 (+ 10 standalone open9 tests) |
+| JSON machine verdicts | **47** in [`einstein_direct/results/`](einstein_direct/results/) (+ the private copy travelling inside [`einstein_direct/open9/`](einstein_direct/open9/)) |
+| Open-questions monograph | `OpenQuestions_Monograph_{RU,EN}.{docx,pdf}` — 4 files in [`einstein_direct/open9/monographs/`](einstein_direct/open9/monographs/); Section 5 status: EXECUTED |
+| Echo-train depth record | **z = 8.56** (v22, root-anchor policy; the chain 1.78 → 7.20 → 8.56) |
+| Echo peaks in one chain | **7** (the 4th peak reached; 4 peaks on a single stage) |
+| Quartet period Δ_eff | **0.611 ± 0.446 — honestly NOT DSS** (Δ ≈ 3.44 excluded at 6.3σ; compatible with zero) |
+| Depth budget for z = 30 | S_req(30) ≈ 5.0e3 (computed from the 7.20 wall; recomputation from the 8.56 base is part of v23) |
+| Push tooling | `push_to_github.sh` v2: GitHub API token preflight, tests auto-skip, orphan-commit pickup, post-push ls-remote verification |
+
+### The depth-wall physics in one chain (v21–v22) / Физика стены глубины одной цепочкой
+
+```text
+z(w=5) = 1.78 ──(window w=3)──> z = 7.20 ──(root anchor k1 + coverage-floor anchor)──> z = 8.56
+                                                                    new wall: the ROOT FLOOR
+
+mechanics of the old wall: [F1] telescope cap never binds · [F2] final stage is vacuum
+[F3] v-extension is dead code by construction · [F4] the window floor is a coverage ratchet
+```
+
+### Campaign ledger, the last four campaigns + the frontier / Леджер кампаний: последние четыре + рубеж
+
+| Campaign | Machine(s) | One-line outcome |
+|---|---|---|
+| OPEN9 v19 | 9 machines q1–q9 | 9/9 questions closed with machine verdicts; 22 new tests |
+| v20a / v20b | `amplitude_ladder.py`, `depth_z30.py` | amplitude ladder honestly negative (p unmeasurable on this machine); z ≥ 30 certificate + floor budget S_req ≈ 2.3e3 |
+| v21 | `deep_echo_v21.py` | Section 5 protocol EXECUTED: the wall is window-policy — z 1.78 → 7.20 with 0 junk invasions; the next wall is the v-budget |
+| v22 | `deep_echo_v22.py` | the v-budget wall BROKEN by root anchoring: z 8.56, the 4th echo peak, Δ_eff = 0.611 ± 0.446 not DSS; the new wall is the root floor |
+| **v23 (frontier)** | planned | the full junk-gated protocol [P1]–[P5] on the root-anchor policy; a fine k1 sweep 0.50–0.70; the 5th-peak hunt; a clean DSS test of Δ ≈ 3.44 |
+
+**Where to read what / где что читать.** Campaign sections §3.8–§3.11 in
+[`einstein_direct/README.md`](einstein_direct/README.md) (RU) and §30–§33 in
+[`einstein_direct/README_EN.md`](einstein_direct/README_EN.md) (EN); the
+self-contained closure package [`einstein_direct/open9/`](einstein_direct/open9/)
+(13 machines, a private results copy, standalone tests, monographs); the
+per-question verdict map and the honesty ledger sit in the campaign ledger
+below; the three older announcements are kept verbatim, collapsed, in the
+archive right after this block.
+
+---
+
+## Архив анонсов кампаний / Announcement archive (v19–v22)
+
+The three campaign announcements below are kept verbatim for the record — the
+current state of the project is the block above. Разверните нужный анонс.
+
+<details>
+<summary><b>2026-09-28 — campaign v22: the v-budget wall BROKEN by root anchoring (z-record 8.56, 4th echo peak reached)</b></summary>
 
 **RU.** Заказ v22 — расширение v-бюджета при w = 3 (v_ahead_factor/телескоп) за 4-й пик и Δ_eff —
 исполнен машиной `deep_echo_v22.py` с перенаправлением рычага по данным машины. Диагноз (цепочка v21
@@ -55,9 +173,10 @@ one stage); Δ_eff = 0.611 ± 0.446 — the quartet's period is NOT DSS (3.44 ex
 periodicity honestly unconfirmed; the new wall is the root floor. Details:
 `einstein_direct/README.md` §3.11, `README_EN.md` §33.
 
----
+</details>
 
-## ★ 2026-09-28: campaign v21 — the deep-echo protocol EXECUTED (Section 5 of the open9 monograph)
+<details>
+<summary><b>2026-09-28 — campaign v21: the deep-echo protocol EXECUTED (Section 5 of the open9 monograph)</b></summary>
 
 **RU.** Протокол v21 (раздел 5 монографии open9) исполнен машиной `deep_echo_v21.py`: старт eps = 1e-3
 над A*, сетка n = 800, джанк-гейт q7 на активных строках, откат стадии с уплотнением окна при инвазии,
@@ -71,7 +190,7 @@ periodicity honestly unconfirmed; the new wall is the root floor. Details:
 `README_EN.md` §32.
 
 **EN.** The v21 protocol (Section 5 of the open9 monograph) is executed by `deep_echo_v21.py`:
-start eps = 1e-3 over A\*, grid n = 800, q7 junk gate on active rows, stage rollback + window
+start eps = 1e-3 over A*, grid n = 800, q7 junk gate on active rows, stage rollback + window
 tightening on invasion, per-echo checkpoints, stop by target/wall. Outcomes: (a) run-0 calibration —
 restart rows are vacuum, the gate recalibrated to active rows; (b) HEADLINE — the depth wall is
 window-policy sensitive: z(w=5) = 1.78 → z(w=3) = 7.20 (deeper than EVERY saved campaign, v20a
@@ -81,9 +200,10 @@ second pass on the best policy (3e-3/1e-3/1e-4): the echo train still does not d
 the exponent p is not measurable, the discriminator stays falsifiable. Details:
 `einstein_direct/README.md` §3.10, `README_EN.md` §32.
 
----
+</details>
 
-## ★ 2026-09-28: the nine open questions are CLOSED (machine verdicts, campaigns OPEN9 v19 + v20)
+<details>
+<summary><b>2026-09-28 — the nine open questions are CLOSED (machine verdicts, campaigns OPEN9 v19 + v20)</b></summary>
 
 **RU.** Все девять открытых вопросов главы 7 монографии верификации получили машинные вердикты.
 Каждому вопросу поставлена в соответствие отдельная детерминированная машина (однопоточной BLAS,
@@ -118,6 +238,7 @@ floor-suppression budget S_req ~ 2.3e3 and certified estimators (naive OLS at th
 -23%); the v21 protocol is written. Details: [`einstein_direct/open9/`](einstein_direct/open9/) —
 the monographs `OpenQuestions_Monograph_{RU,EN}.{docx,pdf}`, 13 machines, 58 pytest tests.
 
+</details>
 ---
 
 ## Overview
@@ -160,7 +281,8 @@ Everything in this repository follows one rule, applied everywhere:
 - Mistakes found later are **retracted publicly** (see the honesty ledger
   below — two verdicts from earlier campaigns carry formal ERRATUM notes).
 - Each campaign writes machine-readable JSON outputs, and a pytest suite
-  re-checks the major theorems from those outputs (**21/21 passing**).
+  re-checks the major theorems from those outputs (**58/58 passing**: 21 core +
+  22 OPEN9 + 4 v20 + 5 v21 + 6 v22, plus 10 standalone open9 tests).
 
 ---
 
@@ -194,14 +316,14 @@ Everything in this repository follows one rule, applied everywhere:
 | Author | **wild8highlander** (Ishak Khamzatovich Isaev), sole author and maintainer |
 | License | Isaev Proprietary (individual) |
 | Machine-verified derivation | Hilbert action → Einstein equations, residuals ≈ 10⁻⁴¹ |
-| Automated test suite | **21/21 passing** (re-checks machine theorems from JSON outputs) |
-| Campaign result files | 31 JSON machine outputs in [`einstein_direct/results/`](einstein_direct/results/) |
+| Automated test suite | **58/58 passing** (21 core + 22 OPEN9 + 4 v20 + 5 v21 + 6 v22; re-checks machine theorems from JSON outputs) + 10 standalone |
+| Campaign result files | 47 JSON machine outputs in [`einstein_direct/results/`](einstein_direct/results/) (all OPEN9/v20/v21/v22 verdicts included) |
 | Tracked files | 700+ across 20+ research and documentation directories |
 | Source files | 112 Python · 17 Julia · 21 Java + a Next.js dashboard |
-| Publications in-repo | original monograph (RU/EN, DOCX/PDF), QCD-bridge monograph, audit appendix, bilingual verification monograph (metadata-free) |
+| Publications in-repo | original monograph (RU/EN, DOCX/PDF), QCD-bridge monograph, audit appendix, bilingual verification monograph (metadata-free), open9 open-questions monograph (RU/EN × DOCX/PDF) |
 | Figures | 20 einstein_direct figures (RU/EN) · 18 QCD-bridge 600-DPI figures · 19 4D animations · README charts from live JSONs |
 | DSI laboratory | 7 experiments (exp1–exp7) with pytest coverage |
-| Runs on a phone | full pipeline under Termux (`termux/`) |
+| Runs on a phone | open9 machines + standalone tests under Termux; GitHub push package with Android instructions (`INSTRUKCIYA_Termux_RU.md`) |
 
 ---
 
@@ -211,7 +333,9 @@ The two panels below summarize the growth of the verification machine: the
 number of machine theorems re-checked by the automated test suite after each
 campaign, and the honest log-scale zoom-depth record of the echo search
 across solver generations (from z ≈ 1.5 in the first characteristic solver
-to z = 9.35 in the stabilized annulus machine).
+to z = 9.35 in the stabilized annulus machine; the deep-echo chain adds its
+own policy record — z 1.78 → 7.20 → 8.56 by window policy and root
+anchoring, v21–v22).
 
 ![Verification programme at a glance](assets/charts/chart_campaigns.png)
 
@@ -229,7 +353,9 @@ to z = 9.35 in the stabilized annulus machine).
 | One-brick Berry screening (δ_C = π/7) | closes ln τ\* from **−2.57%** to **+0.062%** |
 | Global static census | **zero** non-degenerate static branches beyond the known families; the static structure is exhausted exactly |
 | Nonlinear DAE march | the only solution manifold through the critical point is the flat line of equilibria |
-| Verification suite | **21/21 tests** re-checking machine theorems |
+| Verification suite | **58/58 tests** re-checking machine theorems (+10 standalone open9 tests) |
+| Open questions (monograph Ch. 7) | **9/9 closed** with machine verdicts (OPEN9 v19–v22: 13 machines, JSON verdicts, honest caveats) |
+| Depth-wall physics (v21–v22) | the wall is window-policy sensitive: z 1.78 → 7.20 → **8.56** (root anchor); 4th echo peak reached; Δ_eff = 0.611 ± 0.446 — honestly not DSS |
 
 ### The clock-pair theorem on the brick ladder
 
@@ -599,6 +725,57 @@ The final campaign of the series ran two machines:
    to the PDE machine (finite-amplitude echo on the three static
    families).**
 
+### OPEN9 and the deep campaigns (v19–v22): the nine questions closed, the depth wall pushed by policy
+
+Four campaigns after v18, in the same format (deterministic BLAS-pinned
+single-thread machines, JSON verdicts, honest caveats):
+
+1. **OPEN9 (v19) — nine machines, nine questions closed.** [q1] the
+   algebraic tower books cannot select π/7 (elimination ideal empty,
+   low-degree PSLQ null, transcendence sanity check) — a proved structural
+   barrier; [q5] the chain closes identically and yields the exact identity
+   τ\*(δ_C) = 1323/(196−π²) = τ\*_T1c; [q6] the 45/8 pole is the char(2)
+   coincidence and the linear level is finite there — a representation
+   artifact; [q7] no growing 1/r mode (|M1| decays across zooms: a junk
+   floor); [q9] a certified Krawczyk census — 0 new branches,
+   machine-rigorous; [q4] BLOCKED quantitatively (background, not outlier:
+   6/172 rows vs a bootstrap null of 5.3); [q2]/[q3] falsifiable protocols,
+   executed next.
+2. **v20a/v20b — the protocols executed.** The amplitude ladder (real eps
+   3e-3..1e-4) does NOT develop echo trains on the current machine (0–3
+   Q-peaks, stop at the wall) — the exponent p is honestly unmeasurable;
+   z ≥ 30 received a closed-form linear-sector certificate (phase drift
+   exactly 0), the floor budget S_req(30) ≈ 2.3e3 and certified estimators
+   (naive OLS at the wall reproduces −23%).
+3. **v21 — the Section 5 protocol EXECUTED.** Junk gates, rollback +
+   window tightening, per-echo checkpoints and stop branches — all
+   exercised. HEADLINE: the depth wall is window-policy sensitive —
+   z(w=5) = 1.78 → z(w=3) = 7.20 (deeper than every saved campaign) with
+   ZERO junk invasions; the next wall is the v-budget, not junk; the budget
+   recomputed from the reached wall: S_req(30) ≈ 5.0e3.
+4. **v22 — the v-budget wall BROKEN by root anchoring.** Diagnosis: the
+   telescope cap never binds, the final stage is vacuum, v-extension is dead
+   code by construction, the window floor is a coverage ratchet — the wall
+   is topological, not budget-sized. The lever moved to the BACK: a root
+   anchor (k1 on zoom 1) + a coverage-floor anchor (from zoom 2) give
+   z = 8.56 (+19%) and the 4th echo peak (7 peaks, 4 on one stage);
+   Δ_eff = 0.611 ± 0.446 — NOT DSS (3.44 excluded at 6.3σ), periodicity
+   honestly unconfirmed; the new wall is the root floor.
+
+Question-by-question verdict map (monograph Ch. 7 numbering):
+
+| Ch. 7 | Machine | Verdict (one line) |
+|---|---|---|
+| №1 | `brick_selection.py` | structural barrier PROVED: algebraic books cannot select π/7 |
+| №2 | `finite_amplitude_mono.py` + ladder (v20a/v21/v22) | falsifiable √ε law; p unmeasurable on the current machine (the wall blocks first) |
+| №3 | `echo_fit_global.py` + `depth_z30.py` + v21/v22 | z ≥ 30 certificate; depth pushed 4.6 → 7.20 → 8.56 by policy + root anchor |
+| №4 | `mirror_ring_v2.py` | BLOCKED quantitatively: d-junk floor 1.4–2.3e2 vs target 4/3; 6/172 rows = chance |
+| №5 | `sympy_center_o7.py` | chain closes identically; exact identity τ\*(δ_C) = τ\*_T1c; O7 program written |
+| №6 | `puiseux_soft_pole.py` | 45/8 pole = char(2) coincidence; linear level finite — a representation artifact |
+| №7 | `m1_tracker.py` | no growing 1/r mode at accessible depth (junk floor; gate open-for-percentile) |
+| №8 | `lyapunov_center.py` | no center / no attracting cycle in the static book (char: only ω = 0) |
+| №9 | `krawczyk_census.py` | certified census: unique boxes, OUT ≥ 99% of the 2D slice, 0 new branches |
+
 ### The honesty ledger (proven / confirmed / rejected / retracted)
 
 | Verdict | Statement | Where |
@@ -617,19 +794,39 @@ The final campaign of the series ran two machines:
 | **Rejected** | Linear dynamics reproduces the phantom gap (3.0e-3 ≫ march bound 1e-14) | v13–v14 |
 | **Retracted** | v16 "static backbone" verdict (unpinned T0h → trivial captures) | v17 [A0] ERRATUM |
 | **Retracted** | v17 [C3] absolute r_max numbers (basis-dependent method; invariant ‖r‖ stands) | v18 [B3] ERRATUM |
+| **Proven (exact)** | Identity τ\*(δ_C) = 1323/(196−π²) = τ\*_T1c; the 45/8 pole is the char(2) coincidence, the linear level finite there | OPEN9 [q5], [q6] |
+| **Proved (barrier)** | Algebraic tower books cannot select π/7 (elimination ideal empty; PSLQ null; π/7 transcendental) | OPEN9 [q1] |
+| **Confirmed** | The depth wall is window-policy sensitive: z(w=5) = 1.78 → z(w=3) = 7.20 with zero junk invasions | v21 |
+| **Rejected** | The v-budget order hypothesis: the telescope cap never binds, v_ahead is inert — the wall is topological | v22 [F1–F4] |
+| **Rejected** | DSS for the 4-peak quartet: Δ_eff = 0.611 ± 0.446, Δ ≈ 3.44 excluded at 6.3σ (compatibly with zero) | v22 [C3] |
 
-### What remains open (the short list)
+### What remains open (the short list after OPEN9 v19–v22)
 
-The full list with formulations is in the bilingual verification monograph;
-in brief: (1) the finite-amplitude echo carrier — PDE machine v6–v9 on the
-background of the three static families; (2) an independent selection
-principle for the septinial brick (outside the tick scan); (3) τ\*
-measurement in the data (the W2 channel); (4) Puiseux branches at the soft
-pole τ = 45/8; (5) a selection principle for the static fan (Newton-path
-independence); (6) the percent-level γ on a resolved grid; (7) the
-convention question of the Berry screening (additive vs multiplicative);
-(8) global components of S off the chain beyond the census radius; (9) the
-π/30 phantom — real identity or persistent coincidence.
+The Chapter 7 nine are closed — every question carries a machine verdict
+(see the verdict map above); the *new* frontier, in the order of the next
+campaigns:
+
+1. **v23 — the full junk-gated protocol on the accepted root-anchor policy**
+   (the v22 winner): echo trains long enough for the 5th peak and a clean
+   DSS test of Δ ≈ 3.44;
+2. **a fine k1 sweep (0.50–0.70)** and the combined policy «root anchor +
+   truncated ahead» — depth beyond 8.56 (the root floor);
+3. **Δ_eff measured cleanly** — the current 0.611 ± 0.446 is compatible
+   with zero (sub-echo contamination at the floor; DSS 3.44 excluded at
+   6.3σ);
+4. **percent-level γ at z ≥ 30** — the budget chain (S_req(30) ≈ 5.0e3
+   from z\* = 7.20) needs recomputation from the new 8.56 base;
+5. **the amplitude-ladder exponent p** on a developed echo train — the
+   discriminator (Jordan-2 √ε vs b2-exit p = 1 vs Lyapunov p = 2) stays
+   falsifiable and unmeasured on the current machine;
+6. **the W2 ring data channel** — the PDE d-junk floor still blocks the
+   M1/ξ² + M3/ξ³ decomposition (the mirror-pair protocol is ready);
+7. **the π/30 phantom** — after the №1 null result exactly two candidates
+   survive: finite-amplitude monodromy and Berry-connection holonomy.
+
+The pre-OPEN9 short list (finite-amplitude carrier, brick selection, W2
+τ\*, Puiseux branches, static-fan selection, γ, Berry convention, global
+components, π/30) is retired into the verdict map above.
 
 ---
 
@@ -642,7 +839,15 @@ convention question of the Berry screening (additive vs multiplicative);
 cd einstein_direct
 python3 -m pip install numpy scipy sympy matplotlib pytest
 python3 -m pytest tests/ -q
-# 21 passed
+# 58 passed (21 core + 22 OPEN9 + 4 v20 + 5 v21 + 6 v22)
+```
+
+The same suite, fully offline and self-contained (no repo paths needed):
+
+```bash
+cd einstein_direct/open9
+python3 -m pytest tests/test_open9_standalone.py -q
+# 10 passed (~3 s; machines carry a private copy of the results)
 ```
 
 ### The symbolic derivation (machine-verified)
@@ -721,12 +926,25 @@ docker run --rm -v $(pwd)/output:/app/output choptyuk-verify
 
 Open in VS Code with Dev Containers extension — all tools (Python, Julia, Java, Node.js) pre-installed.
 
-### On a phone (Termux)
+### On a phone (Termux/Android)
+
+The old `termux/` script folder has been retired from the repository; the
+phone route now runs through the self-contained closure package and the push
+bundle (which carries its own step-by-step Android instruction,
+`INSTRUKCIYA_Termux_RU.md` — pkg setup, PAT creation, a 7-step push cycle
+with a GitHub API token preflight and post-push verification):
 
 ```bash
-bash termux/01_termux_install.sh      # once per device
-bash termux/02_termux_run.sh          # full pipeline (~1 h)
-bash termux/02_termux_run.sh --quick  # ~15 min, same protocol, coarser grids
+# science, fully offline (inside the repo):
+cd einstein_direct/open9
+python3 -m pytest tests/test_open9_standalone.py -q   # 10 passed, ~3 s
+cd machines
+python3 depth_z30.py            # ~1 min
+python3 amplitude_ladder.py     # ~1–2 min
+
+# publishing from the phone (inside the choptuik_open9_push.zip bundle):
+GITHUB_TOKEN=... bash push_to_github.sh --check   # 5-second token preflight
+GITHUB_TOKEN=... bash push_to_github.sh           # clone → patch → tests → push → verify
 ```
 
 All numerical machines pin the BLAS thread count to 1 on purpose:
@@ -887,7 +1105,7 @@ choptuik_ac_bc/
 │   └── charts/                  # README charts generated from machine outputs
 ├── einstein_direct/             # ★ core verification laboratory (direct Einstein programme)
 │   ├── README.md                # summary, file map, how to run (RU)
-│   ├── README_EN.md             # deep 29-section technical ledger (EN)
+│   ├── README_EN.md             # deep 33-section technical ledger (EN)
 │   ├── sympy_derivation.py      # Hilbert action → Einstein equations (machine-verified)
 │   ├── roberts_test.py          # exact-solution regression
 │   ├── choptuik_scaling.py      # critical amplitude A* by bisection
@@ -909,8 +1127,11 @@ choptuik_ac_bc/
 │   ├── spinor_ladder.py, spinor_analysis.py, spinor_figures.py
 │   ├── zoom_campaign_*.py       # zoom campaigns (regular / taylor)
 │   ├── figures/                 # fig_ru/ and fig_en/ PNG sets
-│   ├── results/                 # all campaign JSONs (machine outputs)
-│   └── tests/                   # pytest suite re-checking the theorems (21/21)
+│   ├── results/                 # all campaign JSONs (machine outputs, 47 files)
+│   ├── open9/                   # ★ self-contained OPEN9 closure package: 13 machines,
+│   │                            #   private results copy, standalone tests (10),
+│   │                            #   monographs OpenQuestions_Monograph_{RU,EN}.{docx,pdf}
+│   └── tests/                   # pytest suite re-checking the theorems (58/58)
 ├── verification/
 │   └── README.md                # ★ the big verification dossier (English)
 ├── monograph/
@@ -940,7 +1161,6 @@ choptuik_ac_bc/
 ├── docs-site/                   # MkDocs documentation site sources
 ├── notebooks/                   # Jupyter verification notebook
 ├── scripts/                     # repository-level runners and utility scripts
-├── termux/                      # run the whole pipeline on Android and publish from the phone
 ├── docker/, .devcontainer/      # containerized environments
 └── .pre-commit-config.yaml      # code quality hooks
 ```
@@ -972,7 +1192,20 @@ re-checks the theorem-level claims automatically.
 | Third-order weight-rule theorem; Jordan-2 annihilation | `python3 sympy_third_order.py`, `python3 march_delta_mono.py` | `results/third_order_tables.json`, `results/march_delta_mono.json` |
 | Quadratic pencil M(l); δ_mono = 0 at linear order | `python3 sympy_second_flows.py` | `results/second_flows_exact.json` |
 | Spinor ladder π/15, π/30 | `python3 spinor_ladder.py` | `results/spinor_ladder.json` |
-| **All of the above at once** | `python3 -m pytest tests/ -q` | **21 passed** |
+| OPEN9: brick barrier №1 (π/7 unselectable by algebraic books) | `python3 brick_selection.py` | `results/q1_brick_selection.json` |
+| OPEN9: finite-amplitude residue +√ε model (№2) | `python3 finite_amplitude_mono.py` | `results/q2_finite_amplitude_mono.json` |
+| OPEN9: percentile γ estimators, self-tested (№3) | `python3 echo_fit_global.py` | `results/q3_echo_fit_global.json` |
+| OPEN9: W2 mirror-ring re-analysis, quantitative block (№4) | `python3 mirror_ring_v2.py` | `results/q4_mirror_ring_v2.json` |
+| OPEN9: chain closure + identity τ*(δ_C) = τ*_T1c (№5) | `python3 sympy_center_o7.py` | `results/q5_center_o7.json` |
+| OPEN9: the 45/8 soft pole = char(2) coincidence (№6) | `python3 puiseux_soft_pole.py` | `results/q6_puiseux_soft_pole.json` |
+| OPEN9: 1/r mode decays — junk floor (№7) | `python3 m1_tracker.py` | `results/q7_m1_tracker.json` |
+| OPEN9: no center / no attracting cycle (№8) | `python3 lyapunov_center.py` | `results/q8_lyapunov_center.json` |
+| OPEN9: certified Krawczyk census, 0 new branches (№9) | `python3 krawczyk_census.py` | `results/q9_krawczyk_census.json` |
+| v20a: amplitude ladder honestly negative (p unmeasurable) | `python3 amplitude_ladder.py` | `results/v20a_amplitude_ladder.json` |
+| v20b: z ≥ 30 certificate + floor budget | `python3 depth_z30.py` | `results/v20b_depth_z30.json` |
+| v21: window-policy wall z = 7.20, 0 junk invasions | `python3 deep_echo_v21.py` (~3 min) | `results/v21_deep_echo.json` + `results/v21_checkpoints.json` |
+| v22: root-anchor wall break — z = 8.56, 4th peak | `python3 deep_echo_v22.py` (several min) | `results/v22_v_budget.json` + `results/v22_checkpoints.json` |
+| **All of the above at once** | `python3 -m pytest tests/ -q` | **58 passed** |
 
 Run any of these from inside [`einstein_direct/`](einstein_direct/). Every
 machine pins BLAS to one thread and writes its full configuration into the
@@ -1091,7 +1324,7 @@ maintainer**; all commits on `main` are published under the
 | [`monograph/verification_monograph_bilingual.pdf`](monograph/verification_monograph_bilingual.pdf) | **bilingual verification monograph (RU/EN)** — the complete honest account from beginning to end: all hypotheses, all experiments, what was rejected, what was accepted, what was proven; open questions and the roadmap; published **without any document metadata** by design |
 | [`monograph/verification_monograph_bilingual.docx`](monograph/verification_monograph_bilingual.docx) | the same monograph in DOCX (also metadata-free) |
 | [`einstein_direct/README.md`](einstein_direct/README.md) | the core laboratory: summary, file map, how to run |
-| [`einstein_direct/README_EN.md`](einstein_direct/README_EN.md) | the deep 29-section technical ledger |
+| [`einstein_direct/README_EN.md`](einstein_direct/README_EN.md) | the deep 33-section technical ledger (§30–§33 = OPEN9 v19–v22) |
 | [`einstein_direct/INSTALL_AND_PUSH.md`](einstein_direct/INSTALL_AND_PUSH.md) | installation and running notes |
 | [`audit_transfer/README.md`](audit_transfer/README.md) | the audit-and-transfer appendix write-up |
 | folder `README.md` files | one detailed English readme per directory |
@@ -1166,7 +1399,10 @@ the pytest suite re-checks.
 | Common clock (one brick) | τ\* = 1323/(196−π²) = 7.107920 | — | exact theorem |
 | ln τ\* closure | −2.57% → +0.062% | κ_obs | one-brick screening |
 | Non-degenerate static branches beyond the known families | 0 | — | census exact + 300 starts |
-| Test suite | 21/21 passing | — | pytest on JSON outputs |
+| Depth-wall sensitivity (v21) | z 1.78 → 7.20 by window policy w = 5 → 3 | previous campaigns ≤ 6.05 | 0 junk invasions; next wall = v-budget |
+| Depth record by root anchoring (v22) | **z = 8.56**, the 4th echo peak reached | +19% over the 7.20 wall | root anchor k1 + coverage-floor anchor; new wall = root floor |
+| Echo quartet period Δ_eff (v22) | 0.611 ± 0.446 | DSS Δ ≈ 3.44 excluded at 6.3σ | honestly NOT DSS; compatible with zero |
+| Test suite | 58/58 passing (21 core + 22 OPEN9 + 4 v20 + 5 v21 + 6 v22) + 10 standalone | — | pytest on JSON outputs |
 
 ---
 
@@ -1244,7 +1480,7 @@ This project is designed for **full computational reproducibility**:
 - **Cross-implementation consistency**: CI verifies that all implementations produce matching results
 - **Version pinning**: All dependencies are version-pinned in requirements.txt, Project.toml, pom.xml, package.json
 - **BLAS single-thread discipline**: numerical machines pin the BLAS thread count to 1 for bit-level reproducibility
-- **JSON result ledger**: every campaign ships machine-readable outputs; the pytest suite re-checks the major theorems from those outputs (21/21)
+- **JSON result ledger**: every campaign ships machine-readable outputs; the pytest suite re-checks the major theorems from those outputs (58/58 = 21 core + 22 OPEN9 + 4 v20 + 5 v21 + 6 v22, plus 10 standalone open9 tests)
 - **Zenodo DOI**: Permanent archived snapshots for each release
 
 ---

@@ -1,6 +1,21 @@
 # einstein_direct — Direct Solution of the Choptuik Problem from the Classical Einstein Equations
 
-**Module status: verification laboratory. Hilbert-action derivation machine-verified; 2nd-order characteristic solver validated; fixed-grid critical point and mass-scaling floor analyzed; multi-zoom regridding machine rebuilt and pushed to z ≈ 5.2 with the remaining depth wall precisely diagnosed.**
+**Module status: verification laboratory — the open questions closed, the depth wall
+pushed by policy.** Hilbert-action derivation machine-verified; 2nd-order characteristic
+solver validated; fixed-grid critical point and mass-scaling floor analyzed; multi-zoom
+regridding machine pushed to z ≈ 9.35 (annulus record) — and the deep-echo chain pushed
+to **z = 8.56 by window policy and root anchoring** (v21–v22: 1.78 → 7.20 → 8.56), with
+the **4th echo peak reached** and Δ_eff = 0.611 ± 0.446 honestly NOT DSS. All nine
+open questions of monograph Chapter 7 are **closed with machine verdicts** (OPEN9 v19:
+9 machines, 9 JSON verdicts, honest caveats); the follow-up campaigns v20a/v20b
+(amplitude ladder + depth z ≥ 30 certificate), v21 (Section 5 protocol EXECUTED) and
+v22 (the v-budget wall broken by root anchoring) are documented in §30–§33 below.
+Current counters: **13 deterministic machines, 58/58 pytest tests (21 core + 22 OPEN9 +
+4 v20 + 5 v21 + 6 v22) + 10 standalone open9 tests, 47 JSON verdicts**; the
+self-contained closure package with the RU/EN × DOCX/PDF monograph lives in
+[`open9/`](open9/). The frontier is v23: the full junk-gated protocol on the accepted
+root-anchor policy, a fine k1 sweep (0.50–0.70), the 5th-peak hunt and a clean DSS test
+of Δ ≈ 3.44.
 
 This folder contains a complete, self-contained numerical laboratory that solves the
 **Choptuik critical collapse problem** (massless scalar field, spherical symmetry)
@@ -44,6 +59,10 @@ Termux, see §10) with Python ≥ 3.9, NumPy, SciPy, SymPy and pytest.
 27. [HEXCYCLE-DAE — the figure cycle as a global predictor (session 20)](#27-hexcycle-dae-—-the-figure-cycle-as-a-global-predictor-session-20)
 28. [CLOCK-CLOSURE-T1C — closing the clocks through the one-brick T1c source form + the B4 remnant (session 21)](#28-clock-closure-t1c-—-closing-the-clocks-through-the-one-brick-t1c-source-form--the-b4-remnant-session-21)
 29. [BRICK-LADDER-TICK + GLOBAL-STATIC-SEARCH — intermediate bricks and the exhaustive static census (session 22)](#29-brick-ladder-tick--global-static-search-—-intermediate-bricks-and-the-exhaustive-static-census-session-22)
+30. [OPEN9 — the nine open questions attacked (campaign v19)](#30-open9-—-the-nine-open-questions-attacked-campaign-v19)
+31. [V20 — the follow-up campaigns: amplitude ladder (Q2) and depth z >= 30 (Q3)](#31-v20-—-the-follow-up-campaigns-amplitude-ladder-q2-and-depth-z--30-q3)
+32. [V21 — the deep-echo campaign: the Section 5 protocol executed (session 23)](#32-v21-—-the-deep-echo-campaign-the-section-5-protocol-executed-session-23)
+33. [V22 — the v-budget and window anchoring: the z ~ 7.2 wall attacked](#33-v22-—-the-v-budget-and-window-anchoring-the-z--72-wall-attacked)
 
 
 
@@ -429,21 +448,28 @@ python3 figures.py                          # RU/EN figures, ~1 min
 
 ### Android (Termux)
 
-See `../termux/` in the ZIP: `01_termux_install.sh`, `02_termux_run.sh`,
-`03_push_to_github.sh`. Short version:
+The old `termux/` script folder is retired from the repository. The phone route now
+goes through the self-contained closure package and the push bundle:
 
 ```bash
-pkg update && pkg install python git clang libjpeg-turbo
+pkg update && pkg install python git curl clang libjpeg-turbo
 pip install numpy scipy sympy pytest
-bash 02_termux_run.sh      # runs the validation + a reduced campaign
-bash 03_push_to_github.sh  # clones/locates the repo, syncs einstein_direct/, commits, pushes
+
+# the offline science, fully inside einstein_direct/open9/ (no repo paths needed):
+cd einstein_direct/open9
+pytest tests/test_open9_standalone.py -q    # 10 passed, ~3 s
+
+# publishing from the phone (the choptuik_open9_push.zip bundle):
+GITHUB_TOKEN=... bash push_to_github.sh --check   # 5-second GitHub API token preflight
+GITHUB_TOKEN=... bash push_to_github.sh           # clone → patch → tests → push → verify
 ```
 
-Notes for Termux: `numpy`/`scipy` install from the Termux `science-repo`
-packages (`pkg install python-numpy python-scipy`) when wheels are unavailable;
-the push script stores a GitHub PAT once via `git credential store` and never
-echoes it. The full campaign runs on a phone in ~1–2 h; the reduced profile
-(`--quick`) takes ~15 min.
+The push script (v2) does a GitHub API preflight (whose token, write access), never
+leaves the token in `.git/config` (scrubbed on every exit path), auto-skips the pytest
+stage when numpy/scipy are unavailable, picks up orphaned local commits, and verifies
+the push with `git ls-remote` against the local HEAD. The step-by-step Android
+instruction (`INSTRUKCIYA_Termux_RU.md`) travels inside the push bundle, including the
+"pushed but nothing on GitHub" diagnostic table.
 
 ## 13. File map
 

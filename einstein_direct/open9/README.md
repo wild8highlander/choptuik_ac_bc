@@ -1,14 +1,24 @@
 # OPEN9 + v20 + v21 + v22 — машинное закрытие девяти открытых вопросов
 
 **EN.** This folder is the self-contained closure package for the nine open
-questions of the verification monograph (Chapter 7) plus the two follow-up
-campaigns v20a/v20b. Everything here is deterministic, single-threaded
+questions of the verification monograph (Chapter 7) plus the three follow-up
+campaign generations: v20a/v20b (the falsifiable protocols executed: the
+amplitude ladder honestly negative, the z ≥ 30 certificate + floor budget),
+v21 (the Section 5 protocol EXECUTED — the depth wall is window-policy
+sensitive: z 1.78 → 7.20 with zero junk invasions) and v22 (the v-budget wall
+BROKEN by root anchoring — z = 8.56, the 4th echo peak reached, Δ_eff honestly
+NOT DSS). Everything here is deterministic, single-threaded
 (BLAS pinned to 1), offline wherever saved JSONs suffice, and re-runnable
 **from this folder alone** — the machines carry a private copy of
 `results/` so no repo paths are needed.
 
 **RU.** Папка — самодостаточный пакет закрытия девяти открытых вопросов
-монографии верификации (глава 7) и двух последующих кампаний v20a/v20b.
+монографии верификации (глава 7) и трёх последующих поколений кампаний:
+v20a/v20b (фальсифицируемые протоколы исполнены: лестница амплитуд честно
+отрицательна, сертификат z ≥ 30 + бюджет пола), v21 (протокол раздела 5
+ИСПОЛНЕН — стена глубины чувствительна к оконной политике: z 1.78 → 7.20 при
+нуле джанк-инвазий) и v22 (v-бюджетная стена СРЫТА корневым якорем —
+z = 8.56, 4-й пик эха достигнут, Δ_eff честно НЕ DSS).
 Всё детерминировано, однопоточно (BLAS = 1), офлайн там, где хватает
 сохранённых JSON, и перезапускаемо **из одной этой папки** — машины несут
 приватную копию `results/`, пути репо не нужны.
@@ -17,9 +27,9 @@ campaigns v20a/v20b. Everything here is deterministic, single-threaded
 
 ```
 open9/
-├── machines/            11 машин + транзитивные зависимости (14 модулей)
+├── machines/            13 машин + транзитивные зависимости (16 модулей)
 │   └── results/         приватная копия всех JSON кампаний (+ .npy базисы)
-├── tests/               автономный смоук-набор (9 тестов) + эталонный набор репо
+├── tests/               автономный смоук-набор (10 тестов) + эталонный набор репо
 ├── monographs/          монография вопросов: RU/EN × docx/pdf (4 файла)
 └── README.md            этот файл
 ```
@@ -38,7 +48,7 @@ open9/
 | 8 | Конечноамплитудный DSS-цикл | `lyapunov_center.py` | центра в x* НЕТ (char(iω) даёт только ω = 0); book-walk релаксирует к линии (нет притягивающего цикла) |
 | 9 | Внeцепная статика | `krawczyk_census.py` | сертифицированная перепись Кравчика: единственность корней часов в коробках; OUT ≥ 99% площади — 0 новых ветвей, машинно строго |
 
-## v20 — продолжение к уровню измерения / follow-up to the measurement level
+## v20–v22 — продолжения к уровню измерения / the follow-up campaigns to the measurement level
 
 | Кампания | Машина | Вердикт |
 |---|---|---|
@@ -51,10 +61,12 @@ open9/
 
 ```bash
 cd open9
-python3 -m pytest tests/test_open9_standalone.py -q   # 9 passed, ~3 c
+python3 -m pytest tests/test_open9_standalone.py -q   # 10 passed, ~3 c
 cd machines
 python3 depth_z30.py            # ~1 мин
 python3 amplitude_ladder.py     # ~1-2 мин (4 PDE-ступени)
+python3 deep_echo_v21.py --phase all   # ~3 мин (цепочка + зонд окна + лестница)
+python3 deep_echo_v22.py --phase all   # ~5-7 мин (cert + 3 зонда + deep + лестница)
 # и любые из 9 машин q1..q9 (каждая <= 10 c)
 ```
 
