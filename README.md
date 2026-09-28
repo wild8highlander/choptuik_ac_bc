@@ -1,647 +1,194 @@
-# Spinor Corrections b-C & a-C and the Choptyuk Problem
+# choptuik_ac_bc — Machine-Verified Verification Repository
+
+**Critical collapse (Choptuik problem), spinor corrections, and the direct
+route from the Hilbert action to the Einstein equations — with every claim
+re-checked by machines.**
 
 [![License: Proprietary](https://img.shields.io/badge/License-Isaev%20Proprietary-red.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![Julia 1.9+](https://img.shields.io/badge/Julia-1.9+-955880.svg)](https://julialang.org/)
 [![Java 17+](https://img.shields.io/badge/Java-17+-orange.svg)](https://openjdk.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
-[![CI](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/ci.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/ci.yml)
-[![Lint](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/lint.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/lint.yml)
-[![Pages](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/pages.yml/badge.svg)](https://wild8highlander.github.io/choptuik_ac_bc/)
-[![Release](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/release.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/releases/latest)
-[![DOI](https://img.shields.io/badge/Zenodo-10.5281/zenodo.15152720-blue.svg?logo=zenodo)](https://doi.org/10.5281/zenodo.15152720)
-[![ORCID](https://img.shields.io/badge/ORCID-0009--0003--7299--0701-a6ce39?logo=orcid&logoColor=white)](https://orcid.org/0009-0003-7299-0701)
-[![GitHub](https://img.shields.io/badge/GitHub-choptuik__ac__bc-181717?logo=github)](https://github.com/wild8highlander/choptuik_ac_bc)
-[![Security](https://img.shields.io/badge/Security-Scorecard%20Monitored-yellow.svg)](https://securityscorecards.dev/viewer/?uri=github.com/wild8highlander/choptuik_ac_bc)
-[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![Codecov](https://img.shields.io/badge/Coverage-Codecov-f39f37?logo=codecov)](https://codecov.io/gh/wild8highlander/choptuik_ac_bc)
 
-> **Monograph**: *Spinor corrections b-C and a-C and the solution of the Choptyuk problem*
-> by **Ishak Khamzatovich Isaev**
-> — Rigorous computation of spectral invariants on the Klein quartic curve with applications to LIGO/Virgo quasi-normal mode predictions.
+> Author: **Ishak Khamzatovich Isaev** · ORCID 0009-0003-7299-0701
+> Monograph: *Spinor corrections b-C and a-C and the solution of the Choptuik
+> problem* — rigorous computation of spectral invariants on the Klein quartic
+> curve with applications to LIGO/Virgo quasi-normal mode predictions.
 
 ---
 
-## Overview
+## 1. What this repository is
 
-This repository provides **four independent implementations** for the verification, simulation, and visualization of all results presented in the monograph:
+This repository is a **verification laboratory**. Its purpose is to check
+computations — symbolic derivations, numerical critical-collapse campaigns,
+spectral towers and static censuses — by machine, and to publish the results
+together with their honest caveats.
 
-| Implementation | Language | Type | Directory |
-|---|---|---|---|
-| **Full Verification & Simulation** | Python 3.10+ | CLI with interactive menu | [`python/`](python/) |
-| **Full Verification & Simulation** | Julia 1.9+ | REPL with interactive menu | [`julia/`](julia/) |
-| **Web Application** | Java 17+ (Spring Boot) | REST API + Web UI | [`java-webapp/`](java-webapp/) |
-| **Interactive Visualization** | Next.js 15 + React | Real-time dashboard | [`interactive-viz/`](interactive-viz/) |
+The core discipline, applied everywhere:
 
-All implementations share:
-- Interactive parameter configuration (all values customizable, including arbitrary precision)
-- Hypothesis testing with custom spinor structures and group configurations
-- Multi-format report generation: **DOCX, PDF, TXT, MD, CSV, HTML, JSON**
-- High-resolution plots: **600 DPI PNG** + **vector PDF/SVG**
-- Complete execution logs appended to every report
-- Structured output directory for all artifacts
+> **hypothesis → machine confirmation → honest caveats and limitations.**
 
----
+Nothing is fitted to literature values. Agreements with published constants
+(γ_Ch = 0.374, b_Ch = 0.37651, the spinor ladder π/30) are *reported as
+comparisons*; walls, floors and negative verdicts are *kept as first-class
+results*. Each campaign writes machine-readable JSON outputs, and a pytest
+suite re-checks the major theorems from those outputs.
 
-## Audit & Transfer Appendix (v1.0, September 2026)
-
-A dedicated editorial-verification appendix [`audit_transfer/`](audit_transfer/) now accompanies the monographs. Three results, fully machine-verified (Python + Julia, deterministic, zero fitted parameters):
-
-| # | Task | Result |
-|---|------|--------|
-| 1 | **Monograph audit** | Corrections b-C and a-C reproduced at machine precision; catalog of seven typographical errors **E1–E7** found and fixed in the sources |
-| 2 | **Closure of c_K3 = 0.04018** | The last empirical input is derived at leading order from DSI with λ = 22 = b₂(K3): c_K3 = b_Ch(22) = 1 − cos(2π/22); braking-coupled RG → 0.04036; the 0.8% residual is the finite-window systematics, reproduced numerically |
-| 3 | **Stability lemma Ш.3** | Uniform trace theorem F ≥ n/2 (proved); sharpness 5n/7 (exact construction + numerics to 10⁻¹⁴); the soficity bridge stated explicitly |
-
-Run it:
-
-```bash
-python3 audit_transfer/python/run_all.py     # Python (NumPy/SciPy/Matplotlib)
-cd audit_transfer/julia && julia audit_transfer.jl   # Julia (stdlib only)
-```
-
-Full write-up: [`audit_transfer/README.md`](audit_transfer/README.md) (Russian) · PDF appendix: [`audit_transfer/appendix/Audit_i_Perenos_Prilozhenie.pdf`](audit_transfer/appendix/Audit_i_Perenos_Prilozhenie.pdf)
+The flagship of the repository is the [`einstein_direct/`](einstein_direct/)
+laboratory: a complete, self-contained pipeline that solves the **Choptuik
+critical collapse problem** (massless scalar field, spherical symmetry)
+*directly* from the classical Einstein equations obtained by varying the
+**Hilbert action** — without spectral constructions, ansätze or fitted
+parameters.
 
 ---
 
-## Mathematical Background
+## 2. The verification dossier
 
-The monograph establishes the following chain of results on the Klein quartic curve (genus 3, automorphism group PSL(2,7) of order 168):
+The single most detailed document of the repository is the verification
+dossier:
 
-### Core Constants
+**[`verification/README.md`](verification/README.md)** — a very large,
+self-contained English dossier covering *every* verification campaign:
+what is verified, by which machine, with which method, which numbers came
+out, what the verdict is, which caveats apply, and the exact commands to
+reproduce it.
 
-| Constant | Formula | Value |
-|---|---|---|
-| Spinor phase δ_A | π/2 | 1.570796 |
-| Spinor phase δ_B | π/3 | 1.047198 |
-| Spinor phase δ_C | π/7 | 0.448799 |
-| First eigenvalue λ₁(Δ) | Bourque–Strohmaier 2024 | 3.838 |
-| Trivial Dirac λ₁(D²_σ₀) | λ₁(Δ) + R/4 | 3.338 |
+Highlights of what has been verified (all numbers are machine outputs, none
+are fitted):
 
-### The Choptyuk Formula
-
-**b-C correction** (1st order, Berry phase):
-```
-Δ_bC = λ₁(D²_σ₀) + δ_C²/2 = 3.438710
-```
-
-**a-C correction** (2nd order, braking):
-```
-δ_eff = δ_C⁵/22 ≈ 1/1200 = 0.000828
-```
-
-**Unified Choptyuk formula** (base):
-```
-Δ_Ch = λ₁(D²_σ₀) + δ_C²/2 − δ_C⁵/22 = 3.437883
-```
-
-**With higher orders**:
-```
-Δ_Ch = Δ_Ch(base) + δ_C⁴/8 + δ_C⁶/2 = 3.447040
-```
-
-**Choptyuk constant**:
-```
-b_Ch = 1 − cos(2π/7) = 2·sin²(π/7) ≈ 0.377
-```
-
-### Applications
-
-- **64 spinor structures** on the Klein curve — full enumeration and spectral analysis
-- **Bolza and Bring surfaces** — comparative spectral invariants
-- **LIGO/Virgo QNM predictions** — quasi-normal mode corrections for GW150914, GW170104, GW170814, GW190521
-- **Strong CP problem solution** — the Choptuik–Strong CP operator framework, see [`docs/qcd_bridge/`](docs/qcd_bridge/README.md)
-
-### Strong CP extension (v3.0)
-
-The companion monograph [`docs/qcd_bridge/choptyuk_qcd_bridge.pdf`](docs/qcd_bridge/choptyuk_qcd_bridge.pdf)
-extends the framework to the strong CP problem.  The eight-step solution chain
-replaces QCD's free parameter $\bar\theta$ with a derived spectral quantity:
-
-$$\bar\theta_{\mathrm{eff}} = \delta_C \cdot N\langle\lambda\rangle \cdot \mathcal{S}_{\mathrm{GUE}} = 0$$
-
-because the Wigner semicircle is symmetric and forces $\langle\lambda\rangle = 0$
-in the GUE regime (verified at framework BF ≥ 99 at the lattice-determined
-physical $\kappa_T > 2.62$, 95% CL).  No new fields, scales, or symmetries are
-introduced.  See [`docs/qcd_bridge/README.md`](docs/qcd_bridge/README.md) for
-the full chain, the epistemic parity argument, and the falsification tests.
-
-| Result | Value | Status |
-|---|---|---|
-| Choptyuk critical exponent $\delta_C$ | $\pi/7 \approx 0.4488$ | derived |
-| Spectrum size $N$ | $22\ (K3) + 6\ (N_f) = 28$ | structural |
-| Lattice $\kappa_T$ (95% CL) | $> 2.62$ | measured |
-| Framework BF(GUE/Poi) at $\kappa_T > 2.62$ | $\geq 99$ (strong) | interpolated |
-| Framework BF(GUE/Poi) at best-fit $\hat\kappa_T = 8.45$ | $510$ (decisive) | interpolated |
-| Continuum $\bar\theta$ | $0$ exactly | derived |
-| Dynamic relaxation $\tau_{\mathrm{relax}}$ | $\sim 5 \times 10^{-41}$ s | computed |
-
-### Enhanced Verification (v2.0)
-
-The enhanced monograph extends the theory to higher dimensions and broader applications:
-
-| Extension | Key Result | Status |
-|---|---|---|
-| **4D spin manifold** | δ_eff is conformally invariant; Seiberg-Witten compatible | ✓ Verified |
-| **Kähler surfaces** | Dolbeault correspondence; K3 hyperkähler (holonomy Sp(1)); I₇ elliptic fibration matches Klein | ✓ Verified |
-| **Tyukovsky equations** | δ_corr = δ₀ + δ_C²/2 − δ_C⁵/22; **zero free parameters** | ✓ Verified |
-| **Einstein GR / QNM** | ω^corr = ω·(1 − 1/(1200π²)) ≈ 0.999916·ω; shift ≈ 8.4×10⁻⁵ | ✓ Verified |
-| **Criticism response** | b₂ = 22 unique (dev < 1%); non-coincidental (no better approx q < 1200); stable under deformation | ✓ Verified |
-
-**K3 Surface invariants:**
-- Betti numbers: b₀ = 1, b₁ = 0, **b₂ = 22**, b₃ = 0, b₄ = 1
-- Hodge decomposition: b₂ = h^(1,1) + 2h^(2,0) = 20 + 2 = 22 ✓
-- Dirac index: Â(K3) = 2; b₂/Â = 11
-- Seiberg-Witten: b₂⁺ = 3 > 1 → SW-compatible ✓
-
-**QNM correction for LIGO events:**
-
-| Event | f_QNM (Hz) | f^corr (Hz) | Δf (Hz) |
-|---|---|---|---|
-| GW150914 | 251.000 | 250.979 | −0.0210 |
-| GW170104 | 293.000 | 292.975 | −0.0246 |
-| GW170814 | 319.000 | 318.973 | −0.0268 |
-| GW190521 | 110.000 | 109.991 | −0.0092 |
+| Verification | Result |
+|---|---|
+| Hilbert action → Einstein equations (SymPy, 50 digits) | residuals ≈ **10⁻⁴¹** vs the exact Roberts–Oshiro solution |
+| Solver validation | flat space **10⁻¹⁴**; 5/5 regression tests |
+| Critical amplitude (fixed grid, N = 1600) | **A\* = 0.0805333**; honest mass-scaling floor documented |
+| CSS echo period in the data | Δ ≈ **3.44** (Gundlach–Hodgson 3.44 ± 0.02) |
+| Thorne hoop link in the data | M3/(R1·t0²) = **0.6687** vs exact 2/3 (**0.3%**) |
+| Log-time tower books | τ_UV = 9/4 and τ_Mdef = 9/16, ratio **exactly 4** |
+| Clock-pair theorem | exact on **12/12** bricks, `τ*(δ) = 27/(2−δ²)` |
+| One-brick Berry screening (δ_C = π/7) | closes ln τ\* from **−2.57%** to **+0.062%** |
+| Global static census | **zero** non-degenerate static branches beyond the known families; the static structure is exhausted exactly |
+| Nonlinear DAE march | the only solution manifold through the critical point is the flat line of equilibria |
+| Verification suite | **21/21 tests** re-checking machine theorems |
 
 ---
 
-## Quick Start
+## 3. Repository map
 
-### Python (Recommended for quick verification)
+| Directory | Content |
+|---|---|
+| [`einstein_direct/`](einstein_direct/) | **core verification laboratory**: machine-verified derivation, characteristic solver, zoom campaigns, the PDE machine suite (finite-amplitude echo on three static families), brick ladder, global static census, JSON results, 300 dpi figures, pytest suite |
+| [`verification/`](verification/) | the big verification dossier (English) |
+| [`python/`](python/) | full verification & simulation suite for the monograph (Python, CLI with interactive menu) |
+| [`julia/`](julia/) | full verification & simulation suite (Julia, REPL with interactive menu) |
+| [`java-webapp/`](java-webapp/) | web application (Spring Boot REST API + web UI) |
+| [`interactive-viz/`](interactive-viz/) | interactive visualization (Next.js + React dashboard) |
+| [`code/`](code/) | compact cross-language code companions (Python/Julia/Java/web) |
+| [`audit_transfer/`](audit_transfer/) | the "audit and transfer" appendix: audited core, lemma article, figures, LaTeX sources |
+| [`qcd_bridge/`](qcd_bridge/) | QCD-bridge artifacts and evidence |
+| [`dsi_lab/`](dsi_lab/) | DSI laboratory notebooks and results |
+| [`monograph/`](monograph/), [`docs/`](docs/) | the monograph PDFs and documentation |
+| [`docs-site/`](docs-site/) | MkDocs documentation site sources |
+| [`notebooks/`](notebooks/) | computational notebooks |
+| [`scripts/`](scripts/) | repository-level runners and utility scripts |
+| [`termux/`](termux/) | run the whole pipeline on Android (Termux) and publish from the phone |
+| [`docker/`](docker/), [`.devcontainer/`](.devcontainer/) | containerized environments |
 
-```bash
-cd python/
-pip install -r requirements.txt
-python run.py
-```
-
-### Julia
-
-```bash
-cd julia/
-julia --project=. -e 'using Pkg; Pkg.instantiate()'
-julia --project=. run.jl
-```
-
-### Java Web Application
-
-```bash
-cd java-webapp/
-mvn clean package
-java -jar target/choptyuk-spinor-monograph-1.0.0.jar
-# Open http://localhost:8080
-```
-
-### Interactive Visualization
-
-```bash
-cd interactive-viz/
-npm install
-npm run dev
-# Open http://localhost:3000
-```
-
-**Online demo**: [https://wild8highlander.github.io/choptuik_ac_bc/](https://wild8highlander.github.io/choptuik_ac_bc/)
-
-### Using Makefile (One Command)
-
-```bash
-make all          # Run verification + simulation + plots + reports
-make verify       # Run verification only
-make viz-dev      # Start interactive visualization
-make setup        # Set up all environments
-make docker-run   # Run via Docker
-```
-
-### Using Docker
-
-```bash
-docker build -t choptyuk-verify -f docker/Dockerfile .
-docker run --rm -v $(pwd)/output:/app/output choptyuk-verify
-```
-
-### Using Dev Container
-
-Open in VS Code with Dev Containers extension — all tools (Python, Julia, Java, Node.js) pre-installed.
+Each directory carries its own detailed `README.md` (English).
 
 ---
 
-## Architecture
+## 4. Quick start
 
-### Mathematical Pipeline
-
-```mermaid
-flowchart LR
-    subgraph Geometry["Riemannian Geometry"]
-        direction TB
-        KC["Klein Quartic<br/><b>x³y + y³z + z³x = 0</b><br/>genus 3, PSL(2,7)"]
-        LAP["Laplacian Δ<br/><b>λ₁(Δ) = 3.838</b><br/>Bourque–Strohmaier 2024"]
-        SC["Scalar Curvature<br/><b>R = −2</b><br/>hyperbolic metric"]
-    end
-
-    subgraph Spinors["Spinor Analysis"]
-        direction TB
-        PH["Spinor Phases<br/><b>δ_A=π/2  δ_B=π/3  δ_C=π/7</b>"]
-        DIR["Dirac Operator D<br/><b>λ₁(D²_σ₀) = 3.338</b><br/>Lichnerowicz: λ₁(Δ)+R/4"]
-        S64["64 Spinor Structures<br/><b>2^(2g) = 2⁶ = 64</b><br/>trivial σ₀ → minimum"]
-    end
-
-    subgraph Choptyuk["Choptyuk Formula"]
-        direction TB
-        BC["b-C Correction<br/><b>Δ_bC = 3.438710</b><br/>Berry phase, 1st order"]
-        AC["a-C Braking<br/><b>δ_eff ≈ 1/1200</b><br/>2nd order, δ_C⁵/22"]
-        CH["Unified Formula<br/><b>Δ_Ch = 3.447040</b><br/>base + δ_C⁴/8 + δ_C⁶/2"]
-    end
-
-    subgraph Physics["Physical Predictions"]
-        direction TB
-        BCH["Choptyuk Constant<br/><b>b_Ch = 0.376510</b><br/>1 − cos(2π/7)"]
-        QNM["QNM Frequencies<br/><b>LIGO/Virgo</b><br/>GW150914 GW170104<br/>GW170814 GW190521"]
-    end
-
-    KC --> LAP & SC
-    LAP --> DIR
-    SC --> DIR
-    PH --> BC
-    DIR --> BC & AC
-    BC --> CH
-    AC --> CH
-    CH --> BCH --> QNM
-    KC -.-> S64
-    DIR -.-> S64
-```
-
-### Implementation & CI/CD
-
-```mermaid
-flowchart TB
-    subgraph Core["Mathematical Engine"]
-        M["Core computations<br/>Klein curve · Dirac · Choptyuk"]
-    end
-
-    subgraph Impl["Four Independent Implementations"]
-        direction LR
-        PY["<b>Python 3.10+</b><br/>CLI + Interactive Menu<br/>NumPy · SciPy · mpmath"]
-        JL["<b>Julia 1.9+</b><br/>REPL + Interactive Menu<br/>LinearAlgebra · Plots"]
-        JV["<b>Java 17+</b><br/>Spring Boot REST API<br/>Commons Math · JFreeChart"]
-        NX["<b>Next.js 15 + React 19</b><br/>Real-time Dashboard<br/>Recharts · MathJS · Tailwind"]
-    end
-
-    subgraph Out["Outputs"]
-        direction LR
-        RPT["<b>7 Report Formats</b><br/>DOCX · PDF · TXT · MD<br/>CSV · HTML · JSON"]
-        PLT["<b>Publication Plots</b><br/>600 DPI PNG<br/>PDF · SVG vectors"]
-        LOG["<b>Execution Logs</b><br/>Timestamped records<br/>Full provenance"]
-    end
-
-    subgraph CI["CI/CD & Reproducibility"]
-        direction LR
-        GHA["<b>GitHub Actions</b><br/>CI · Lint · Release<br/>Pages · Scorecard · Stale"]
-        DOC["<b>Docker + Dev Container</b><br/>One-command setup<br/>Full toolchain"]
-        HKS["<b>Pre-commit Hooks</b><br/>ruff · mypy · format<br/>YAML/JSON validation"]
-        ZEN["<b>Zenodo DOI</b><br/>Permanent archive<br/>Versioned snapshots"]
-    end
-
-    M --> PY & JL & JV & NX
-    PY & JL & JV & NX --> RPT & PLT & LOG
-    M -.-> CI
-
-    style Core fill:#2c3e50,stroke:#1a252f,color:#fff
-    style Impl fill:#ecf0f1,stroke:#bdc3c7
-    style Out fill:#e8f8f5,stroke:#1abc9c
-    style CI fill:#fef9e7,stroke:#f1c40f
-```
-
----
-
-## Project Structure
-
-```
-choptuik_ac_bc/
-├── README.md                    # This file
-├── LICENSE                      # Isaev Proprietary License
-├── CITATION.cff                 # Citation metadata (v2.0.0)
-├── CONTRIBUTING.md              # Contribution guidelines
-├── CHANGELOG.md                 # Version history
-├── .gitignore                   # Git ignore rules
-├── .github/                     # GitHub templates & CI
-│   ├── workflows/               # GitHub Actions CI/CD (enhanced verification)
-│   └── ISSUE_TEMPLATE/          # Issue templates
-├── docs/                        # Documentation
-│   ├── monograph/               # Monograph files (EN/RU, DOCX/PDF/LaTeX)
-│   │   ├── figures/             # Publication-quality visualizations (2D/3D/4D)
-│   │   ├── verification_results_enhanced.json
-│   │   └── ...                  # Original + Enhanced monographs
-│   └── qcd_bridge/              # Strong-CP extension (v3.0)
-│       ├── README.md            # Section overview + 8-step CP solution
-│       ├── choptyuk_qcd_bridge.{tex,pdf}  # 40-page companion monograph
-│       ├── figures/             # 12 figures @ 600 DPI PNG + vector PDF
-│       ├── ochi_eigenvalues.json          # 28×28 O_chi spectrum
-│       ├── ochi_lattice_results.json      # K3 vs chGUE comparison
-│       ├── qcd_vs_framework_params.json   # epistemic parity accounting
-│       └── honesty_results.json           # Monte Carlo + Cabibbo audits
-├── python/                      # Python implementation (v2.0.0)
-│   ├── run.py                   # Entry point with interactive menu
-│   ├── requirements.txt         # Dependencies
-│   ├── setup.py                 # Package setup
-│   ├── config/                  # Default configurations
-│   ├── presets/                 # Preset parameter sets
-│   ├── src/                     # Source modules
-│   │   ├── core/                # Core computations + enhanced_verification
-│   │   ├── verification/        # Verification + verify_enhanced
-│   │   ├── simulation/          # Simulation engine
-│   │   ├── visualization/       # Plot generation (enhanced)
-│   │   ├── reporting/           # Report generation (7 formats)
-│   │   └── ui/                  # Interactive CLI menu
-│   └── tests/                   # Unit tests (25+ tests incl. enhanced)
-├── julia/                       # Julia implementation
-│   ├── run.jl                   # Entry point
-│   ├── Project.toml             # Julia project
-│   ├── config/                  # Configurations
-│   ├── presets/                 # Presets
-│   ├── src/                     # Source modules (incl. enhanced_verification.jl)
-│   └── test/                    # Tests (incl. 9 enhanced test sets)
-├── java-webapp/                 # Java Spring Boot web application
-│   ├── pom.xml                  # Maven configuration
-│   └── src/                     # Source (incl. K3Surface, TyukovskyEquation, EinsteinQNMCorrection, EnhancedController)
-├── interactive-viz/             # Next.js real-time visualization
-│   ├── package.json             # NPM configuration
-│   └── src/                     # Source (incl. /enhanced page, new types & compute functions)
-├── audit_transfer/              # Editorial verification appendix (v1.0, 2026-09)
-│   ├── README.md                # Full write-up (RU): audit, DSI closure, lemma Ш.3
-│   ├── python/                  # Verification core (run_all.py orchestrator)
-│   ├── julia/                   # Independent port (stdlib only)
-│   ├── figures/, results/       # Generated PNGs + deterministic JSONs
-│   └── appendix/                # PDF "Audit and Transfer" (11 pp.) + LaTeX sources
-├── scripts/                     # Utility scripts
-│   ├── run_all.sh, run_verify.sh, build_java.sh, run_viz.sh
-│   └── qcd_bridge/              # Strong-CP extension (v3.0)
-│       ├── generate_figures.py            # 12 figures @ 600 DPI PNG + vector PDF
-│       ├── ochi_explicit_construction.py  # K3+M_F+V_T, N=28, kappa_T sweep
-│       ├── ochi_lattice_firstprinciples.py  # K3 vs chGUE first-principles upgrade
-│       ├── kappa_T_physical_estimate.py   # physical kappa_T from lattice Dirac data
-│       ├── cp_solution_spectral.py        # spectral CP solution audit
-│       └── honesty_calculations.py        # Monte Carlo, Cabibbo, scaling audits
-```
-
----
-
-## Einstein Direct — Choptuik Problem from the Classical Einstein Equations (v4.0)
-
-The [`einstein_direct/`](einstein_direct/) module solves the Choptuik critical
-collapse problem **directly**: the field equations are derived from the Hilbert
-action with the Hilbert stress–energy tensor for a massless scalar field,
-reduced to a 1+1 double-null characteristic system, **machine-verified with
-SymPy against the exact Roberts–Oshiro solution (residuals ~10⁻⁴¹)**, and
-integrated by a second-order solver (flat space to 10⁻¹⁴; Roberts convergence
-order 2.03–2.09). The critical amplitude A* = 0.0805333 is located by
-bisection; the honest fixed-grid mass-scaling measurement (γ = 0.11 ± 0.11)
-demonstrates the resolution floor and the requirements for a percent-level
-verification of γ = 0.374 vs the framework constant b_Ch = 0.376510.
-Reports: [`einstein_direct/report_ru.pdf`](einstein_direct/report_ru.pdf),
-[`einstein_direct/report_en.pdf`](einstein_direct/report_en.pdf).
+### 4.1 The verification suite (fast, ~seconds)
 
 ```bash
 cd einstein_direct
-python3 sympy_derivation.py && python3 roberts_test.py && python3 choptuik_scaling.py
+python3 -m pip install numpy scipy sympy matplotlib pytest
+python3 -m pytest tests/ -q
+# 21 passed
 ```
 
-### v6-fundamentals: convergence and repulsion from first principles
-
-[`einstein_direct/center_modes.py`](einstein_direct/center_modes.py) closes
-the fundamental level: it (i) machine-derives the Thorne/MTW mass identities
-from the Hilbert system — the null flux laws `m_v = −2r²pt²/α²`,
-`m_u = −2r²qs²/α²` (residuals 0), the central mass–slope link
-`M3 = 2R1·t0²/(3(1−χ)²)` (exact at every y) and the center gauge
-`(1−χ²)R1² = A0` from `m(0) = 0`; (ii) reduces the verified center hierarchy
-O1–O5 to a log-time tower with a CSS fixed point closed to ONE amplitude
-parameter τ by the Thorne link; (iii) linearizes and obtains the exact
-spectrum: **{0, −1, −1, −2, −3} at τ→0** (integer convergence exponents of
-the stable modes), **exactly one growing root λ⁺(τ)** in the codim-1 window
-τ ≤ 27/80 (exact), the exact point **λ⁺ = 2 at τ = 1/2**, and the second
-growing mode beyond 27/80 (the "decays/assemblies" blow-up channel). The
-empirical anchors are not fitted: κ_obs = Δ_sp/γ ≈ 1.95–1.96 vs λ⁺(27/80) =
-1.509 quantifies exactly what the deeper tower levels (O6+) must contribute
-for the percent-level γ. Results:
-[`results/center_modes.json`](einstein_direct/results/center_modes.json),
-figures `fig_ru/fig_modes.png`, `fig_en/fig_modes.png`.
-
-### v6.1: каналы стены глубины закрыты; связка Торна видна в данных
-
-Сессия v6.1 (`einstein_direct/`, CHANGELOG 2.5.0) закрыла канал смерти
-j≈19–20 семью принципиальными фиксы (алиасинг t в корректоре; кап
-положительной обратной связи d_edge; фильтр горизонта |2m/r−1|<0.5;
-early-accept P2, снявший самозапирание P2=0; гейт перестройки зоны и
-темповой гейт E0_free; cross-режим t := mirror(s) — точное CSS-соотношение
-t(ξ)=s(−ξ); двусторонний фит кольца r с гейтом оси |x[i0]−x*|≤2.5du —
-односторонний фит смещал x* на ~10 du). Результат: стадии заканчиваются по
-v-исчерпанию, а не смертью — **z = 9.10/9.35 (рекорд; v6 умирала на z=3.83)**;
-40–181 tau-строк на стабильный забег (v6: одна); **связка Торна впервые видна
-в дискретных данных: M3/(R1·t0²) = 0.6687 против точных 2/3 = 0.6667
-(0.3%)**. Честно: τ* не измерен — W2-измерение раздавлено (W2/t0²→0 при
-цели 4/3), near-critical ветвь (eps ≤ 3e-3) умирает на зуме 1. Численный
-анализ O6+ (`sympy_center_o6_nsolve.py`): усечённая башня НЕ имеет точного
-CSS-решения (ветви UV[ξ³]→τ=2.25 и Mdef[ξ⁵]→τ=0.5625 несовместны) —
-источники W2/R3/P4 принципиально динамичны, связывание амплитуды требует
-полного анализа. Это количественная форма локализации дефицита κ +0.44.
-
----
-
-## QCD Bridge Suite (v3.1, added 2026-08-10)
-
-In addition to the original four-implementation monograph suite above, this
-release adds a **self-contained QCD-bridge package** under
-[`qcd_bridge/`](qcd_bridge/) and [`code/`](code/), with a parallel bilingual
-monograph and dynamic 4D visualizations.
-
-### What is added
-
-| Artifact | Path | Description |
-|---|---|---|
-| Bilingual monograph (DOCX) | [`monograph/`](monograph/) | EN + RU, 11 sections, 18 embedded 3D/4D figures (~22 MB each) |
-| 600 DPI figures | [`qcd_bridge/figures/`](qcd_bridge/figures/) | 54 files: 18 PNG @ 600 dpi + 18 PDF + 18 SVG, English labels, 9 sections × 3D + 4D variants |
-| Dynamic 4D animations | [`qcd_bridge/animations/`](qcd_bridge/animations/) | 18 files: 9 MP4 + 9 GIF, 60 frames each, replacing static surfaces with frame-based 4D evolution |
-| Verification configs | [`qcd_bridge/configs/`](qcd_bridge/configs/) | `verify_all.json`, `verify_section_3_8.json`, `verify_custom.json` (arbitrary precision, N → ∞, any matrices) |
-| Sample 7-format reports | [`qcd_bridge/reports/`](qcd_bridge/reports/) + [`reports_java/`](qcd_bridge/reports_java/) | TXT, CSV, MD, PDF, HTML, DOCX, JSON — results first, then execution log |
-
-### Four-language engine (each with interactive menu + 7-format reports)
-
-| Implementation | Path | Stack | Notes |
-|---|---|---|---|
-| Python (canonical) | [`code/python/`](code/python/) | Python 3.10+, NumPy, Matplotlib, ReportLab, python-docx | 9 sections, ReportEngine, CLI with 5 modes, web_runner bridge |
-| Julia | [`code/julia/`](code/julia/) | Julia 1.9+, LinearAlgebra, Statistics | Full mirror of Python engine, hand-rolled PDF 1.4 + OOXML DOCX (stdlib has no zlib) |
-| Java | [`code/java/`](code/java/) | Pure Java 17+, no external deps | Jacobi eigensolver from scratch, hand-rolled PDF + DOCX via `java.util.zip` |
-| Web app | [`code/web/`](code/web/) | Next.js 16 + React 19 + TypeScript + Tailwind 4 + Plotly.js | Real-time 3D/4D viz, interactive dashboard with section-specific sliders for all 9 sections, EN/RU i18n, API routes for Python backend |
-
-### The 9 QCD-bridge sections
-
-1. **O_χ random matrix theory** — GUE-vs-Poisson spacing, Bayes factor
-2. **RMT sweep** — κ_T scan over N and ensemble
-3. **K3 spectral staircase** — 22×22 intersection form, E₈⊕E₈⊕U⊕U⊕U
-4. **N-scaling test** — ⟨λ⟩ → 0 trend, θ̄_artifact ~ 1/√N
-5. **τ-relaxation dynamics** — physical time-scale estimate
-6. **κ_T lattice physical estimate** — Cabibbo-angle coincidence
-7. **Cabibbo angle coincidence** — δ_C = π/7
-8. **CP 8-step solution chain** — spectral CP solution audit
-9. **Jet wake bridge** — CMS HIN-25-012 connection
-
-### Quick start (QCD bridge)
+### 4.2 The symbolic derivation (machine-verified)
 
 ```bash
-# Python — verify all 9 sections, generate 7-format reports + 600 dpi figures + 4D animations
-cd code/python
-python3 run.py --config ../../qcd_bridge/configs/verify_all.json
-
-# Python — custom config (any N, any matrices, arbitrary precision)
-python3 run.py --config ../../qcd_bridge/configs/verify_custom.json
-
-# Python — single section
-python3 run.py --section 3,6,8
-
-# Julia — same 9 sections, 7 report formats
-cd code/julia
-julia qcd_bridge_engine.jl --section 1,2,3
-
-# Java — same 9 sections, 7 report formats (no external deps)
-cd code/java
-javac qcd_bridge_engine.java && java qcd_bridge_engine --section 1,2,3
-
-# Web app — interactive dashboard with sliders for all 9 sections
-cd code/web
-bun install && bun run dev   # → http://localhost:3000
+cd einstein_direct
+python3 sympy_derivation.py     # Hilbert action → Einstein equations
+python3 roberts_test.py         # exact-solution regression
 ```
 
-### Authorship (QCD bridge suite)
+### 4.3 Numerical campaigns
 
-Same as the main monograph: **Ishak Khamzatovich Isaev** (ORCID
-[0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701)). Embedded in
-both DOCX monographs, all 7-format reports, the web app header/footer/About
-page, and `CITATION.cff`.
-
----
-
-## Report Formats
-
-Every implementation generates reports in all of the following formats:
-
-| Format | Extension | Description |
-|---|---|---|
-| Microsoft Word | `.docx` | Formatted document with tables and figures |
-| Portable Document | `.pdf` | Publication-ready PDF |
-| Plain Text | `.txt` | Human-readable text report |
-| Markdown | `.md` | GitHub-compatible markdown |
-| Comma-Separated | `.csv` | Tabular data for analysis |
-| HTML | `.html` | Styled web report |
-| JSON | `.json` | Machine-readable structured data |
-
-Each report contains:
-1. **Results section** — computed constants, deviations, comparison tables
-2. **Execution log** — complete timestamped log of all computations
-
----
-
-## Visualization Output
-
-All plots are generated in two high-resolution formats:
-- **PNG** at 600 DPI — for screen display and documents
-- **PDF/SVG** — vector format for publication
-
-Plot types include:
-- Spinor phase diagrams
-- Spectral eigenvalue landscapes
-- 64 spinor structure heatmaps
-- QNM frequency comparison charts
-- Deviation analysis plots
-- Convergence diagrams
-
----
-
-## Verification Results (Reference)
-
-| Constant | Computed | Observed | Deviation |
-|---|---|---|---|
-| Δ_bC | 3.438710 | 3.443 | 0.125% |
-| Δ_Ch (base) | 3.437883 | 3.443 | 0.149% |
-| Δ_Ch (full) | 3.447040 | 3.443 | 0.117% |
-| b_Ch | 0.376510 | 0.377 | 0.130% |
-
----
-
-## Citation
-
-If you use this code in your research, please cite:
-
-```bibtex
-@book{isaev2024spinor,
-  title     = {Spinor corrections b-C and a-C and the solution of the Choptyuk problem},
-  author    = {Isaev, Ishak Khamzatovich},
-  year      = {2024},
-  address   = {Nalchik, Kabardino-Balkarian Republic},
-  note      = {Monograph with verified computational implementations}
-}
+```bash
+python3 choptuik_scaling.py --n-bisect 1200     # fixed grid: A*, scaling
+python3 zoom_campaign_regular.py                # zoom campaign, ~5–8 min
+python3 grid_machine_annulus.py                 # the PDE machine suite
+python3 global_static_search.py                 # static census
 ```
 
-### Zenodo Archive
+### 4.4 Monograph verification suites
 
-A permanent DOI-backed archive of this software is available on Zenodo.
-When a new release is published on GitHub, Zenodo automatically creates a
-snapshot with a versioned DOI for exact reproducibility.
+```bash
+python3 -m pip install -r python/requirements.txt   # see python/README.md
+(cd python && python3 main.py)                      # interactive CLI
 
-[![DOI](https://img.shields.io/badge/Zenodo-10.5281/zenodo.15152720-blue.svg?logo=zenodo)](https://doi.org/10.5281/zenodo.15152720)
+julia --project=julia -e 'include("julia/main.jl")' # interactive REPL
+```
 
----
+### 4.5 On a phone (Termux)
 
-## Author
+```bash
+bash termux/01_termux_install.sh      # once per device
+bash termux/02_termux_run.sh          # full pipeline (~1 h)
+bash termux/02_termux_run.sh --quick  # ~15 min, same protocol, coarser grids
+```
 
-**Ishak Khamzatovich Isaev**
-
-- ORCID: [0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701)
-- Email: [aslan08_05@mail.ru](mailto:aslan08_05@mail.ru)
-- GitHub: [@wild8highlander](https://github.com/wild8highlander)
-- Location: Nalchik, Kabardino-Balkarian Republic
-
----
-
-## License
-
-This project is licensed under the **Isaev Proprietary License** — see the [LICENSE](LICENSE) file for details.
-
-**Summary:** This is a proprietary license. You may view and cite the work for academic
-reference, but you may NOT copy, modify, distribute, or use it commercially without
-the author's written permission. All intellectual property rights are retained by
-Ishak Khamzatovich Isaev.
+All numerical machines pin the BLAS thread count to 1 on purpose:
+multithreaded LAPACK reshuffles near-critical bisection and horizon
+nucleation and breaks reproducibility.
 
 ---
 
-## Reproducibility
+## 5. Scientific background in one minute
 
-This project is designed for **full computational reproducibility**:
+A spherically symmetric massless scalar field, numerically evolved in
+1+1 double-null coordinates, shows **critical collapse**: below a critical
+amplitude A the pulse disperses, above it a black hole forms, and near the
+critical amplitude the black-hole mass scales as
+`M ∝ (A − A*)^γ` with a universal γ ≈ 0.374 (Choptuik). The same regime
+exhibits an **echo** — curvature spikes repeating with a log-period Δ ≈ 3.44.
 
-- **Docker**: One-command reproducible environment (`make docker-run`)
-- **Dev Containers**: VS Code one-click setup with all tools pre-installed
-- **Makefile**: Unified build system (`make all`)
-- **Pre-commit hooks**: Automated code quality enforcement
-- **CI/CD**: Every push is automatically verified across Python 3.10-3.12, Julia 1.9-1.10, Java 17, and Node 20
-- **Cross-implementation consistency**: CI verifies that all implementations produce matching results
-- **Version pinning**: All dependencies are version-pinned in requirements.txt, Project.toml, pom.xml, package.json
-- **Zenodo DOI**: Permanent archived snapshots for each release
+This repository attacks the problem *directly*: derive the 1+1 double-null
+Einstein system from the Hilbert action symbolically (machine-verified),
+evolve it with a validated characteristic solver, push log-scale depth by
+multi-zoom regridding, and measure the echo, the clocks and the static
+backgrounds — reporting agreements *and* disagreements with equal honesty.
+Around the numerical core, a symbolic tower program derives the central
+(spinor) hierarchy, its log-time tower, spectra and static structure, and
+checks which parts of the observed phenomenology (including the septinial
+sector δ_C = π/7) can be closed from first principles.
+
+The monograph part of the repository (python/, julia/, java-webapp/,
+interactive-viz/ and the audit appendix) verifies the spectral invariants of
+the Klein quartic curve used for the spinor corrections and their LIGO/Virgo
+quasi-normal-mode applications.
 
 ---
 
-## Contributing
+## 6. Documentation index
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines. Quick workflow:
+| Document | Content |
+|---|---|
+| [`verification/README.md`](verification/README.md) | **the verification dossier** (very large, English) |
+| [`einstein_direct/README.md`](einstein_direct/README.md) | the core laboratory: summary, file map, how to run |
+| [`einstein_direct/README_EN.md`](einstein_direct/README_EN.md) | the deep 29-section technical ledger |
+| [`einstein_direct/INSTALL_AND_PUSH.md`](einstein_direct/INSTALL_AND_PUSH.md) | installation and running notes |
+| folder `README.md` files | one detailed English readme per directory |
 
-1. Fork → Branch → Commit → PR
-2. CI runs automatically (Python + Julia + Java + Viz)
-3. All verification tests must pass
-4. Deviations from reference values must remain within tolerance
-5. New features require corresponding tests
+## 7. License and citation
 
----
-
-## Acknowledgments
-
-- Bourque & Strohmaier (2024) for the rigorous computation of λ₁(Δ) on the Klein quartic
-- LIGO/Virgo Collaboration for gravitational wave observational data
-- The PSL(2,7) symmetry group and its role in the spinor structure classification
+The repository is distributed under the proprietary license in
+[LICENSE](LICENSE) (author: I. Kh. Isaev). For citation use
+[CITATION.cff](CITATION.cff) or the ORCID above. Bug reports and
+reproduction issues are welcome through the issue tracker; the
+[CONTRIBUTING](CONTRIBUTING.md) and [SECURITY](SECURITY.md) policies apply.

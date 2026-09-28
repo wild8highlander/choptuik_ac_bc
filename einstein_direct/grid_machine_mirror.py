@@ -2,19 +2,19 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
-КАМПАНИЯ v9: ЗЕРКАЛЬНЫЕ КОЛЬЦЕВЫЕ ПАРЫ (XI, -XI) -> ЧИСТОЕ ИЗМЕРЕНИЕ W2/t0^2
+ЗЕРКАЛЬНЫЕ КОЛЬЦЕВЫЕ ПАРЫ (XI, -XI) -> ЧИСТОЕ ИЗМЕРЕНИЕ W2/t0^2
 ================================================================================
 
-v9 = кампания поверх v6.1-динамики (стабильные каналы v8) с НОВОЙ
-инструментацией зеркального d-поля (solver._mirror_probe_v9, флаг
-tay_diag_v9) — реализация протокола P4-B чистого d-поля
+Кампания поверх кольцевой динамики (стабильные каналы гексчек-кампании) с НОВОЙ
+инструментацией зеркального d-поля (solver._mirror_ring_probe, флаг
+зеркальным пробником) — реализация протокола P4-B чистого d-поля
 (sympy_p4_einstein_hilbert.parity_level):
 
   Теория (машинно): (d-c) = omega_xi = 2 W2 xi — НЕЧЁТНЫЙ профиль;
   экстрактор [(d-c)(xi)-(d-c)(-xi)]/(4 xi) гасит ЧЁТНЫЙ мусор ТОЧНО
   при строго зеркальных точках.
 
-Каналы v9 (измерение, динамику не трогает):
+Каналы зеркального измерения (динамику не трогают):
   [A] ЗЕРКАЛЬНЫЕ ПАРЫ сырого марша: дамп кольца k=1..K обеих сторон
       (точные xi) + кубическая интерполяция каждой стороны ОТДЕЛЬНО в
       зеркальные цели +-xi_t; W2_pair = [(d-c)(+xi)-(d-c)(-xi)]/(4 xi);
@@ -32,8 +32,8 @@ tay_diag_v9) — реализация протокола P4-B чистого d-�
 цепочке: W2h/T0h^2 = 4/3 при tau* = 27/4.
 
 Запуск:
-    python3 grid_machine_v9.py                # полная кампания
-    python3 grid_machine_v9.py 1e-2           # чанк
+    python3 grid_machine_mirror.py            # полная кампания
+    python3 grid_machine_mirror.py 1e-2       # чанк
 """
 from __future__ import annotations
 
@@ -53,8 +53,8 @@ from zoom_solver import ZoomRunner, RESULTS, V_P, SIGMA
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 A_STAR = 0.0805333
-OUT_PATH = os.path.join(RESULTS, "grid_machine_v9.json")
-EPS_DEFAULT = [1e-3, 1e-2]          # стабильные каналы v8 (z = 9.35 / 9.10)
+OUT_PATH = os.path.join(RESULTS, "grid_machine_mirror.json")
+EPS_DEFAULT = [1e-3, 1e-2]          # стабильные каналы (z = 9.35 / 9.10)
 W2_TARGET = 4.0 / 3.0
 
 PRED = {
@@ -75,14 +75,14 @@ def extract_rows_v9(tay_hist_all):
     rows = []
     seen = {}
     for rec in tay_hist_all:
-        g9 = rec.get("diag_v9")
+        g9 = rec.get("diag_mirror")
         if g9 is None:
             continue
         key = (int(rec.get("stage", 0)), round(float(rec["v"]), 12))
         if key in seen:
             continue
         seen[key] = True
-        g8 = rec.get("diag_v8") or {}
+        g8 = rec.get("diag_hex") or {}
         rows.append({
             "stage": int(rec.get("stage", 0)), "v": float(rec["v"]),
             "t0": float(rec.get("t0", float("nan"))),
@@ -94,7 +94,7 @@ def extract_rows_v9(tay_hist_all):
             "W2_raw": g8.get("W2_raw"), "W2_gate": g8.get("W2_gate"),
             "W2_css": g8.get("W2_css"), "P2_raw": g8.get("P2_raw"),
             "d0_field": g8.get("d0_field"),
-            "diag_v9": g9,
+            "diag_mirror": g9,
         })
     return rows
 
@@ -115,7 +115,7 @@ def analyze_channel_A(rows):
     w2_pairs, even_rel, odd_floor = [], [], []
     row_fits = []
     for rw in rows:
-        g = rw["diag_v9"]
+        g = rw["diag_mirror"]
         if not g.get("ok"):
             continue
         out["n_rows"] += 1
@@ -206,7 +206,7 @@ def analyze_channel_B(rows):
     out = {"n_rows": 0, "n_sane": 0, "n_css_R3": 0}
     ratios_all, ratios_css = [], []
     for rw in rows:
-        g = rw["diag_v9"]
+        g = rw["diag_mirror"]
         cb = g.get("chanB") if g.get("ok") else None
         if not cb:
             continue
@@ -289,7 +289,7 @@ def run_chunk(eps_list, n=800, max_zooms=14, verbose=False):
         r = ZoomRunner(A=A, n=n, max_zooms=max_zooms, verbose=verbose,
                        annulus=True, ann_factor=10.0, march_center=True,
                        r_ah_du=8.0, ann_relax_gate=0.5, ann_cross=True,
-                       tay_ode_fix=False, tay_diag_v8=True, tay_diag_v9=True)
+                       tay_ode_fix=False, tay_diag_hex=True, tay_diag_mirror=True)
         d = r.run()
         rows = extract_rows_v9(r.tay_hist_all)
         cap = out["config"]["rows_sample_cap"]
@@ -320,7 +320,7 @@ def run_chunk(eps_list, n=800, max_zooms=14, verbose=False):
     r = ZoomRunner(A=A, n=n, max_zooms=max_zooms, verbose=verbose,
                    annulus=True, ann_factor=10.0, march_center=True,
                    r_ah_du=8.0, ann_relax_gate=0.5, ann_cross=True,
-                   tay_ode_fix=True, tay_diag_v8=True, tay_diag_v9=True)
+                   tay_ode_fix=True, tay_diag_hex=True, tay_diag_mirror=True)
     d = r.run()
     rows = extract_rows_v9(r.tay_hist_all)
     cap = out["config"]["rows_sample_cap"]

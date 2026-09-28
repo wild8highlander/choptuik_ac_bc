@@ -16,7 +16,7 @@ This launches the interactive menu:
 ║   Choptyuk Spinor Corrections — Interactive Menu  ║
 ╠══════════════════════════════════════════════════╣
 ║  [1] Run Full Verification                        ║
-║  [2] Run Enhanced Verification (v2.0)             ║
+║  [2] Run Enhanced Verification             ║
 ║  [3] Run Simulation Sweep                         ║
 ║  [4] Generate Plots                               ║
 ║  [5] Generate Reports                             ║
@@ -35,7 +35,7 @@ Runs the complete verification suite and displays results with color-coded
 pass/fail status and deviation percentages.
 
 ### [2] Enhanced Verification
-Runs the v2.0 enhanced verification covering 4D spin manifolds, K3 surfaces,
+Runs the enhanced verification covering 4D spin manifolds, K3 surfaces,
 Tyukovsky equations, and Einstein GR corrections.
 
 ### [3] Simulation Sweep

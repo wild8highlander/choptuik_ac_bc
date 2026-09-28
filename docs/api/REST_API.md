@@ -62,7 +62,7 @@ Run parameter sweep simulation.
 }
 ```
 
-## Enhanced Endpoints (v2.0)
+## Enhanced Endpoints
 
 ### K3 Surface
 

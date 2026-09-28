@@ -1,133 +1,77 @@
-# dsi_lab — DSI-лаборатория проекта Чоптюка–Исаева
+# dsi_lab
 
-Самодостаточный пакет вычислений: **7 экспериментов** по открытым задачам
-фреймворка b-C/a-C спинорных поправок (квартика Клейна, род 3, PSL(2,7)) и
-задаче Чоптюка. Пакет **не зависит** от родительского репозитория
-`choptuik_ac_bc` — всё воспроизводится одной командой из этой папки.
+DSI Laboratory: a self-contained package of **seven experiments** on the open
+problems of the b-C/a-C spinor-correction framework (Klein quartic, genus 3,
+PSL(2,7)) and the Choptuik critical-collapse problem. The package has no
+dependency on the parent repository — everything reproduces with one command,
+with fixed seeds, so regenerated results match the committed JSON files to
+about 1e-13.
 
-> Термин DSI (Digital-Symbolic Interference / «интерференция больших чисел и
-> знаков») — эвристика автора фреймворка, извлекающая структурные константы
-> из измеренных значений. Эксперименты 2 и 6 превращают её наблюдения в
-> проверяемые утверждения.
+## What is verified here
 
-## Результаты одним взглядом
+| # | File | Target | Key result |
+|---|------|--------|------------|
+| 1 | `exp1_sh3_bridge.py` | Open problem Sh.3(iii): trace bridge | Trace theorem confirmed (n = 7..12, gap ≤ 5.9e-8); Cuntz tree F = n+2 exact; the sofic √ε-law **refuted** by data |
+| 2 | `exp2_dsi4.py` | DSI-4: c_K3 = 27/672 | 9/224 is a convergent of CF [0;24,1,8,…], rank #1 for q ≤ 2000; Gaussian mass 0.0499 |
+| 3 | `exp3_hurwitz.py` | Hurwitz tower | **Finding D1**: the repository row (g=14, n=11) is inconsistent (1092 not divisible by 11); the correct group is PSL(2,13); prediction Δ_Ch(π/13) = 3.3672 |
+| 4 | `exp4_qnm.py` | QNM catalogue | 10 events; overtone detectability 0.84σ at Cosmic Explorer; falsifiable Δf_n/f_n = const = 8.3857e-5 |
+| 5 | `exp5_qcd.py` | QCD bridge | **Finding E1**: tr(Q_K3⊕M_F) = 32 requires centering ⟨λ⟩; afterwards slope −0.99 (~1/N); κT-sweep: BF(GUE) up to 1165 |
+| 6 | `exp6_census_224.py` | Why the denominator 224 = 4·56? | Explicit {7,3} census from GL(3,2): V=56, E=84, F=24, 7F=3V=2E=168; **uniqueness lemma** for 9/224; **degeneracy theorem**: branches c(g) coincide only at g=3 |
+| 7 | `exp7_e1_threshold.py` | Threshold e ≥ 1 | **Theorems A/B/C proven and verified** (identity 5.9e-16 over 24000 pairs); ladder 5/7 → 1 → 2 is a theorem; carrier-isometric constructions cannot realize the Sh.3(iii) bridge |
 
-| # | Файл | Что проверяется | Ключевой результат |
-|---|------|-----------------|--------------------|
-| 1 | `exp1_sh3_bridge.py` | Открытая задача Ш.3(iii): мост следа | Теорема следа подтверждена (n=7..12, зазор ≤ 5.9e-8); дерево Кунца F = n+2 точно; софический √ε-закон **опровергнут** данными |
-| 2 | `exp2_dsi4.py` | DSI-4: c_K3 = 27/672 | 9/224 — подходящая дробь цепной дроби [0;24,1,8,…], ранг #1 при q ≤ 2000, гауссова мера 0.0499 |
-| 3 | `exp3_hurwitz.py` | Башня Гурвица | **Находка D1**: строка репо (g=14, n=11) несогласована (1092 не делится на 11); корректно PSL(2,13); предсказание Δ_Ch(π/13) = 3.3672 |
-| 4 | `exp4_qnm.py` | QNM-каталог | 10 событий; обнаружимость обертонов 0.84σ на Cosmic Explorer; фальсифицируемое Δf_n/f_n = const = 8.3857e-5 |
-| 5 | `exp5_qcd.py` | QCD-мост | **Находка E1**: tr(Q_K3⊕M_F)=32 требует центрирования ⟨λ⟩; после него наклон −0.99 (~1/N); kT-sweep: BF(GUE) до 1165 |
-| 6 | `exp6_census_224.py` | Почему знаменатель 224 = 4·56? | Явная перепись {7,3} из GL(3,2): V=56, E=84, F=24, 7F=3V=2E=168; **лемма единственности**: 9/224 единственна в переписном бюджете; **теорема о вырождении**: ветви c(g) совпадают только при g=3 → дискриминатор (g−1)⁻¹ vs (g−1)⁻² |
-| 7 | `exp7_e1_threshold.py` | Порог e ≥ 1 | **Теоремы A/B/C доказаны и верифицированы** (тождество 5.9e-16, 24000 пар): лестница 5/7 → 1 → 2 стала теоремой; для носитель-изометрических конструкций мост Ш.3(iii) невозможен (η ≡ 1) |
+## What is inside
 
-Итоговые отчёты с полным разбором: `reports/` (PDF + DOCX, RU/EN).
+| Path | Contents |
+|------|----------|
+| `run_all.py` | Orchestrator: all experiments, subset selection, `--list` |
+| `exp1…exp7*.py` | The seven deterministic experiments |
+| `fig_choptuik.py` | Summary Choptuik figure |
+| `figlabels.py` | Bilingual figure labels (en/ru) |
+| `tests/` | pytest suite: theorems A/B/C, the {7,3} census, the 9/224 convergent, Hurwitz tower, smoke tests |
+| `results/` | Seven committed JSON results, one per experiment |
+| `fig_en/`, `fig_ru/` | 16 ready-made figures per language |
+| `reports/` | Eight final documents (PDF + DOCX, EN/RU) with LaTeX sources in `tex/` and HTML covers |
+| `Makefile` | Shortcut targets (see below) |
+| `requirements.txt` | numpy, scipy, matplotlib, pytest |
 
-## Структура
-
-```
-dsi_lab/
-├── run_all.py            # оркестратор: все 7 экспериментов одной командой
-├── exp1..exp7*.py        # эксперименты (детерминированы, seed фиксирован)
-├── fig_choptuik.py       # сводная иллюстрация задачи Чоптюка
-├── figlabels.py          # двуязычные подписи фигур (ru/en)
-├── results/              # 7 JSON-результатов (коммитятся; воспроизводите и сравнивайте)
-├── fig_ru/, fig_en/      # по 16 готовых фигур
-├── tests/                # pytest: теоремы A/B/C, перепись {7,3}, 9/224, Гурвиц
-├── reports/              # 8 итоговых документов (PDF/DOCX, RU/EN) + LaTeX-исходники
-├── requirements.txt
-├── Makefile              # make test / make run / make quick
-├── README.md             # этот файл
-├── README_TERMX.md       # ПОДРОБНАЯ инструкция для Android (Termux)
-└── README_EN.md          # English summary
-```
-
-## Быстрый старт (Linux / macOS / WSL)
+## How to run
 
 ```bash
 cd dsi_lab
 python3 -m pip install -r requirements.txt
 
-python3 -m pytest tests/ -q     # быстрые проверки теорем (~1-2 мин)
-python3 run_all.py              # все 7 экспериментов (~5-15 мин)
-python3 run_all.py 2 6 7        # только эксперименты 2, 6, 7
-python3 run_all.py --list       # список экспериментов
+python3 -m pytest tests/ -q     # fast theorem checks (~2 min)
+python3 run_all.py              # all 7 experiments (~5–15 min)
+python3 run_all.py 2 6 7        # subset of experiments
+python3 run_all.py --list       # list experiments
+python3 fig_choptuik.py         # summary figure only
 ```
 
-После прогона сравните с закоммиченными результатами:
+Makefile shortcuts (the same commands):
 
 ```bash
-git diff --stat results/
+make test     # pytest suite (~1–2 min)
+make run      # all 7 experiments + the summary figure (5–15 min)
+make quick    # fastest subset: experiments 2, 6, 7
+make fig      # summary Choptuik figure only
+make verify   # test + run (full verification)
+make clean    # remove __pycache__ and .pytest_cache
 ```
 
-Все эксперименты детерминированы (фиксированные seed), отклонения возможны
-только на уровне 1e-13 из-за Floating-Point-порядка BLAS.
+## Notes
 
-## Зависимости
-
-Только Python ≥ 3.9: `numpy`, `scipy`, `matplotlib` (фигуры), `pytest` (тесты).
-Никаких импортов из родительского репозитория.
-
-## Как внести в свой GitHub-репозиторий
-
-Папка `dsi_lab/` готова к копированию в корень репозитория — она полностью
-самостоятельна и не конфликтует с существующим кодом:
-
-```bash
-# вариант 1: на компьютере
-cp -r dsi_lab /путь/к/choptuik_ac_bc/
-cd /путь/к/choptuik_ac_bc
-git add dsi_lab && git commit -m "Add dsi_lab: 7 experiments, tests, reports (RU/EN)" && git push
-```
-
-```bash
-# вариант 2: прямо на Android (Termux) — см. README_TERMX.md, раздел 4
-pkg install -y gh        # один раз; затем gh auth login
-git clone https://github.com/<ваш-логин>/choptuik_ac_bc.git
-cp -r dsi_lab choptuik_ac_bc/ && cd choptuik_ac_bc
-git add dsi_lab && git commit -m "Add dsi_lab" && git push
-```
-
-Вариант 3 (без git): GitHub web → Add file → Upload files → перетащить
-содержимое распакованной папки `dsi_lab/`.
-
-## Как запускать на Android (Termux) — кратко
-
-Полная инструкция с устранением неполадок: **[README_TERMX.md](README_TERMX.md)**.
-
-```bash
-pkg update -y && pkg upgrade -y
-pkg install -y python git make clang libjpeg-turbo libpng freetype pkg-config
-python3 -m pip install --upgrade pip wheel
-python3 -m pip install -r requirements.txt
-
-python3 -m pytest tests/ -q     # тесты
-python3 run_all.py              # полная верификация
-```
-
-Замечания для телефона:
-- если `pip install scipy` собирается слишком долго — `pkg install python-numpy python-scipy`
-  (предсобранные пакеты Termux) и затем `pip install matplotlib pytest`;
-- тесты (`make test`) идут ~2-3 минуты даже на телефоне; полный `run_all.py`
-  — 10-25 минут; экран гасить не нужно, Termux продолжает считать в фоне
-  (включите Wake-lock: `termux-wake-lock` или уведомление Termux → Acquire wakelock);
-- фигуры с кириллицей корректно рендерятся: в скриптах шрифт ищется по
-  списку путей и откатывается на DejaVu Sans (есть в matplotlib).
-
-## Воспроизводимость
-
-- Каждый эксперимент пишет JSON в `results/` и PNG в `fig_ru/`/`fig_en/`;
-- Все случайные величины — из `np.random.default_rng(фиксированный seed)`;
-- Тесты в `tests/` проверяют **математику** (теоремы, тождества, переписи)
-  независимо от сохранённых JSON;
-- Времена на контрольной машине (Python 3.11, x86-64): exp1 ≈ 40 с,
-  exp2 ≈ 2 с, exp3 ≈ 10 с, exp4 ≈ 5 с, exp5 ≈ 60 с, exp6 ≈ 30 с,
-  exp7 ≈ 25 с, fig_choptuik ≈ 2 с. На телефоне умножайте на 3-8.
-
-## Связь с родительским репозиторием
-
-- Формулы `leavitt_F`, `b_Ch`, конструкция K3-решётки и подписи результатов
-  согласованы с `choptuik_ac_bc` (audit_transfer, python/src/core);
-- Находки D1 (башня) и E1 (центрирование ⟨λ⟩) — исправления к данным репо;
-- Отчёты в `reports/` ссылаются на разделы монографии репозитория.
+- Requirements: Python ≥ 3.9 with numpy, scipy, matplotlib, pytest. No
+  imports from the parent repository — the folder is intentionally
+  standalone and can be copied out and run elsewhere.
+- All experiments are deterministic (fixed seeds). A fresh run should
+  reproduce the committed `results/*.json` to ~1e-13; larger deviations are
+  a verification finding.
+- On Android/Termux the commands are identical (`pkg install make` first);
+  the former Termux-specific readme has been folded into this file — the
+  targets above were chosen to be Termux-friendly.
+- `reports/` contains its own README describing the compiled reports; the
+  LaTeX sources in `reports/tex/` allow regeneration of the PDFs.
+- Findings D1 (Hurwitz tower) and E1 (QCD trace centering) are corrections
+  discovered *by* the experiments and are called out explicitly in the
+  reports — the package practices the same honesty policy as the monographs:
+  proved / verified numerically / refuted are always distinguished.

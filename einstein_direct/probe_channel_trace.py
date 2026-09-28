@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Пробник канала j=19-20: построчная трассировка смерти стадии (v6).
+"""Пробник канала j=19-20: построчная трассировка смерти стадии.
 
 Запуск: python3 probe_v6_channel.py [eps] [max_zooms]
 Печатает построчно: mx, Q, max|t|, max|s|, tay-строки, фолбэки, гейты,
@@ -18,7 +18,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from zoom_solver import ZoomRunner, RESULTS, V_P, SIGMA  # noqa: E402
-from grid_machine_v6 import A_STAR  # noqa: E402
+from grid_machine_annulus import A_STAR  # noqa: E402
 
 eps = float(sys.argv[1]) if len(sys.argv) > 1 else 1e-3
 max_zooms = int(sys.argv[2]) if len(sys.argv) > 2 else 8

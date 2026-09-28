@@ -50,7 +50,7 @@ P4 CLOSURE (O6+): THE DYNAMIC SHAPE CYCLE IN EINSTEIN AND HILBERT EQUATIONS
   B. чистое d-поле (кольцевая чётность на (d-c)): зеркало (u,v)->(v,u) меняет
      c <-> d; (d-c) = omega_xi = 2 W2 xi — НЕЧЁТНО на кольце; экстрактор
      W2 = [(d-c)(xi) - (d-c)(-xi)]/(4 xi) гасит чётный мусор точно;
-     демонстрация на строках v8 (измеренная dc-пара чётно-доминирована).
+     демонстрация на строках гексчек-кампании (измеренная dc-пара чётно-доминирована).
 
 Запуск: python3 sympy_p4_einstein_hilbert.py
         (~4-9 мин; results/p4_einstein_hilbert.json)
@@ -105,7 +105,7 @@ def load_anchors() -> dict:
     a["o6nsolve"] = jload("center_o6_nsolve.json")
     a["hexcycle"] = jload("hexcycle.json")
     a["deriv"] = jload("derivation_results.json")
-    a["v8"] = jload("grid_machine_v8.json")
+    a["hexcheck"] = jload("grid_machine_hexcheck.json")
     a["hex"] = jload("center_hierarchy.json")
     a["hex_modes"] = jload("center_modes.json")
     return a
@@ -744,7 +744,7 @@ def dynamic_point(zc: dict, chain_forms: dict) -> dict:
 
 # ------------------------------------- [P4-B] чистое d-поле (кольцевая чётность) ---
 def parity_level(A: dict) -> dict:
-    """(d-c) = omega_xi: зеркало меняет c <-> d; экстрактор W2; демо на v8."""
+    """(d-c) = omega_xi: зеркало меняет c <-> d; экстрактор W2; демо на гексчеке."""
     log("[6] [P4-B] Чистое d-поле: кольцевая чётность на (d-c)...")
     W0f, W2f, W4f = (sp.Function(n) for n in ("W0f", "W2f", "W4f"))
     om = W0f(y) + W2f(y) * xi**2 + W4f(y) * xi**4          # чётное omega
@@ -770,9 +770,9 @@ def parity_level(A: dict) -> dict:
     extr_j = ((Je + dc_a) - (Je + dc_a).subs(xi, -xi)) / (4 * xi)
     chk["even_junk_cancelled"] = bool(sp.simplify(extr_j - W2a) == 0)
 
-    # демо на строках v8: измеренная dc-пара
+    # демо на строках гексчек-кампании: измеренная dc-пара
     rows = []
-    for r in (A.get("v8") or {}).get("runs", []):
+    for r in (A.get("hexcheck") or {}).get("runs", []):
         for row in r.get("rows_sample", []):
             dp, xp = row.get("dc_pair"), row.get("xi_pair")
             if not dp or not xp or len(dp) != 2:
@@ -807,11 +807,11 @@ def parity_level(A: dict) -> dict:
             "median_target_W2_4_3": med("target_W2_4_3"),
             "verdict": ("измеренная dc-пара ЧЁТНО-доминирована (мусор): "
                         "нечётный сигнал W2 под полом; пары асимметричны "
-                        "(leak ~ |xi1+xi2|/|xi1-xi2|) — протокол v9: строго "
+                        "(leak ~ |xi1+xi2|/|xi1-xi2|) — протокол зеркальных пар: строго "
                         "зеркальные пары (xi, -xi) на кольце + экстрактор "
                         "[(d-c)(xi)-(d-c)(-xi)]/(4xi)"),
         })
-    return {"symbolic": chk, "v8_demo": demo,
+    return {"symbolic": chk, "hexcheck_demo": demo,
             "protocol": ("чистое d-поле = нечётная проекция (d-c) на зеркальном "
                          "кольце; W2 = наклон (d-c)/(2xi); чётный мусор гасится "
                          "точно при зеркальных парах"),
@@ -962,7 +962,7 @@ def main() -> None:
     try:
         out["parity"] = parity_level(A)
         log(f"    [P4-B] symbolic: {out['parity']['symbolic']}")
-        log(f"    [P4-B] v8 demo: {json.dumps(out['parity']['v8_demo'], ensure_ascii=False)}")
+        log(f"    [P4-B] hexcheck demo: {json.dumps(out['parity']['hexcheck_demo'], ensure_ascii=False)}")
     except Exception:  # noqa: BLE001
         out["parity_error"] = traceback.format_exc()
         log(out["parity_error"][-600:])
@@ -993,7 +993,7 @@ def main() -> None:
         "конструкция книг session 11 (kappa_cyc = ln(tau3/tau5^2) = ln(64/9) "
         "на ветвях 9/4 и 9/16) опиралась на артефакт: ветви в исправленной "
         "системе не существуют по отдельности. Кольцо 4/3, DSS-картина и "
-        "Delta-сигналы v8 от этого не зависят; формулы книг требуют пересмотра",
+        "Delta-сигналы гексчек-кампании от этого не зависят; формулы книг требуют пересмотра",
         "спектр: lambda+(tau) монотонна; lambda+ = kappa_obs (~1.96) при "
         "tau ~ 0.486; в tau* = 27/4 (вне сетки, экстраполяция) lambda+ ~ 8-9 "
         "— замороженная точка НЕ критический аттрактор по спектру",
@@ -1005,8 +1005,8 @@ def main() -> None:
         "(dd != 0) — т.е. полноценного ПРЕДЕЛЬНОГО ЦИКЛА (DSS), не дрейфа",
         "чистое d-поле: (d-c) = omega_xi = 2 W2 xi — нечётный на кольце; "
         "экстрактор [(d-c)(xi)-(d-c)(-xi)]/(4xi) гасит чётный мусор ТОЧНО "
-        "(симв. проверка); v8-пары асимметричны (leak 0.92) и чётно-домини- "
-        "рованы (odd/even ~ 0.28) — канал W2/t0^2 требует зеркальных пар (v9)",
+        "(симв. проверка); гексчек-пары асимметричны (leak 0.92) и чётно-домини-"
+        "рованы (odd/even ~ 0.28) — канал W2/t0^2 требует зеркальных пар",
     ]
     out["runtime_s"] = round(time.time() - t0w, 1)
     path = os.path.join(RESULTS, "p4_einstein_hilbert.json")

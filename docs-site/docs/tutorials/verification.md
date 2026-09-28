@@ -30,9 +30,9 @@ from src.verification.verify_all import verify_all
 results = verify_all(tolerance=0.001)  # 0.1% tolerance
 ```
 
-## Enhanced Verification (v2.0)
+## Enhanced Verification
 
-The enhanced verification suite covers the v2.0 extensions:
+The enhanced verification suite covers the enhanced extensions:
 
 - 4D spin manifold conformal invariance
 - Kähler surface Dolbeault correspondence

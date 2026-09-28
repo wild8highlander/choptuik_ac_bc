@@ -2,18 +2,18 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
-NEAR-CRITICAL КАМПАНИЯ v8: ПРОВЕРКА ПРЕДСКАЗАНИЙ ГЕКСЦИКЛА
+HEXCHECK-КАМПАНИЯ: ПРОВЕРКА ПРЕДСКАЗАНИЙ ГЕКСЦИКЛА
 KAPPA = ln(64/9) И W2/t0^2 -> 4/3 НА ЛЕСТНИЦЕ EPS (TAU*-КАМПАНИЯ)
 ================================================================================
 
-v8 = кампания поверх v6.1-машины (стабильные цепочки z~9.1-9.35) с ПОЛНОЙ
-инструментацией измерений (solver._tay_diag_v8) и post-hoc анализом.
+Кампания поверх кольцевой машины (стабильные цепочки z~9.1-9.35) с ПОЛНОЙ
+инструментацией измерений и post-hoc анализом.
 
-Что нового v8 (диагноз + механика):
+Диагноз + механика:
   1. НАЙДЕН И ПОКАЗАН БАГ ЧАСОВ: tay["v_prev"] перезаписывался в chi-секции
      ДО вычисления dv_ode => dv_ode == 0 после первой строки стадии =>
      ОДУ O1/O3 мертвы (t0/d0 живут только через relax-каналы) =>
-     замороженные tau-строки v6.1 (tau* = 3.3e-20, lambda_drift на краю
+     замороженные tau-строки (tau* = 3.3e-20, lambda_drift на краю
      сетки). Фикс — флаг tay_ode_fix (legacy не тронут).
   2. W2: сырой (d-c)-фит лежит под полом d-мусора на ~8 порядков
      (gates=cap на 100% строк). В динамике fix-режима — энфорсмент
@@ -46,8 +46,8 @@ v8 = кампания поверх v6.1-машины (стабильные це�
   уход по неустойчивой моде (lambda+ => kappa). W2-каналы: raw/pair/d0-clock.
 
 Запуск:
-    python3 grid_machine_v8.py                # полная лестница eps
-    python3 grid_machine_v8.py 1e-2,1e-3      # чанк
+    python3 grid_machine_hexcheck.py          # полная лестница eps
+    python3 grid_machine_hexcheck.py 1e-2,1e-3 # чанк
 """
 from __future__ import annotations
 
@@ -71,7 +71,7 @@ A_STAR = 0.0805333
 DELTA_SP = 7.0 * np.pi / 30.0            # 0.7330383 (спинорная лестница)
 GAMMA_LIT = 0.374
 B_CH = 1.0 - np.cos(2.0 * np.pi / 7.0)
-OUT_PATH = os.path.join(RESULTS, "grid_machine_v8.json")
+OUT_PATH = os.path.join(RESULTS, "grid_machine_hexcheck.json")
 EPS_DEFAULT = [1e-4, 3e-4, 1e-3, 3e-3, 1e-2]
 Z_WIN_ECHOES = 2.5
 
@@ -113,7 +113,7 @@ def extract_rows_v8(tay_hist_all, zs, res_max=0.3):
     rows = []
     seen = {}
     for rec in tay_hist_all:
-        dg = rec.get("diag_v8")
+        dg = rec.get("diag_hex")
         if dg is None:
             continue
         key = (int(rec.get("stage", 0)), round(float(rec["v"]), 12))
@@ -121,7 +121,7 @@ def extract_rows_v8(tay_hist_all, zs, res_max=0.3):
         # ПОСЛЕДНЮЮ (пост-перестройку; фиты свежее)
         seen[key] = rec
     for key, rec in seen.items():
-        dg = rec["diag_v8"]
+        dg = rec["diag_hex"]
         t0 = rec.get("t0"); P2 = rec.get("P2")
         R1 = rec.get("R1"); d0 = rec.get("d0"); W2 = rec.get("W2")
         res_r = rec.get("res_r", float("nan"))
@@ -415,7 +415,7 @@ def run_chunk(eps_list, n=800, max_zooms=14, annulus=True, ann_factor=10.0,
                        annulus=annulus, ann_factor=ann_factor,
                        march_center=march_center, r_ah_du=r_ah_du,
                        ann_relax_gate=ann_relax_gate, ann_cross=ann_cross,
-                       tay_ode_fix=False, tay_diag_v8=True)
+                       tay_ode_fix=False, tay_diag_hex=True)
         d = r.run()
         rec = _summarize_run(r, d, eps, A, time.time() - t0)
         out["runs"].append(rec)
@@ -433,7 +433,7 @@ def run_chunk(eps_list, n=800, max_zooms=14, annulus=True, ann_factor=10.0,
                        annulus=annulus, ann_factor=ann_factor,
                        march_center=march_center, r_ah_du=r_ah_du,
                        ann_relax_gate=ann_relax_gate, ann_cross=ann_cross,
-                       tay_ode_fix=True, tay_diag_v8=True)
+                       tay_ode_fix=True, tay_diag_hex=True)
         d = r.run()
         lv = _summarize_run(r, d, eps, A, time.time() - t0)
         lv["leg"] = "live_tower (tay_ode_fix: dv-часы + W2_css + CSS-часы)"

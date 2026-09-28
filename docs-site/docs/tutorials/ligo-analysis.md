@@ -45,9 +45,9 @@ for event, data in results.items():
 | GW170814 | 319.000 | 318.973 | −0.0268 |
 | GW190521 | 110.000 | 109.991 | −0.0092 |
 
-## Enhanced QNM (v2.0)
+## Enhanced QNM
 
-The v2.0 enhanced predictor includes:
+The enhanced predictor includes:
 
 - Einstein GR corrections via Tyukovsky equations
 - K3 surface constraints (b₂ = 22)

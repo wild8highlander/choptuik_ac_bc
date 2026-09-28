@@ -17,14 +17,14 @@ Core mathematical computations and data structures.
 | [`core.qnm`](core/qnm.md) | Quasi-normal mode predictions for LIGO/Virgo |
 | [`core.hypothesis`](core/hypothesis.md) | Hypothesis testing framework |
 | [`core.surfaces`](core/surfaces.md) | Riemann surface specifications (Bolza, Bring, Macbeath) |
-| [`core.enhanced_verification`](core/enhanced-verification.md) | Enhanced v2.0: K3, Tyukovsky, Einstein GR |
+| [`core.enhanced_verification`](core/enhanced-verification.md) | Enhanced: K3, Tyukovsky, Einstein GR |
 
 ### Verification
 
 | Module | Description |
 |---|---|
 | [`verification.verify_all`](verification/verify-all.md) | Full verification suite |
-| [`verification.verify_enhanced`](verification/verify-enhanced.md) | Enhanced v2.0 verification |
+| [`verification.verify_enhanced`](verification/verify-enhanced.md) | Enhanced enhanced verification |
 
 ### Simulation & Visualization
 

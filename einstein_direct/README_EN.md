@@ -1,6 +1,6 @@
 # einstein_direct — Direct Solution of the Choptuik Problem from the Classical Einstein Equations
 
-**Module status: v3 (zoom campaign v2). Hilbert-action derivation machine-verified; 2nd-order characteristic solver validated; fixed-grid critical point and mass-scaling floor analyzed; multi-zoom regridding machine rebuilt (v2) and pushed to z ≈ 5.2 with the remaining depth wall precisely diagnosed.**
+**Module status: verification laboratory. Hilbert-action derivation machine-verified; 2nd-order characteristic solver validated; fixed-grid critical point and mass-scaling floor analyzed; multi-zoom regridding machine rebuilt and pushed to z ≈ 5.2 with the remaining depth wall precisely diagnosed.**
 
 This folder contains a complete, self-contained numerical laboratory that solves the
 **Choptuik critical collapse problem** (massless scalar field, spherical symmetry)
@@ -20,18 +20,32 @@ Termux, see §10) with Python ≥ 3.9, NumPy, SciPy, SymPy and pytest.
 3. [Machine-verified derivation (SymPy)](#3-machine-verified-derivation-sympy)
 4. [The 1+1 double-null system and the solver](#4-the-11-double-null-system-and-the-solver)
 5. [Validation suite](#5-validation-suite)
-6. [Fixed-grid campaign: critical amplitude and the mass-scaling floor](#6-fixed-grid-campaign)
-7. [Multi-zoom regridding machine v2](#7-multi-zoom-regridding-machine-v2)
-8. [The depth wall: precise diagnosis and fix roadmap](#8-the-depth-wall)
-9. [Honest comparison with the b_Ch = γ hypothesis](#9-honest-comparison-with-the-b_Ch--γ-hypothesis)
-10. [v3.2: the spinor (even/odd) center closure](#10-v32-the-spinor-evenodd-center-closure)
+6. [Fixed-grid campaign](#6-fixed-grid-campaign)
+7. [Multi-zoom regridding machine (rebuilt prototype)](#7-multi-zoom-regridding-machine-rebuilt-prototype)
+8. [The depth wall](#8-the-depth-wall)
+9. [Honest comparison with the b_Ch = γ hypothesis](#9-honest-comparison-with-the-b_ch--γ-hypothesis)
+10. [The spinor (even/odd) center closure](#10-the-spinor-evenodd-center-closure)
 11. [Spinor analysis: the π/15 and π/30 exponents](#11-spinor-analysis-the-π15-and-π30-exponents)
-12. [Running everything (incl. Termux on Android)](#12-running-everything)
+12. [Running everything (desktop and Termux)](#12-running-everything-desktop-and-termux)
 13. [File map](#13-file-map)
 14. [References](#14-references)
-15. [v5: the central Taylor patch — machine-derived center hierarchy, ODE-internal boundary data, spinor ladder](#15-v5-the-central-taylor-patch)
-16. [v6-fundamentals: convergence and repulsion from first principles (Thorne/MTW mass route, log-time tower, exact spectrum)](#16-v6-fundamentals-convergence-and-repulsion-from-first-principles)
-17. [v6.1: closing the depth-wall channels — stable stages, the Thorne link seen in data, and the O6+ verdict](#17-v61-closing-the-depth-wall-channels)
+15. [The central Taylor patch](#15-the-central-Taylor-patch)
+16. [Convergence and repulsion from first principles](#16-convergence-and-repulsion-from-first-principles)
+17. [Closing the depth-wall channels](#17-closing-the-depth-wall-channels)
+18. [The Poincare hexagonal transformation cycle (dynamics instead of the truncated tower)](#18-the-poincare-hexagonal-transformation-cycle-dynamics-instead-of-the-truncated-tower)
+19. [Hexcheck campaign: checking kappa = ln(64/9) and W2/t0^2 -> 4/3](#19-hexcheck-campaign-checking-kappa--ln649-and-w2t02---43)
+20. [P4 closure (O6+): the shape cycle in Einstein and Hilbert equations](#20-p4-closure-o6-the-shape-cycle-in-einstein-and-hilbert-equations)
+21. [Mirror-ring pairs + exact char polynomial at tau* + monodromy books](#21-mirror-ring-pairs--exact-char-polynomial-at-tau--monodromy-books)
+22. [The three repo corrections (b-C, a-C, a-B) embedded in the towers](#22-the-three-repo-corrections-b-c-a-c-a-b-embedded-in-the-towers)
+23. [The baryon-asymmetry reading + the one-brick phantom test](#23-the-baryon-asymmetry-reading--the-one-brick-phantom-test)
+24. [Second flows as limit-cycle variables — the linear verdict](#24-second-flows-as-limit-cycle-variables-—-the-linear-verdict)
+25. [Third-order tables, the justified dd-closure, delta_mono measured by the march](#25-third-order-tables-the-justified-dd-closure-delta_mono-measured-by-the-march)
+26. [The nonlinear DAE march — the solution set through the critical point is the flat line](#26-the-nonlinear-dae-march-—-the-solution-set-through-the-critical-point-is-the-flat-line)
+27. [HEXCYCLE-DAE — the figure cycle as a global predictor (session 20)](#27-hexcycle-dae-—-the-figure-cycle-as-a-global-predictor-session-20)
+28. [CLOCK-CLOSURE-T1C — closing the clocks through the one-brick T1c source form + the B4 remnant (session 21)](#28-clock-closure-t1c-—-closing-the-clocks-through-the-one-brick-t1c-source-form--the-b4-remnant-session-21)
+29. [BRICK-LADDER-TICK + GLOBAL-STATIC-SEARCH — intermediate bricks and the exhaustive static census (session 22)](#29-brick-ladder-tick--global-static-search-—-intermediate-bricks-and-the-exhaustive-static-census-session-22)
+
+
 
 ---
 
@@ -44,7 +58,7 @@ pulse sent into collapse). Choptuik (1993) discovered that between black-hole
 formation (large `A`) and complete dispersal (small `A`) there is a critical
 amplitude `A*` with two astonishing universal properties:
 
-* **Critical exponent.** For supercritical data the black-hole mass vanishes
+* **Critical exponent.** For supercritical datthe black-hole mass vanishes
   according to a power law
   `M_BH = C · (A - A*)^γ`, with `γ ≈ 0.374` universal (independent of the
   initial-data family).
@@ -172,7 +186,7 @@ This floor is exactly what the multi-zoom machine (§7) is designed to break:
 each zoom stage shrinks `du` by `λ ≈ 3–6`, so the mass floor drops
 exponentially with the number of zooms.
 
-## 7. Multi-zoom regridding machine v2
+## 7. Multi-zoom regridding machine (rebuilt prototype)
 
 `zoom_solver.py` implements adaptive regridding in the spirit of Choptuik's
 original work. One *run* consists of stages; when the active structure
@@ -181,24 +195,24 @@ compresses, the window is re-centered, shrunk, and the fields are interpolated
 The log-scale depth `z = Σ ln(du_old/du_new)` measures the total scale reach;
 DSS echoes live at equal spacing `Δ` in `z`.
 
-### 7.1 What v2 fixed relative to v1
+### 7.1 What the rebuilt machine fixed relative to the prototype
 
-1. **Trigger redesigned.** v1 triggered on a gradient scale `L_grad` that the
+1. **Trigger redesigned.** the prototype triggered on a gradient scale `L_grad` that the
    *regular converging wave* (`t ~ 1/r` near the center) defeats: the maximum
    of `|Φ_u|` sits at the mask boundary and the measured "width" is a
-   mask artifact (~10 cells) from the first row. v2 triggers on
+   mask artifact (~10 cells) from the first row. the rebuilt machine triggers on
    **width < 45 cells AND width shrinking** (compared within-stage, 20 rows
    apart) — the `1/r` artifact has constant cell-width and can never fire it.
    Additionally the width measurement masks the clamp zone (`r > 12·du`).
 2. **Drift-aware window placement.** The collapsing feature drifts toward
-   `+u`; v2 places the feature at 30 % from the window's left edge, forces the
+   `+u`; the rebuilt machine places the feature at 30 % from the window's left edge, forces the
    window to **contain the center line** `u = v` (the domain of dependence of
-   the collapse), and clips into the parent domain. v1 centered the window and
+   the collapse), and clips into the parent domain. the prototype centered the window and
    then permanently lost the zoom right (the "u_hi" refusal) once the feature
    approached the right edge.
-3. **Telescoping v-budget.** v1 allowed the new stage's `v`-range to exceed
+3. **Telescoping v-budget.** the prototype allowed the new stage's `v`-range to exceed
    the covered buffer and silently *extrapolated* garbage into the restart.
-   v2 caps `v_hi ≤ parent v_hi` and marches the parent forward to cover the
+   the rebuilt machine caps `v_hi ≤ parent v_hi` and marches the parent forward to cover the
    new window before interpolating.
 4. **v-extension.** If a stage's `v`-grid is exhausted without a trigger, the
    window is translated forward (`λ = 1`) instead of killing the run.
@@ -212,8 +226,8 @@ DSS echoes live at equal spacing `Δ` in `z`.
 
 ### 7.2 Result: chain depth
 
-With the v2 machine the near-critical runs march **cleanly through 3 zooms to
-`z ≈ 5.2`** (v1 managed 2 zooms and `z ≈ 1.5`), with the mass aspect bounded
+With the rebuilt machine machine the near-critical runs march **cleanly through 3 zooms to
+`z ≈ 5.2`** (the prototype managed 2 zooms and `z ≈ 1.5`), with the mass aspect bounded
 (`mx ≤ 0.082`, no junk explosions) — see
 `results/zoom_campaign.json`, field `runs`.
 
@@ -262,7 +276,7 @@ this session, is precise:
    `[0, 5·du_parent]` becomes `5λ·du_child` cells after interpolation — the
    inherited junk zone *grows* by `λ` per zoom in cell terms.
 
-**Fix roadmap (v3, the path to percent-level γ and Δ):** implement the
+**Fix roadmap (the regular-closure stage, the path to percent-level γ and Δ):** implement the
 **center ODE** — integrate the regular expansion at the center
 (`Φ₀(v), s₀ = t₀ = Φ̇₀/2`, plus the radial second derivatives) as an internal
 boundary condition, march `t` outward, and derive the `s₁ − t₁` closure from
@@ -278,21 +292,21 @@ percent-level `γ` and a reliable `Δ` from echo-peak spacing.
 | `γ` (literature, Choptuik 1993 / Gundlach) | `0.374 ± 0.004` | reference |
 | `b_Ch = 1 − cos(2π/7)` | `0.37651` | monograph hypothesis (+0.67 %) |
 | `γ` measured here (fixed grid) | `0.11 ± 0.11` | **invalid** — mass floor `M ≈ 4·du` |
-| `γ` measured here (zoom chain) | — | **not achieved**: depth wall at `z ≈ 5.9` (v3.2), needs `z ≈ 10–12` |
+| `γ` measured here (zoom chain) | — | **not achieved**: depth wall at `z ≈ 5.9` (regular closure), needs `z ≈ 10–12` |
 | `Δ` measured here | — | **not achieved**: no clean echo train at `z ≤ 5.9` (see §11) |
 
 **Bottom line.** The 0.67 % gap between `b_Ch` and `γ` remains an *open
 numerical question* for this codebase. Nothing measured so far supports or
-refutes it; deciding it requires the central Taylor patch (v5) described in
+refutes it; deciding it requires the central Taylor patch (the Taylor-patch stage) described in
 §10. This module deliberately refuses to fake the comparison.
 
 Note however the **product compensation** discovered in §11: the spinor
 framework's `γ·Δ = b_Ch·(7π/30)` differs from the literature pair
 `γ·Δ` by only **0.04 %**, while `γ` and `Δ` separately differ by 0.6–0.7 %.
 
-## 10. v3.2: the spinor (even/odd) center closure
+## 10. The spinor (even/odd) center closure
 
-The v2 wall diagnosis said: the clamp `t = s` imposes an *incomplete*
+The rebuilt machine wall diagnosis said: the clamp `t = s` imposes an *incomplete*
 regularity condition. This session implemented the complete one and
 re-examined the wall with it.
 
@@ -307,13 +321,13 @@ p + q is ODD, (p+q)(0) = 0        m is ODD, m ~ m₃·r³
 c + d is EVEN with (c+d)(0) = c(0) = d(0) = 0
 ```
 
-The v2 clamp `t = s` **forces a = 0** — it deletes the odd ("spinor")
+The rebuilt machine clamp `t = s` **forces a = 0** — it deletes the odd ("spinor")
 sector; during fast compression `s_v = −(p·t + q·s)/r ≈ 2c'·s/r` then
 blows up. The mirror map `(u,v) → (v,u)` (r → −r, s ↔ t, p ↔ −q, c ↔ d)
 is a Z₂ flip, and the E/O decomposition is exactly the parity expansion
 under it — the language of the monograph's spinor functions.
 
-**What v3.2 implements** (all flag-gated, base runs unchanged — 5/5 tests
+**What regular-closure implements** (all flag-gated, base runs unchanged — 5/5 tests
 still pass, strong-field benchmark unchanged):
 
 1. `center_closure = "regular"` — per-row central-zone reconstruction:
@@ -321,18 +335,18 @@ still pass, strong-field benchmark unchanged):
    annulus `[R_zone, 4R_zone]` as `O(r) = a·r + C/r` (two-parameter LSQ);
    the regular `a·r` kept, the parasitic `1/r` mode **discarded**.
 2. Smooth taper `w(k) = (1−(k/K)²)²` — no discontinuity at the zone edge
-   (v3.0 without the taper made the chain *shorter*; the zone edge itself
+   (without the taper, the regular-closure stage made the chain *shorter*; the zone edge itself
    became a junk source — an instructive failure, kept in the log).
 3. Mass: cubic law `m = m₃r³` with `m₃` matched at the zone edge
    (kills the constant mass offset whose `2Δm/r` diverges).
 4. Parity projection: even part of `(p+q)` removed (regularity: odd),
    center value of `(c+d)` removed.
-5. Factor-2 bug fixed in the v2 `_center_heal` (it averaged the sums
+5. Factor-2 bug fixed in the rebuilt `_center_heal` (it averaged the sums
    `(t+s)` instead of the half-sums — the even part was doubled in the zone).
 
-**Results** (`results/zoom_campaign_v3.json`, `results/spinor_analysis.json`):
+**Results** (`results/zoom_campaign_regular.json`, `results/spinor_analysis.json`):
 
-| Metric | v2 (clamp) | v3.2 (regular) |
+| Metric | the rebuilt machine (clamp) | regular-closure (regular) |
 |---|---|---|
 | junk `M_AH` explosion at stop | up to `3.56` | **`6.6·10⁻⁵`** (suppressed) |
 | ring `[R_zone, 4R_zone]` at stop | junky | **stable** until stop |
@@ -348,7 +362,7 @@ at the center still runs away after 2–3 restarts. No *local* zone cleaner
 can fix a *global* march; the fix must be built into the evolution
 itself — the **central Taylor patch** (Choptuik 1993): evolve the
 expansion coefficients `(Φ0, a, …)` as the inner boundary condition.
-That is the v5 roadmap, and it matches the monograph's thesis: stable
+That is the Taylor-patch stage roadmap, and it matches the monograph's thesis: stable
 modes need *fundamental-level* derivations, not more regridding.
 
 ## 11. Spinor analysis: the π/15 and π/30 exponents
@@ -362,7 +376,7 @@ functions with exponents π/15 and π/30 with parameter scaling**. Module
 `A = 0.075` (sub-critical, strong compression): scalar pairs `s↔t`,
 `m ~ r³` hold to discretization accuracy inside the reconstruction zone;
 the clamp closure shows a maximal `(p+q)` even violation `1.00` (killed
-spinor sector), the v3 closure reduces it to `0.35`.
+spinor sector), the regular-closure stage closure reduces it to `0.35`.
 
 **(b) Framework relations** (exact arithmetic, no fitting):
 
@@ -407,7 +421,7 @@ pip install numpy scipy sympy pytest        # ~1 min
 pytest tests/ -q                            # validation, ~2 s
 python3 choptuik_scaling.py --n-bisect 800  # fixed-grid campaign, ~10 min
 python3 zoom_campaign.py                    # zoom prototype campaign, ~4 min
-python3 zoom_campaign_v3.py                 # v3.2 protocol campaign, ~5 min
+python3 zoom_campaign_regular.py                 # regular-closure protocol campaign, ~5 min
 python3 spinor_analysis.py                  # spinor module: parity A/B, R1-R4, ~5 min
 python3 spinor_figures.py                   # spinor figures (RU/EN), ~10 s
 python3 figures.py                          # RU/EN figures, ~1 min
@@ -437,12 +451,12 @@ echoes it. The full campaign runs on a phone in ~1–2 h; the reduced profile
 einstein_direct/
 ├── sympy_derivation.py     # Hilbert action → 1+1 system, machine checks (mpmath 50 digits)
 ├── solver.py               # double-null characteristic solver (validated, 2nd order)
-│                           #   + v3.2 center closures: clamp | regular (spinor E/O)
+│                           #   + regular-closure center closures: clamp | regular (spinor E/O)
 ├── roberts_test.py         # Roberts–Oshiro convergence harness
 ├── choptuik_scaling.py     # fixed-grid bisection A* + mass-scaling fit
 ├── zoom_solver.py          # multi-zoom machine + DSS tracking + echo peak tools
-├── zoom_campaign.py        # honest zoom campaign driver v2 (JSON output)
-├── zoom_campaign_v3.py     # v3.2 protocol campaign with spinor diagnostics
+├── zoom_campaign.py        # honest zoom campaign driver the rebuilt machine (JSON output)
+├── zoom_campaign_regular.py     # regular-closure protocol campaign with spinor diagnostics
 ├── spinor_analysis.py      # Z2 parity A/B, framework relations R1-R4, Δ/κ estimators
 ├── spinor_figures.py       # fig_spinor RU/EN (parity bar + R1-R4 deviations)
 ├── figures.py              # RU/EN publication figures (300 dpi)
@@ -453,8 +467,8 @@ einstein_direct/
     ├── derivation_results.json / derivation_log.txt   # machine derivation, residuals 1e-41
     ├── roberts_test.json                              # convergence orders
     ├── choptuik_scaling.json                          # A* = 0.0805333, fixed-grid floor analysis
-    ├── zoom_campaign.json                             # zoom v2 campaign: z reached, verdicts, wall diagnosis
-    ├── zoom_campaign_v3.json                          # v3.2 protocol: spinor diagnostics at the wall
+    ├── zoom_campaign.json                             # zoom the rebuilt machine campaign: z reached, verdicts, wall diagnosis
+    ├── zoom_campaign_regular.json                          # regular-closure protocol: spinor diagnostics at the wall
     └── spinor_analysis.json                           # parity A/B, R1-R4, Δ/κ honest status
 ```
 
@@ -477,7 +491,7 @@ einstein_direct/
 
 ---
 
-## 15. v5: the central Taylor patch
+## 15. The central Taylor patch
 
 ### 15.1 The machine-derived center hierarchy (sympy_center.py)
 
@@ -529,9 +543,9 @@ Per row on zoom stages:
    only -- writing p(i0) from the fitted R1 creates a feedback loop (fit of
    the already-patched r-profile -> p(i0) -> new r-distortion), observed as
    R1 drifting to 0.906 with C1 exploding to 0.5.
-3. Zone rebuild (v5-minimal, the scope that survives): t,s from E_zone (the
+3. Zone rebuild (the Taylor-patch stage-minimal, the scope that survives): t,s from E_zone (the
    paired even part, k = 1..K; **E(0) = t0 -- the ODE-evolved value** -- the
-   key difference from v3.2) + O = P2*xi + P4o*xi^3 (the C/xi parasite mode
+   key difference from regular-closure) + O = P2*xi + P4o*xi^3 (the C/xi parasite mode
    is separated by the fit and DISCARDED); m = M3*xi^3 (edge-matched
    median); a hard projection of the even part of (p+q) -- the source of the
    E-mode explosion E_v = -(p+q)*E/r -- with a 4-parameter fit that accounts
@@ -544,20 +558,20 @@ Per row on zoom stages:
    interpolation junk -- an unguarded O-fit once injected P2 = 4.3e13 and
    killed the run within 2 rows).
 
-Also new in v5: the zone covers the FULL radius (K = 2*R_zone/du cells --
-xi steps du/2 per cell, the v3.2 code covered only half), and the zoom
+Also new in the Taylor-patch stage: the zone covers the FULL radius (K = 2*R_zone/du cells --
+xi steps du/2 per cell, the regular-closure code covered only half), and the zoom
 stages march t OUTWARD from the center on both sides (`march_from_center`;
 the 1/r homogeneous mode decays outward). A subtle bug fixed on the way:
 the closure dispatch used to live inside the edge-march branch only, so
 activating march_from_center silently DISABLED the center closure.
 
-### 15.3 What v5 achieved, and what it did not (honest)
+### 15.3 What the Taylor-patch stage achieved, and what it did not (honest)
 
 Achieved:
 - Mass junk at the center: mdef ~ 2.9e-6 (super-clean); the gauge relation
   R1^2 = alpha2(0) holds at the 1e-2 level along the chains.
 - Depth: z = 7.19 (7 zooms; patch with the edge-march configuration,
-  eps = 3e-5) vs the v3.2 record of 6.05. The final configuration
+  eps = 3e-5) vs the regular-closure record of 6.05. The final configuration
   (patch + center-march) gives z ~ 4.2-4.5 on the same eps ladder: the
   depth is CHAOS-sensitive, and single-threaded BLAS is required for
   reproducibility (multithreaded LAPACK reshuffles near-critical AH
@@ -575,18 +589,18 @@ NOT achieved (the wall moved, it did not vanish):
   eps ladder, and the gamma fit needs >= 3 clean points.
 - The depth wall is now OUTSIDE the patch zone: the raw march in the mirror
   region breaks the mirror parity of m (m_mirror ~ -12.7 vs m_phys ~ +4.2)
-  at |r| ~ 100*du. The v6 roadmap: (a) parity projection in an ANNULUS
+  at |r| ~ 100*du. The annulus machine roadmap: (a) parity projection in an ANNULUS
   outside the zone (mirror-antisymmetrization of the raw march), (b) a
   robust AH capture (store ALL sane crossings; freeze at the last sustained
   one; relax the r > 8*du threshold).
 
-Files: `sympy_center.py`, `spinor_ladder.py`, `zoom_campaign_v5.py`,
+Files: `sympy_center.py`, `spinor_ladder.py`, `zoom_campaign_taylor.py`,
 `results/center_hierarchy.json`, `results/spinor_ladder.json`,
-`results/zoom_campaign_v5.json`.
+`results/zoom_campaign_taylor.json`.
 
 ---
 
-## 16. v6-fundamentals: convergence and repulsion from first principles
+## 16. Convergence and repulsion from first principles
 
 Module: `center_modes.py` → `results/center_modes.json`,
 `figures/fig_ru/fig_modes.png`, `figures/fig_en/fig_modes.png`.
@@ -601,7 +615,7 @@ No fitting anywhere; γ_lit, b_Ch, Δ_sp enter only as comparison anchors.
 
 Starting from the Hilbert-derived double-null system (Mdef, UV, C1, C2),
 SymPy derives (residuals exactly 0, with p eliminated through the Misner–Sharp
-definition and q_u = p_v via the mixed partial r_uv):
+definition and q_u = p_v vithe mixed partial r_uv):
 
 - the null flux laws of the mass function:
   **m_v = −2 r² p t²/α²** and **m_u = −2 r² q s²/α²**;
@@ -658,11 +672,11 @@ Linearization of the closed tower (levels 0–2, deep sources frozen):
 - the Thorne link on clean regular runs (n = 800): M3/M3_pred median ≈ 1.6
   with a wide spread — the exact identity becomes a STRICT center-quality
   metric: ratio > 1 measures the ξ-junk (the 1/r mode, m/ξ³ = M1/ξ² + M3)
-  and the ring-fit systematics; tightening it to percent level is a v6 goal
+  and the ring-fit systematics; tightening it to percent level is an annulus-machine goal
   (the same wall as the percent-level γ);
-- ξ_AH (hoop) on the v5 critical chain: median 4.83 — O(1) in ξ-units, as
+- ξ_AH (hoop) on the Taylor-patch stage critical chain: median 4.83 — O(1) in ξ-units, as
   the CSS prediction sqrt(3/(4τ)) demands;
-- numeric O1 residual on the chain: median 2.5e-2; the taylor-patch t0
+- numeric O1 residual on the chain: median 2.5e-2; the Taylor-patch t0
   transients after zoom restarts break the instantaneous identity (honest;
   the identity is exact for solutions of the system).
 
@@ -670,17 +684,17 @@ Run: `python3 center_modes.py` (~1 min; SymPy + one zoom chain).
 
 ---
 
-## 17. v6.1: closing the depth-wall channels
+## 17. Closing the depth-wall channels
 
-**Session goal.** v6 mapped the full v5 death chain and left one killer
+**Session goal.** the annulus machine mapped the full Taylor-patch death chain and left one killer
 channel: the compounding of the raw t-march at rows j≈19–20 of a zoom stage.
-This session closed that channel with seven principled fixes (v6.1) and ran
+This session closed that channel with seven principled fixes (annulus) and ran
 the O6+ numeric analysis. No fitting anywhere — every fix is a discrete
 image of an exact continuum statement.
 
 ### 17.1 The seven fixes (each traced to a measured death mechanism)
 
-1. **Annulus wiring (aliasing bug).** In the v6 corrector `st_new["t"]`
+1. **Annulus wiring (aliasing bug).** In the annulus machine corrector `st_new["t"]`
    aliased the parent row's array: the annulus re-march mutated the PARENT
    t, its result was then discarded (`st_new["t"] = t_new`), and Phi absorbed
    a half-weight injection from the mutated parent (broken t-sandwich).
@@ -728,13 +742,13 @@ image of an exact continuum statement.
 ### 17.2 Result: stable stages, record depth, the Thorne link in data
 
 - The j≈19–20 channel is CLOSED: eps = 1e-2 and 1e-3 runs end by
-  **v-exhaustion, not death** — 5 zooms, z = 9.10 / 9.35 (record; v6 died at
-  z = 3.83 after 2 zooms, v5 at z ≈ 4.2–4.5).
+  **v-exhaustion, not death** — 5 zooms, z = 9.10 / 9.35 (record; the annulus machine died at
+  z = 3.83 after 2 zooms, the Taylor-patch stage at z ≈ 4.2–4.5).
 - P2 unlocked → 40–181 tau-rows per stable run, continuous z_cont up to 7.9
-  (v6: exactly 1 tau-row).
+  (the annulus machine: exactly 1 tau-row).
 - **The Thorne link is visible in discrete data for the first time**
   (eps = 1e-2): M3/(R1 t0²) = 0.6687 vs the exact 2/3 = 0.6667 — 0.3%
-  agreement (v6 empirical median was ≈ 1.6, i.e. the junk level).
+  agreement (the annulus machine empirical median was ≈ 1.6, i.e. the junk level).
 - |d0·s| → 4e-5 (CSS target 0) on the same run.
 
 ### 17.3 Honest: tau* is still NOT measured
@@ -743,9 +757,9 @@ image of an exact continuum statement.
   4/3): the (d−c) ring signal is buried under the cumtrapz-junk floor of d.
   With W2 off the tower manifold, tau_row = t0⁴/(9 P2²) is an off-manifold
   proxy — the tau* fits return garbage (honestly recorded in
-  `results/grid_machine_v6.json`).
+  `results/grid_machine_annulus.json`).
 - Small eps (3e-4, 1e-4) and 3e-3 die at zoom 1 (z = 1.78): the near-critical
-  branch is the next fix cycle (v7: source dynamics W2/R3/P4 — the machine
+  branch is the next fix cycle (the next fix cycle: source dynamics W2/R3/P4 — the machine
   is now stable enough to iterate on it).
 - BLAS is pinned to 1 thread in the campaign/probe modules (reproducibility:
   multi-thread LAPACK reshuffles near-critical trajectories).
@@ -772,10 +786,10 @@ recorded). Verdict, machine-exact:
   localization of §16.
 
 Run: `python3 sympy_center_o6_nsolve.py` (~1 min; `results/center_o6_nsolve.json`).
-Campaign: `python3 grid_machine_v6.py 1e-2,3e-3,1e-3,3e-4,1e-4`
-(`results/grid_machine_v6.json`).
+Campaign: `python3 grid_machine_annulus.py 1e-2,3e-3,1e-3,3e-4,1e-4`
+(`results/grid_machine_annulus.json`).
 
-## 18. v8: the Poincare hexagonal transformation cycle (dynamics instead of the truncated tower)
+## 18. The Poincare hexagonal transformation cycle (dynamics instead of the truncated tower)
 
 The O6 verdict of section 17's analysis: the UV[xi^3] branch forces
 T0^2 = 9/4 (tau3 = (3/2)^2), the Mdef[xi^5] branch forces T0^2 = 9/16
@@ -819,18 +833,18 @@ python3 sympy_hexcycle.py        # the cycle machine: symbols + books + circulat
 python3 hexcycle_figures.py      # RU/EN 300-dpi figures, ~30 s
 ```
 
-## 19. v8-campaign: checking kappa = ln(64/9) and W2/t0^2 -> 4/3
+## 19. Hexcheck campaign: checking kappa = ln(64/9) and W2/t0^2 -> 4/3
 
 The hexcycle (section 18) made two quantitative predictions for the
 near-critical tau* campaign: the amplitude book kappa = ln(64/9) =
-1.9616585 and the ring W2/t0^2 -> 4/3 = 1/sqrt(tau5). `grid_machine_v8.py`
-runs the check on the stable v6.1 chains (z ~ 9.1-9.35) with full
+1.9616585 and the ring W2/t0^2 -> 4/3 = 1/sqrt(tau5). `grid_machine_hexcheck.py`
+runs the check on the stable annulus chains (z ~ 9.1-9.35) with full
 measurement instrumentation, and it changed the diagnosis of everything
 that was blocking the tau* measurement:
 
 - **clock bug**: `dv_ode == 0` after the first row of every stage (the
   chi section overwrote `tay["v_prev"]` before the ODE read it) — the
-  center ODEs O1/O3 were dead since v5. Flag-fixed (`tay_ode_fix`);
+  center ODEs O1/O3 were dead since the Taylor-patch stage. Flag-fixed (`tay_ode_fix`);
   legacy is reproduced exactly.
 - **gate freeze**: the E/O fit gates use a max-res metric that the zone
   edge (dynamic range ~1000) crushes to ~1 on deep rows, so the gates
@@ -841,12 +855,12 @@ that was blocking the tau* measurement:
   dynamics (blind ODE with self-referential P2; Riccati clock; width
   clock) all blow up t0 within 1-2 stages, because the E0_free anchor is
   poisoned by the zone rebuild (E_zone[0] = t0). The center book on this
-  grid is always series-mediated — the v5 wall reopened at the P4 level;
+  grid is always series-mediated — the Taylor-patch wall reopened at the P4 level;
   an independent dynamical confirmation of the O6 source-dynamics
   verdict. In the live tower W2 is enforced by the machine-verified CSS
   equation W2* = kappa t0^2 - M3*/R1 (4/3 at chi=0).
 
-Verdicts (results/grid_machine_v8.json, honest statuses):
+Verdicts (results/grid_machine_hexcheck.json, honest statuses):
 - kappa = ln(64/9): **blocked** — the unstable-mode departure does not
   grow inside the deep window (lambda_fit at the grid edge; the chain
   rides the DSS limit cycle and departs only inside the final junk
@@ -862,8 +876,8 @@ Verdicts (results/grid_machine_v8.json, honest statuses):
   fit, dc-pair, d0-clock). The channel requires P4 dynamics (O6+) or a
   clean d-field.
 
-Run: `python3 grid_machine_v8.py` (~3 min; `results/grid_machine_v8.json`),
-figures: `python3 v8_figures.py`.
+Run: `python3 grid_machine_hexcheck.py` (~3 min; `results/grid_machine_hexcheck.json`),
+figures: `python3 hexcheck_figures.py`.
 
 ## 20. P4 closure (O6+): the shape cycle in Einstein and Hilbert equations
 
@@ -912,22 +926,22 @@ not a drifting CSS point.
 **Pure d-field (ring parity on (d-c)).** `c = d_u omega, d = d_v omega`; the mirror
 `(u,v) -> (v,u)` swaps c and d; `(d-c) = omega_xi = 2 W2 xi` is odd on the ring.
 Extractor `W2 = [(d-c)(xi) - (d-c)(-xi)]/(4 xi)` kills even junk EXACTLY (SymPy
-check). v8 rows: the measured dc-pairs are asymmetric (`leak ~ 0.92`) and
+check). the hexcheck campaign rows: the measured dc-pairs are asymmetric (`leak ~ 0.92`) and
 even-dominated (`odd/even ~ 0.28`) — the W2/t0^2 channel needs exact mirror pairs
-(v9 instrumentation).
+(the mirror campaign instrumentation).
 
 Honest notes: the hexcycle book FORMULAS of session 11 (`ln(64/9)`, `6 ln(16/9)`)
 were built on the artifact branches and need rework; the ring `4/3`, the DSS
-picture and the v8 Delta-signals do not depend on the audit.
+picture and the hexcheck campaign Delta-signals do not depend on the audit.
 
 Run: `python3 sympy_p4_einstein_hilbert.py` (~15 s; `results/p4_einstein_hilbert.json`).
 
-## 21. v9 mirror-ring pairs + exact char polynomial at tau* + monodromy books
+## 21. Mirror-ring pairs + exact char polynomial at tau* + monodromy books
 
-Machines: `grid_machine_v9.py` -> `results/grid_machine_v9.json`;
+Machines: `grid_machine_mirror.py` -> `results/grid_machine_mirror.json`;
 `sympy_spectrum_tau_star.py` -> `results/spectrum_tau_star.json`.
 
-**(1) v9 instrumentation (`solver._mirror_probe_v9`, flag `tay_diag_v9`, measurement-only).**
+**(1) the mirror campaign instrumentation (`solver._mirror_ring_probe`, flag `tay_diag_mirror`, measurement-only).**
 Per row: the ring dump (k = 1..K, both sides, exact xi, dc = d-c, cd = c+d) and
 STRICT mirror pairs: cubic interpolation of each side SEPARATELY into the mirror
 targets +-xi_t, then the P4-B extractor
@@ -937,7 +951,7 @@ the mirror fit `D = c_ser(xi) - c_ser(-xi) = -(2 W2 xi + 4 W4 xi^3)` -> `W2_ser`
 
 Results (legacy legs eps = 1e-3 / 1e-2, live leg eps = 1e-2):
 - the EVEN junk is side-symmetric to a median relative difference of
-  `3.2e-8 .. 3.8e-7` (against `leak ~ 0.92` of the v8 pairs) and is killed by the
+  `3.2e-8 .. 3.8e-7` (against `leak ~ 0.92` of the hexcheck pairs) and is killed by the
   extractor EXACTLY — the mirror instrumentation works as designed;
 - the W2/t0^2 measurement stays **BLOCKED**: the ODD marsh junk of (d-c) is
   chaotic (per-row fits of the mirror differences do not close, res ~ 0.4-0.6),
@@ -980,7 +994,7 @@ isolated algebraic vertex of the constraint landscape (no real exponential
 modes at all), not an exponential repeller.** The old-core `lambda+ = 9.41`
 was an artifact of frozen sources. Consequently there is no `gamma_pred` from
 the point: the cycle dynamics lives in the LIMIT CYCLE (DSS), not in the
-vertex — consistent with the session-11 prolongation verdict and with the v8
+vertex — consistent with the session-11 prolongation verdict and with the hexcheck campaign
 campaign signals.
 
 **(4) Monodromy books of the corrected system (replacing the two-branch books).**
@@ -997,19 +1011,19 @@ campaign signals.
   (machine-checked) — the amplitude monodromy around the six-station cycle is
   the identity (return to the pyramid);
 - the clock book is NOT derivable from the chain (honest): the measured clocks
-  of the v8 campaign stand (model B Delta ~ 0.73 ~ Delta_sp - 0.4%; Q-echo
+  of the hexcheck campaign stand (model B Delta ~ 0.73 ~ Delta_sp - 0.4%; Q-echo
   doubling `Delta_cyc/Delta_Q ~ 2`); `Delta_cyc = 6 ln(16/9)` of session 11 is
-  an artifact-book. Surviving books: the ring 4/3, the DSS picture, the v8
+  an artifact-book. Surviving books: the ring 4/3, the DSS picture, the hexcheck campaign
   Delta-signals, the tent-lattice observation.
 
 Honest notes: the W2/t0^2 -> 4/3 prediction remains closed at the marsh level
 (dynamics-level reconstruction = O6+ is required); the C1 route gives the ring
 as an identity of the CSS series, not as an independent marsh measurement.
 
-Run: `python3 grid_machine_v9.py` (~110 s) and `python3 sympy_spectrum_tau_star.py`
+Run: `python3 grid_machine_mirror.py` (~110 s) and `python3 sympy_spectrum_tau_star.py`
 (~15 s); tests 5/5 pass.
 
-## 22. v11: the three repo corrections (b-C, a-C, a-B) embedded in the towers
+## 22. The three repo corrections (b-C, a-C, a-B) embedded in the towers
 
 Machine: `sympy_spinor_corrections.py` -> `results/spinor_corrections.json`.
 
@@ -1059,7 +1073,7 @@ kappa > 0 and the chain gives:
 - what MOVES: the log-time base `tau*` itself, hence `P2h = T0h/3`,
   `P4h ~ kappa^{-1/2}`, and the T0h-relative ratios
   `W2h/T0h^2 = 2 kappa/3` (the ring 4/3 is the kappa = 2 member —
-  the v9 target becomes `2 kappa_hol/3`), `R3h/T0h^2 = kappa/9`;
+  the mirror campaign target becomes `2 kappa_hol/3`), `R3h/T0h^2 = kappa/9`;
 - amplitude book: `ln tau* = ln(27/(2 kappa))`.
 
 **(3) Do the corrections close the books? (honest numbers, no fitting).**
@@ -1087,7 +1101,7 @@ The book closure `ln tau* = kappa_obs` requires `kappa_req = 27/(2 e^{kappa_obs}
 
 **(4) pi/30 closure tests.**
 - the tower chain still does NOT produce pi/30 exactly: the clock 1/3 and the
-  station ladder are rational; the echo book remains measured (v8);
+  station ladder are rational; the echo book remains measured (the hexcheck campaign);
 - the pencil spectrum in the corrected points (numeric QEP + sigma_min
   phantom filter, session-14 protocol reproduced: 4 genuine lambda = 0 modes
   + 12 phantoms in ALL points): the phantom Im lambda sit NEAR the spinor
@@ -1109,7 +1123,7 @@ measurement, not a derivation.
 
 Run: `python3 sympy_spinor_corrections.py` (~15 s).
 
-## 23. v12: the baryon-asymmetry reading + the one-brick phantom test
+## 23. The baryon-asymmetry reading + the one-brick phantom test
 
 Machine: `s4_berry_one_brick.py` -> `results/spinor_corrections_one_brick.json`.
 
@@ -1171,7 +1185,7 @@ borrow the mechanism, not the number; no numerology is claimed anywhere.
 Run: `python3 s4_berry_one_brick.py` (~20 s; rebuilds the symbolic payload,
 runs the pencil at the one-brick point).
 
-## 24. v13: second flows as limit-cycle variables — the linear verdict
+## 24. Second flows as limit-cycle variables — the linear verdict
 
 Machine: `sympy_second_flows.py` -> `results/second_flows_limit_cycle.json`;
 verification: `second_flows_verify.py` (Newton + mpmath) and
@@ -1237,13 +1251,13 @@ exists (the session-10 picture), it is a FINITE-AMPLITUDE nonlinear object.
 Honest next options: (a) third-order tables (the pattern (l+a)(l+b)(l+c)F
 generalizes); (b) an independent dd-evolution law (a closure choice — to be
 justified, not fitted); (c) measure delta_mono directly from the march
-(v10/v11 instrumentation) instead of deriving it. The ~2.9% phantom gap to
+(the precision campaign/the correction campaign instrumentation) instead of deriving it. The ~2.9% phantom gap to
 pi/30 remains a pseudospectral observation, not a linear residue.
 
 Run: `python3 sympy_second_flows.py` (~40 s), then
 `python3 second_flows_exact.py` (~35 s, the decisive instrument).
 
-## 25. v14: third-order tables, the justified dd-closure, delta_mono measured by the march
+## 25. Third-order tables, the justified dd-closure, delta_mono measured by the march
 
 The three honest next steps of §24, all executed. Machines:
 `sympy_third_order.py` -> `results/third_order_tables.json` (~12 s);
@@ -1320,7 +1334,7 @@ float64 with clean singular gaps):
 The three routes now agree: the exact pencil (char = 9 l^4 Q18), the exact
 index reduction (dim M2 = 2, Jordan-2), and the march (25.4).
 
-### 25.4 (c) delta_mono MEASURED by the march (v10-generation instrumentation)
+### 25.4 (c) delta_mono MEASURED by the march (precision-generation instrumentation)
 
 Two independent marches of the closed linear DAE:
 - (m1) coordinate: y' = B y on M2 (B exact from 25.3);
@@ -1331,7 +1345,7 @@ Two independent marches of the closed linear DAE:
 Measurements (baseline; one-brick in parentheses):
 - growth law: log-log slope 1.0225 (0.9587) -> asymptotically 1: LINEAR
   secular growth (Jordan-2), NOT an exponential, NOT an oscillation;
-- the propagator over one echo Delta_sp = 0.7330382858376652 (v8, model B):
+- the propagator over one echo Delta_sp = 0.7330382858376652 (the hexcheck campaign, model B):
   coordinate eig = (1, 1) EXACTLY at baseline; ambient
   eig = 1 +/- 2.7e-8 i (1 +/- 2.3e-7 i) — the splitting of a DEFECTIVE
   double eigenvalue under roundoff is ~sqrt(eps), an honest numerical FLOOR,
@@ -1364,9 +1378,9 @@ Run: `python3 sympy_third_order.py`, `python3 sympy_dd_closure.py`
 
 ---
 
-## 26. v15: the nonlinear DAE march — the solution set through the critical point is the flat line
+## 26. The nonlinear DAE march — the solution set through the critical point is the flat line
 
-**Question (v14 verdict).** The entire *linear* world annihilates exactly;
+**Question (the third-order campaign verdict).** The entire *linear* world annihilates exactly;
 the baryon-asymmetry residue (the phantom gap ~2.9% to π/30, δ_mono) was
 declared a *finite-amplitude* phenomenon. Does the finite amplitude produce
 it? This required the nonlinear march of the DAE — integrating the full
@@ -1387,7 +1401,7 @@ session-17 matrices rel ~1e-15):
 - **compatibility** r(x) = 0 — the component of −Known(x)(v,dd) outside
   range(Uk(x)) (Procrustes-aligned left kernel, norm basis-invariant): the
   nonlinear analog of the hidden constraints Op(v,dd) = 0;
-- RK4 (dt = 2e-3, as v14), min-norm Newton projections onto {F=0} and {r=0},
+- RK4 (dt = 2e-3, as the third-order campaign), min-norm Newton projections onto {F=0} and {r=0},
   monitors: rank Uk, lstsq residual, F-drift, alignment angle.
 
 Machine facts established on the way (both points κ = 2 and 2 − π²/98):
@@ -1430,15 +1444,15 @@ produces NO finite-amplitude residue near the critical point.**
 Honest caveats: (i) Puiseux (non-C²) branches are not excluded; (ii) global
 components of S away from x* were not searched (shooting/nsolve — the next
 campaign); (iii) the rigidity is a property of the TRUNCATED tower with the
-derived dd-law (weight rule) — the full PDE machine (v6–v9) remains the
+derived dd-law (weight rule) — the full PDE machine suite remains the
 carrier of the echo physics.
 
 Run: `python3 march_dae_nonlinear.py` (uses `dae_nonlinear_core.py` and the
-v14 `.npy` exports; ~55 s) → `results/march_dae_nonlinear.json`.
+the third-order campaign `.npy` exports; ~55 s) → `results/march_dae_nonlinear.json`.
 
-## 27. v16: HEXCYCLE-DAE — the figure cycle as a global predictor (session 20)
+## 27. HEXCYCLE-DAE — the figure cycle as a global predictor (session 20)
 
-**Question (v15 verdict + author's proposal).** v15 proved that the local DAE
+**Question (the nonlinear-DAE campaign verdict + author's proposal).** The nonlinear-DAE campaign proved that the local DAE
 march near x* is algebraically impossible (the only solution manifold through
 the critical point is the flat line of equilibria) and left a caveat: *global
 components of S away from x* were not searched*. The author proposed to use
@@ -1455,7 +1469,7 @@ predictor: a finite-amplitude route through the figures.
   cycle with period 6.
 - **E2 (ruler).** The pure book keeps R1h = 1; ruler compensation is tested
   separately (T1c/T1d).
-- **E3 (chain + kinematics).** Amplitudes = the exact chain forms of v15
+- **E3 (chain + kinematics).** Amplitudes = the exact chain forms of the nonlinear-DAE campaign
   (D0h ≡ 0 verified); the homothetic walk uses τ = T0h², dT0h/dτ = 1/(2T0h)
   with flows/dd by the exact chain rule.
 
@@ -1476,7 +1490,7 @@ predictor: a finite-amplitude route through the figures.
   converge at ALL booked scales: 12/12 collapse + 6/6 blowup at both points.
   **32 compensated states have F = 0 AND r = 0** (r ≡ 0 on the static slice,
   verified): the first GLOBAL components of S = {F=0} ∩ {r=0} away from x* —
-  the v15 caveat is answered. The local dimension of the static set at pinned
+  the nonlinear-DAE campaign caveat is answered. The local dimension of the static set at pinned
   scale is 0–1 (isolated points / curves).
 - **The locked ruler.** In the collapse direction R1h(k) dips at the ring
   stations (min 0.687 at the truncated-cone scale) and RELAXES back to 1
@@ -1496,7 +1510,7 @@ predictor: a finite-amplitude route through the figures.
   homothetic book-walk is NOT a DAE solution.
 - **[T3] Global shooting.** Free joint-Newton [F; r] landings: 14/24
   converged; every landed point with |V| > 1e−3 has exit_rate 62…8e5 — the
-  flow leaves S immediately (the v15 T3 verdict extends globally); points
+  flow leaves S immediately (the nonlinear-DAE-campaign T3 verdict extends globally); points
   with tiny |V| (1e−8…1e−4) are equilibrium dust (exit ~ 1e−14…1e−10).
   Pinned-T0h joint floors ~10 are solver stalls, superseded by [T1c]
   (static compensated states ARE in S with pinned T0h).
@@ -1506,10 +1520,10 @@ predictor: a finite-amplitude route through the figures.
 **The figures carry the STATES, not the MOTION.** Statically the shape cycle
 embeds in the derived nonlinear DAE: the compensated book is a family of
 CSS-like equilibria covering all booked scales — the first global components
-of S away from x* (v15's caveat closed). Dynamically the cycle is annihilated:
+of S away from x* (the nonlinear-DAE campaign's caveat closed). Dynamically the cycle is annihilated:
 the closure is incompatible with the walk (r ≠ 0) and every finite-|V| point
 of S exits S instantly (exit-rate test). The echo/cycle dynamics therefore
-remains with the PDE machine (v6–v9); the figure cycle serves as the static
+remains with the PDE machine suite; the figure cycle serves as the static
 backbone + the books (κ_cyc = ln(64/9), Δ_cyc = 6 ln(16/9)) already
 established in the hexcycle model.
 
@@ -1519,7 +1533,7 @@ the soft pole are not excluded; E1–E3 are axioms; the figure profiles
 (tent/parabola/bowl) remain the model's visualization layer — the cycle
 enters the DAE through its books (steps/zones/stations).
 
-## 28. v17: CLOCK-CLOSURE-T1C — closing the clocks through the one-brick T1c source form + the B4 remnant (session 21)
+## 28. CLOCK-CLOSURE-T1C — closing the clocks through the one-brick T1c source form + the B4 remnant (session 21)
 
 **Question (author's directive).** Physics-wise the next step is an attempt
 to close the clocks through the one-brick (kappa = 2 - pi^2/98) T1c source
@@ -1528,17 +1542,17 @@ branch forces tau = 9/4, the Mdef[xi^5] branch forces tau = 9/16, jointly
 only the trivial R3 = 0) — or the B4 remnant test on data with greater
 delta-sensitivity. Both layers were executed.
 
-### ERRATUM to v16 (found while preparing v17)
+### ERRATUM (audit correction found while preparing the clock-closure campaign)
 
-`static_landing` (v16) did NOT pin T0h: the Newton step updated all 9
+`static_landing` (the hexcycle-DAE campaign) did NOT pin T0h: the Newton step updated all 9
 amplitudes (dx[0] != 0) although the docstring claims "T0h pinned". The
-v16 [T1c] landings converged to the TRIVIAL branch (T0h -> 0, the whole
+the hexcycle-DAE campaign [T1c] landings converged to the TRIVIAL branch (T0h -> 0, the whole
 tower annihilates: at station 1 T0h_land = 3.2e-6 instead of 1.732; the
 ring amplitudes W2h..M5h ~ 1e-22) — hence chain_dev up to 1e6, missed by
-the degeneracy filter (which watched only R1h). The v17 machine ([A0])
+the degeneracy filter (which watched only R1h). The clock-closure campaign machine ([A0])
 reproduced all 36 landings: 0 book-like, 35 trivial captures, 1 half-tower.
-The v16 verdict "the compensated book = a static backbone of CSS-like
-equilibria covering the book scales" is RETRACTED; the clean v16 layers
+The hexcycle-DAE campaign verdict "the compensated book = a static backbone of CSS-like
+equilibria covering the book scales" is RETRACTED; the clean the hexcycle-DAE campaign layers
 (T1a direct evaluations, T1d scan, T2 kinetics, exit tests) do not depend
 on the pin and stand.
 
@@ -1559,11 +1573,11 @@ on the pin and stand.
   holds. The naive 9/4-vs-9/16 incompatibility is dissolved by the
   de-adiabatized (T1c) source form: both branches close on ONE clock, and
   one brick moves that clock 27/4 -> 1323/(196-pi^2) — the ln tau*
-  closure from -2.57% to +0.062% (consistent with v11).
+  closure from -2.57% to +0.062% (consistent with the correction campaign).
 - **[C2] Clock carriers.** At x* the books are EXACT in both points:
   W2h/T0h^2 = 2kappa/3 (defect 0), the UV book 9R3h/(2R1hT0h^2) = kappa/2
   (defect 0; R3h = 3/2 EXACTLY in both points — the holonomy-invariant
-  ladder of v11 visible in the data), s = 3P2h/T0h = 1. Away from x* the
+  ladder of the correction campaign visible in the data), s = 3P2h/T0h = 1. Away from x* the
   carrier annihilates (half-tower: ring amplitudes = 0 — the ring clock
   is dead).
 - **[C3] The B4 remnant (greater delta-sensitivity).** The kernel
@@ -1572,7 +1586,7 @@ on the pin and stand.
   kinematics onto the joint manifold {F=0, r=0} STALLS: F ~ 1e-13..1e-7
   but r ~ O(kick) (baseline 3.4e-2 at kick 0.27, 1.6e-1 at kick 1.33;
   closure breakdown) — the linear tick freedom does not lift to a
-  nonlinear maneuver (consistent with the v15 T2 cokernel obstruction).
+  nonlinear maneuver (consistent with the nonlinear-DAE-campaign T2 cokernel obstruction).
   Delta-sensitivity: in the one-brick point the obstruction is ~1.7-3x
   SMALLER (5.3e-2 vs 1.6e-1 at kick 0.05*scale) — the remnant genuinely
   depends on the brick. Fine grid (24 scales of the first cycle): book
@@ -1586,10 +1600,10 @@ Mdef[xi^5]) on the T1c source form has unique common clocks tau*(kappa) =
 27/(2kappa) — the naive O6+ incompatibility is an adiabatic-truncation
 artifact dissolved by de-adiabatization; one brick moves the unique clock
 to the observed value (+0.062% of ln tau*). There is no static carrier
-away from the critical scale (0/18 non-degenerate states; the v16
+away from the critical scale (0/18 non-degenerate states; the hexcycle-DAE campaign
 landings were trivial captures — erratum), and the 5-dimensional linear
 tick freedom does not lift onto the joint manifold (r ~ O(kick),
-closure breakdown) — the LIVING CLOCK remains with the PDE machine v6-v9.
+closure breakdown) — the LIVING CLOCK remains with the PDE machine suite.
 
 Caveats: multi-start Newton is local — non-degenerate static branches far
 from the book/starts are not excluded (a global search is a separate
@@ -1602,18 +1616,18 @@ candidate for a dedicated campaign with intermediate bricks.
 Run: `python3 clock_closure_t1c.py` (~50 s) ->
 `results/clock_closure_t1c.json`. Tests: +3 -> 17/17.
 
-## 29. v18: BRICK-LADDER-TICK + GLOBAL-STATIC-SEARCH — intermediate bricks and the exhaustive static census (session 22)
+## 29. BRICK-LADDER-TICK + GLOBAL-STATIC-SEARCH — intermediate bricks and the exhaustive static census (session 22)
 
 Author's directive: **(a)** the intermediate-bricks campaign — the
 delta-dependence of the tick obstruction (the designated candidate of
-v17 [C3]); **(b)** the global search for non-degenerate static branches
-(nsolve/shooting outside the book starts — the v15/v17 caveat). Two
+the clock-closure campaign [C3]); **(b)** the global search for non-degenerate static branches
+(nsolve/shooting outside the book starts — the nonlinear-DAE campaign/the clock-closure campaign caveat). Two
 machines: `brick_scan_tick.py` and `global_static_search.py`.
 
 ### (a) The brick ladder `brick_scan_tick.py` [B1]-[B5]
 
 A brick = a Berry phase delta with the additive screening
-kappa(delta) = 2 - delta^2/2 (the recorded v11 convention). Ladder:
+kappa(delta) = 2 - delta^2/2 (the recorded correction-campaign convention). Ladder:
 delta_k = pi/k, k in {2..12, 14} + baseline (delta = 0) — 12 points.
 
 - **[B2] CLOCK-PAIR THEOREM ON THE LADDER (exact, SymPy).** On **12/12
@@ -1621,21 +1635,21 @@ delta_k = pi/k, k in {2..12, 14} + baseline (delta = 0) — 12 points.
   positive root** tau*(delta) = 27/(2 - delta^2) with an **exact zero**
   there: 27/4 (baseline) -> 17.617 (k=2) -> 7.108 (k=7, survivor) ->
   6.836 (k=14). The clock pair moves continuously with the brick across
-  the whole ladder — the v17 [C1] generalization from two points to the
+  the whole ladder — the clock-closure campaign [C1] generalization from two points to the
   full brick series.
-- **[B1] The v15 T1 flat line is brick-independent:** the R1h line at
+- **[B1] The nonlinear-DAE campaign T1 flat line is brick-independent:** the R1h line at
   the critical scale T0h*(delta) is static (F <= 1e-7) on 12/12 bricks.
 - **[B3] Tick obstruction vs delta (the primary observable).** ERRATUM
-  to the v17 [C3] method: `r_max = max|W*res18|` is a basis-dependent
+  to the clock-closure campaign [C3] method: `r_max = max|W*res18|` is a basis-dependent
   quantity (W_align is mutated by the rvec Procrustes continuation), so
-  the absolute [C3] v17 numbers were history-dependent. This campaign
+  the absolute [C3] the clock-closure campaign numbers were history-dependent. This campaign
   uses the **history-free measure ||r|| in the frozen basis at x**\* +
   robustness over all 5 kernel directions (the project_Fr trajectory is
   invariant). Result: **the dependence exists, is non-monotone and not
   a power law** (log-log slope +0.65 with residual ln 2.1 over 11
   bricks; ||r|| from 0.005 at k=12 to 0.16 at k=8, kick 0.05). **The
   survivor brick delta_C = pi/7 is NOT the ladder minimum** (the
-  minimum is k=12) — the tick does NOT select the brick. The v17
+  minimum is k=12) — the tick does NOT select the brick. The clock-closure campaign
   relative anchor survives on the invariant measure: one-brick
   ||r|| = 0.032 < baseline 0.043 (kick 0.05); 0.029 < 0.107 (kick
   0.01).
@@ -1645,12 +1659,12 @@ delta_k = pi/k, k in {2..12, 14} + baseline (delta = 0) — 12 points.
   — the scan does not close pi/30 (multiple-testing caveat).
 - **[B5] The book defect is kappa-independent:** F_static_max = 26.79 on
   all 12 bricks (the same 24 scales of the first cycle) — the defect
-  lives in the kappa-free part of the equations (consistent with v11:
+  lives in the kappa-free part of the equations (consistent with the correction campaign:
   SC/UV/Mdef have no kappa leakage).
 
 ### (b) The global static census `global_static_search.py` [G0]-[G3]
 
-Known families: S0 trivial, S1 x*, S2 the v15 T1 flat line, S3 the
+Known families: S0 trivial, S1 x*, S2 the nonlinear-DAE campaign T1 flat line, S3 the
 half-tower. Both points (baseline, one-brick).
 
 - **[G1a] FACTORIZATION THEOREM (exact, SymPy) — the on-chain census is
@@ -1663,7 +1677,7 @@ half-tower. Both points (baseline, one-brick).
   an exact family (not a limit), the trivial line is exact, and the
   flat line is the ONLY non-degenerate one. The "clock pair" is ONE
   clock equation in two branches with different powers of R1h — the
-  machine reason why the v17 GCD theorem yields unique clocks.
+  machine reason why the clock-closure campaign GCD theorem yields unique clocks.
 - **[G1] The numeric census confirms:** a 2501-cell 2D scan
   (T0h*10^[-4.5,1.5] x 10^[-2.3,1.7]) + multi-start Gauss-Newton (56
   seeds): all roots fall into the three families, **0 new** (full
@@ -1686,7 +1700,7 @@ scale, the half-tower); there are NO non-degenerate static branches
 away from the critical scale — neither on the chain (exact
 factorization) nor off it (numeric census: 300 starts + kernel
 analysis).** The dynamics (the living clock) remains exclusively with
-the PDE machine v6-v9. Across the bricks: the clock pair
+the PDE machine suite. Across the bricks: the clock pair
 tau*(delta) = 27/(2 - delta^2) is continuous and unique on the whole
 ladder (exact theorem), but **the tick obstruction is non-monotone in
 delta and does NOT select the survivor brick delta_C = pi/7** — the
@@ -1697,7 +1711,7 @@ brick scan (best +1.14%).
 Caveats: on the chain the census is exhaustive (exact factorization);
 off the chain it is discrete numeric evidence (300 starts; isolated
 components attracting no start are not excluded); the brick convention
-kappa(delta) = 2 - delta^2/2 is the recorded v11 additive Berry form;
+kappa(delta) = 2 - delta^2/2 is the recorded the correction campaign additive Berry form;
 the tick obstruction is a local linear stall metric of the lift.
 
 Run: `python3 brick_scan_tick.py` (~6 min) ->

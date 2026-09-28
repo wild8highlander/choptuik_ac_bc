@@ -38,7 +38,6 @@
       "scheme": "url"
     }
   ],
-  "version": "2.1.0",
   "language": "eng",
   "notes": "Proprietary software under Isaev Proprietary License v1.0 (see LICENSE file). Key verification results: Delta_bC = 3.438710 (deviation 0.125%), Delta_Ch(full) = 3.447040 (deviation 0.117%), b_Ch = 0.376510 (deviation 0.130%). Enhanced v2.0: QNM correction factor = 0.999916, b2 = 22 unique, Tyukovsky 0 free parameters, SW-compatible."
 }
