@@ -12,6 +12,26 @@ identical structure and numbering.
 |------|----------|
 | `choptyuk_qcd_bridge_en.docx` | English manuscript: *The Choptuik–Strong CP Operator — A Spectral Bridge from Numerical Relativity to QCD Topological Sectors* |
 | `choptyuk_qcd_bridge_ru.docx` | Russian-language edition of the same manuscript (identical structure and numbering) |
+| `verification_monograph_bilingual.docx` | Bilingual verification monograph (Part I — Russian, Part II — English), Word edition |
+| `verification_monograph_bilingual.pdf` | The same bilingual verification monograph, PDF edition |
+
+## Bilingual verification monograph
+
+`verification_monograph_bilingual.docx` / `.pdf` is a single two-part volume on the
+repository's main verification programme (the `einstein_direct/` line): what was
+verified and by which machines, the full course of every hypothesis and campaign,
+what was proven in exact arithmetic, what was confirmed numerically, what was
+rejected and retracted (including both errata with their mechanical causes), the
+consolidated ledger of honest limitations, the open questions, and the roadmap.
+Part I is the Russian text, Part II the complete English mirror with identical
+chapter numbering; two appendices carry the machine-to-JSON map and the
+reproduction commands. Every number in the text is traceable to a committed
+results JSON and re-asserted by the test suite — see `verification/README.md`
+for the underlying dossier.
+
+Per its own subject matter, the volume carries **no document metadata**: the
+author/creator/title fields and the PDF document-info dictionary and XMP stream
+are intentionally left empty.
 
 ## Section map
 
