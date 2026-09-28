@@ -1601,3 +1601,105 @@ candidate for a dedicated campaign with intermediate bricks.
 
 Run: `python3 clock_closure_t1c.py` (~50 s) ->
 `results/clock_closure_t1c.json`. Tests: +3 -> 17/17.
+
+## 29. v18: BRICK-LADDER-TICK + GLOBAL-STATIC-SEARCH — intermediate bricks and the exhaustive static census (session 22)
+
+Author's directive: **(a)** the intermediate-bricks campaign — the
+delta-dependence of the tick obstruction (the designated candidate of
+v17 [C3]); **(b)** the global search for non-degenerate static branches
+(nsolve/shooting outside the book starts — the v15/v17 caveat). Two
+machines: `brick_scan_tick.py` and `global_static_search.py`.
+
+### (a) The brick ladder `brick_scan_tick.py` [B1]-[B5]
+
+A brick = a Berry phase delta with the additive screening
+kappa(delta) = 2 - delta^2/2 (the recorded v11 convention). Ladder:
+delta_k = pi/k, k in {2..12, 14} + baseline (delta = 0) — 12 points.
+
+- **[B2] CLOCK-PAIR THEOREM ON THE LADDER (exact, SymPy).** On **12/12
+  bricks** the on-chain GCD(UV_xi3, Mdef_xi5) has a **unique common
+  positive root** tau*(delta) = 27/(2 - delta^2) with an **exact zero**
+  there: 27/4 (baseline) -> 17.617 (k=2) -> 7.108 (k=7, survivor) ->
+  6.836 (k=14). The clock pair moves continuously with the brick across
+  the whole ladder — the v17 [C1] generalization from two points to the
+  full brick series.
+- **[B1] The v15 T1 flat line is brick-independent:** the R1h line at
+  the critical scale T0h*(delta) is static (F <= 1e-7) on 12/12 bricks.
+- **[B3] Tick obstruction vs delta (the primary observable).** ERRATUM
+  to the v17 [C3] method: `r_max = max|W*res18|` is a basis-dependent
+  quantity (W_align is mutated by the rvec Procrustes continuation), so
+  the absolute [C3] v17 numbers were history-dependent. This campaign
+  uses the **history-free measure ||r|| in the frozen basis at x**\* +
+  robustness over all 5 kernel directions (the project_Fr trajectory is
+  invariant). Result: **the dependence exists, is non-monotone and not
+  a power law** (log-log slope +0.65 with residual ln 2.1 over 11
+  bricks; ||r|| from 0.005 at k=12 to 0.16 at k=8, kick 0.05). **The
+  survivor brick delta_C = pi/7 is NOT the ladder minimum** (the
+  minimum is k=12) — the tick does NOT select the brick. The v17
+  relative anchor survives on the invariant measure: one-brick
+  ||r|| = 0.032 < baseline 0.043 (kick 0.05); 0.029 < 0.107 (kick
+  0.01).
+- **[B4] The phantom gap across the ladder.** Pencil scan at the
+  corrected points: best hit **+1.139% of pi/30 at delta = pi/3**
+  (baseline +3.10%, one-brick +2.88%); **nothing within 1%** (0 of 12)
+  — the scan does not close pi/30 (multiple-testing caveat).
+- **[B5] The book defect is kappa-independent:** F_static_max = 26.79 on
+  all 12 bricks (the same 24 scales of the first cycle) — the defect
+  lives in the kappa-free part of the equations (consistent with v11:
+  SC/UV/Mdef have no kappa leakage).
+
+### (b) The global static census `global_static_search.py` [G0]-[G3]
+
+Known families: S0 trivial, S1 x*, S2 the v15 T1 flat line, S3 the
+half-tower. Both points (baseline, one-brick).
+
+- **[G1a] FACTORIZATION THEOREM (exact, SymPy) — the on-chain census is
+  EXHAUSTIVE.** After the chain substitutions the rest system is just
+  TWO equations, and they factorize: Mdef_xi5 = -8*R1h^2*T0h^2*
+  (4*T0h^2-27)/27, **UV_xi3 = 2*R1h*Mdef_xi5 exactly** (one-brick: the
+  same form with the clock (196-pi^2)*T0h^2-1323); the other three rest
+  equations (C1_xi1..3) vanish identically. Hence **S ∩ chain =
+  {R1h = 0} ∪ {T0h = 0} ∪ {T0h = T0h\*} EXACTLY** — the half-tower is
+  an exact family (not a limit), the trivial line is exact, and the
+  flat line is the ONLY non-degenerate one. The "clock pair" is ONE
+  clock equation in two branches with different powers of R1h — the
+  machine reason why the v17 GCD theorem yields unique clocks.
+- **[G1] The numeric census confirms:** a 2501-cell 2D scan
+  (T0h*10^[-4.5,1.5] x 10^[-2.3,1.7]) + multi-start Gauss-Newton (56
+  seeds): all roots fall into the three families, **0 new** (full
+  F-check).
+- **[G2] Off-chain free Newton** (8 amplitudes, no pin, 300 random
+  starts in a wide box with perturbed chain amplitudes): 34 flat-line
+  captures, ~165 trivial escapes, ~100 no-landing (best unlanded
+  F = 4.4e-13 — stiffness stalls), **0 new candidates**.
+- **[G3] Shooting/continuation from x\*:** the static kernel of dF/da
+  at x\* is **1-dimensional** (only the flat-line tangent) — no other
+  static directions leave x\*; 4-7 rank drops along the line
+  (bifurcation candidates) — the branching attempts (pinned-T0h Newton
+  from x_line ± eps*w) yield **no off-line landings**.
+
+### Verdict
+
+**The static structure of the tower is exhausted exactly: S ∩ chain is
+precisely the three families (trivial, the flat line at the critical
+scale, the half-tower); there are NO non-degenerate static branches
+away from the critical scale — neither on the chain (exact
+factorization) nor off it (numeric census: 300 starts + kernel
+analysis).** The dynamics (the living clock) remains exclusively with
+the PDE machine v6-v9. Across the bricks: the clock pair
+tau*(delta) = 27/(2 - delta^2) is continuous and unique on the whole
+ladder (exact theorem), but **the tick obstruction is non-monotone in
+delta and does NOT select the survivor brick delta_C = pi/7** — the
+brick choice remains an observation (the septimal sector of b_Ch), not
+a machine-derived selection; the pi/30 phantom gap is not closed by the
+brick scan (best +1.14%).
+
+Caveats: on the chain the census is exhaustive (exact factorization);
+off the chain it is discrete numeric evidence (300 starts; isolated
+components attracting no start are not excluded); the brick convention
+kappa(delta) = 2 - delta^2/2 is the recorded v11 additive Berry form;
+the tick obstruction is a local linear stall metric of the lift.
+
+Run: `python3 brick_scan_tick.py` (~6 min) ->
+`results/brick_scan_tick.json`; `python3 global_static_search.py`
+(~50 s) -> `results/global_static_search.json`. Tests: +4 -> 21/21.
