@@ -285,3 +285,112 @@ def test_clock_books_exact_and_tick_obstruction():
         assert t01["start_r_max"] > 1e-3, key      # остановка реальна
         obs[key] = t01["start_r_max"]
     assert obs["one_brick_2-bC"] < obs["baseline_kappa2"]
+
+
+# ------------------------------------------------------------ сессия 22 --
+def _load_brick_scan():
+    import json as _json
+    res_dir = os.path.join(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__))), "results")
+    with open(os.path.join(res_dir, "brick_scan_tick.json"),
+              encoding="utf-8") as fh:
+        return _json.load(fh)
+
+
+def _load_global_static():
+    import json as _json
+    res_dir = os.path.join(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__))), "results")
+    with open(os.path.join(res_dir, "global_static_search.json"),
+              encoding="utf-8") as fh:
+        return _json.load(fh)
+
+
+def test_brick_ladder_clock_pair_theorem():
+    """Сессия 22 [B1]/[B2]: лестница кирпичей delta_k = pi/k, kappa = 2 -
+    delta^2/2: на КАЖДОМ кирпиче пара часов (UV_xi3, Mdef_xi5) на цепочке
+    имеет ЕДИНСТВЕННЫЙ общий положительный корень tau*(delta) = 27/(2 -
+    delta^2) с ТОЧНЫМ нулём GCD в нём; плоская линия R1h при критическом
+    масштабе существует на каждом кирпиче (v15 T1 не зависит от кирпича)."""
+    res = _load_brick_scan()
+    n = 0
+    for lbl, pt in res["points"].items():
+        if "build_failed" in pt or "B2_clock_pair" not in pt:
+            continue
+        n += 1
+        b2 = pt["B2_clock_pair"]
+        assert b2["unique_common_clock"] is True, lbl
+        assert b2["gcd_zero_at_tau_star"] is True, lbl
+        assert abs(b2["tau_star_numeric"]
+                   - 27.0 / (2.0 * pt["kappa_numeric"])) < 1e-9, lbl
+        assert pt["B1_point"]["flat_line_ok"] is True, lbl
+        assert abs(pt["B1_point"]["tau_star"]
+                   - 27.0 / (2.0 * pt["kappa_numeric"])) < 1e-9, lbl
+    assert n >= 10
+
+
+def test_brick_ladder_tick_obstruction():
+    """Сессия 22 [B3]: препятствие тика (исторически-свободная мера ||r|| в
+    замороженном базисе x*) немонотонно по delta и не степенное; выживший
+    кирпич delta_C = pi/7 НЕ является минимумом лестницы (тик не селектирует
+    кирпич); относительный якорь v17 (one-brick < baseline) держится."""
+    res = _load_brick_scan()
+    rows = res["tick_vs_delta"]
+    ks = [r for r in rows if r["k"] is not None]
+    assert len(ks) >= 10
+    vals = [r["r_norm_kick0.05"] for r in ks]
+    diffs = [b - a for a, b in zip(vals, vals[1:])]
+    assert any(d > 0 for d in diffs) and any(d < 0 for d in diffs)
+    pl = res["powerlaw_kick0.05"]
+    assert pl["max_abs_residual_ln"] > 0.5          # не степенная
+    lm = res["ladder_minimum_kick0.05"]
+    assert lm["is_survivor"] is False
+    row = {r["label"]: r for r in rows}
+    assert (row["brick_pi_over_7"]["r_norm_kick0.05"]
+            < row["baseline_delta0"]["r_norm_kick0.05"])
+    assert (row["brick_pi_over_7"]["r_norm_kick0.01"]
+            < row["baseline_delta0"]["r_norm_kick0.01"])
+
+
+def test_brick_ladder_phantom_gap():
+    """Сессия 22 [B4]: скан фантомного зазора к pi/30 по лестнице кирпичей —
+    внутри 1% ничего (лучший hit ~ +1.14% при delta = pi/3) — скан замыкания
+    pi/30 НЕ находит (multiple-testing оговорка)."""
+    res = _load_brick_scan()
+    rels = []
+    for pt in res["points"].values():
+        b4 = pt.get("B4_phantoms") or {}
+        bh = b4.get("best_hit") or {}
+        if bh:
+            rels.append(abs(bh["rel_diff_pct"]))
+    assert len(rels) >= 10
+    assert min(rels) > 1.0
+
+
+def test_global_static_census_exhaustive():
+    """Сессия 22 [G1a]-[G3]: теорема факторизации — UV_xi3 = 2*R1h*Mdef_xi5
+    ТОЧНО, часовые факторы пропорциональны константе, уникальный
+    положительный корень; S ∩ цепочка = {R1h=0} ∪ {T0h=0} ∪ {T0h=T0h*}
+    точно; численная перепись и свободный Ньютон новых ветвей не находят;
+    статический кернел dF/da в x* 1-мерен (только касательная плоской
+    линии), попытки ветвления в провалах ранга ничего не дают."""
+    res = _load_global_static()
+    for key in ("baseline_kappa2", "one_brick_2-bC"):
+        pt = res["points"][key]
+        g1a = pt["G1a_factorization_theorem"]
+        assert g1a["ratio_is_2R1h"] is True, key
+        assert g1a["clock_zero_sets_identical"] is True, key
+        assert g1a["unique_positive_clock_root"] is True, key
+        assert g1a["clock_zero_at_book_tau_star"] is True, key
+        assert g1a["other_rest_eqs_vanish_identically"] is True, key
+        g1 = pt["G1_chain_2d_scan"]
+        assert g1["n_new_confirmed"] == 0, key
+        assert "NEW_candidate" not in g1["class_counts"], key
+        g2 = pt["G2_free_newton"]
+        assert g2["new_candidates"] == [], key
+        assert g2["landing_classes"].get(
+            "flat_line_or_xstar_S1S2", 0) > 0, key
+        g3 = pt["G3_shooting_continuation"]
+        assert g3["kernel_dFda_at_x_star"][
+            "kernel_dim_tol1e-7"] == 1, key
+        assert len(g3["branch_attempts"]["landings"]) == 0, key

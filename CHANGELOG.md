@@ -8,6 +8,67 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Author:** Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович) — aslan08_05@mail.ru
 **Repository:** https://github.com/wild8highlander/choptuik_ac_bc
 
+## [2.18.0] - 2026-09-28
+
+### Added
+- **einstein_direct v18 (session 22)** — BRICK-LADDER-TICK +
+  GLOBAL-STATIC-SEARCH: (a) the intermediate-bricks campaign measuring
+  the delta-dependence of the tick obstruction (the designated v17 [C3]
+  candidate) and (b) the global search for non-degenerate static
+  branches outside the book starts (the v15/v17 caveat).
+  `brick_scan_tick.py` -> `results/brick_scan_tick.json`;
+  `global_static_search.py` -> `results/global_static_search.json`.
+  - **[B2] Clock-pair theorem on the ladder (exact)**: for every brick
+    delta_k = pi/k, k in {2..12,14} + baseline (kappa = 2 - delta^2/2,
+    12 points), the on-chain GCD(UV_xi3, Mdef_xi5) has a UNIQUE common
+    positive root tau*(delta) = 27/(2 - delta^2) with an exact zero
+    there (27/4 -> 17.617 -> 7.108 -> 6.836); the v15 T1 flat line is
+    brick-independent (F <= 1e-7 on 12/12).
+  - **[B3] ERRATUM to the v17 [C3] method**: r_max = max|W*res18| is
+    basis-dependent (W_align mutates via the rvec Procrustes
+    continuation), so the absolute v17 [C3] numbers were
+    history-dependent; the qualitative stall conclusion stands on the
+    invariant measure ||r|| in the frozen basis at x* (the relative
+    anchor one-brick < baseline survives: 0.032 < 0.043 at kick 0.05).
+  - **[B3] Tick obstruction vs delta**: non-monotone, not a power law
+    (log-log slope +0.65, residual ln 2.1); the survivor brick
+    delta_C = pi/7 is NOT the ladder minimum (k=12 is) — the tick does
+    not select the brick; the brick choice remains an observation.
+  - **[B4] Phantom scan across the ladder**: best hit +1.139% of pi/30
+    at delta = pi/3; nothing within 1% (0 of 12) — no closure
+    (multiple-testing caveat). **[B5]** the book defect F_static_max =
+    26.79 is kappa-independent across all bricks (kappa-free sector).
+  - **[G1a] FACTORIZATION THEOREM (exact)**: after the chain
+    substitutions the rest system reduces to TWO equations,
+    Mdef_xi5 = -8*R1h^2*T0h^2*(4*T0h^2-27)/27 and UV_xi3 = 2*R1h*Mdef_xi5
+    EXACTLY (one-brick analog with the clock (196-pi^2)*T0h^2-1323);
+    C1_xi1..3 vanish identically. Hence S ∩ chain = {R1h = 0} ∪
+    {T0h = 0} ∪ {T0h = T0h*} EXACTLY — the on-chain static census is
+    exhaustive: the half-tower is an exact (degenerate) family and the
+    flat line is the only non-degenerate branch; the "clock pair" is
+    one clock equation in two branches with different powers of R1h.
+  - **[G1]/[G2]/[G3] numeric confirmation**: 2501-cell scan + 56-seed
+    Gauss-Newton -> all roots in the three families, 0 new; 300-start
+    off-chain free Newton -> 34 flat-line captures, ~165 trivial
+    escapes, 0 new candidates; static kernel of dF/da at x* is
+    1-dimensional (only the flat-line tangent), 4-7 rank drops along
+    the line tested by branching attempts -> no off-line landings.
+  - VERDICT: the static structure is exhausted exactly — no
+    non-degenerate static branches away from the critical scale; the
+    living clock remains with the PDE machine v6-v9; the pi/30 gap is
+    not closed by the brick scan.
+
+### Fixed
+- History-free tick measurement (frozen Procrustes basis + ||r||)
+  replaces the basis-dependent r_max of v17 [C3]; robustness over all
+  5 kernel directions recorded; relative v17 claims re-validated on the
+  invariant measure.
+
+### Tests
+- einstein_direct: +4 (brick-ladder clock-pair theorem; non-monotone
+  tick obstruction with survivor-not-minimum; phantom gap > 1% on the
+  ladder; exhaustive global static census) -> 21/21.
+
 ## [2.17.0] - 2026-09-28
 
 ### Added
