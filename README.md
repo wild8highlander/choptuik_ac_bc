@@ -15,7 +15,7 @@
 [![Security](https://img.shields.io/badge/Security-Scorecard%20Monitored-yellow.svg)](https://securityscorecards.dev/viewer/?uri=github.com/wild8highlander/choptuik_ac_bc)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Codecov](https://img.shields.io/badge/Coverage-Codecov-f39f37?logo=codecov)](https://codecov.io/gh/wild8highlander/choptuik_ac_bc)
-[![Tests](https://img.shields.io/badge/Tests-21%2F21%20passing-brightgreen.svg)](einstein_direct/tests/)
+[![Tests](https://img.shields.io/badge/Tests-47%2F47%20passing-brightgreen.svg)](einstein_direct/tests/)
 
 > **Monograph**: *Spinor corrections b-C and a-C and the solution of the Choptyuk problem*
 > by **Ishak Khamzatovich Isaev** (GitHub: [@wild8highlander](https://github.com/wild8highlander), sole author and maintainer)
@@ -25,6 +25,98 @@
 > the complete honest account of the whole verification programme:
 > [`monograph/verification_monograph_bilingual.pdf`](monograph/verification_monograph_bilingual.pdf) ·
 > [`monograph/verification_monograph_bilingual.docx`](monograph/verification_monograph_bilingual.docx)
+
+---
+
+## ★ 2026-09-28: campaign v22 — the v-budget wall BROKEN by root anchoring (z-record 8.56, 4th echo peak reached)
+
+**RU.** Заказ v22 — расширение v-бюджета при w = 3 (v_ahead_factor/телескоп) за 4-й пик и Δ_eff —
+исполнен машиной `deep_echo_v22.py` с перенаправлением рычага по данным машины. Диагноз (цепочка v21
+w = 3 воспроизведена с расхождением 0): телескопический кап НЕ связан (4/4 зумов); финальная стадия —
+ВАКУУМ (лестница триггеров СПУСКАЕТСЯ по v, окно смотрит вперёд); v-extension мёртв по построению
+(запас 0.0 точно); пол окна может только ПОДНИМАТЬСЯ (ratchet покрытия) — стена топологическая, а не
+бюджетная. Зонды: v_ahead инертен; глобальный задний якорь разрушителен (рестарт в хвосте импульса);
+поздний якорь зажат полом. РЕШЕНИЕ — КОРНЕВОЙ якорь (k1 на зуме 1) + якорь на пол покрытия (с зума 2):
+z-рекорд **8.56** (+19% к стене 7.20), **4-й пик эха ДОСТИГНУТ** (7 пиков, 4 на одной стадии);
+Δ_eff = 0.611 ± 0.446 — период четвёрки пиков НЕ DSS (3.44 исключена на 6.3σ) — периодичность
+честно не подтверждена; новая стена — корневой пол. Детали: `einstein_direct/README.md` §3.11,
+`README_EN.md` §33.
+
+**EN.** The v22 order — extend the v-budget at w = 3 (v_ahead_factor / telescope) for the 4th peak
+and Δ_eff — is executed by `deep_echo_v22.py` with a machine-directed redirect of the lever.
+Diagnosis (the v21 w = 3 chain reproduced with zero deviation): the telescope cap NEVER binds (4/4
+zooms); the final stage is VACUUM (the trigger ladder DESCENDS in v while the window looks ahead);
+v-extension is dead code by construction (slack = 0.0 exactly); the window floor can only RISE (a
+coverage ratchet) — the wall is topological, not budget-sized. Probes: v_ahead is inert; the global
+backward anchor is destructive (restart row lands in the incoming-pulse tail); the late anchor is
+clamped by the floor. THE FIX — a ROOT anchor (k1 on zoom 1) + a coverage-floor anchor (from zoom 2):
+depth record **z = 8.56** (+19% over the 7.20 wall), the **4th echo peak REACHED** (7 peaks, 4 on
+one stage); Δ_eff = 0.611 ± 0.446 — the quartet's period is NOT DSS (3.44 excluded at 6.3σ) —
+periodicity honestly unconfirmed; the new wall is the root floor. Details:
+`einstein_direct/README.md` §3.11, `README_EN.md` §33.
+
+---
+
+## ★ 2026-09-28: campaign v21 — the deep-echo protocol EXECUTED (Section 5 of the open9 monograph)
+
+**RU.** Протокол v21 (раздел 5 монографии open9) исполнен машиной `deep_echo_v21.py`: старт eps = 1e-3
+над A*, сетка n = 800, джанк-гейт q7 на активных строках, откат стадии с уплотнением окна при инвазии,
+чекпоинты после каждого эха, стоп по цели/стене. Итоги: (а) калибровка прогона 0 — рестарт-строки
+вакуумны, гейт перекалиброван на активные строки; (б) ГЛАВНЫЙ ФАКТ — стена глубины чувствительна к
+оконной политике: z(w=5) = 1.78 → z(w=3) = 7.20 (глубже ВСЕХ сохранённых кампаний, включая v20a: 4.6)
+при нуля инвазий; новая следующая стена — v-бюджет (v_exhausted), не джанк; (в) бюджет пересчитан от
+достигнутой стены: S_req(30) ≈ 5.0e3; (г) лестница амплитуд вторым проходом на лучшей политике
+(3e-3/1e-3/1e-4): эхо-поезд по-прежнему не развивается (≤ 3 пика) — показатель p не измерим,
+дискриминатор сохранён как фальсифицируемый протокол. Детали: `einstein_direct/README.md` §3.10,
+`README_EN.md` §32.
+
+**EN.** The v21 protocol (Section 5 of the open9 monograph) is executed by `deep_echo_v21.py`:
+start eps = 1e-3 over A\*, grid n = 800, q7 junk gate on active rows, stage rollback + window
+tightening on invasion, per-echo checkpoints, stop by target/wall. Outcomes: (a) run-0 calibration —
+restart rows are vacuum, the gate recalibrated to active rows; (b) HEADLINE — the depth wall is
+window-policy sensitive: z(w=5) = 1.78 → z(w=3) = 7.20 (deeper than EVERY saved campaign, v20a
+included: 4.6) with zero invasions; the next wall is the v-budget (v_exhausted), not junk;
+(c) the budget recomputed from the reached wall: S_req(30) ≈ 5.0e3; (d) the amplitude ladder as a
+second pass on the best policy (3e-3/1e-3/1e-4): the echo train still does not develop (≤ 3 peaks) —
+the exponent p is not measurable, the discriminator stays falsifiable. Details:
+`einstein_direct/README.md` §3.10, `README_EN.md` §32.
+
+---
+
+## ★ 2026-09-28: the nine open questions are CLOSED (machine verdicts, campaigns OPEN9 v19 + v20)
+
+**RU.** Все девять открытых вопросов главы 7 монографии верификации получили машинные вердикты.
+Каждому вопросу поставлена в соответствие отдельная детерминированная машина (однопоточной BLAS,
+JSON-вердикт, честные оговорки); ключевые факты закреплены тестами. Механизмы закрытия — по вопросу:
+**№1** — доказанный структурный барьер (алгебраические книги не выбирают π/7: элиминационный идеал
+пуст, PSLQ-нулль, π/7 трансцендентно); **№5/№6** — два новых точных факта (тождество
+τ*(δ_C) = 1323/(196 − π²) = τ*_T1c; полюс 45/8 = корень char(2), линейный ярус конечен — полюс есть
+артефакт представления); **№7** — растущей 1/r-моды нет на доступной глубине (|M1| убывает по зумам:
+мусорный пол); **№9** — сертифицированная перепись Кравчика (ноль новых ветвей, машинно строго);
+**№4** — заблокирован количественно (фон, а не выброс: 6/172 строк против бутстрап-нулля 5.3);
+**№2/№3** — фальсифицируемые протоколы, исполненные кампаниями v20a/v20b: лестница амплитуд
+честно отрицательна (показатель p не измеряем на текущей машине — стена глубины), глубина z ≥ 30
+получила сертификат линейного сектора (фаза точно 0), бюджет подавления пола S_req ≈ 2.3e3 и
+сертифицированные оценщики (наивный ОЛС у стены воспроизводит −23%); записан протокол v21.
+Подробности: [`einstein_direct/open9/`](einstein_direct/open9/) — монографии
+`OpenQuestions_Monograph_{RU,EN}.{docx,pdf}`, 13 машин, 58 тестов pytest.
+
+**EN.** All nine open questions of Chapter 7 of the verification monograph now carry machine
+verdicts. Each question received a dedicated deterministic machine (BLAS single-threaded, JSON
+verdict, honest caveats) with the key facts pinned by tests. Closure mechanisms, question by
+question: **No. 1** — a proved structural barrier (the algebraic books cannot select pi/7: the
+elimination ideal is trivial, the PSLQ search is null, pi/7 is transcendental); **No. 5/No. 6** —
+two new exact facts (the identity tau*(delta_C) = 1323/(196 - pi^2) = tau*_T1c; the 45/8 pole
+coincides with the char(2) root while the linear level stays finite — a representation artifact);
+**No. 7** — no growing 1/r mode at accessible depth (|M1| decays across zooms: a junk floor);
+**No. 9** — a certified Krawczyk census (zero new branches, machine-rigorous); **No. 4** —
+quantitatively blocked (background, not outlier: 6/172 rows against a bootstrap null of 5.3);
+**No. 2/No. 3** — falsifiable protocols, executed by the v20a/v20b campaigns: the amplitude ladder
+is honestly negative (the exponent p is not measurable on the current machine — the depth wall),
+and depth z >= 30 received a closed-form linear-sector certificate (phase exactly zero), a
+floor-suppression budget S_req ~ 2.3e3 and certified estimators (naive OLS at the wall reproduces
+-23%); the v21 protocol is written. Details: [`einstein_direct/open9/`](einstein_direct/open9/) —
+the monographs `OpenQuestions_Monograph_{RU,EN}.{docx,pdf}`, 13 machines, 58 pytest tests.
 
 ---
 

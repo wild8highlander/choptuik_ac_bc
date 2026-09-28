@@ -1717,3 +1717,330 @@ the tick obstruction is a local linear stall metric of the lift.
 Run: `python3 brick_scan_tick.py` (~6 min) ->
 `results/brick_scan_tick.json`; `python3 global_static_search.py`
 (~50 s) -> `results/global_static_search.json`. Tests: +4 -> 21/21.
+
+## 30. OPEN9 — the nine open questions attacked (campaign v19)
+
+**Question (author, v19).** Execute the nine-question attack plan of the
+monograph (Chapter 7) step by step, one machine per question, with the
+review recommendations: respect the dependency graph (#3 gated by #7, #8
+by #2/#5) and replace the naive PSLQ of #1 by a three-level null test.
+
+**Method.** Nine offline machines (deterministic, BLAS-pinned, one JSON
+each), re-analyzing the SAVED campaign data wherever possible — no PDE
+re-runs; SymPy for every symbolic layer; a certified interval Krawczyk
+census for #9; permutation/bootstrap nulls wherever a criterion could be
+passed by chance.
+
+### Machine facts (all reproducible: `results/q*_*.json`)
+
+- **[Q1] Structural barrier (three-level null test).** L1: the books
+  {kappa(delta) = 2 − delta²/2, tau*(delta) = 27/(4−delta²)} leave delta
+  FREE — the elimination ideal in Q[delta] is {0} (Gröbner/lex). L2: PSLQ
+  over [1, d..d⁸] at 50/100/200 digits finds no polynomial; the method
+  control recovers the known within-sector relations (π/7 ~ 7π/30; ln(16/9)
+  = 4ln2 − 2ln3) and NO cross-sector relation to the log-clock. L3: π/7 is
+  transcendental, roots of nonzero Q-polynomials are algebraic ⇒ NO
+  algebraic condition can ever select π/7. **The algebraic tower books
+  alone cannot select the brick; selection must enter through the
+  transcendental sector (finite-amplitude monodromy or Berry holonomy).**
+- **[Q2] The π/30 residue is structural and NOT linear.** Two independent
+  linear systems give Im λ = 0.10773 / 0.10797 (spread 0.22%) against the
+  offset +2.88%/+3.10% to π/30; the offset is ~1e11 the march growth bound
+  (and 1e5 the √eps defectiveness floor). Minimal Jordan-2 model
+  (B² = 0 exactly, fixed [[0,1],[0,0]] + eps·N): λ = ±√(d·eps) — frequency
+  ~ eps^(1/2) (numpy fit p = 0.5000). Falsifiable discriminator vs the
+  Lyapunov (p = 2 in A) route; the exponent is UNMEASURED with saved data
+  (protocol emitted).
+- **[Q3] Percentile γ/Δ.** The percentile estimators are delivered and
+  self-tested (synthetic floor: OLS 0.281 vs percentile 0.398 against the
+  true 0.374). On the repo bisect data the mass floor dominates
+  (lower half of masses FLAT, slope −0.03; percentile p70 CI useless at
+  n = 4): γ is not separable at this depth. Δ_lit = 3.44 vs Δ_cyc =
+  6ln(16/9) = 3.4522 (0.35%) stands; re-measurement needs z ≥ 30.
+  GATE (after #7): junk-floor M1 ⇒ the percentile γ is floor-limited, not
+  mode-limited.
+- **[Q4] The W2 ring 4/3 stays BLOCKED, now quantitatively.** Offline
+  re-analysis of 10 665 saved mirror pairs (172 rows): MAD-trim medians do
+  NOT converge to 4/3 (1.15 / 0.071 / 0.165 across runs); the core
+  criterion (≥5 rows with |W2/t0²−4/3| ≤ 0.1) is passed by 6 rows, but the
+  bootstrap null gives 5.3 expected (p95 = 7) — indistinguishable from
+  chance; the odd junk is background-like (not outlier-like) and row
+  quality does not mature with stage (Spearman 0.22). Channel B: R3/t0²
+  ~ junk (degenerate), CSS-R3 subset = 2 rows.
+- **[Q5] The tower's base layer closes exactly; a NEW identity.** The chain
+  {D0h = 0, R3h = 2R1T0²/9, W2h = 4T0²/3, P2h = T0/3} closes the linear
+  z-system F1/F2/F4/F5 IDENTICALLY; F3 gives the linear P4h closure
+  P4h_lin = t(16t²+27)/270 — a polynomial, regular EVERYWHERE. The M3-link
+  of O4 on the chain = the O3 route exactly (κ = 2). The naive O6 conflict
+  (9/4 vs 9/16) is reproduced. **NEW: τ*(δ_C = π/7) = 27/(4−π²/49) =
+  1323/(196−π²) — the clock-pair theorem at the survivor brick and the T1c
+  one-brick clock are the SAME number by two independent routes (verified
+  symbolically).** Convergence is NOT established (6.75 → 7.1079, +5.27%);
+  the O7 program (5 fixations) is written.
+- **[Q6] The 45/8 pole anatomy.** P4h_chain = t³(352t²−540)/(135(8t²−45)):
+  a SIMPLE pole in τ (numerator at the pole = 6075√10 ≠ 0). EXACT
+  coincidence: char(λ=2, τ) = 8(2τ−1)(8τ−45)/27 — the growing mode λ⁺ = 2
+  lives at τ ∈ {1/2, 45/8}, the second point is exactly the chain pole
+  (machine-verified factorization). Softness, symbolic version: the LINEAR
+  level is finite at the pole (P4h_lin(3√10/4) = 13√10/40); the divergence
+  belongs entirely to the nonlinear chain correction — the pole is an
+  artifact of the chain parametrization, not of the book (consistent with
+  T1b). The pole moves with the brick (45/8 → 5.9233 one-brick); the
+  char(2) coincidence at the brick is open.
+- **[Q7] The 1/r mode does NOT grow at accessible depth.** m = M1·ξ + M3·ξ³
+  on the outer window of 20 saved probe profiles (R2 median 0.999): |M1|
+  by zoom = 1.2e-8 → 1.1e-9 → 2.3e-12 → 4.8e-20 (slope log|M1| vs zoom
+  negative, CI excludes 0): junk floor with decay. Junk invasion localized
+  (zoom3 j ≥ 12: R2 drops to 0.88, M3 negative — flagged and excluded).
+  Gate word for #3 emitted.
+- **[Q8] No Lyapunov center at x\*.** char(iω, τ* = 27/4) has the single
+  real solution ω = 0 — no purely imaginary pairs (checked symbolically);
+  the corrected pencil has only λ = 0. Together with the b2 exit rate
+  (39.2±0.2)·A: no cycle bifurcates from the critical point or the line.
+  The book-walk return map (2×6 stations): collapse RELAXES monotonically
+  to the flat line (return defect 0.309 = recorded ruler_periodicity_max,
+  a transient, not a cycle); blowup slides to the degenerate corner
+  (R1h → 0.08). No attracting finite-amplitude cycle in the static book;
+  the residue monodromy, if any, is a global Poincaré-map object.
+- **[Q9] The static census is CERTIFIED.** Own interval arithmetic
+  (outward rounding) + Krawczyk: 1D clock census on [1e-3, 30] gives ONE
+  certified root box per model, each CONTAINING the booked value
+  (3√3/2 = 2.5980762; one-brick 2.6660683) with uniqueness certificates,
+  OUT-certificates everywhere else; the 2D chain slice G = (Mdef, UV) is
+  OUT-certified on ≥ 99% of [0.05,10]×[0.02,10], the undecided 0.005%
+  clusters exactly at the known non-isolated lines {R1h = 0},
+  {t = 3√3/2}. The v18b "0 new branches" is confirmed machine-rigorously
+  within the box and the slice.
+
+### Verdict of the campaign
+
+**#1 is re-formulated as a structural barrier (proved, not scanned); #2's
+residue is structural with a falsifiable √eps law; #5/#6 deliver two exact
+new machine facts (the τ*(δ_C) = τ*_T1c identity; the pole = char(2)
+coincidence + linear-level finiteness); #7 kills the growing-1/r scare at
+accessible depth and un-gates #3; #4 stays blocked with a quantified null;
+#8 excludes the local Lyapunov route; #9 turns the Newton census into
+certificates. The percent-level γ (#3) and the finite-amplitude residue
+(#2) now have precise, honest protocols that need DEPTH (z ≥ 30) and an
+amplitude ladder — the next campaigns.**
+
+Caveats: all offline machines inherit the limits of the saved data
+(rows_sample caps, single-amplitude probes, the z ≤ 9.35 wall); the Q9
+census covers the pure-book clock and the 2D chain slice, not the full
+8-amplitude book; the Q2 exponent and the Q3 γ are protocol-level, not
+measured; the brick dependence of the char(2)/pole coincidence is open.
+
+Run: the nine machines of §3.8 (each ≤ 10 s) → `results/q1_*.json ..
+q9_*.json`. Tests: +22 → 43/43.
+
+---
+
+## 31. V20 — the follow-up campaigns: amplitude ladder (Q2) and depth z >= 30 (Q3)
+
+Two machines take the two protocol-level verdicts of §30 to the measurement
+level. Both are deterministic, BLAS-pinned, JSON-verdict machines in the
+same style.
+
+### v20a — `amplitude_ladder.py` (Q2 follow-up)
+
+The falsifiable discriminator of q2 [F3] (Jordan-2 carrier ⇒ |Δ_eff − Δ_ref|
+~ eps^(1/2); b2 exit ⇒ ~ eps; Lyapunov center ⇒ ~ eps^2) is executed as a
+REAL ladder over the PDE machine: eps ∈ {3e-3, 1e-3, 3e-4, 1e-4} over A*
+(n = 600, ≤ 8 zooms per rung, ~15–20 s per rung). Result:
+
+- **The echo trains do not develop on any rung** (0–3 significant Q-peaks,
+  stop = singularity / v_exhausted, z ≤ 4.6). A cross-check against ALL
+  saved zoom campaigns (v2, v3.2, v5, spinor ladder) shows the same: every
+  run on the same amplitudes stops at "singularity" with z ≤ 6.05 and 0
+  Q-peaks. The absence of an echo train is a property of the CURRENT
+  machine (the depth wall), not of the chosen eps values.
+- **Honest verdict: the exponent p is NOT measured.** The discriminator
+  stays falsifiable; the per-rung cost is negligible (15–20 s); the
+  blocker is the wall physics, i.e. the floor suppression S_req of v20b
+  [D2] — first depth (v21), then the ladder.
+
+### v20b — `depth_z30.py` (Q3 follow-up)
+
+Four machine facts toward the percent-level γ/Δ at z ≥ 30:
+
+- **[D1] The linear sector is certified to z = 30 in CLOSED FORM.** The M2
+  propagator is exactly Π(T) = I + B·T (B^2 = 0, the Jordan-2 of the v14
+  closure): the drift phase is EXACTLY 0 (real spectrum {1,1}), the growth
+  is secular (σ_max ≈ 126 at T = 30·Δ_sp, ~4.4 per echo — polynomial, not
+  exponential). An RK4 march to z = 30 matches the closed form to machine
+  precision. Consequence: a percent-level γ measured at z ≥ 30 is clean of
+  linear-monodromy contamination by construction.
+- **[D2] The depth budget.** The mass floor must be suppressed by
+  S_req(z) = e^{γ(z − z_wall)}: at z = 30 that is ≈ 2.26e3 (×10 percentile
+  margin ≈ 2.3e4); the depth spans 41 spinor echoes; bisection cannot carry
+  depth ((A−A*)/A* ~ e^(−z/γ) ~ 1e-35 at z = 30) — the zoom RESCALING does
+  (z += ln λ per stage); a realistic start is eps ~ 1e-3 (z_0 ≈ 2.6) plus
+  ~25–30 zooms.
+- **[D3] The closed loop on the reduced ladder.** Synthetic echo trains
+  (geometric peak intervals, masses e^(−γz), floor at depth
+  z_f = 7 + (z − 9.35), 5% junk on clamped points, fixed seeds): the
+  A-PRIORI estimator rule (observed floor pile-up < 15% → survivor-OLS,
+  else percentile p70 of survivors) delivers percent-level γ and
+  0.5%-level Δ at ALL depths including z = 30, while the naive OLS
+  reproduces the q3 failure (−23% at the wall, −2.5…−8% deeper). The loop
+  S_req ↔ percent-level is closed: suppress the floor per [D2] and the
+  estimators deliver.
+- **[D4] The v21 protocol** (deep-echo campaign): start eps = 1e-3, junk
+  gate word from q7 (|M1| decreasing across zooms), W2/M3 gates active,
+  per-echo JSON checkpoints, stop at z ≥ 30 or after 3 consecutive
+  junk invasions.
+
+### Verdict of the campaign
+
+**The amplitude ladder is EXECUTED and honestly negative: the current
+machine cannot measure the residue exponent — the wall blocks before the
+discriminator. The depth z ≥ 30 is now a QUANTIFIED engineering target:
+certified clean linear sector, a floor-suppression number (2.3e3, ×10
+margin), a certified estimator rule, and a written v21 protocol. The two
+protocol-level verdicts of §30 became executable specifications.**
+
+Caveats: the v20a ladder rungs are PDE-machine rungs (n = 600, ≤ 8 zooms) —
+the saved campaigns justify the wall attribution, but a deeper grid per
+rung may shift the picture marginally; the v20b [D3] reduced model
+certifies the ESTIMATORS and the BUDGET loop, not the junk physics of the
+real machine; the floor-depth calibration (z_f = 7.0) is anchored to the
+q3 floor-dominance diagnosis, not measured directly.
+
+Run: `python3 amplitude_ladder.py` (~1–2 min), `python3 depth_z30.py`
+(~1 min) → `results/v20a_amplitude_ladder.json`,
+`results/v20b_depth_z30.json`. Tests: +4 → 47/47.
+
+---
+
+## 32. V21 — the deep-echo campaign: the Section 5 protocol executed (session 23)
+
+`deep_echo_v21.py` executes the v21 protocol of the open9 monograph §5
+(= depth_z30 [D4]) end-to-end: start eps = 1e-3 over A\*, grid n = 800;
+per-stage junk monitoring by the q7 gate (M1/M3 decomposition on ACTIVE
+rows); floor-suppression gates with stage ROLLBACK (deepcopy snapshot) and
+window tightening on invasion; per-echo JSON checkpoints
+(`results/v21_checkpoints.json`); stop at z ≥ 30, or 3 consecutive invaded
+stages, or a machine stop. The amplitude ladder runs as a second pass on
+the deepest chain policy.
+
+### Machine facts
+
+- **Calibration run 0.** The literal gate (fit on restart rows) misfires:
+  restart/early stage rows are VACUUM (m ~ 1e-13, R² < 0 — the zoom
+  v-window extends BACKWARD from the feature), so the two-parameter mass
+  decomposition is not a diagnostic there. The gate was recalibrated to
+  ACTIVE rows (Q > 1% of the stage max Q). Preserved as
+  `results/v21_calibration_run0.json`; its rollback-tightening path
+  (z = 5.24) motivated the window probe.
+- **Main chain (protocol defaults, w = 5):** z = 1.78, 1 zoom, stop =
+  singularity, 1 Q-peak, 0 gate invasions. Gate word: `gated: режим M1 не
+  определён` — no clean active fits (the chains die too young for the q7
+  trend). Echo train, Δ_eff, percentile γ, π/15 wiggle: all honestly NOT
+  measurable on this chain.
+- **[D-v21] window-policy probe.** z(w=5) = 1.78 → z(w=3) = **7.20**
+  (v_exhausted) → z(w=1.5) = 6.66, all invasion-free. The depth wall is
+  TRIGGER-POLICY sensitive, not only resolution-limited: tightening the
+  zoom window (the same [P3] lever) pushes past EVERY saved campaign
+  (v20a reached 4.6). Controls: a plain ZoomRunner at n = 800 reproduces
+  z = 1.782 exactly (the v21 wrapper is neutral to the march physics);
+  at n = 600 it reproduces the v20a verdict (4.598, v_exhausted) — full
+  determinism.
+- **Budget update.** From the best-policy wall z\* = 7.20:
+  S_req(30) = e^{0.374·22.8} ≈ 5.0e3 (×10 margin 5.0e4) — the v20b [D2]
+  budget recomputed from the actually reached wall.
+- **Ladder (second pass, w = 3):** eps 3e-3 → z = 3.76 (singularity);
+  eps 1e-4 → z = 7.48 (v_exhausted). Δ_eff remains unmeasurable
+  (≤ 3 Q-peaks per chain): the exponent p is NOT measured — the
+  p = 1/2 (Jordan-2) vs p = 1 (b2-exit) vs p = 2 (Lyapunov center)
+  discriminator is preserved as a falsifiable protocol, now with a
+  quantified wall map (z vs w) and a two-level budget chain
+  (9.35 → 7.20 → next wall).
+
+### Verdict of the campaign
+
+**The Section 5 protocol is EXECUTED, not just written: gates, rollback,
+tightening, checkpoints and both stop branches all fired or were exercised.
+The wall moved from 4.6 (all saved campaigns) to 7.2 (best v21 policy) —
+but the echo train still does not develop (≤ 3 peaks), so γ and Δ_eff stay
+unmeasured and the discriminator stays falsifiable. The next wall is the
+v-budget (v_exhausted), not junk: the junk gate found zero invasions on the
+recalibrated criterion.**
+
+Caveats: the invasion criterion (R² < 0.95 or |M3| ≤ 1e-12 on ≥ 2 active
+rows; activity = Q > 1% of stage max) is a machine operationalization of
+q7, calibrated by run 0 of this very campaign; the γ-in-echo-domain
+estimator (slope of ln Q vs ζ = −ln(v\*−v), γ = slope/2) was never
+populated — fewer than 6 peaks; the window probe is post-protocol
+diagnostics, not part of [P1]–[P5].
+
+Run: `python3 deep_echo_v21.py --phase all` (~3 min) →
+`results/v21_deep_echo.json` (+ `v21_checkpoints.json`,
+`v21_calibration_run0.json`). Tests: +5 → 52/52 (repo), 9/9 (open9
+standalone).
+
+---
+
+## 33. V22 — the v-budget and window anchoring: the z ~ 7.2 wall attacked
+(session 24)
+
+The order for v22: extend the v-budget at w = 3 (v_ahead_factor / telescope)
+to reach the 4th echo peak and Δ_eff. `deep_echo_v22.py` first DIAGNOSES the
+wall by tracing the v21 w = 3 chain (reproduced with deviation 0.0e+00),
+then probes window-placement policies on the raw ZoomRunner physics.
+
+### The diagnosis (four machine facts)
+
+- **[F1] The telescope cap never binds.** On all 4 zooms the requested
+  ahead-span is 3.4–15× smaller than the parent's slack (max ratio 0.295):
+  the wall is NOT the v-envelope — it is the window's own span design.
+- **[F2] The final stage is VACUUM.** Q ≈ 0, w_cells = 0, mx = 0 on 100%
+  of its 799 rows: the trigger ladder DESCENDS in v (0.4781 → 0.4072 →
+  0.4035 → 0.4015) while the window looks ahead (+v) into empty space.
+- **[F3] v-extension is dead code by construction.** `_try_extend` is called
+  only at j ≥ n, where v_now = v[n−1] = stage_v[1]; slack = 0.0 exactly
+  (runtime trace: 1/1 calls). v_exhausted is therefore always terminal.
+- **[F4] Backward-span starvation + coverage ratchet.** The buffer clamp
+  (v_lo ≥ buffer_v[0] = the parent's floor) binds at zooms 2 and 4; the
+  floor can only RISE — floor ≡ 0.40113 across the whole ladder — while the
+  ladder descends toward it. The wall is TOPOLOGICAL, not budget-sized.
+
+### The probes
+
+- **[C2] Global backward anchor is DESTRUCTIVE.** k_back ≥ 1 from zoom 1
+  drops the restart row into the incoming-pulse region (v_p = 0.5 ± 0.1):
+  every branch dies at 1 zoom (z ~ 1.5–1.9). v_ahead = 3.0 — inert (the
+  clamp intercepts). The user's forward lever is tested and honestly
+  redirected: the working lever is BACKWARD.
+- **[C2b] Late anchor is clamped.** k_back ≥ 1 from zoom 3: z = 7.196 ≈
+  control on all branches — every late window is pinned by the ratcheted
+  floor 0.40113.
+- **[C2c] ROOT anchor + coverage-floor anchor BREAK the wall.** k1 on
+  zoom 1 lowers the ROOT floor below the expected next echo (~0.4003;
+  critical k = 0.507); from zoom 2 the window anchors at the deepest
+  covered point (v_lo = buffer_v[0]) — the floor freezes and the ladder
+  descends INTO covered territory:
+  k1 = 0.60 → **z = 8.56** (depth record, +19% over the v21 wall 7.20);
+  k1 = 0.52 → 7 peaks, **4 on one stage** (the 4th echo peak reached);
+  k1 = 0.80 → destructive transition (singularity, 2 zooms).
+
+### The deep run and the honest Δ_eff
+
+Deep policy (peaks first, then depth): k1 = 0.52 + coverage-floor anchor
+from zoom 2 → z = 6.99, 5 zooms, v_exhausted (the NEW wall = the root
+floor). **The 4th peak is REACHED**: Δ_eff = 0.611 ± 0.446 on stage 4 —
+but the peak period is NOT DSS: the literature 3.44 is excluded at 6.3σ
+(the estimate is compatible with zero). The peak quartet is a sub-echo
+structure or a floor-contaminated ladder; DSS periodicity is NOT confirmed
+at this depth. The amplitude ladder (second pass) runs, Δ_eff is absent on
+≥ 3 rungs — p stays unmeasurable, the discriminator stays falsifiable.
+
+Caveats: the v22 probes run the raw ZoomRunner physics — the junk-gate
+wrapper ([P2]/[P3]) is NOT connected; a full [P1]–[P5] protocol run on the
+adopted root-anchor policy is the next campaign. The λ-profile of the root
+anchor is irregular (8.8, 5.3, 3.3, 5.2, 1.4) — the window is shaped by
+both the feature width and the frozen floor; restart-row interpolation
+quality is tracked by the C1 constraint (c1_max in the zoom log).
+
+Run: `python3 deep_echo_v22.py --phase all` (~5–7 min) →
+`results/v22_v_budget.json`. Tests: +6 → 58/58 (repo), 10/10 (open9
+standalone).

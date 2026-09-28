@@ -1,0 +1,280 @@
+{
+  "title": "verification of second-flow QEP modes (Newton + mpmath 40d)",
+  "points": [
+    {
+      "label": "baseline_kappa2",
+      "V1_kernel_Ja": {
+        "rel_sigma_min_at_0": 4.424842328587355e-18,
+        "kernel_dim_approx": 1
+      },
+      "verified": [
+        {
+          "lam_before": [
+            0.0,
+            0.0
+          ],
+          "lam_polished": [
+            3.964816827344947e-22,
+            0.0
+          ],
+          "rel_before": null,
+          "rel_after_mp": 4.401383372787936e-21,
+          "sigma_min_abs_mp": 3.94379676475321e-18,
+          "sigma_max_mp": 896.0357302970225,
+          "verdict": "BORDERLINE"
+        },
+        {
+          "lam_before": [
+            -2.121137361045712e-05,
+            0.0018656127901556581
+          ],
+          "lam_polished": [
+            -2.1211375361344973e-05,
+            0.001865612780278003
+          ],
+          "rel_before": null,
+          "rel_after_mp": 1.399446942002174e-09,
+          "sigma_min_abs_mp": 1.2539543123282761e-06,
+          "sigma_max_mp": 896.0356228541663,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            0.0019277378311075076,
+            1.3443462202167734e-05
+          ],
+          "lam_polished": [
+            0.0019277378311130997,
+            1.3443462202122727e-05
+          ],
+          "rel_before": null,
+          "rel_after_mp": 1.511025434990072e-09,
+          "sigma_min_abs_mp": 1.3539477020042035e-06,
+          "sigma_max_mp": 896.045606282663,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            -0.001859307326130106,
+            4.06426443030314e-05
+          ],
+          "lam_polished": [
+            -0.001859307326130106,
+            4.06426443030314e-05
+          ],
+          "rel_before": null,
+          "rel_after_mp": 1.375743705508247e-09,
+          "sigma_min_abs_mp": 1.2327024111663363e-06,
+          "sigma_max_mp": 896.026204758054,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            -4.7248001345329934e-05,
+            -0.0019196956611499851
+          ],
+          "lam_polished": [
+            -4.7248003384814116e-05,
+            -0.0019196956507226363
+          ],
+          "rel_before": null,
+          "rel_after_mp": 1.4822136601302495e-09,
+          "sigma_min_abs_mp": 1.3281160425534867e-06,
+          "sigma_max_mp": 896.0354895371687,
+          "verdict": "PHANTOM"
+        }
+      ],
+      "n_genuine_verified": 0
+    },
+    {
+      "label": "one_brick_2-bC",
+      "V1_kernel_Ja": {
+        "rel_sigma_min_at_0": 2.4991993091799667e-19,
+        "kernel_dim_approx": 1
+      },
+      "verified": [
+        {
+          "lam_before": [
+            245828.36650020958,
+            34.010065589916984
+          ],
+          "lam_polished": [
+            245828.36650047745,
+            34.01006558983953
+          ],
+          "rel_before": null,
+          "rel_after_mp": 6.784201049953815e-13,
+          "sigma_min_abs_mp": 2.0089430343135644,
+          "sigma_max_mp": 2961207988267.448,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            -123200.2414125826,
+            213092.5938823876
+          ],
+          "lam_polished": [
+            -123200.24141257911,
+            213092.593882381
+          ],
+          "rel_before": null,
+          "rel_after_mp": 6.76703368596649e-13,
+          "sigma_min_abs_mp": 2.0089433112383155,
+          "sigma_max_mp": 2968720719396.554,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            -123200.15260862999,
+            -213024.4201738039
+          ],
+          "lam_polished": [
+            -123200.15260862994,
+            -213024.4201738038
+          ],
+          "rel_before": null,
+          "rel_after_mp": 6.770282361054409e-13,
+          "sigma_min_abs_mp": 2.0089433111733377,
+          "sigma_max_mp": 2967296198353.0376,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            0.0024483032288146124,
+            -0.002176366026388673
+          ],
+          "lam_polished": [
+            0.0024483032288142668,
+            -0.002176366026389105
+          ],
+          "rel_before": null,
+          "rel_after_mp": 3.3585973934389657e-10,
+          "sigma_min_abs_mp": 4.020786517776134e-06,
+          "sigma_max_mp": 11971.624004802596,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            0.004457624321884664,
+            0.008107723894955857
+          ],
+          "lam_polished": [
+            0.004457624321891532,
+            0.008107723895010424
+          ],
+          "rel_before": null,
+          "rel_after_mp": 2.6911173441308724e-09,
+          "sigma_min_abs_mp": 3.221698743890249e-05,
+          "sigma_max_mp": 11971.602616721771,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            -0.006609202891609077,
+            -0.005810879243025676
+          ],
+          "lam_polished": [
+            -0.0066092026815926285,
+            -0.005810879304016749
+          ],
+          "rel_before": null,
+          "rel_after_mp": 2.2834363258188432e-09,
+          "sigma_min_abs_mp": 2.733667665779349e-05,
+          "sigma_max_mp": 11971.727150302964,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            -0.00022236256947310413,
+            -0.0005814601113734546
+          ],
+          "lam_polished": [
+            -0.00022236256946706463,
+            -0.0005814601113868483
+          ],
+          "rel_before": null,
+          "rel_after_mp": 1.1955332100763693e-11,
+          "sigma_min_abs_mp": 1.4312510018168152e-07,
+          "sigma_max_mp": 11971.654068274593,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            0.0,
+            0.0
+          ],
+          "lam_polished": [
+            0.0,
+            0.0
+          ],
+          "rel_before": null,
+          "rel_after_mp": 0.0,
+          "sigma_min_abs_mp": 0.0,
+          "sigma_max_mp": 11971.651548022632,
+          "verdict": "GENUINE"
+        },
+        {
+          "lam_before": [
+            0.0015831751946592167,
+            1.8578274043234164e-05
+          ],
+          "lam_polished": [
+            0.0015831751946244013,
+            1.8578274043690048e-05
+          ],
+          "rel_before": null,
+          "rel_after_mp": 7.813036552924432e-11,
+          "sigma_min_abs_mp": 9.353481144490048e-07,
+          "sigma_max_mp": 11971.633667820259,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            -6.331700103663022e-05,
+            -0.001431683436649775
+          ],
+          "lam_polished": [
+            -6.331700103610273e-05,
+            -0.0014316834366525362
+          ],
+          "rel_before": null,
+          "rel_after_mp": 6.340363408040388e-11,
+          "sigma_min_abs_mp": 7.59046262128616e-07,
+          "sigma_max_mp": 11971.652305702992,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            -0.001350079425149689,
+            -0.00010095493695036538
+          ],
+          "lam_polished": [
+            -0.0013500794249401088,
+            -0.00010095493696401534
+          ],
+          "rel_before": null,
+          "rel_after_mp": 5.616642682705341e-11,
+          "sigma_min_abs_mp": 6.724057481818718e-07,
+          "sigma_max_mp": 11971.666815343813,
+          "verdict": "PHANTOM"
+        },
+        {
+          "lam_before": [
+            -0.0001697988281537481,
+            0.0015140597730898618
+          ],
+          "lam_polished": [
+            -0.00016979882815263425,
+            0.0015140597730939878
+          ],
+          "rel_before": null,
+          "rel_after_mp": 7.16152424055854e-11,
+          "sigma_min_abs_mp": 8.573528684171494e-07,
+          "sigma_max_mp": 11971.653514228461,
+          "verdict": "PHANTOM"
+        }
+      ],
+      "n_genuine_verified": 1
+    }
+  ]
+}

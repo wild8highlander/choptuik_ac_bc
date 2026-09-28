@@ -1,0 +1,194 @@
+{
+  "title": "Third-order tables: the (l+a)(l+b)(l+c)F pattern (session 18a)",
+  "question": "does the de-adiabatization pattern (l+2)(l+3)F / (l+4)(l+5)F generalize to third-order tables (l+a)(l+b)(l+c)F, and does the third order add any genuine linear dynamics?",
+  "method": "weight-rule theorem (exact SymPy): d^n/dy^n[f(tau)s^-p] = s^-p-n * prod_{j<n}(lam+p+j) F in mode basis; third tables as exact y-derivatives of second tables; cubic pencil of the prolonged system {F=0, dF/dtau=0}: M3 = [M2; l*M2] => M3^T M3 = (1+l^2) M2^T M2",
+  "T1_weight_rule": {
+    "cases": [
+      {
+        "p": 0,
+        "n": 1,
+        "coefficients_constant": true,
+        "factorization_exact": true,
+        "completeness_residual": "0",
+        "leading_coeff_1": true,
+        "poly": "lam"
+      },
+      {
+        "p": 0,
+        "n": 2,
+        "coefficients_constant": true,
+        "factorization_exact": true,
+        "completeness_residual": "0",
+        "leading_coeff_1": true,
+        "poly": "lam**2 + lam"
+      },
+      {
+        "p": 0,
+        "n": 3,
+        "coefficients_constant": true,
+        "factorization_exact": true,
+        "completeness_residual": "0",
+        "leading_coeff_1": true,
+        "poly": "lam**3 + 3*lam**2 + 2*lam"
+      },
+      {
+        "p": 1,
+        "n": 1,
+        "coefficients_constant": true,
+        "factorization_exact": true,
+        "completeness_residual": "0",
+        "leading_coeff_1": true,
+        "poly": "lam + 1"
+      },
+      {
+        "p": 1,
+        "n": 2,
+        "coefficients_constant": true,
+        "factorization_exact": true,
+        "completeness_residual": "0",
+        "leading_coeff_1": true,
+        "poly": "lam**2 + 3*lam + 2"
+      },
+      {
+        "p": 1,
+        "n": 3,
+        "coefficients_constant": true,
+        "factorization_exact": true,
+        "completeness_residual": "0",
+        "leading_coeff_1": true,
+        "poly": "lam**3 + 6*lam**2 + 11*lam + 6"
+      },
+      {
+        "p": 2,
+        "n": 1,
+        "coefficients_constant": true,
+        "factorization_exact": true,
+        "completeness_residual": "0",
+        "leading_coeff_1": true,
+        "poly": "lam + 2"
+      },
+      {
+        "p": 2,
+        "n": 2,
+        "coefficients_constant": true,
+        "factorization_exact": true,
+        "completeness_residual": "0",
+        "leading_coeff_1": true,
+        "poly": "lam**2 + 5*lam + 6"
+      },
+      {
+        "p": 2,
+        "n": 3,
+        "coefficients_constant": true,
+        "factorization_exact": true,
+        "completeness_residual": "0",
+        "leading_coeff_1": true,
+        "poly": "lam**3 + 9*lam**2 + 26*lam + 24"
+      },
+      {
+        "p": 4,
+        "n": 1,
+        "coefficients_constant": true,
+        "factorization_exact": true,
+        "completeness_residual": "0",
+        "leading_coeff_1": true,
+        "poly": "lam + 4"
+      },
+      {
+        "p": 4,
+        "n": 2,
+        "coefficients_constant": true,
+        "factorization_exact": true,
+        "completeness_residual": "0",
+        "leading_coeff_1": true,
+        "poly": "lam**2 + 9*lam + 20"
+      },
+      {
+        "p": 4,
+        "n": 3,
+        "coefficients_constant": true,
+        "factorization_exact": true,
+        "completeness_residual": "0",
+        "leading_coeff_1": true,
+        "poly": "lam**3 + 15*lam**2 + 74*lam + 120"
+      }
+    ],
+    "all_exact": true
+  },
+  "T2_tables": {
+    "W2''_table": "(6*W2h + 5*dW2h + ddW2h)/s**4",
+    "W2'''_table": "(24*W2h + 26*dW2h + 9*ddW2h + dddW2h)/s**5",
+    "W2''_ok": true,
+    "W2'''_ok": true,
+    "W2_deriv_id_ok": true,
+    "R3''_table": "(6*R3h + 5*dR3h + ddR3h)/s**4",
+    "R3'''_table": "(24*R3h + 26*dR3h + 9*ddR3h + dddR3h)/s**5",
+    "R3''_ok": true,
+    "R3'''_ok": true,
+    "R3_deriv_id_ok": true,
+    "P4''_ok": true,
+    "P4'''_ok": true,
+    "P4_deriv_id_ok": true,
+    "P4''_table": "(20*P4h + 9*dP4h + ddP4h)/s**6",
+    "P4'''_table": "(120*P4h + 74*dP4h + 15*ddP4h + dddP4h)/s**7",
+    "R5'_ok": true,
+    "R5''_ok": true,
+    "R5_deriv_id_ok": true,
+    "P2''_ok": true,
+    "P0''_ok": true,
+    "W0''_ok": true,
+    "mode_factorizations": {
+      "W2/R3 (p=2,n=3)": "lam**3 + 9*lam**2 + 26*lam + 24",
+      "P4 (p=4,n=3)": "lam**3 + 15*lam**2 + 74*lam + 120",
+      "R5 (p=4,n=2)": "lam**2 + 9*lam + 20"
+    },
+    "mode_factorizations_ok": {
+      "W2/R3 (p=2,n=3)": true,
+      "P4 (p=4,n=3)": true,
+      "R5 (p=4,n=2)": true
+    },
+    "all_exact": true
+  },
+  "T3_regression": {
+    "leading_coefficients": {
+      "third_W2_dddd": "1",
+      "second_W2_dd": "1",
+      "second_P4_dd": "1",
+      "machine_ddQ": "1"
+    },
+    "leading_all_1": true,
+    "second_to_adiabatic": "0",
+    "all_ok": true
+  },
+  "T4_cubic_pencil": {
+    "structural_identity_small_exact": true,
+    "det_sanity_exact_rational_l": {
+      "1/2": true,
+      "1": true,
+      "2": true
+    },
+    "sigma_min_verdicts": {
+      "l=+0+1i": {
+        "rel_sigma_min_40d": 2.285053924086528e-05,
+        "verdict": "PHANTOM"
+      },
+      "l=+0-1i": {
+        "rel_sigma_min_40d": 2.285053924086528e-05,
+        "verdict": "PHANTOM"
+      },
+      "l=+0+0i": {
+        "rel_sigma_min_40d": 0.0,
+        "verdict": "GENUINE"
+      }
+    },
+    "verdict": "третий порядок (пролонгация {F=0, dF/dtau=0}) добавляет только фантомные корни +/-i из множителя (1+l^2)^9 в det(M3^T M3); ранг-падения M3 == ранг-падения M2 (пролонгационная инвариантность); кратность l=0 не меняется (структура l^4 сессии 17)"
+  },
+  "verdict_lines": [
+    "T1: весовое правило ТОЧНО для всех (p, n) в {0,1,2,4}x{1,2,3}: таблица n-го порядка профиля веса p = (l+p)...(l+p+n-1) F; коэффициент старшего слота = 1 — выбор сессии 17 ВЫВЕДЕН.",
+    "T2: все таблицы машины выведены из профильного анзаца как теоремы (P0/T0, W0/D0, P2/ddQ, W2, R3, P4, R5); НОВЫЕ третьи порядки W2'''/R3''' (l+2)(l+3)(l+4), P4''' (l+4)(l+5)(l+6), R5'' (l+4)(l+5) — каждая = точная y-производная предыдущей: all_exact = True.",
+    "T3: регрессия: старший коэффициент слота = 1 во всех поколениях (третий, второй, прецедент ddQ машины) и dd=0 -> адиабатические ТОЧНО: True.",
+    "T4: кубический карандаш: char3 = (1+l^2)^9 char2; ранг-падения неизменны; +/-i — PHANTOM (40-знаковый фильтр); кратность l=0 та же.",
+    "ВЕРДИКТ: третий порядок НЕ добавляет подлинной линейной динамики — спектр пролонгационно-инвариантен; delta_mono = 0 устойчив к третьему порядку; зазор фантомов ~2.9% к pi/30 — вне линейной статики."
+  ],
+  "runtime_s": 11.4
+}

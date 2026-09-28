@@ -193,8 +193,76 @@ sector fact.
 | `results/*.json` | machine-readable results of every campaign (one JSON per machine) |
 | `figures/fig_ru/`, `figures/fig_en/` | 300 dpi figures, Russian and English variants |
 | `tests/test_einstein_direct.py` | the pytest verification suite (21 tests) covering all major machine theorems |
+| `tests/test_open_questions.py` | the OPEN9 (v19) + v20 regression suite: 26 tests over the nine machines and the two v20 campaigns |
+| `amplitude_ladder.py` | v20a: the amplitude ladder over the PDE machine (Q2 follow-up) |
+| `depth_z30.py` | v20b: depth z >= 30 — certified linear sector, floor budget, percentile ladder (Q3 follow-up) |
 | `report_en.pdf`, `report_ru.pdf` (+ `.tex`) | the first written report of the folder |
 | `hexcycle_report_en.pdf`, `hexcycle_report_ru.pdf` (+ `.tex`) | the hexcycle report |
+
+### 3.8 OPEN9 — the nine open questions (campaign v19)
+
+One machine per open question of the monograph, Chapter 7 (deterministic,
+BLAS-pinned, offline wherever the saved JSONs suffice):
+
+| File | Question | One-line verdict |
+|---|---|---|
+| `brick_selection.py` | №1 what selects δ_C = π/7 | structural barrier: the algebraic books leave δ free (elimination ideal = 0; PSLQ null; π/7 transcendental) |
+| `finite_amplitude_mono.py` | №2 the π/30 residue | residue +2.9% is structural, incompatible with the linear sector (×1e11); Jordan-2 carrier ⇒ frequency ~ eps^(1/2) |
+| `echo_fit_global.py` | №3 percent-level γ/Δ | percentile estimators delivered + self-tested; on repo data the mass floor dominates (γ not separable); gated by №7 |
+| `mirror_ring_v2.py` | №4 the W2 ring 4/3 | offline re-analysis of 10 665 saved mirror pairs: bootstrap-null = observed (6/172 rows) — background odd junk, BLOCKED at z ≤ 9.35 |
+| `sympy_center_o7.py` | №5 truncated-tower convergence | chain closes the z-system exactly; linear P4h closure is polynomial; NEW identity τ*(δ_C) = τ*_T1c exactly; O7 program written |
+| `puiseux_soft_pole.py` | №6 the soft pole 45/8 | simple pole of the chain P4h; coincides EXACTLY with the char(2) root; linear level is finite there — pole is a chain-representation artifact |
+| `m1_tracker.py` | №7 the 1/r mode | \|M1\| DECAYS across zooms (1e-8 → 1e-20): junk floor, no growing 1/r mode at accessible depth; gate word for №3 |
+| `lyapunov_center.py` | №8 finite-amplitude DSS cycle | NO center at x* (char(iω) has only ω = 0) — Lyapunov center theorem inapplicable; book-walk relaxes to the line (no attracting cycle) |
+| `krawczyk_census.py` | №9 off-chain statics | certified Krawczyk census: unique clock roots in boxes containing the booked values; OUT ≥ 99% of the chain-slice area — 0 new branches, machine-rigorous |
+
+---
+
+### 3.9 v20 — the follow-up campaigns (amplitude ladder + depth z >= 30)
+
+Two machines continuing OPEN9 questions №2 and №3 to the measurement level:
+
+| File | Campaign | One-line verdict |
+|---|---|---|
+| `amplitude_ladder.py` | v20a (Q2) | amplitude ladder eps ∈ {3e-3..1e-4} executed on the PDE machine: echo trains do NOT develop (0–3 Q-peaks, stop = singularity/v_exhausted, z ≤ 4.6) — the same holds for ALL saved campaigns (z ≤ 6.05): exponent p is NOT measurable on the current machine; the falsifiable discriminator (p = 1/2 Jordan-2 vs p = 1 b2-exit vs p = 2 Lyapunov center) and the cheap per-rung cost (~15–20 c) are recorded for v21 |
+| `depth_z30.py` | v20b (Q3) | [D1] linear sector certified to z = 30 in closed form (Π = I + B·T, phase exactly 0, secular growth ~126); [D2] floor budget: S_req(30) = e^{γ·20.65} ≈ 2.26e3 (×10 margin), 41 spinor echoes, bisection cannot carry depth (eps ~ 1e-35) — zoom rescaling does; [D3] closed loop: with S = S_req(z) the a-priori estimator rule delivers percent-level γ/Δ on the reduced ladder (5/5), while naive OLS at the wall reproduces the q3 failure (−23%); [D4] v21 protocol written |
+
+### 3.10 v21 — the deep-echo campaign (Section 5 protocol, executed)
+
+`deep_echo_v21.py` executes the v21 protocol end-to-end: start eps = 1e-3 over
+A\*, n = 800; per-stage junk monitoring by the q7 gate (M1/M3 fit on ACTIVE
+rows); floor suppression gates with stage ROLLBACK + window tightening on
+invasion; per-echo JSON checkpoints; stop at z ≥ 30 / 3 consecutive invasions
+/ machine stop. Amplitude ladder as the second pass on the deepest chain.
+
+| Fact | Verdict |
+|---|---|
+| [P1]–[P5] executed | main chain (protocol defaults, w = 5): z = 1.78, 1 zoom, stop = singularity, 1 Q-peak, 0 gate invasions; gate word: `gated: режим M1 не определён` (0 clean active fits — chains too short for the q7 trend) |
+| Calibration run 0 | the un-calibrated gate (restart-row fits) misfires: restart/early stage rows are VACUUM (m ~ 1e-13, R2 < 0 — the v-window extends BACKWARD from the feature); gate recalibrated to active rows (Q > 1% stage max); preserved as `results/v21_calibration_run0.json` |
+| [D-v21] window-policy probe | z(w=5) = 1.78 → z(w=3) = 7.20 (v_exhausted) → z(w=1.5) = 6.66: the depth wall is TRIGGER-POLICY sensitive, not only resolution; w = 3 pushes past every saved campaign (v20a: 4.6); control: plain ZoomRunner n = 800 reproduces z = 1.782 exactly (wrapper neutral), n = 600 reproduces v20a (4.598) |
+| Budget update | from the best policy wall z\* = 7.20: S_req(30) = e^{0.374·22.8} ≈ 5.0e3 (×10 margin 5.0e4) — the v20b [D2] budget recomputed from the v21 wall |
+| Ladder (second pass) | executed on the best policy (w = 3): eps 3e-3 → z = 3.76 (singularity), 1e-4 → z = 7.48 (v_exhausted); Δ_eff still unmeasurable (≤ 3 Q-peaks per chain) — exponent p NOT measured, the p = 1/2 vs 1 vs 2 discriminator preserved as a falsifiable protocol |
+| π/15 gate | honestly not testable at z ≤ 30 (resolvability z ≥ 60, spinor_ladder); free-frequency wiggle fit recorded as the carrier |
+
+### 3.11 v22 — the v-budget and window anchoring campaign (the z ~ 7.2 wall attacked)
+
+The user's order for v22: extend the v-budget at w = 3 (v_ahead_factor /
+telescope) to reach the 4th echo peak and Δ_eff. `deep_echo_v22.py` first
+DIAGNOSES the wall by tracing the v21 w = 3 chain (reproduced with deviation
+0.0e+00), then probes window-placement policies.
+
+| Fact | Verdict |
+|---|---|
+| [F1] telescope cap never binds | 4/4 zooms free (max ahead/slack = 0.295): the wall is NOT the v-envelope — it is the window's own span design |
+| [F2] the final stage is VACUUM | Q ~ 0, w_cells = 0, mx = 0 on 100% of the 799 rows: the trigger ladder DESCENDS in v (0.4781 → 0.4072 → 0.4035 → 0.4015) while the window looks ahead (+v) into empty space |
+| [F3] v-extension is dead code by construction | `_try_extend` is called only at j ≥ n, where v_now = v[n−1] = stage_v[1]: slack = 0.0 exactly (1/1 calls traced) — v_exhausted is always terminal |
+| [F4] backward-span starvation | the buffer clamp (v_lo ≥ buffer_v[0] = the parent's floor) binds at zooms 2 and 4; the floor can only RISE (a coverage ratchet): floor ≡ 0.40113 for the whole ladder |
+| [C2] global backward anchor is DESTRUCTIVE | k_back ≥ 1 from zoom 1 drops the restart row into the incoming-pulse region (v_p = 0.5 ± 0.1): 1 zoom, z ~ 1.5–1.9 (singularity/v_exhausted); v_ahead = 3.0 — inert (clamped) |
+| [C2b] late anchor is clamped | k_back ≥ 1 from zoom 3: z = 7.196 ≈ control — every late window is pinned by the ratcheted floor |
+| [C2c] ROOT anchor + coverage-floor anchor BREAK the wall | k1 on zoom 1 lowers the ROOT floor below the expected echo (~0.4003); from zoom 2 the window anchors at the deepest covered point (v_lo = buffer_v[0]) — the floor freezes and the ladder descends INTO covered territory: k1 = 0.60 → **z = 8.56** (depth record, +19% over 7.20); k1 = 0.52 → 7 peaks (**4 on one stage**) |
+| [C3] deep run (k1 = 0.52, anchor from zoom 2) | z = 6.99, 5 zooms, v_exhausted (the new wall = the root floor); **4th peak REACHED**: Δ_eff = 0.611 ± 0.446 on stage 4 — but the peak period is NOT DSS: 3.44 excluded at 6.3σ (compatible with zero) — a sub-echo structure or floor-contaminated ladder; DSS periodicity NOT confirmed at this depth (honest) |
+| [C4] ladder (second pass) | executed at the k1 = 0.52 policy; Δ_eff absent on ≥ 3 rungs — p not measurable, the discriminator preserved |
+| Redirect | the v-budget lever is BACKWARD (anchoring), not forward (v_ahead): the user's hypothesis is tested and honestly redirected by the machine; the junk-gate wrapper ([P2]/[P3]) is NOT connected in the v22 probes — a full protocol run on the adopted policy is the next campaign |
 
 ---
 
@@ -239,8 +307,29 @@ python3 global_static_search.py
 python3 brick_scan_tick.py
 python3 clock_closure_t1c.py
 
-# 7. the verification suite
-python3 -m pytest tests/ -q             # 21 tests
+# 7. the OPEN9 machines (the nine open questions, offline)
+python3 brick_selection.py
+python3 finite_amplitude_mono.py
+python3 echo_fit_global.py              # re-run AFTER m1_tracker (gate)
+python3 mirror_ring_v2.py
+python3 sympy_center_o7.py
+python3 puiseux_soft_pole.py
+python3 m1_tracker.py
+python3 lyapunov_center.py
+python3 krawczyk_census.py
+
+# 7b. the v20 follow-up campaigns (Q2/Q3 to the measurement level)
+python3 amplitude_ladder.py             # ~1-2 min (4 PDE rungs)
+python3 depth_z30.py                    # ~1 min
+
+# 7c. the v21 deep-echo campaign (Section 5 protocol)
+python3 deep_echo_v21.py --phase all    # ~3 min (main chain + window probe + ladder)
+
+# 7d. the v22 v-budget / anchoring campaign (the z ~ 7.2 wall)
+python3 deep_echo_v22.py --phase all    # ~5-7 min (cert + 3 probes + deep + ladder)
+
+# 8. the verification suite
+python3 -m pytest tests/ -q             # 58 tests (21 core + 22 OPEN9 + 4 v20 + 5 v21 + 6 v22)
 ```
 
 All machines are single-threaded on purpose

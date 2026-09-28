@@ -1,0 +1,138 @@
+{
+  "title": "Independent dd evolution law: the prolongation closure (session 18b)",
+  "question": "the dd-slots were introduced with coefficient 1 'by the ddQ precedent' — can the evolution law of the second flows be JUSTIFIED from the identities instead of chosen/fitted?",
+  "method": "state (a[9], v[8], dd[3]) = 20; constraints J1s x = 0; prolongation d/dtau(J1s x) = 0 with 9 unknowns (M5h', ddT0, ddD0, ddQ, ddR1, ddR5, dddW2, dddR3, dddP4); closure = unique solve of Uk u = -Known (v, dd); hidden constraints Op (v, dd) = 0; M2 = ker[J1s; Op']",
+  "B1_justification": {
+    "pure_form_exact": true,
+    "weight_rule_exact": true,
+    "chain": "остатки = Бианки-редуцированные Эйнштейна (identity в y) -> y-пролонгация identity -> d/dy=(1/s)(d/dtau+вес) (T1/T2 сессии 18a) -> tau-пролонгация = сохранение ограничений -> единственное замыкание Uk"
+  },
+  "B2_baseline_exact": {
+    "kappa": 2.0,
+    "tau_star": "6.7500000000000000000",
+    "mode": "EXACT",
+    "rank_Uk": 9,
+    "sv_Uk_tail": null,
+    "rank_Op_hidden_constraints": 5,
+    "rank_J1s_Op_prime": 17,
+    "dim_M_level2": 3,
+    "rank_J1s_state": 14,
+    "level3_violation_rank": 1,
+    "dim_M_level4": 2,
+    "level4_violation_rank": 0,
+    "index_reduction_levels": 2,
+    "dim_M2": 2,
+    "closure_in_M_vec0": 0.0,
+    "closure_in_M_vec1": 0.0,
+    "B_matrix_exact": "Matrix([\n[0, -350/61],\n[0,       0]])",
+    "B_nilpotent_exact": true,
+    "B_nilpotent2_exact": true,
+    "B_rank_exact": 1,
+    "B_nonzero": true,
+    "B_eigenvalues": [
+      "0"
+    ],
+    "verdict_closure": "пролонгационное замыкание единственно (rank Uk = 9); допустимое многообразие M2 двумерно; эволюция на M2 — нильпотентный Йордан-2 (B^2 = 0, spec = {0,0}): статика + линейный дрейф, БЕЗ экспонент и осцилляций => delta_mono = 0 в замкнутой линейной динамике"
+  },
+  "B2_one_brick_numeric": {
+    "kappa": 1.8992897510092923,
+    "tau_star": "7.1079202069226305031",
+    "mode": "NUMERIC-float64",
+    "rank_Uk": 9,
+    "sv_Uk_tail": [
+      0.7075289859487608,
+      0.3434469457923622,
+      0.02902382115370344
+    ],
+    "rank_Op_hidden_constraints": 5,
+    "sv_Op_tail": [
+      1.8564247594325696e-14,
+      3.351044928353237e-15,
+      5.474505856291455e-16,
+      1.242009830856966e-16
+    ],
+    "sv_stacked_tail": [
+      0.004117691452350069,
+      1.3360793403892032e-15,
+      6.399411452970695e-16,
+      5.509427919230559e-16
+    ],
+    "rank_J1s_Op_prime": 17,
+    "dim_M_level2": 3,
+    "rank_J1s_state": 14,
+    "level3_violation_maxabs": 1.2419427873348865,
+    "level3_tolerance": 2.8299566692788654e-08,
+    "level3_violation_rank": 1,
+    "dim_M_level4": 2,
+    "level4_violation_maxabs": 1.3939791405990326e-14,
+    "level4_tolerance": 2.8299566692788654e-08,
+    "level4_violation_rank": 0,
+    "index_reduction_levels": 2,
+    "dim_M2": 2,
+    "closure_in_M_vec0": 1.899081410371857e-13,
+    "closure_in_M_vec1": 5.855066758650046e-14,
+    "B_matrix": [
+      [
+        -0.5303338767200941,
+        -0.3280565776674785
+      ],
+      [
+        0.8573338867230756,
+        0.5303338767197735
+      ]
+    ],
+    "B_nilpotent_norm_B2": 3.9074283747538257e-13,
+    "B_nilpotent_norm_B3": 7.60058164855115e-14,
+    "B_rank_numeric": 1,
+    "B_nonzero_norm": 1.1853904643906081,
+    "B_eigenvalues": [
+      [
+        -2.5327313251137986e-07,
+        0.0
+      ],
+      [
+        2.5327281209396134e-07,
+        0.0
+      ]
+    ],
+    "verdict_closure": "пролонгационное замыкание единственно (rank Uk = 9); допустимое многообразие M2 двумерно; эволюция на M2 — нильпотентный Йордан-2 (B^2 = 0, spec = {0,0}): статика + линейный дрейф, БЕЗ экспонент и осцилляций => delta_mono = 0 в замкнутой линейной динамике"
+  },
+  "B4_alternatives": {
+    "frozen_manifold": {
+      "chain_satisfies_identically": [
+        "C2_xi1",
+        "C2_xi2",
+        "C2_xi3",
+        "Mdef_xi3",
+        "SC_xi4",
+        "TH_xi2",
+        "UV_xi1"
+      ],
+      "branch_equations": {
+        "UV_xi3": "-16*R1h**3*T0h**2*(4*T0h**2 - 27)/27",
+        "UV_xi3_divisible_by_(4T0h^2-27)": true,
+        "C1_xi1": "0",
+        "C1_xi1_divisible_by_(4T0h^2-27)": true,
+        "C1_xi2": "0",
+        "C1_xi2_divisible_by_(4T0h^2-27)": true,
+        "C1_xi3": "0",
+        "C1_xi3_divisible_by_(4T0h^2-27)": true,
+        "Mdef_xi5": "-8*R1h**2*T0h**2*(4*T0h**2 - 27)/27",
+        "Mdef_xi5_divisible_by_(4T0h^2-27)": true
+      },
+      "common_factor": "4*T0h**2 - 27 (=0): T0h^2 = 27/4, R1h свободен",
+      "dimension": "1 (плоское направление R1h — масштабный ход)"
+    },
+    "C0_adiabatic": "dd = 0 допустимо только на замороженном множестве (машина: 10/12 уравнений цепочки — тождества, ветви UV_xi3 и Mdef_xi5 дают общий фактор 4T0h^2-27); вне него dd=0 несовместно с ограничениями",
+    "C_chain": "потоки, прикованные к цепочке (d(chain)/dtau): единственная замкнутая точка — замороженная (сессия 13, V3-пролонгация, честная цитата); динамики не даёт",
+    "C_prolongation": "ЕДИНСТВЕННОЕ обоснованное замыкание: решение пролонгации тождеств (rank Uk = 9); спектр на M2 = {0} Йордан-2 — delta_mono = 0 линейно"
+  },
+  "verdict_lines": [
+    "B1: обоснование ТОЧНО: на очищенных формах d/dy = (1/s) d/dtau (весовое правило); y-пролонгация остатков == tau-пролонгация — замыкание выводится из тождеств (Бианки), не выбирается.",
+    "B2 baseline (ТОЧНО, Q(sqrt3)): rank Uk = 9 — замыкание ЕДИНСТВЕННО; скрытых условий rank 5; dim M2 = 2; эволюция на M2: B^2 = 0 точно, spec(B) = ['0'] — нильпотентный Йордан-2 (статика + линейный дрейф).",
+    "B2 one-brick (numeric): rank Uk = 9, dim M2 = 2, |B^2| = 3.9e-13 — та же структура (честно: float64, зазоры сингулярных чистые).",
+    "B4: C0 (адиабатика) — только замороженное множество (общий фактор ветвей 4T0h^2-27, R1h свободен — 1-мерное многообразие); C-chain — только замороженная точка (сессия 13); C-prolongation — единственное обоснованное.",
+    "ВЕРДИКТ: независимый закон эволюции dd = пролонгационное замыкание — единственное решение сохранения ограничений; линейная динамика на M2 — статика + линейный дрейф (Йордан-2), БЕЗ экспонент/осцилляций: delta_mono = 0 в замкнутой линейной динамике. Остаток «барионной асимметрии» (~2.9% к pi/30) — вне линейной динамики; тест — марш (шаг (c))."
+  ],
+  "runtime_s": 35.6
+}
