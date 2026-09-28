@@ -95,7 +95,7 @@ def campaign_point(kv, label, N2_raw, B_raw):
         Vj = dnc.assemble_V(N2[:, j], uj)
         lin_chk.append(float(np.linalg.norm(Vj - N2 @ (B[:, j])) /
                              max(np.linalg.norm(N2 @ (B[:, j])), 1e-300)))
-    out["closure_vs_v14_B_rel"] = lin_chk
+    out["closure_vs_reference_B_rel"] = lin_chk
     log(f"  [N0b] замыкание vs v14-B: rel = [{lin_chk[0]:.1e}, "
         f"{lin_chk[1]:.1e}]")
 

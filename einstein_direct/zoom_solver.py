@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
-МНОГОСТАДИЙНЫЙ РЕГИДДИНГ (ZOOM) ДЛЯ ЗАДАЧИ ЧОПТЮКА — v2 (стабильная цепочка)
-MULTI-STAGE REGRIDDING (ZOOM) FOR THE CHOPTUIK PROBLEM — v2 (stable chain)
+МНОГОСТАДИЙНЫЙ РЕГИДДИНГ (ZOOM) ДЛЯ ЗАДАЧИ ЧОПТЮКА (стабильная цепочка)
+MULTI-STAGE REGRIDDING (ZOOM) FOR THE CHOPTUIK PROBLEM (stable chain)
 ================================================================================
 
 Адаптивное перерегрирование в стиле Чоптюка (1993): активная структура около
@@ -76,8 +76,8 @@ class ZoomRunner:
                  march_center: bool = True, annulus: bool = False,
                  ann_factor: float = 10.0, r_ah_du: float = 8.0,
                  ann_relax_gate: float = 2.5, ann_cross: bool = True,
-                 tay_ode_fix: bool = False, tay_diag_v8: bool = False,
-                 tay_diag_v9: bool = False):
+                 tay_ode_fix: bool = False, tay_diag_hex: bool = False,
+                 tay_diag_mirror: bool = False):
         self.A = A
         self.n = n
         self.max_zooms = max_zooms
@@ -102,9 +102,9 @@ class ZoomRunner:
         # v_prev -> всегда 0) и инструментация измерений (W2_raw, dc-пара,
         # d0_field, ветки t0/d0). Оба — флаги: база/legacy не тронуты.
         self.tay_ode_fix = tay_ode_fix
-        self.tay_diag_v8 = tay_diag_v8
+        self.tay_diag_hex = tay_diag_hex
         # v9: зеркальные кольцевые пары (xi, -xi) — чистое d-поле [P4-B]
-        self.tay_diag_v9 = tay_diag_v9
+        self.tay_diag_mirror = tay_diag_mirror
         self.dbg = None                 # опциональный колбэк диагностики строк
         self._m3_relay = 0.0            # v6: |M3| родительской стадии (регуляризация m)
         # v8: эмпирические часы ширины для CSS-часов патча (tay_ode_fix):
@@ -179,9 +179,9 @@ class ZoomRunner:
             self.sol.ann_cross = self.ann_cross
             # v8: флаги часов/инструментации на зум-стадиях
             self.sol.tay_ode_fix = self.tay_ode_fix
-            self.sol._tay_diag_v8 = self.tay_diag_v8
+            self.sol._tay_diag_hex = self.tay_diag_hex
             # v9: зеркальные пары (xi, -xi) в инструментации
-            self.sol._tay_diag_v9 = self.tay_diag_v9
+            self.sol._tay_diag_mirror = self.tay_diag_mirror
             if du_parent is not None:
                 self.sol.R_heal = 5.0 * du_parent
         self.u = self.sol.u
@@ -602,7 +602,7 @@ def echo_period_from_peaks(v_peaks):
 # ------------------------------------------------------------------------------
 def zoom_probe(A=0.0806, n=800, verbose=True, max_zooms=12):
     """Тест: ближнекритический забег с зумами (v2)."""
-    print(f"Zoom-проба v2: A = {A}, N = {n}")
+    print(f"Zoom-проба: A = {A}, N = {n}")
     runner = ZoomRunner(A=A, n=n, max_zooms=max_zooms, verbose=verbose)
     diag = runner.run()
     print(f"  supercritical = {diag.supercritical}, M_AH = {diag.m_ah:.6f} "

@@ -7,12 +7,12 @@ Releases are automated via the `release.yml` workflow:
 ```bash
 # 1. Update version in pyproject.toml, src/__init__.py, CITATION.cff
 # 2. Commit and push
-git add -A && git commit -m "chore: bump version to v2.x.x"
+git add -A && git commit -m "chore: bump the project version"
 git push origin main
 
 # 3. Create and push tag
-git tag -a v2.x.x -m "Release v2.x.x"
-git push origin v2.x.x
+git tag -a <release> -m "Release"
+git push origin <release>
 
 # 4. GitHub Actions handles the rest:
 #    - Build sdist + wheel

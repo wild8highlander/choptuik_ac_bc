@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-ЗУМ-КАМПАНИЯ v3 (протокол): регулярное замыкание центра v3.2
-=============================================================
-Отличия от v2-кампании (zoom_campaign.py):
+ЗУМ-КАМПАНИЯ (ПРОТОКОЛ): РЕГУЛЯРНОЕ ЗАМЫКАНИЕ ЦЕНТРА
+=====================================================
+Отличия от базовой кампании (zoom_campaign.py):
   * зум-стадии работают с center_closure="regular" (связка наклонов
     s1-t1 = -2a вместо клэмпа a=0), кубическая масса в зоне, проекция
     чётных частей (p+q) и (c+d), тейперная реконструкция;
@@ -13,7 +13,7 @@
 Статус: честный протокол. Чистые сверхкритические вердикты и Delta на
 процентном уровне НЕ достигнуты (стена z ~ 3.6-5.9); см. README §13-14.
 
-Запуск:  python3 zoom_campaign_v3.py            # ~5-8 мин
+Запуск:  python3 zoom_campaign_regular.py       # ~5-8 мин
 """
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ GAMMA_LIT = 0.374
 DELTA_LIT = 0.737637
 B_CH = 1 - np.cos(2 * np.pi / 7)
 
-OUT_PATH = os.path.join(RESULTS, "zoom_campaign_v3.json")
+OUT_PATH = os.path.join(RESULTS, "zoom_campaign_regular.json")
 
 
 def junk_diag(runner):
@@ -69,20 +69,20 @@ def main():
     out = {
         "config": {"n": 800, "max_zooms": 4, "family": "gaussian",
                    "v_p": V_P, "sigma": SIGMA,
-                   "center_closure": "regular (v3.2: s1-t1 link, m~r^3, "
+                   "center_closure": "regular (s1-t1 link, m~r^3, "
                                      "pq/cd parity projection, taper)"},
         "a_star_source": "fixed-grid N=1600 bisection (validated, session 1)",
         "a_star": A_FIXED_GRID,
         "gamma_lit": GAMMA_LIT, "delta_lit": DELTA_LIT, "b_Ch": B_CH,
         "delta_spinor": 7 * np.pi / 30,
-        "status": ("v3.2 PROTOCOL: center junk suppressed (mass junk "
+        "status": ("PROTOCOL: center junk suppressed (mass junk "
                    "3.56 -> 6.6e-5), depth wall persists (z ~ 3.6-5.9); "
                    "gamma/delta at percent level NOT achieved; spinor "
                    "diagnostics recorded (see README sec. 13-14)"),
     }
 
     print("=" * 72)
-    print("ЗУМ-КАМПАНИЯ v3.2 (регулярное замыкание): A*_fg = %.7f" % A_FIXED_GRID)
+    print("ЗУМ-КАМПАНИЯ (регулярное замыкание): A*_fg = %.7f" % A_FIXED_GRID)
     print("=" * 72, flush=True)
 
     eps_list = [3e-5, 1e-4, 1e-3, 1e-2]
@@ -120,7 +120,7 @@ def main():
         "gamma_measured": None,
         "delta_measured": None,
         "percent_level_achieved": False,
-        "v3_achievements": [
+        "achievements": [
             "массовый мусор у центра подавлен (max M_AH junk 3.56 -> 6.6e-5)",
             "кольцо [R_zone, 4R_zone] стабильно до самого стопа",
             "механизм стены уточнён: чётная мода E у центра + 1/r-связка "
@@ -128,7 +128,7 @@ def main():
             "O(1)-нарушение спинорных парностей (см. spinor_analysis.json)",
             "глубина: z до 5.85 (4 зума, eps=1e-4)",
         ],
-        "v5_roadmap": [
+        "roadmap": [
             "центральный Тейлор-патч (Чоптюк 1993): эволюция коэффициентов "
             "регулярного разложения (t0, a, ...) как внутреннего ГУ",
             "спинорная модуляция pi/15, pi/30 требует z >= 30 (>= 40 эхо)",

@@ -13,7 +13,7 @@ flowchart TB
         CH["Choptyuk Formula<br/>Δ_Ch = λ₁ + δ_C²/2 − δ_C⁵/22"]
     end
 
-    subgraph Enhanced["Enhanced Extensions (v2.0)"]
+    subgraph Enhanced["Enhanced Extensions"]
         K3["K3 Surface<br/>b₂ = 22, Sp(1) holonomy"]
         TYK["Tyukovsky Equations<br/>δ_corr, 0 free params"]
         GR["Einstein GR<br/>QNM correction ≈ 0.999916"]
@@ -61,7 +61,7 @@ Unified Choptyuk Formula (Δ_Ch)
 QNM Frequency Predictions (LIGO/Virgo)
 ```
 
-### Enhanced Pipeline (v2.0)
+### Enhanced Pipeline
 
 ```
 Choptyuk Formula (Δ_Ch)
@@ -102,7 +102,7 @@ Choptyuk Formula (Δ_Ch)
 | `core/qnm.py` | `QNMPredictor`, `BHEvent` | LIGO/Virgo QNM predictions |
 | `core/hypothesis.py` | `HypothesisTester` | Parameter sweep, sensitivity analysis |
 | `core/surfaces.py` | `SurfaceSpec` | Bolza, Bring, Macbeath comparisons |
-| **`core/enhanced_verification.py`** | `KleinQuartic`, `K3Surface`, `QNMPredictor`, `TyukovskyAdapter`, `CriticismResponse` | **v2.0 enhanced verification** |
+| **`core/enhanced_verification.py`** | `KleinQuartic`, `K3Surface`, `QNMPredictor`, `TyukovskyAdapter`, `CriticismResponse` | **enhanced verification** |
 | `verification/verify_all.py` | — | Full verification runner |
 | **`verification/verify_enhanced.py`** | — | **Enhanced verification runner** |
 | `simulation/simulator.py` | `Simulator` | Parameter sweeps, convergence analysis |
@@ -142,7 +142,7 @@ Choptyuk Formula (Δ_Ch)
 | `lib/simulation.ts` | Parameter sweep and simulation logic |
 | `app/page.tsx` | Main dashboard |
 | `app/verify/` | Verification page |
-| **`app/enhanced/`** | **v2.0 Enhanced verification dashboard** |
+| **`app/enhanced/`** | **enhanced Enhanced verification dashboard** |
 | `app/simulate/` | Interactive simulation |
 | `app/structures/` | 64 spinor structures |
 | `app/surfaces/` | Riemann surface comparison |

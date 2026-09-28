@@ -829,9 +829,9 @@ class DoubleNullSolver:
         tay["M3_prev"] = M3_tower
         M3_fit_diag = M3
         M3 = M3_tower
-        # v8: диагностика ветвей эволюции коэффициентов (инструментация)
-        t0_pred_v8 = float("nan")
-        d0_pred_v8 = float("nan")
+        # гексчек-диагностика ветвей эволюции коэффициентов (инструментация)
+        t0_pred_hex = float("nan")
+        d0_pred_hex = float("nan")
         t0_branch = "init"
         d0_branch = "init"
         W2_css = float("nan")
@@ -851,7 +851,7 @@ class DoubleNullSolver:
             # фит/реле): dt0/dv = t0/s_clock - 4 d0 t0 (CSS-рост t0 ~ 1/s)
             P2_ode = P2_css if np.isfinite(P2_css) else tay["P2"]
             t0_pred = tay["t0"] + dv_ode * (3.0 * P2_ode - 4.0 * tay["d0"] * tay["t0"])
-            t0_pred_v8 = float(t0_pred)   # v8: диагностика
+            t0_pred_hex = float(t0_pred)   # гексчек-диагностика
             t0_branch = "frozen"
             jump = abs(E0_free - t0_pred)
             scale = max(abs(t0_pred), abs(E0_free), 1e-12)
@@ -896,11 +896,11 @@ class DoubleNullSolver:
             # строк); с мусорным W2=0 ОДУ давал положительную петлю
             # d0 < 0 -> -4 d0 t0 -> t0 x30 за стадию (смоук v8). Отклонение
             # W2_true - W2_css измеряется ОТДЕЛЬНО: дрейф d0_field (канал
-            # d0-clock) и dc-пара — см. diag_v8.
+            # d0-clock) и dc-пара — см. diag_hex.
             W2_css = KAPPA * tay["t0"] ** 2 - M3_tower / R1
             W2_dyn = W2_css if getattr(self, "tay_ode_fix", False) else W2
             d0_pred = tay["d0"] + dv_ode * (M3 / R1 + W2_dyn - KAPPA * tay["t0"] ** 2)
-            d0_pred_v8 = float(d0_pred)   # v8: диагностика (до капа)
+            d0_pred_hex = float(d0_pred)   # гексчек-диагностика (до капа)
             d0_branch = "frozen"
             # v6: башенный масштаб d0 (d0/t0 = D0/T0 -> 0 у CSS; d0 ~ O(t0)
             # вдали): предиктор выше 20*|t0|+1 — мусор ОДУ. БЕЗ |d0| в cap —
@@ -1076,10 +1076,10 @@ class DoubleNullSolver:
             "dbg_zone": dbg_zone,
             "pq_even_max": float(np.max(np.abs(pq_even))) if pq_even.size else 0.0,
         }
-        # v8: инструментация измерений (флаг _tay_diag_v8; на динамику не
+        # гексчек: инструментация измерений (флаг _tay_diag_hex; на динамику не
         # влияет — только доп. поля в hist для post-hoc анализа W2/часов)
-        if getattr(self, "_tay_diag_v8", False):
-            rec["diag_v8"] = {
+        if getattr(self, "_tay_diag_hex", False):
+            rec["diag_hex"] = {
                 "dv_ode": float(dv_ode),
                 "W2_raw": float(W2_raw), "W2_gate": W2_gate,
                 "W2_cap": float(W2_cap), "w_data": float(w_data),
@@ -1088,7 +1088,7 @@ class DoubleNullSolver:
                 "dc_pair": [float(dc[ip[0]]), float(dc[im[0]])],
                 "xi_pair": [float(xi_p[0]), float(xi_m[0])],
                 "t0_branch": t0_branch, "d0_branch": d0_branch,
-                "t0_pred": float(t0_pred_v8), "d0_pred": float(d0_pred_v8),
+                "t0_pred": float(t0_pred_hex), "d0_pred": float(d0_pred_hex),
                 "W2_css": float(W2_css),
                 "s_clock": float(s_clock),
                 "P2_css": float(P2_css),
@@ -1101,10 +1101,10 @@ class DoubleNullSolver:
         # гасит ЧЁТНЫЙ d-мусор ТОЧНО при строго зеркальных точках. Здесь:
         # дамп кольца (k=1..K, обе стороны, точные xi) + кубическая
         # интерполяция каждой стороны ОТДЕЛЬНО в зеркальные цели +-xi_t.
-        # Только измерение — динамику не трогает (как _tay_diag_v8).
-        if getattr(self, "_tay_diag_v9", False):
+        # Только измерение — динамику не трогает (как в гексчек-зонде).
+        if getattr(self, "_tay_diag_mirror", False):
             try:
-                rec["diag_v9"] = self._mirror_probe_v9(
+                rec["diag_mirror"] = self._mirror_ring_probe(
                     x, x_star, i0, K, c_arr, d_arr, t0,
                     fits={"R1": R1, "R3": R3, "E0": E0_free, "E2": E2,
                           "E4": E4, "P2": P2, "P4o": P4o, "d0": d0,
@@ -1112,12 +1112,12 @@ class DoubleNullSolver:
                           "e_ok": bool(e_ok), "o_ok": bool(o_ok),
                           "W2_css": float(W2_css)})
             except Exception:  # noqa: BLE001 — инструментация не убивает марш
-                rec["diag_v9"] = {"ok": False, "reason": "exception"}
+                rec["diag_mirror"] = {"ok": False, "reason": "exception"}
         tay["hist"].append(rec)
         if len(tay["hist"]) > 512:
             tay["hist"].pop(0)
 
-    def _mirror_probe_v9(self, x, x_star, i0, K, c_arr, d_arr, t0,
+    def _mirror_ring_probe(self, x, x_star, i0, K, c_arr, d_arr, t0,
                          fits=None):
         """v9 [P4-B]: зеркальные кольцевые пары (xi, -xi) и экстрактор W2.
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-ЗУМ-КАМПАНИЯ v5: центральный Тейлор-патч (машино-выведенная иерархия центра)
-============================================================================
-Отличия от v3.2-кампании:
+ЗУМ-КАМПАНИЯ: ЦЕНТРАЛЬНЫЙ ТЕЙЛОР-ПАТЧ (машино-выведенная иерархия центра)
+==========================================================================
+Отличия от регулярной кампании:
   * зум-стадии работают с center_closure="taylor": коэффициенты регулярного
     разложения центра (t0, d0) эволюционируют по машино-выведенным ОДУ
     (sympy_center.py: O1 t0'=3P2-4d0t0, O3 d0'=M3/R1+W2-kappa*t0^2) как
@@ -16,7 +16,7 @@
   * ДСС-диагностика: пики кривизны Q(v), фит Delta.
 Статус пишется ЧЕСТНО: что достигнуто, что нет.
 
-Запуск:  python3 zoom_campaign_v5.py            # ~20-40 мин
+Запуск:  python3 zoom_campaign_taylor.py        # ~20-40 мин
 """
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ GAMMA_LIT = 0.374
 DELTA_LIT = 0.737637
 B_CH = 1 - np.cos(2 * np.pi / 7)
 
-OUT_PATH = os.path.join(RESULTS, "zoom_campaign_v5.json")
+OUT_PATH = os.path.join(RESULTS, "zoom_campaign_taylor.json")
 
 EPS_LIST = [3e-5, 1e-4, 3e-4, 1e-3, 1e-2]
 
@@ -47,7 +47,7 @@ def main():
     out = {
         "config": {"n": 800, "max_zooms": 12, "family": "gaussian",
                    "v_p": V_P, "sigma": SIGMA,
-                   "center_closure": "taylor (v5: ODE-evolved t0/d0, "
+                   "center_closure": "taylor (ODE-evolved t0/d0, "
                                      "offset-aware (p+q) projection, "
                                      "full-radius zone, m~M3*xi^3)",
                    "eps_list": EPS_LIST},
@@ -72,7 +72,7 @@ def main():
             pass
 
     print("=" * 72)
-    print("ЗУМ-КАМПАНИЯ v5 (Тейлор-патч центра): A*_fg = %.7f" % A_FIXED_GRID)
+    print("ЗУМ-КАМПАНИЯ (Тейлор-патч центра): A*_fg = %.7f" % A_FIXED_GRID)
     print("=" * 72, flush=True)
 
     for eps in EPS_LIST:
@@ -150,14 +150,14 @@ def main():
         "delta_measured": None,
         "percent_level_achieved": bool(out["gamma_fit"]
                                        and out["gamma_fit"]["gamma_err"] < 0.02),
-        "v5_achievements": [
+        "achievements": [
             "машино-выведенная иерархия центра (sympy_center.py): O1-O5, "
             "все формы верифицированы SymPy; численная верификация O1/O2 "
             "на подкритическом забеге (O2: 1.1e-3, O1: 2.8e-2)",
             "центральный Тейлор-патч: t0/d0 эволюционируют как внутреннее ГУ",
-            "глубина цепочки: z_max = %.2f (v3.2: 6.05)" % z_max,
+            "глубина цепочки: z_max = %.2f (регулярная кампания: 6.05)" % z_max,
         ],
-        "v6_roadmap": [
+        "roadmap": [
             "устойчивый захват горизонта на глубоких стадиях "
             "(порог r > 8du и критерий устойчивости 6 строк)",
             "спинорная модуляция pi/15, pi/30 требует z >= 30",

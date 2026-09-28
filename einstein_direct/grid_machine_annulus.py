@@ -2,16 +2,16 @@
 # -*- coding: utf-8 -*-
 """
 ================================================================================
-ЗУМ-КАМПАНИЯ v6: КОЛЬЦЕВАЯ ЧЁТНОСТЬ + ЭХО-ОСОЗНАННЫЕ ФИТЫ -> ПРОЦЕНТНОЕ tau*
-ZOOM CAMPAIGN v6: ANNULUS PARITY + ECHO-AWARE FITS -> PERCENT-LEVEL tau*
+КОЛЬЦЕВАЯ МАШИНА: КОЛЬЦЕВАЯ ЧЁТНОСТЬ + ЭХО-ОСОЗНАННЫЕ ФИТЫ -> ПРОЦЕНТНОЕ tau*
+ANNULUS GRID MACHINE: ANNULUS PARITY + ECHO-AWARE FITS -> PERCENT-LEVEL tau*
 ================================================================================
 
-v6 = два слоя поверх v5 (Тейлор-патч, maшино-выведенная иерархия O1-O5):
+Два слоя поверх центрального Тейлор-патча (машино-выведенная иерархия O1-O5):
 
   1. КОЛЬЦЕВАЯ ЧЁТНОСТЬ (solver._annulus_parity): парная проекция зеркальной
      чётности ВНЕ тейлор-зоны (G=t+s чётно, D=t-s нечётно, pq чётно, m нечётно)
-     + гашение аномальных мод (C/xi в O, M1*xi в m). Лечит стену v5:
-     зеркало-чётность сырого марша ломается снаружи зоны
+     + гашение аномальных мод (C/xi в O, M1*xi в m). Лечит стену
+     Тейлор-патча: зеркало-чётность сырого марша ломается снаружи зоны
      (m_mirror=-12.7 vs m_phys=+4.2 при |r|~100du).
 
   2. ЭХО-ОСОЗНАННЫЕ ФИТЫ (этот модуль, БЕЗ якорей):
@@ -37,8 +37,8 @@ v6 = два слоя поверх v5 (Тейлор-патч, maшино-выве
         замкнутой башни, center_modes.json gamma_curve).
 
 Запуск:
-    python3 grid_machine_v6.py                 # полная лестница eps
-    python3 grid_machine_v6.py 1e-3,3e-4       # чанк (домер по предыдущему JSON)
+    python3 grid_machine_annulus.py                 # полная лестница eps
+    python3 grid_machine_annulus.py 1e-3,3e-4       # чанк (домер по предыдущему JSON)
 """
 from __future__ import annotations
 
@@ -47,7 +47,7 @@ import os
 import sys
 import time
 
-# v6.1: однопоточный BLAS — воспроизводимость (многопоточный LAPACK
+# Однопоточный BLAS — воспроизводимость (многопоточный LAPACK
 # перетасовывает near-critical бисекцию/нуклеацию горизонта)
 for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
            "NUMEXPR_NUM_THREADS"):
@@ -63,7 +63,7 @@ A_STAR = 0.0805333
 DELTA_SP = 7.0 * np.pi / 30.0          # спинорная лестница (7 квант pi/30)
 GAMMA_LIT = 0.374
 B_CH = 1.0 - np.cos(2.0 * np.pi / 7.0)
-OUT_PATH = os.path.join(RESULTS, "grid_machine_v6.json")
+OUT_PATH = os.path.join(RESULTS, "grid_machine_annulus.json")
 EPS_DEFAULT = [1e-4, 3e-4, 1e-3, 3e-3, 1e-2]
 Z_WIN_ECHOES = 2.5                     # глубина окна фита tau* (в эхах)
 

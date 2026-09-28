@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Рисунки v8-кампании (RU/EN, 300 dpi): tau-книга + часы; W2-пол + live-башня."""
+"""Рисунки гексчек-кампании (RU/EN, 300 dpi): tau-книга + часы; W2-пол + live-башня."""
 import json
 import math
 import os
@@ -17,7 +17,7 @@ FIG_EN = os.path.join(BASE, "figures", "fig_en")
 os.makedirs(FIG_RU, exist_ok=True)
 os.makedirs(FIG_EN, exist_ok=True)
 
-D = json.load(open(os.path.join(RES, "grid_machine_v8.json"), encoding="utf-8"))
+D = json.load(open(os.path.join(RES, "grid_machine_hexcheck.json"), encoding="utf-8"))
 DELTA_SP = 7.0 * math.pi / 30.0
 KAPPA_CYC = math.log(64.0 / 9.0)
 DELTA_CYC = 6.0 * math.log(16.0 / 9.0)
@@ -27,7 +27,7 @@ C_LIVE = "#c53030"; C_STAB = "#2b6cb0"; C_TGT = "#276749"
 
 L = {
  "ru": {
-  "t1": "v8: tau-книга (свежие фиты) и часы near-critical цепочек",
+  "t1": "Гексчек: tau-книга (свежие фиты) и часы near-critical цепочек",
   "a": "ln tau_fresh vs z_fine (глубокое окно)",
   "b": "часы: z_fine vs z_cont_fresh",
   "tau_f": "модель B: Delta = %.2f (%+.1f%% к Delta_sp) — индикативно",
@@ -36,18 +36,18 @@ L = {
   "slope": "наклон %.2f — нормировки часов расходятся",
   "xt": "z_fine (лестница зумов + s'=-1)", "yt": "ln tau_fresh",
   "xt2": "z_cont_fresh = ln(3P2_raw/|E0_free|)", "yt2": "z_fine",
-  "t2": "v8: W2/t0^2 -> 4/3 (пол измерения) и live-башня",
+  "t2": "Гексчек: W2/t0^2 -> 4/3 (пол измерения) и live-башня",
   "c": "W2-каналы, глубокое окно (медианы, p10-p90)",
   "d": "t0: live-башня (разнос) vs legacy (стабильна)",
   "tgt": "цель 4/3",
   "ch_names": ["raw (d-c)-фит", "dc-пара", "d0-clock", "реле (гейт)"],
   "floor": "пол d-мусора ~1e13 t0^2:\nW2-канал заблокирован\n(нужна P4-динамика)",
-  "live": "live (tay_ode_fix): разнос t0\n(самореферентность зоны)", "stab": "legacy v6.1: t0 стабилен",
+  "live": "live (tay_ode_fix): разнос t0\n(самореферентность зоны)", "stab": "legacy: t0 стабилен",
   "vt": "eps=1e-2, live z=3.45 (отказ) / legacy z=9.10",
   "xt3": "строка стадии 1", "yt3": "t0 (центральная амплитуда)",
  },
  "en": {
-  "t1": "v8: tau book (fresh fits) and clocks of near-critical chains",
+  "t1": "Hexcheck: tau book (fresh fits) and clocks of near-critical chains",
   "a": "ln tau_fresh vs z_fine (deep window)",
   "b": "clocks: z_fine vs z_cont_fresh",
   "tau_f": "model B: Delta = %.2f (%+.1f%% vs Delta_sp) — indicative",
@@ -56,13 +56,13 @@ L = {
   "slope": "slope %.2f — clock normalizations diverge",
   "xt": "z_fine (zoom ladder + s'=-1)", "yt": "ln tau_fresh",
   "xt2": "z_cont_fresh = ln(3P2_raw/|E0_free|)", "yt2": "z_fine",
-  "t2": "v8: W2/t0^2 -> 4/3 (measurement floor) and the live tower",
+  "t2": "Hexcheck: W2/t0^2 -> 4/3 (measurement floor) and the live tower",
   "c": "W2 channels, deep window (medians, p10-p90)",
   "d": "t0: live tower (blow-up) vs legacy (stable)",
   "tgt": "target 4/3",
   "ch_names": ["raw (d-c) fit", "dc-pair", "d0-clock", "relay (gated)"],
   "floor": "d-junk floor ~1e13 t0^2:\nW2 channel blocked\n(P4 dynamics needed)",
-  "live": "live (tay_ode_fix): t0 blow-up\n(zone self-reference)", "stab": "legacy v6.1: t0 stable",
+  "live": "live (tay_ode_fix): t0 blow-up\n(zone self-reference)", "stab": "legacy: t0 stable",
   "vt": "eps=1e-2, live z=3.45 (refused) / legacy z=9.10",
   "xt3": "stage-1 row", "yt3": "t0 (central amplitude)",
  },
@@ -123,7 +123,7 @@ def fig1(lang):
     ax[1].set_xlabel(T["xt2"]); ax[1].set_ylabel(T["yt2"])
     fig.suptitle(T["t1"], fontsize=12.5)
     out = os.path.join(FIG_RU if lang == "ru" else FIG_EN,
-                       "fig_tau_v8.png")
+                       "fig_tau_hexcheck.png")
     fig.savefig(out, dpi=300)
     plt.close(fig)
     print("saved", out)
@@ -173,7 +173,7 @@ def fig2(lang):
                va="bottom", color="#4a5568")
     fig.suptitle(T["t2"], fontsize=12.5)
     out = os.path.join(FIG_RU if lang == "ru" else FIG_EN,
-                       "fig_w2_v8.png")
+                       "fig_w2_hexcheck.png")
     fig.savefig(out, dpi=300)
     plt.close(fig)
     print("saved", out)
