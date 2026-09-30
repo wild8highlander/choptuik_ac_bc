@@ -28,217 +28,107 @@
 
 ---
 
-## ★ Where the project stands now (updated 2026-09-28) / Нынешнее положение проекта
+## ★ THE TWELVE THEOREMS — the monograph cycle `theorems12/`, extended to 20 theorems (2026-09-30)
 
-**RU — нынешнее положение, подробно.** Программа верификации прошла полный цикл
-по открытым вопросам: все девять вопросов главы 7 монографии **закрыты машинными
-вердиктами** (кампания OPEN9 v19 — по каждому вопросу своя детерминированная
-машина: однопоточная BLAS, JSON-вердикт, честные оговорки; ключевые факты
-закреплены тестами). №1 получил доказанный структурный барьер (алгебраические
-книги не выбирают π/7), №5/№6 — два новых точных факта (тождество
-τ*(δ_C) = 1323/(196−π²) = τ*_T1c; полюс 45/8 как точное совпадение с корнем
-char(2) при конечном линейном ярусе), №7 — мусорный пол вместо растущей
-1/r-моды, №9 — сертифицированную перепись Кравчика (ноль новых ветвей),
-№4 — количественный блок (фон, а не выброс: 6/172 строки против бутстрап-нулля
-5.3). Дальше серия углубляющих кампаний. v20a исполнила лестницу амплитуд и
-честно зафиксировала отрицательный исход на текущей машине (стена глубины
-приходит раньше дискриминатора показателя p); v20b выдала замкнутый сертификат
-линейного сектора до z = 30 (фаза точно 0, светской рост ~126) и бюджет
-подавления пола. Протокол раздела 5 монографии open9 **исполнен** кампанией
-v21 (джанк-гейт q7 на активных строках, откат стадии с уплотнением окна,
-чекпоинты после каждого эха, стоп по цели/стене) и принёс главный факт:
-**стена глубины чувствительна к оконной политике** — z 1.78 → 7.20 при нуля
-джанк-инвазий; следующая стена — v-бюджет, а не джанк. Кампания v22
-диагностировала v-бюджетную стену механизм за механизмом ([F1] телескопический
-кап не связан; [F2] финальная стадия — вакуум; [F3] v-extension мёртв по
-построению; [F4] храповик покрытия), отвергла гипотезу заказа данными и
-перенесла рычаг НАЗАД: **корневой якорь (k1 на зуме 1) + якорь на пол покрытия
-срыли стену — z-рекорд 8.56 (+19%)**, **4-й пик эха достигнут** (7 пиков, 4 на
-одной стадии); Δ_eff = 0.611 ± 0.446 — честно **НЕ DSS** (3.44 исключена на
-6.3σ, совместимо с нулём); новая стена — корневой пол. Текущее положение:
-**13 машин, 58 тестов pytest (+10 автономных), 47 JSON-вердиктов**, монография
-открытых вопросов в четырёх форматах (RU/EN × docx/pdf). Рубеж: **v23** —
-полный протокол [P1]–[P5] с джанк-гейтами на принятой корневой политике,
-тонкая развёртка k1 (0.50–0.70), охота на 5-й пик и чистый DSS-тест Δ ≈ 3.44.
+**What this is.** The folder [`theorems12/`](theorems12/) is the load-bearing monograph
+layer of the repository: **twenty separate monographs**, each fixing **one rigorous
+machine theorem** of the direct solution programme for the Choptuik problem as a
+self-contained document — **every theorem in English first
+([`monographs_en/`](theorems12/monographs_en/)), then the complete Russian set
+([`monographs_ru/`](theorems12/monographs_ru/))** — 80 files in all (DOCX + PDF × 20 × 2
+languages). The canonical **Twelve Theorems cycle** (No. 1–12) covers the exact
+symbolic layer (No. 1–6, SymPy in exact arithmetic over Q(√3) and Q(π)) and the
+machine-certified layer (No. 7–12: interval certificates, censuses, deterministic
+campaigns). The **supplementary series** (No. 13–20) is extracted from the remaining
+machine verdicts of the repository: the spinor corrections, the figure-cycle
+predictor, the second flows, the annulus record, the Roberts validation, the center
+hierarchy, the P4 Einstein–Hilbert closure and the machine-verified Hilbert
+derivation. The theorems were proved by machines and pinned by tests long before
+(13 machines, 47 JSON verdicts, 58/58 pytest); the monograph cycle now gives each of
+them a self-contained document with the exact statement, the machine proof sketch,
+the complete numerical tables, the corollaries, the honest caveats and the
+reproduction protocol. Nothing is fitted; every number is traceable to a machine
+output.
 
-**EN — the current position, in full.** The verification programme has run the
-full cycle on the open questions: all nine questions of monograph Chapter 7
-are **closed with machine verdicts** (campaign OPEN9 v19 — one deterministic
-machine per question: BLAS single-threaded, a JSON verdict, honest caveats;
-the key facts are pinned by tests). No. 1 received a proved structural barrier
-(the algebraic books cannot select π/7), No. 5/No. 6 — two new exact facts
-(the identity τ*(δ_C) = 1323/(196−π²) = τ*_T1c; the 45/8 pole as an exact
-coincidence with the char(2) root while the linear level stays finite),
-No. 7 — a junk floor instead of a growing 1/r mode, No. 9 — a certified
-Krawczyk census (zero new branches), No. 4 — a quantitative block (background,
-not outlier: 6/172 rows against a bootstrap null of 5.3). Then came the
-deepening campaigns. v20a executed the amplitude ladder and honestly recorded
-its negative outcome on the current machine (the depth wall arrives before the
-exponent-p discriminator); v20b produced the closed-form certificate of the
-linear sector up to z = 30 (phase exactly 0, secular growth ~126) and the
-floor-suppression budget. The Section 5 protocol of the open9 monograph is
-**EXECUTED** by v21 (the q7 junk gate on active rows, stage rollback with
-window tightening, per-echo checkpoints, stop by target/wall) and delivered
-the headline: **the depth wall is window-policy sensitive** — z 1.78 → 7.20
-with zero junk invasions; the next wall is the v-budget, not junk. v22
-diagnosed the v-budget wall mechanism by mechanism ([F1] the telescope cap
-never binds; [F2] the final stage is vacuum; [F3] v-extension is dead code by
-construction; [F4] a coverage ratchet), rejected the order hypothesis against
-the data and moved the lever to the BACK: **a root anchor (k1 on zoom 1) plus
-a coverage-floor anchor broke the wall — depth record z = 8.56 (+19%)**, the
-**4th echo peak reached** (7 peaks, 4 on one stage); Δ_eff = 0.611 ± 0.446 is
-honestly **NOT DSS** (3.44 excluded at 6.3σ, compatible with zero); the new
-wall is the root floor. Current position: **13 machines, 58 pytest tests
-(+10 standalone), 47 JSON verdicts**, the open-questions monograph in four
-formats (RU/EN × docx/pdf). The frontier: **v23** — the full junk-gated
-protocol [P1]–[P5] on the accepted root-anchor policy, a fine k1 sweep
-(0.50–0.70), the 5th-peak hunt and a clean DSS test of Δ ≈ 3.44.
+### The table of the twenty theorems
 
-### Counters right now / Счётчики на сейчас
+| № | Theorem | One-line statement | Machine | Verdict JSON | EN | RU |
+|---|---|---|---|---|---|---|
+| 1 | The clock-pair theorem | GCD of the books = `T0h²(4T0h²−27)/4`, τ* = **27/4**; brick: τ* = **1323/(196−π²)** — one common root, book defect 0.0 | `clock_closure_t1c.py` | `clock_closure_t1c.json` | [EN № 1](theorems12/monographs_en/theorem_01_clock_pair_EN.pdf) | [RU № 1](theorems12/monographs_ru/theorem_01_clock_pair_RU.pdf) |
+| 2 | The brick-ladder theorem | τ*(δ) = **27/(4−δ²)** = 27k²/(4k²−π²) exactly on **12/12** rungs δ_k = π/k; the clock is brick-invariant, the tick does not select | `brick_scan_tick.py` | `brick_scan_tick.json` | [EN № 2](theorems12/monographs_en/theorem_02_brick_ladder_EN.pdf) | [RU № 2](theorems12/monographs_ru/theorem_02_brick_ladder_RU.pdf) |
+| 3 | The static factorization theorem | `UV_ξ3 = 2·R1h·Mdef_ξ5` identically; **S∩C = {R1h=0} ∪ {T0h=0} ∪ {T0h=T0h*}**; census G1–G3: 0 new branches | `global_static_search.py` | `global_static_search.json` | [EN № 3](theorems12/monographs_en/theorem_03_factorization_EN.pdf) | [RU № 3](theorems12/monographs_ru/theorem_03_factorization_RU.pdf) |
+| 4 | The weight-rule theorem | Tables factor as `(λ+p)…(λ+p+n−1)F` (12/12, the dd-coefficient 1 derived); **M3ᵀM3 = (1+λ²)M2ᵀM2**, char3 = (1+λ²)⁹·char2, ±i are phantoms | `sympy_third_order.py` | `third_order_tables.json` | [EN № 4](theorems12/monographs_en/theorem_04_weight_rule_EN.pdf) | [RU № 4](theorems12/monographs_ru/theorem_04_weight_rule_RU.pdf) |
+| 5 | The dd-closure theorem | rank Uk = 9 **exactly** (Q(√3)) — the closure is unique; **B = [[0, −350/61], [0, 0]]**, B² = 0 — a Jordan-2 nilpotent, δ_mono = 0 | `sympy_dd_closure.py` | `dd_closure.json` | [EN № 5](theorems12/monographs_en/theorem_05_dd_closure_EN.pdf) | [RU № 5](theorems12/monographs_ru/theorem_05_dd_closure_RU.pdf) |
+| 6 | The flat-line theorem | The unique solution manifold through x* is the flat line: F = r = V = 0 exactly; b2 is static but the flow leaves S: **\|DrV\| = (39.2±0.2)·A** | `march_dae_nonlinear.py` | `march_dae_nonlinear.json` | [EN № 6](theorems12/monographs_en/theorem_06_flat_line_EN.pdf) | [RU № 6](theorems12/monographs_ru/theorem_06_flat_line_RU.pdf) |
+| 7 | The holonomy theorem | Holonomy is admissible only diagonal (κ_C1 = κ_C2, κ_C2 = κ_TH); the exact family **τ*(κ) = 27/(2κ)**; the station ladder is holonomy-invariant; Berry closes ln τ* to **+0.062%** | `sympy_spectrum_tau_star.py` + `sympy_spinor_corrections.py` | `spectrum_tau_star.json` | [EN № 7](theorems12/monographs_en/theorem_07_holonomy_EN.pdf) | [RU № 7](theorems12/monographs_ru/theorem_07_holonomy_RU.pdf) |
+| 8 | The identity + soft-pole theorem | **τ*(δ_C) = τ*_T1c = 1323/(196−π²)** — two routes, one number; the 45/8 pole is simple, coincides **exactly** with the char(2) root, the linear level stays finite | `sympy_center_o7.py` + `puiseux_soft_pole.py` | `q5_center_o7.json` + `q6_puiseux_soft_pole.json` | [EN № 8](theorems12/monographs_en/theorem_08_identity_pole_EN.pdf) | [RU № 8](theorems12/monographs_ru/theorem_08_identity_pole_RU.pdf) |
+| 9 | The certified Krawczyk census | Interval census: 1 IN-box per convention point ([2.59806, 2.61861]; [2.66607, 2.66779]), 511 OUT-boxes; the 2D slice: **OUT 100.00%** — 0 new isolated branches | `krawczyk_census.py` | `q9_krawczyk_census.json` | [EN № 9](theorems12/monographs_en/theorem_09_krawczyk_EN.pdf) | [RU № 9](theorems12/monographs_ru/theorem_09_krawczyk_RU.pdf) |
+| 10 | The structural barrier theorem | The elimination ideal of the books = {0}; a PSLQ null with positive controls; π/7 transcendental ⇒ **the algebraic books cannot select π/7** | `brick_selection.py` | `q1_brick_selection.json` | [EN № 10](theorems12/monographs_en/theorem_10_barrier_EN.pdf) | [RU № 10](theorems12/monographs_ru/theorem_10_barrier_RU.pdf) |
+| 11 | The depth-wall theorem | The wall is window-policy sensitive: z 1.78 → 7.20 → **8.56** (root anchor, +19%); [F1]–[F4] — the wall is topological; the 4th echo peak reached | `deep_echo_v21.py` + `deep_echo_v22.py` | `v21_deep_echo.json` + `v22_v_budget.json` | [EN № 11](theorems12/monographs_en/theorem_11_depth_wall_EN.pdf) | [RU № 11](theorems12/monographs_ru/theorem_11_depth_wall_RU.pdf) |
+| 12 | The honest-negative cluster | Δ_eff = 0.611 ± 0.446 — **NOT DSS** (3.44 excluded at 6.3σ); γ = 0.109 ± 0.105 against 0.374 — the mass floor M ≈ 4·du; p not measurable; the certificate Π = I + B·T to z = 30 | `choptuik_scaling.py` + `amplitude_ladder.py` + `depth_z30.py` | `choptuik_scaling.json` + `v20b_depth_z30.json` + `v22_v_budget.json` | [EN № 12](theorems12/monographs_en/theorem_12_honest_negatives_EN.pdf) | [RU № 12](theorems12/monographs_ru/theorem_12_honest_negatives_RU.pdf) |
+| 13 | The spinor-corrections theorem | Exact quanta **bC = π²/98, aC = π⁵/369754**; no κ-leaks in the geometry; diagonal holonomy or dead; phantom hits ≤ **3.10%** of kπ/30 (screening off) | `sympy_spinor_corrections.py` | `spinor_corrections.json` | [EN № 13](theorems12/monographs_en/theorem_13_spinor_corrections_EN.pdf) | [RU № 13](theorems12/monographs_ru/theorem_13_spinor_corrections_RU.pdf) |
+| 14 | The figure-cycle predictor theorem | The pyramid–cone–bowl cycle carries **36 compensated states inside S** (F = r = 0); 12/12 + 6/6 station landings; return defect 0.064, period 6 | `hexcycle_dae.py` | `hexcycle_dae.json` | [EN № 14](theorems12/monographs_en/theorem_14_hexcycle_EN.pdf) | [RU № 14](theorems12/monographs_ru/theorem_14_hexcycle_RU.pdf) |
+| 15 | The second-flows theorem | char degree 22 = 9λ⁴·Q18; **0 genuine modes at the baseline**, 1 on the brick (the clock root itself) — the limit-cycle variables add no linear dynamics | `second_flows_exact.py` + `second_flows_verify.py` | `second_flows_exact.json` + `second_flows_verified.json` | [EN № 15](theorems12/monographs_en/theorem_15_second_flows_EN.pdf) | [RU № 15](theorems12/monographs_ru/theorem_15_second_flows_RU.pdf) |
+| 16 | The annulus record theorem | The multi-zoom machine reaches **z = 9.3536** (7 Q-peaks); the torner binding M3/(R1·t0²) = 0.6687 vs 2/3 seen in data; τ* honestly unmeasured | `grid_machine_annulus.py` | `grid_machine_annulus.json` | [EN № 16](theorems12/monographs_en/theorem_16_annulus_EN.pdf) | [RU № 16](theorems12/monographs_ru/theorem_16_annulus_RU.pdf) |
+| 17 | The Roberts validation theorem | The double-null solver reproduces the exact Roberts (1984) solution with **second-order convergence** (errors ÷4 per grid doubling, 0.82 s total) | `roberts_test.py` | `roberts_test.json` | [EN № 17](theorems12/monographs_en/theorem_17_roberts_EN.pdf) | [RU № 17](theorems12/monographs_ru/theorem_17_roberts_RU.pdf) |
+| 18 | The center hierarchy theorem | The O1–O5 ladder derives every central amplitude; residual orders fixed per equation; **χ-corrections vanish at χ = 0** — the flat chain is the χ = 0 slice | `sympy_center.py` | `center_hierarchy.json` | [EN № 18](theorems12/monographs_en/theorem_18_center_hierarchy_EN.pdf) | [RU № 18](theorems12/monographs_ru/theorem_18_center_hierarchy_RU.pdf) |
+| 19 | The P4 Einstein–Hilbert closure theorem | The shape cycle lives inside **G = κT** (all station equations ∝ components, factor −2/r); the ring 4/3 and the clock 1/3 derived, not postulated; the frozen point is not an attractor | `sympy_p4_einstein_hilbert.py` | `p4_einstein_hilbert.json` | [EN № 19](theorems12/monographs_en/theorem_19_p4_einstein_hilbert_EN.pdf) | [RU № 19](theorems12/monographs_ru/theorem_19_p4_einstein_hilbert_RU.pdf) |
+| 20 | The Hilbert derivation theorem | The whole double-null Einstein–scalar system derived from the **Hilbert action** in one SymPy pass (1.9 s); the Hilbert identity exact; Roberts residual 4×10⁻⁴¹ | `sympy_derivation.py` | `derivation_results.json` | [EN № 20](theorems12/monographs_en/theorem_20_hilbert_derivation_EN.pdf) | [RU № 20](theorems12/monographs_ru/theorem_20_hilbert_derivation_RU.pdf) |
+
+### Reading order
+
+```text
+Canonical cycle:
+  Exact symbolic layer:   T1 (clock pair) → T2 (ladder) → T3 (factorization)
+                          → T4 (weight rule) → T5 (dd-closure) → T6 (flat line)
+  Machine-certified:      T7 (holonomy) → T8 (identity + pole) → T9 (Krawczyk census)
+                          → T10 (barrier) → T11 (depth wall) → T12 (honest negatives)
+Supplementary series:
+  Foundations:            T20 (Hilbert derivation) → T17 (Roberts validation) → T18 (center hierarchy)
+  Structure:              T19 (P4 EH closure) → T13 (spinor corrections) → T15 (second flows)
+  Global + depth:         T14 (figure cycle) → T16 (annulus record)
+Cross links: T1⇔T7 (books & holonomy), T2⇒T10 (ladder ⇒ barrier), T3⇒T6 (factorization ⇒ march),
+T5⇒T12 (Jordan-2 ⇒ linear certificate), T20⇒T19 (derivation ⇒ closure), T18⇒T19 (hierarchy ⇒ ring/clock),
+T14⇒T6 (the figure cycle globalizes the flat line), T17⇒T11/T16 (validation ⇒ depth campaigns)
+```
+
+### Cycle counters
 
 | Counter | Value |
 |---|---|
-| Open questions (monograph Ch. 7) | **9/9 closed** with machine verdicts (the verdict map sits in the campaign ledger below) |
-| Deterministic machines (BLAS = 1) | **13**: q1–q9 (OPEN9 v19) + `amplitude_ladder` + `depth_z30` + `deep_echo_v21` + `deep_echo_v22` |
-| pytest suite | **58/58 passing** = 21 core + 22 OPEN9 + 4 v20 + 5 v21 + 6 v22 (+ 10 standalone open9 tests) |
-| JSON machine verdicts | **47** in [`einstein_direct/results/`](einstein_direct/results/) (+ the private copy travelling inside [`einstein_direct/open9/`](einstein_direct/open9/)) |
-| Open-questions monograph | `OpenQuestions_Monograph_{RU,EN}.{docx,pdf}` — 4 files in [`einstein_direct/open9/monographs/`](einstein_direct/open9/monographs/); Section 5 status: EXECUTED |
-| Echo-train depth record | **z = 8.56** (v22, root-anchor policy; the chain 1.78 → 7.20 → 8.56) |
-| Echo peaks in one chain | **7** (the 4th peak reached; 4 peaks on a single stage) |
-| Quartet period Δ_eff | **0.611 ± 0.446 — honestly NOT DSS** (Δ ≈ 3.44 excluded at 6.3σ; compatible with zero) |
-| Depth budget for z = 30 | S_req(30) ≈ 5.0e3 (computed from the 7.20 wall; recomputation from the 8.56 base is part of v23) |
-| Push tooling | `push_to_github.sh` v2: GitHub API token preflight, tests auto-skip, orphan-commit pickup, post-push ls-remote verification |
+| Monographs | **20** theorems × 2 languages (EN first, then RU), each in DOCX + PDF — **80 files** |
+| Canonical cycle | **12** (No. 1–12: 6 exact symbolic + 6 machine-certified) |
+| Supplementary series | **8** (No. 13–20, extracted from the remaining machine verdicts) |
+| Document standard | cover · abstract · TOC · 8 sections · tables from the JSON verdicts · honest caveats · reproduction protocol |
+| Quality gate | two-tier page numbering (roman front matter / arabic body), booktabs tables, field-code TOC |
+| Languages | `monographs_en/` — English first (complete set No. 1–20); `monographs_ru/` — the complete Russian set No. 1–20 (formulas and notation shared) |
 
-### The depth-wall physics in one chain (v21–v22) / Физика стены глубины одной цепочкой
+### The folder and the push kit
 
 ```text
-z(w=5) = 1.78 ──(window w=3)──> z = 7.20 ──(root anchor k1 + coverage-floor anchor)──> z = 8.56
-                                                                    new wall: the ROOT FLOOR
-
-mechanics of the old wall: [F1] telescope cap never binds · [F2] final stage is vacuum
-[F3] v-extension is dead code by construction · [F4] the window floor is a coverage ratchet
+theorems12/
+├── monographs_en/          No. 1–20 (EN): theorem_01..20_*.docx + *.pdf  (40 files)
+├── monographs_ru/          No. 1–20 (RU): theorem_01..20_*.docx + *.pdf  (40 files)
+├── assets/formulas/        PNG formulas (mathtext, 300 dpi) for the hard cases
+├── push_theorems.sh        auto-push to wild8highlander/choptuik_ac_bc via PAT
+└── README.md               the folder's own navigation file (English)
 ```
 
-### Campaign ledger, the last four campaigns + the frontier / Леджер кампаний: последние четыре + рубеж
+The push kit is phone-ready: `push_theorems.sh` takes the PAT from the `GH_PAT`
+environment variable or prompts interactively (hidden input), runs a GitHub API
+preflight, commits the `theorems12/` folder together with the updated root README,
+and verifies the push via `ls-remote`.
 
-| Campaign | Machine(s) | One-line outcome |
-|---|---|---|
-| OPEN9 v19 | 9 machines q1–q9 | 9/9 questions closed with machine verdicts; 22 new tests |
-| v20a / v20b | `amplitude_ladder.py`, `depth_z30.py` | amplitude ladder honestly negative (p unmeasurable on this machine); z ≥ 30 certificate + floor budget S_req ≈ 2.3e3 |
-| v21 | `deep_echo_v21.py` | Section 5 protocol EXECUTED: the wall is window-policy — z 1.78 → 7.20 with 0 junk invasions; the next wall is the v-budget |
-| v22 | `deep_echo_v22.py` | the v-budget wall BROKEN by root anchoring: z 8.56, the 4th echo peak, Δ_eff = 0.611 ± 0.446 not DSS; the new wall is the root floor |
-| **v23 (frontier)** | planned | the full junk-gated protocol [P1]–[P5] on the root-anchor policy; a fine k1 sweep 0.50–0.70; the 5th-peak hunt; a clean DSS test of Δ ≈ 3.44 |
+### The honesty of the cycle
 
-**Where to read what / где что читать.** Campaign sections §3.8–§3.11 in
-[`einstein_direct/README.md`](einstein_direct/README.md) (RU) and §30–§33 in
-[`einstein_direct/README_EN.md`](einstein_direct/README_EN.md) (EN); the
-self-contained closure package [`einstein_direct/open9/`](einstein_direct/open9/)
-(13 machines, a private results copy, standalone tests, monographs); the
-per-question verdict map and the honesty ledger sit in the campaign ledger
-below; the three older announcements are kept verbatim, collapsed, in the
-archive right after this block.
+Every monograph carries an honest-caveats section: truncated towers, Puiseux
+branches at the soft pole, census boundaries, the status of comparison anchors
+(γ_Ch = 0.374, Δ ≈ 3.44, π/30) and the symbolic-versus-numerical boundary are fixed
+inside the document itself, not in a ledger footnote. Negative results (the π/7
+barrier, the not-DSS quartet, the mass floor, the unmeasured τ* of the annulus
+record) hold the same standing as the exact theorems — the repository rule, applied
+without exceptions.
 
----
-
-## Архив анонсов кампаний / Announcement archive (v19–v22)
-
-The three campaign announcements below are kept verbatim for the record — the
-current state of the project is the block above. Разверните нужный анонс.
-
-<details>
-<summary><b>2026-09-28 — campaign v22: the v-budget wall BROKEN by root anchoring (z-record 8.56, 4th echo peak reached)</b></summary>
-
-**RU.** Заказ v22 — расширение v-бюджета при w = 3 (v_ahead_factor/телескоп) за 4-й пик и Δ_eff —
-исполнен машиной `deep_echo_v22.py` с перенаправлением рычага по данным машины. Диагноз (цепочка v21
-w = 3 воспроизведена с расхождением 0): телескопический кап НЕ связан (4/4 зумов); финальная стадия —
-ВАКУУМ (лестница триггеров СПУСКАЕТСЯ по v, окно смотрит вперёд); v-extension мёртв по построению
-(запас 0.0 точно); пол окна может только ПОДНИМАТЬСЯ (ratchet покрытия) — стена топологическая, а не
-бюджетная. Зонды: v_ahead инертен; глобальный задний якорь разрушителен (рестарт в хвосте импульса);
-поздний якорь зажат полом. РЕШЕНИЕ — КОРНЕВОЙ якорь (k1 на зуме 1) + якорь на пол покрытия (с зума 2):
-z-рекорд **8.56** (+19% к стене 7.20), **4-й пик эха ДОСТИГНУТ** (7 пиков, 4 на одной стадии);
-Δ_eff = 0.611 ± 0.446 — период четвёрки пиков НЕ DSS (3.44 исключена на 6.3σ) — периодичность
-честно не подтверждена; новая стена — корневой пол. Детали: `einstein_direct/README.md` §3.11,
-`README_EN.md` §33.
-
-**EN.** The v22 order — extend the v-budget at w = 3 (v_ahead_factor / telescope) for the 4th peak
-and Δ_eff — is executed by `deep_echo_v22.py` with a machine-directed redirect of the lever.
-Diagnosis (the v21 w = 3 chain reproduced with zero deviation): the telescope cap NEVER binds (4/4
-zooms); the final stage is VACUUM (the trigger ladder DESCENDS in v while the window looks ahead);
-v-extension is dead code by construction (slack = 0.0 exactly); the window floor can only RISE (a
-coverage ratchet) — the wall is topological, not budget-sized. Probes: v_ahead is inert; the global
-backward anchor is destructive (restart row lands in the incoming-pulse tail); the late anchor is
-clamped by the floor. THE FIX — a ROOT anchor (k1 on zoom 1) + a coverage-floor anchor (from zoom 2):
-depth record **z = 8.56** (+19% over the 7.20 wall), the **4th echo peak REACHED** (7 peaks, 4 on
-one stage); Δ_eff = 0.611 ± 0.446 — the quartet's period is NOT DSS (3.44 excluded at 6.3σ) —
-periodicity honestly unconfirmed; the new wall is the root floor. Details:
-`einstein_direct/README.md` §3.11, `README_EN.md` §33.
-
-</details>
-
-<details>
-<summary><b>2026-09-28 — campaign v21: the deep-echo protocol EXECUTED (Section 5 of the open9 monograph)</b></summary>
-
-**RU.** Протокол v21 (раздел 5 монографии open9) исполнен машиной `deep_echo_v21.py`: старт eps = 1e-3
-над A*, сетка n = 800, джанк-гейт q7 на активных строках, откат стадии с уплотнением окна при инвазии,
-чекпоинты после каждого эха, стоп по цели/стене. Итоги: (а) калибровка прогона 0 — рестарт-строки
-вакуумны, гейт перекалиброван на активные строки; (б) ГЛАВНЫЙ ФАКТ — стена глубины чувствительна к
-оконной политике: z(w=5) = 1.78 → z(w=3) = 7.20 (глубже ВСЕХ сохранённых кампаний, включая v20a: 4.6)
-при нуля инвазий; новая следующая стена — v-бюджет (v_exhausted), не джанк; (в) бюджет пересчитан от
-достигнутой стены: S_req(30) ≈ 5.0e3; (г) лестница амплитуд вторым проходом на лучшей политике
-(3e-3/1e-3/1e-4): эхо-поезд по-прежнему не развивается (≤ 3 пика) — показатель p не измерим,
-дискриминатор сохранён как фальсифицируемый протокол. Детали: `einstein_direct/README.md` §3.10,
-`README_EN.md` §32.
-
-**EN.** The v21 protocol (Section 5 of the open9 monograph) is executed by `deep_echo_v21.py`:
-start eps = 1e-3 over A*, grid n = 800, q7 junk gate on active rows, stage rollback + window
-tightening on invasion, per-echo checkpoints, stop by target/wall. Outcomes: (a) run-0 calibration —
-restart rows are vacuum, the gate recalibrated to active rows; (b) HEADLINE — the depth wall is
-window-policy sensitive: z(w=5) = 1.78 → z(w=3) = 7.20 (deeper than EVERY saved campaign, v20a
-included: 4.6) with zero invasions; the next wall is the v-budget (v_exhausted), not junk;
-(c) the budget recomputed from the reached wall: S_req(30) ≈ 5.0e3; (d) the amplitude ladder as a
-second pass on the best policy (3e-3/1e-3/1e-4): the echo train still does not develop (≤ 3 peaks) —
-the exponent p is not measurable, the discriminator stays falsifiable. Details:
-`einstein_direct/README.md` §3.10, `README_EN.md` §32.
-
-</details>
-
-<details>
-<summary><b>2026-09-28 — the nine open questions are CLOSED (machine verdicts, campaigns OPEN9 v19 + v20)</b></summary>
-
-**RU.** Все девять открытых вопросов главы 7 монографии верификации получили машинные вердикты.
-Каждому вопросу поставлена в соответствие отдельная детерминированная машина (однопоточной BLAS,
-JSON-вердикт, честные оговорки); ключевые факты закреплены тестами. Механизмы закрытия — по вопросу:
-**№1** — доказанный структурный барьер (алгебраические книги не выбирают π/7: элиминационный идеал
-пуст, PSLQ-нулль, π/7 трансцендентно); **№5/№6** — два новых точных факта (тождество
-τ*(δ_C) = 1323/(196 − π²) = τ*_T1c; полюс 45/8 = корень char(2), линейный ярус конечен — полюс есть
-артефакт представления); **№7** — растущей 1/r-моды нет на доступной глубине (|M1| убывает по зумам:
-мусорный пол); **№9** — сертифицированная перепись Кравчика (ноль новых ветвей, машинно строго);
-**№4** — заблокирован количественно (фон, а не выброс: 6/172 строк против бутстрап-нулля 5.3);
-**№2/№3** — фальсифицируемые протоколы, исполненные кампаниями v20a/v20b: лестница амплитуд
-честно отрицательна (показатель p не измеряем на текущей машине — стена глубины), глубина z ≥ 30
-получила сертификат линейного сектора (фаза точно 0), бюджет подавления пола S_req ≈ 2.3e3 и
-сертифицированные оценщики (наивный ОЛС у стены воспроизводит −23%); записан протокол v21.
-Подробности: [`einstein_direct/open9/`](einstein_direct/open9/) — монографии
-`OpenQuestions_Monograph_{RU,EN}.{docx,pdf}`, 13 машин, 58 тестов pytest.
-
-**EN.** All nine open questions of Chapter 7 of the verification monograph now carry machine
-verdicts. Each question received a dedicated deterministic machine (BLAS single-threaded, JSON
-verdict, honest caveats) with the key facts pinned by tests. Closure mechanisms, question by
-question: **No. 1** — a proved structural barrier (the algebraic books cannot select pi/7: the
-elimination ideal is trivial, the PSLQ search is null, pi/7 is transcendental); **No. 5/No. 6** —
-two new exact facts (the identity tau*(delta_C) = 1323/(196 - pi^2) = tau*_T1c; the 45/8 pole
-coincides with the char(2) root while the linear level stays finite — a representation artifact);
-**No. 7** — no growing 1/r mode at accessible depth (|M1| decays across zooms: a junk floor);
-**No. 9** — a certified Krawczyk census (zero new branches, machine-rigorous); **No. 4** —
-quantitatively blocked (background, not outlier: 6/172 rows against a bootstrap null of 5.3);
-**No. 2/No. 3** — falsifiable protocols, executed by the v20a/v20b campaigns: the amplitude ladder
-is honestly negative (the exponent p is not measurable on the current machine — the depth wall),
-and depth z >= 30 received a closed-form linear-sector certificate (phase exactly zero), a
-floor-suppression budget S_req ~ 2.3e3 and certified estimators (naive OLS at the wall reproduces
--23%); the v21 protocol is written. Details: [`einstein_direct/open9/`](einstein_direct/open9/) —
-the monographs `OpenQuestions_Monograph_{RU,EN}.{docx,pdf}`, 13 machines, 58 pytest tests.
-
-</details>
 ---
 
 ## Overview
@@ -289,25 +179,26 @@ Everything in this repository follows one rule, applied everywhere:
 ## Table of contents
 
 1. [Overview](#overview)
-2. [The verification programme at a glance](#the-verification-programme-at-a-glance)
-3. [Audit & Transfer Appendix](#audit--transfer-appendix-v10-september-2026)
-4. [Mathematical Background](#mathematical-background)
-5. [Einstein Direct — the campaign ledger](#einstein-direct--the-campaign-ledger-honest-from-first-principles-to-the-clock)
-6. [Quick Start](#quick-start)
-7. [Architecture](#architecture)
-8. [Project Structure](#project-structure)
-9. [Scientific background in one minute](#scientific-background-in-one-minute)
-10. [QCD Bridge Suite](#qcd-bridge-suite-v31-added-2026-08-10)
-11. [Documentation map](#documentation-map-everything-the-repository-carries)
-12. [Report Formats](#report-formats)
-13. [Visualization Output](#visualization-output)
-14. [Verification Results](#verification-results-reference)
-15. [Citation](#citation)
-16. [Author](#author)
-17. [License](#license)
-18. [Reproducibility](#reproducibility)
-19. [Contributing](#contributing)
-20. [Acknowledgments](#acknowledgments)
+2. [The Twelve Theorems (theorems12/)](#двенадцать-теорем--цикл-монографий-theorems12-2026-09-29--the-twelve-theorems)
+4. [The verification programme at a glance](#the-verification-programme-at-a-glance)
+4. [Audit & Transfer Appendix](#audit--transfer-appendix-v10-september-2026)
+5. [Mathematical Background](#mathematical-background)
+6. [Einstein Direct — the campaign ledger](#einstein-direct--the-campaign-ledger-honest-from-first-principles-to-the-clock)
+7. [Quick Start](#quick-start)
+8. [Architecture](#architecture)
+9. [Project Structure](#project-structure)
+10. [Scientific background in one minute](#scientific-background-in-one-minute)
+11. [QCD Bridge Suite](#qcd-bridge-suite-v31-added-2026-08-10)
+12. [Documentation map](#documentation-map-everything-the-repository-carries)
+13. [Report Formats](#report-formats)
+14. [Visualization Output](#visualization-output)
+15. [Verification Results](#verification-results-reference)
+16. [Citation](#citation)
+17. [Author](#author)
+18. [License](#license)
+19. [Reproducibility](#reproducibility)
+20. [Contributing](#contributing)
+21. [Acknowledgments](#acknowledgments)
 
 ### Repository quick facts
 
@@ -320,8 +211,9 @@ Everything in this repository follows one rule, applied everywhere:
 | Campaign result files | 47 JSON machine outputs in [`einstein_direct/results/`](einstein_direct/results/) (all OPEN9/v20/v21/v22 verdicts included) |
 | Tracked files | 700+ across 20+ research and documentation directories |
 | Source files | 112 Python · 17 Julia · 21 Java + a Next.js dashboard |
-| Publications in-repo | original monograph (RU/EN, DOCX/PDF), QCD-bridge monograph, audit appendix, bilingual verification monograph (metadata-free), open9 open-questions monograph (RU/EN × DOCX/PDF) |
+| Publications in-repo | original monograph (RU/EN, DOCX/PDF), QCD-bridge monograph, audit appendix, bilingual verification monograph (metadata-free), open9 open-questions monograph (RU/EN × DOCX/PDF), **theorems12 cycle of 12 theorem monographs (6 RU + 6 EN, DOCX/PDF)** |
 | Figures | 20 einstein_direct figures (RU/EN) · 18 QCD-bridge 600-DPI figures · 19 4D animations · README charts from live JSONs |
+| Theorems cycle (theorems12/) | **12 монографий** (6 RU точных + 6 EN машинных), DOCX+PDF — фиксация ключевых алгебраических вычислений программы |
 | DSI laboratory | 7 experiments (exp1–exp7) with pytest coverage |
 | Runs on a phone | open9 machines + standalone tests under Termux; GitHub push package with Android instructions (`INSTRUKCIYA_Termux_RU.md`) |
 
@@ -356,6 +248,7 @@ anchoring, v21–v22).
 | Verification suite | **58/58 tests** re-checking machine theorems (+10 standalone open9 tests) |
 | Open questions (monograph Ch. 7) | **9/9 closed** with machine verdicts (OPEN9 v19–v22: 13 machines, JSON verdicts, honest caveats) |
 | Depth-wall physics (v21–v22) | the wall is window-policy sensitive: z 1.78 → 7.20 → **8.56** (root anchor); 4th echo peak reached; Δ_eff = 0.611 ± 0.446 — honestly not DSS |
+| Twelve Theorems cycle (`theorems12/`) | **12 monographs (DOCX+PDF)** fixing the key machine theorems of the programme — 6 RU (exact symbolic layer) + 6 EN (machine-certified layer) |
 
 ### The clock-pair theorem on the brick ladder
 
@@ -627,7 +520,7 @@ Three independent lines were pushed in these campaigns:
    points; the surviving residue is the imaginary sector near k·π/30. The
    one-brick run moves the phantom to Im λ = 0.107731 = **+2.88%** from π/30
    (baseline +3.10%) — toward the ladder, but no closure.
-3. **The linear world annihilates exactly (v13–v14).** The O6+ campaign
+4. **The linear world annihilates exactly (v13–v14).** The O6+ campaign
    ("second flows as limit-cycle variables") built the true quadratic pencil
    M(l) = Ja + l·Jv·P + l²·J2·P2 (18×9) and proved by EXACT characteristic
    polynomial (in Q(√3), degree 22, multiplicity(l=0)=4) that the only
@@ -747,13 +640,13 @@ single-thread machines, JSON verdicts, honest caveats):
    z ≥ 30 received a closed-form linear-sector certificate (phase drift
    exactly 0), the floor budget S_req(30) ≈ 2.3e3 and certified estimators
    (naive OLS at the wall reproduces −23%).
-3. **v21 — the Section 5 protocol EXECUTED.** Junk gates, rollback +
+4. **v21 — the Section 5 protocol EXECUTED.** Junk gates, rollback +
    window tightening, per-echo checkpoints and stop branches — all
    exercised. HEADLINE: the depth wall is window-policy sensitive —
    z(w=5) = 1.78 → z(w=3) = 7.20 (deeper than every saved campaign) with
    ZERO junk invasions; the next wall is the v-budget, not junk; the budget
    recomputed from the reached wall: S_req(30) ≈ 5.0e3.
-4. **v22 — the v-budget wall BROKEN by root anchoring.** Diagnosis: the
+5. **v22 — the v-budget wall BROKEN by root anchoring.** Diagnosis: the
    telescope cap never binds, the final stage is vacuum, v-extension is dead
    code by construction, the window floor is a coverage ratchet — the wall
    is topological, not budget-sized. The lever moved to the BACK: a root
@@ -811,17 +704,17 @@ campaigns:
    DSS test of Δ ≈ 3.44;
 2. **a fine k1 sweep (0.50–0.70)** and the combined policy «root anchor +
    truncated ahead» — depth beyond 8.56 (the root floor);
-3. **Δ_eff measured cleanly** — the current 0.611 ± 0.446 is compatible
+4. **Δ_eff measured cleanly** — the current 0.611 ± 0.446 is compatible
    with zero (sub-echo contamination at the floor; DSS 3.44 excluded at
    6.3σ);
-4. **percent-level γ at z ≥ 30** — the budget chain (S_req(30) ≈ 5.0e3
+5. **percent-level γ at z ≥ 30** — the budget chain (S_req(30) ≈ 5.0e3
    from z\* = 7.20) needs recomputation from the new 8.56 base;
-5. **the amplitude-ladder exponent p** on a developed echo train — the
+6. **the amplitude-ladder exponent p** on a developed echo train — the
    discriminator (Jordan-2 √ε vs b2-exit p = 1 vs Lyapunov p = 2) stays
    falsifiable and unmeasured on the current machine;
-6. **the W2 ring data channel** — the PDE d-junk floor still blocks the
+7. **the W2 ring data channel** — the PDE d-junk floor still blocks the
    M1/ξ² + M3/ξ³ decomposition (the mirror-pair protocol is ready);
-7. **the π/30 phantom** — after the №1 null result exactly two candidates
+8. **the π/30 phantom** — after the №1 null result exactly two candidates
    survive: finite-amplitude monodromy and Berry-connection holonomy.
 
 The pre-OPEN9 short list (finite-amplitude carrier, brick selection, W2
@@ -1270,13 +1163,13 @@ monograph and dynamic 4D visualizations.
 
 1. **O_χ random matrix theory** — GUE-vs-Poisson spacing, Bayes factor
 2. **RMT sweep** — κ_T scan over N and ensemble
-3. **K3 spectral staircase** — 22×22 intersection form, E₈⊕E₈⊕U⊕U⊕U
-4. **N-scaling test** — ⟨λ⟩ → 0 trend, θ̄_artifact ~ 1/√N
-5. **τ-relaxation dynamics** — physical time-scale estimate
-6. **κ_T lattice physical estimate** — Cabibbo-angle coincidence
-7. **Cabibbo angle coincidence** — δ_C = π/7
-8. **CP 8-step solution chain** — spectral CP solution audit
-9. **Jet wake bridge** — CMS HIN-25-012 connection
+4. **K3 spectral staircase** — 22×22 intersection form, E₈⊕E₈⊕U⊕U⊕U
+5. **N-scaling test** — ⟨λ⟩ → 0 trend, θ̄_artifact ~ 1/√N
+6. **τ-relaxation dynamics** — physical time-scale estimate
+7. **κ_T lattice physical estimate** — Cabibbo-angle coincidence
+8. **Cabibbo angle coincidence** — δ_C = π/7
+9. **CP 8-step solution chain** — spectral CP solution audit
+10. **Jet wake bridge** — CMS HIN-25-012 connection
 
 ### Quick start (QCD bridge)
 
@@ -1491,9 +1384,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines. Quick workflow:
 
 1. Fork → Branch → Commit → PR
 2. CI runs automatically (Python + Julia + Java + Viz)
-3. All verification tests must pass
-4. Deviations from reference values must remain within tolerance
-5. New features require corresponding tests
+4. All verification tests must pass
+5. Deviations from reference values must remain within tolerance
+6. New features require corresponding tests
 
 Bug reports and reproduction issues are especially welcome — reproducing a
 number from the verification dossier is the fastest way to help.
