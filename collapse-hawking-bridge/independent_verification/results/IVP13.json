@@ -1,0 +1,62 @@
+{
+ "status": "PASS",
+ "pre_registered": {
+  "blindness": "no committed Delta value read before measurement",
+  "detector": "verifier-own peak detector (relative prominence 5e-3, 3-point median smoothing, regression estimator)",
+  "honesty_rule": "< 3 peaks resolved => PASS as a NEGATIVE check"
+ },
+ "runs": [
+  {
+   "eps": 0.001,
+   "n_grid": 1600,
+   "v_star": 0.7473420888055035,
+   "ah_found": true,
+   "m_ah": 0.009671546158436024,
+   "n_samples": 1599,
+   "n_peaks": 2,
+   "peak_v": [
+    0.453408,
+    0.658537
+   ]
+  },
+  {
+   "eps": 0.0003,
+   "n_grid": 1600,
+   "v_star": 0.7804878048780488,
+   "ah_found": true,
+   "m_ah": 0.010386988081262434,
+   "n_samples": 1599,
+   "n_peaks": 2,
+   "peak_v": [
+    0.453408,
+    0.658537
+   ]
+  },
+  {
+   "eps": 0.0001,
+   "n_grid": 1600,
+   "v_star": 0.8048780487804879,
+   "ah_found": true,
+   "m_ah": 0.009836671071541299,
+   "n_samples": 1599,
+   "n_peaks": 2,
+   "peak_v": [
+    0.453408,
+    0.658537
+   ]
+  }
+ ],
+ "delta_measured": null,
+ "consistent_with_anchor_band": null,
+ "checks": {
+  "echo_verdict_formed": true
+ },
+ "note": "signal series retained in results/IVP13_series.json",
+ "ivp": "IVP13",
+ "timestamp": "2026-10-09 06:40:30",
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Linux-5.10.134-013.15.kangaroo.al8.x86_64-x86_64-with-glibc2.41",
+  "processor": "unknown"
+ }
+}

@@ -1,0 +1,6 @@
+quantity,value_m4,K_over_KP,formula
+"K at horizon, solar BH",1.5759220513453667e-13,1.0754105294906303e-152,K = 3c^8/(4G^4 M^4) = 48G^2M^2/(c^4 r_s^6)
+"K at horizon, born BH at Solar input",2.300251300645414e-11,1.5696934166742463e-150,M = 0.2877 M_sun
+"K at horizon, born BH at CMB input",8.765545069751873e+19,5.981615306853774e-120,M = 0.2877 M_CMB
+"K at horizon, born BH at Planck input",1.6042138589634218e+141,109.47168827362147,M = 0.2877 m_P — above the Planck barrier
+Planck curvature 1/l_P^4,1.4654143772349006e+139,1.0,1/l_P^4 = c^6/(hbar^2 G^2)

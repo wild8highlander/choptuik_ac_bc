@@ -1,0 +1,246 @@
+{
+ "campaign": "chb_c3b",
+ "engine": "engine/solver.py \u2014 double-null characteristic march (Goursat, RK2-Heun)",
+ "project_version": "2.1.0",
+ "units": "4 pi G = 1 (kappa = 2), geometric engine units",
+ "family": {
+  "u0": -1.0,
+  "v_p": 0.5,
+  "sigma": 0.1,
+  "v0": 0.0,
+  "u_range": [
+   -1.0,
+   1.05
+  ],
+  "v_range": [
+   0.0,
+   1.0
+  ]
+ },
+ "a_star_N800": 0.08053436279296877,
+ "a_star_per_grid": {
+  "N1600": {
+   "a_star": 0.0777443361282349,
+   "iters": 14,
+   "wall_s": 52.5,
+   "drift_from_N800": -0.002790026664733866
+  },
+  "N3200": {
+   "a_star": 0.07682177066802981,
+   "iters": 14,
+   "wall_s": 183.6,
+   "drift_from_N800": -0.0037125921249389626
+  }
+ },
+ "method": {
+  "definition_of_adaptive": "resolution concentrated on the critical window: deep grids spend runs only on eps in [1e-1.5, 1e-3.8] around their OWN threshold and on echo runs nearest threshold; no AMR rewrite of the engine",
+  "thresholds": "v2.0.1 F-2 remediation: eps is measured from the per-grid A*_N (freshly bisected at tol 2e-6), NOT from A*_N800; the 2.0.0 release reused A*_N800 for the deep grids, mislabeling the eps axis by +2.8e-3 at N=1600 and biasing gamma_eff to ~0.11 (audit finding F-2 / IVP-11)",
+  "motivation": "fixed-grid mass floor drops with resolution \u2014 the C3 'gamma unmeasurable' verdict is a floor statement, and the floor is a knob"
+ },
+ "gamma_ladder": {
+  "N1600": {
+   "gamma_eff": 0.041024561830928216,
+   "gamma_err": 0.026218649575696796,
+   "r2": 0.32870721633528843,
+   "n_fit_rows": 7,
+   "n_runs": 7,
+   "floor_M": 0.008574765176255137,
+   "rows": [
+    {
+     "A": 0.10936711,
+     "eps": 0.03162277660168379,
+     "M_code": 0.012778335363236557,
+     "stop": "AH mass saturated",
+     "sane": true
+    },
+    {
+     "A": 0.09082611,
+     "eps": 0.013081774742601943,
+     "M_code": 0.012255095882757,
+     "stop": "AH mass saturated",
+     "sane": true
+    },
+    {
+     "A": 0.08315603,
+     "eps": 0.0054116952654646375,
+     "M_code": 0.009985033047297635,
+     "stop": "AH mass saturated",
+     "sane": true
+    },
+    {
+     "A": 0.07998306,
+     "eps": 0.00223872113856834,
+     "M_code": 0.008574765176255137,
+     "stop": "AH mass saturated",
+     "sane": true
+    },
+    {
+     "A": 0.07867045,
+     "eps": 0.0009261187281287938,
+     "M_code": 0.009783549996778728,
+     "stop": "completed",
+     "sane": true
+    },
+    {
+     "A": 0.07812745,
+     "eps": 0.0003831186849557289,
+     "M_code": 0.01035302999016965,
+     "stop": "completed",
+     "sane": true
+    },
+    {
+     "A": 0.07790283,
+     "eps": 0.00015848931924611142,
+     "M_code": 0.010267893523136866,
+     "stop": "completed",
+     "sane": true
+    }
+   ],
+   "gamma_Ch_anchor": 0.374,
+   "a_star_used": 0.0777443361282349
+  },
+  "N3200": {
+   "gamma_eff": 0.06045204623387996,
+   "gamma_err": 0.04168829603387548,
+   "r2": 0.4120851133129231,
+   "n_fit_rows": 5,
+   "n_runs": 5,
+   "floor_M": 0.004244867407885677,
+   "rows": [
+    {
+     "A": 0.10844455,
+     "eps": 0.03162277660168379,
+     "M_code": 0.006648179012363729,
+     "stop": "AH mass saturated",
+     "sane": true
+    },
+    {
+     "A": 0.08682177,
+     "eps": 0.01,
+     "M_code": 0.005973158648966496,
+     "stop": "AH mass saturated",
+     "sane": true
+    },
+    {
+     "A": 0.07998405,
+     "eps": 0.0031622776601683794,
+     "M_code": 0.004244867407885677,
+     "stop": "AH mass saturated",
+     "sane": true
+    },
+    {
+     "A": 0.07782177,
+     "eps": 0.001,
+     "M_code": 0.005146175683061161,
+     "stop": "completed",
+     "sane": true
+    },
+    {
+     "A": 0.077138,
+     "eps": 0.00031622776601683794,
+     "M_code": 0.005057458295206125,
+     "stop": "completed",
+     "sane": true
+    }
+   ],
+   "gamma_Ch_anchor": 0.374,
+   "a_star_used": 0.07682177066802981
+  }
+ },
+ "delta_ladder": {
+  "N1600": [
+   {
+    "N": 1600,
+    "eps_echo": 0.001,
+    "n_snapshots": 39,
+    "v_star_proxy": 0.747342,
+    "ah_found": true,
+    "n_peaks": 2,
+    "peak_v": [
+     0.45028,
+     0.65041
+    ],
+    "ln_time_x": [
+     -1.2138,
+     -2.3337
+    ],
+    "delta_eff": null,
+    "delta_eff_std": null
+   },
+   {
+    "N": 1600,
+    "eps_echo": 0.0003,
+    "n_snapshots": 39,
+    "v_star_proxy": 0.780488,
+    "ah_found": true,
+    "n_peaks": 2,
+    "peak_v": [
+     0.45028,
+     0.65041
+    ],
+    "ln_time_x": [
+     -1.108,
+     -2.0396
+    ],
+    "delta_eff": null,
+    "delta_eff_std": null
+   }
+  ],
+  "N3200": [
+   {
+    "N": 3200,
+    "eps_echo": 0.0003,
+    "n_snapshots": 39,
+    "v_star_proxy": 0.77743,
+    "ah_found": true,
+    "n_peaks": 2,
+    "peak_v": [
+     0.45014,
+     0.6502
+    ],
+    "ln_time_x": [
+     -1.1169,
+     -2.0618
+    ],
+    "delta_eff": null,
+    "delta_eff_std": null
+   },
+   {
+    "N": 3200,
+    "eps_echo": 0.0001,
+    "n_snapshots": 39,
+    "v_star_proxy": 0.804314,
+    "ah_found": true,
+    "n_peaks": 2,
+    "peak_v": [
+     0.45014,
+     0.6502
+    ],
+    "ln_time_x": [
+     -1.038,
+     -1.8701
+    ],
+    "delta_eff": null,
+    "delta_eff_std": null
+   }
+  ]
+ },
+ "delta_eff": null,
+ "products": {
+  "P_anchor": 1.28656,
+  "P_anchor_verdict": "PASS",
+  "P_engine_deep": null,
+  "P_engine_deep_verdict": null,
+  "target": {
+   "value": 1.27,
+   "tolerance": 0.05
+  }
+ },
+ "honest_notes": {
+  "stop_criterion": "deep-grid rows near threshold may stop with 'AH mass saturated'; M_ah is recorded and the row stays in the fit set only if sane",
+  "delta": "delta_eff is an EFFECTIVE period from 40 snapshots per run; the DSS verdict of C3 is not overwritten by this campaign, only supplemented",
+  "anchors": "gamma_Ch and echo_delta remain comparison anchors, never fit targets"
+ },
+ "timestamp": "2026-10-09 08:04:50",
+ "wall_total_s": 333.73571515083313
+}

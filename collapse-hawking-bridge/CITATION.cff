@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: >-
+  If you use this work, cite it using the metadata below.
+title: >-
+  Collapse-Hawking Bridge: a dimensionless mapping from critical
+  gravitational collapse to black-hole thermodynamics
+authors:
+  - family-names: Isaev
+    given-names: Ishak Khamzatovich
+    affiliation: Independent researcher, Nalchik, Kabardino-Balkarian Republic, Russian Federation
+version: 2.1.0
+released: 2026-10-09
+keywords:
+  - critical gravitational collapse
+  - Choptuik scaling
+  - black-hole thermodynamics
+  - Hawking radiation
+  - Page curve
+  - double-null evolution
+  - scale ladder
+license: Isaev-Proprietary-1.0
+abstract: >-
+  A self-contained research package connecting the threshold of black-hole
+  formation (critical collapse of a massless scalar field, double-null
+  characteristic engine) to semiclassical black-hole thermodynamics. The
+  dimensionless born spectrum f~(eps) measured by the engine is mapped onto
+  physical black holes through a single input mass scale; the package ships
+  the A* grid-honesty ladder, the master bridge table, Page-curve ensembles,
+  scale ladders and the Delta*gamma ~ 1.27 invariant check (campaign C3).

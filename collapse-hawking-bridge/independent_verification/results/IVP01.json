@@ -1,0 +1,47 @@
+{
+ "status": "PARTIAL",
+ "pre_registered": {
+  "expected_version": "2.0.1",
+  "criteria": "CRC clean; no traversal/symlinks/duplicates/debris; version == 2.0.0 in VERSION, pyproject, Makefile, CITATION, README; verdicts declare project_version 2.0.0"
+ },
+ "archive": {
+  "zip_path": null,
+  "note": "no release archive found next to the repo; archive-level block INCONCLUSIVE"
+ },
+ "version_findings": {
+  "VERSION": "2.0.1",
+  "pyproject.toml": "2.0.1",
+  "Makefile": "2.0.1",
+  "CITATION.cff": "2.0.1",
+  "CHANGELOG.md (latest heading)": "2.0.1",
+  "README.md (first version token)": "2.0.1",
+  "campaign verdicts": {
+   "c1_verdict.json": "2.0.1",
+   "c2_verdict.json": "2.0.1",
+   "c3_verdict.json": "2.0.1",
+   "c3b_verdict.json": "2.0.1"
+  }
+ },
+ "tree": {
+  "n_files": 270,
+  "total_bytes": 47222765,
+  "symlinks": []
+ },
+ "checks": {
+  "VERSION_file_is_2.0.0": true,
+  "pyproject_version_matches": true,
+  "Makefile_version_matches": true,
+  "CITATION_version_matches": true,
+  "README_version_token_present": true,
+  "verdict_project_version_matches": true,
+  "changelog_head_present": true,
+  "no_symlinks_in_tree": true
+ },
+ "ivp": "IVP01",
+ "timestamp": "2026-10-09 06:29:34",
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Linux-5.10.134-013.15.kangaroo.al8.x86_64-x86_64-with-glibc2.41",
+  "processor": "unknown"
+ }
+}

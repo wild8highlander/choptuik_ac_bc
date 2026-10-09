@@ -1,0 +1,66 @@
+{
+ "status": "PASS",
+ "pre_registered": {
+  "source_of_A_star": "verifier-own blind IVP-09 measurement",
+  "criterion": "A*(1-eps) subcritical AND A*(1+eps) supercritical for every pre-registered epsilon",
+  "caveat": "fixed-grid A*: coarser grids may legitimately flip the closest perturbations"
+ },
+ "rows": [
+  {
+   "eps": 0.01,
+   "A_below": 0.07972773513793947,
+   "A_above": 0.08133839645385744,
+   "below_supercritical": false,
+   "above_supercritical": true,
+   "ok": true
+  },
+  {
+   "eps": 0.001,
+   "A_below": 0.08045253273010256,
+   "A_above": 0.08061359886169435,
+   "below_supercritical": false,
+   "above_supercritical": true,
+   "ok": true
+  },
+  {
+   "eps": 0.0001,
+   "A_below": 0.08052501248931887,
+   "A_above": 0.08054111910247805,
+   "below_supercritical": false,
+   "above_supercritical": true,
+   "ok": true
+  },
+  {
+   "eps": 1e-05,
+   "A_below": 0.08053226046524051,
+   "A_above": 0.08053387112655642,
+   "below_supercritical": false,
+   "above_supercritical": true,
+   "ok": true
+  },
+  {
+   "eps": 0.001,
+   "grid": 1600,
+   "below_supercritical": false,
+   "above_supercritical": true,
+   "ok": true
+  },
+  {
+   "eps": 0.0001,
+   "grid": 1600,
+   "below_supercritical": false,
+   "above_supercritical": true,
+   "ok": true
+  }
+ ],
+ "checks": {
+  "all_perturbations_classified_correctly": true
+ },
+ "ivp": "IVP10",
+ "timestamp": "2026-10-09 06:36:13",
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Linux-5.10.134-013.15.kangaroo.al8.x86_64-x86_64-with-glibc2.41",
+  "processor": "unknown"
+ }
+}

@@ -1,0 +1,77 @@
+ISAEV PROPRIETARY LICENSE — COLLAPSE-HAWKING BRIDGE
+
+Version 1.0
+
+Copyright (c) 2024-2026 Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович)
+All rights reserved.
+
+________________________________________________________________________________
+
+TERMS AND CONDITIONS
+
+1. DEFINITIONS
+
+   "Author" means Ishak Khamzatovich Isaev (Исаев Исхак Хамзатович),
+   residing in Nalchik, Kabardino-Balkarian Republic, Russian Federation.
+
+   "Work" means the Collapse-Hawking Bridge research package, version
+   1.0.0: all source code (chbridge/, engine/, campaigns/, scripts/,
+   tests/), all data files (data/, campaigns/reference/), all
+   documentation (docs/, README.md, README.ru.md, all per-folder
+   README.md files), all figures (figures/), and the associated
+   metadata files, in source or compiled form.
+
+2. LICENSE GRANT
+
+   Subject to the terms below, the Author grants you a non-exclusive,
+   non-transferable, revocable license to:
+
+   a) USE the Work for research, educational and verification purposes;
+   b) RUN, inspect and test the Work, including its numerical engine
+      and campaigns, within your organisation;
+   c) QUOTE short excerpts of the Work (with attribution) in scholarly
+      communication, reviews and criticism.
+
+3. RESTRICTIONS
+
+   Without a separate written agreement with the Author, you may NOT:
+
+   a) redistribute, sublicense, sell or lease the Work or substantial
+      parts of it;
+   b) create derivative research packages that repackage the Work's
+      code, data or documentation under another name;
+   c) remove or alter this license, the authorship notices, or the
+      CITATION.cff attribution;
+   d) present the Work's numerical results as independently obtained
+      without disclosing the use of this Work.
+
+4. ATTRIBUTION
+
+   Any scholarly use of the Work, in whole or in part, must cite the
+   Author per CITATION.cff. The numerical engine (engine/solver.py),
+   the campaign verdicts and the bridge data tables are original
+   research artifacts of the Author.
+
+5. NO WARRANTY
+
+   THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+   CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE WORK OR ITS USE.
+
+6. TERMINATION
+
+   The license terminates automatically upon any breach of sections 3
+   or 4. Upon termination you must delete all copies of the Work.
+
+7. GOVERNING LAW
+
+   This license is governed by the laws of the Russian Federation.
+   Disputes fall under the jurisdiction of the courts of the
+   Kabardino-Balkarian Republic.
+
+________________________________________________________________________________
+
+Contact: via the author's research repository.

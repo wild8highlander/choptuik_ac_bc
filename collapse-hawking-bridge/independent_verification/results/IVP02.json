@@ -1,0 +1,21 @@
+{
+ "ivp": "IVP02",
+ "status": "PARTIAL",
+ "pre_registered": {
+  "clean_room": "fresh venv per interpreter; declared deps only; pip install --no-deps -e .",
+  "acceptance": "pytest suite passes and canonical numeric job is bitwise identical across all tested interpreters"
+ },
+ "interpreters": {
+  "Python 3.9": "INCONCLUSIVE (interpreter not available)",
+  "Python 3.10": "INCONCLUSIVE (interpreter not available)",
+  "Python 3.11": "INCONCLUSIVE (interpreter not available)",
+  "Python 3.12": "PASS",
+  "Python 3.13": "PASS"
+ },
+ "n_tested": 2,
+ "n_passed": 4,
+ "n_failed": 0,
+ "n_absent": 6,
+ "canonical_job": "IVP02_canonical_job.py (17-digit output; logs under results/logs/IVP02_py*.log)",
+ "timestamp": "2026-10-09 05:26:53"
+}

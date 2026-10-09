@@ -1,0 +1,101 @@
+{
+ "status": "FAIL",
+ "pre_registered": {
+  "P1": "C2/MD residuals < 1e-2 at N=800 and envelope improves >= 2x from N=400 (calibrated on the engine's own committed Roberts-window envelope, 3.8x per doubling)",
+  "P2": "max |c - omega_u| < 5e-2 (bounded)",
+  "P3": "monitor_every in {1, 25, 100} -> bit-identical final physics",
+  "P4": "C1 relative residual <= 0.05 on the smooth run (falsification)",
+  "note": "P4 formulated as a falsification test; outcome reported honestly either way"
+ },
+ "summary": {
+  "sub_N400": {
+   "rows": 16,
+   "residuals": {
+    "c1_max": {
+     "max": 0.7921487390456807,
+     "growth": 361.82925687146036
+    },
+    "c1_med": {
+     "max": 1.3158246002600848e-05,
+     "growth": 1229.8285876359437
+    },
+    "c1t_max": {
+     "max": 0.7919708322501938,
+     "growth": 359.00121007012837
+    },
+    "c2_max": {
+     "max": 0.0003795680914823408,
+     "growth": 2.583204430203727
+    },
+    "md_max": {
+     "max": 0.00011371236502289223,
+     "growth": 7.852215015171618
+    },
+    "dc_max": {
+     "max": 0.006608950832432514,
+     "growth": 279.82949773457807
+    }
+   },
+   "stop": "completed"
+  },
+  "sub_N800": {
+   "rows": 32,
+   "residuals": {
+    "c1_max": {
+     "max": 0.8852271562070884,
+     "growth": 271.4077323521662
+    },
+    "c1_med": {
+     "max": 2.462658575243975e-06,
+     "growth": 899.8453818156446
+    },
+    "c1t_max": {
+     "max": 0.8858997200630072,
+     "growth": 268.93330306223453
+    },
+    "c2_max": {
+     "max": 0.00014317790052120077,
+     "growth": 1.6223574082221488
+    },
+    "md_max": {
+     "max": 6.416478914058029e-05,
+     "growth": 7.952750276067774
+    },
+    "dc_max": {
+     "max": 0.009964338537640338,
+     "growth": 278.61378881042475
+    }
+   },
+   "stop": "completed"
+  },
+  "sup_N800_preAH": {
+   "rows": 18,
+   "residuals": {
+    "c1_max": 2.2876822668498966,
+    "c2_max": 0.008576041978833292,
+    "md_max": 0.00020861065727541294
+   },
+   "v_ah": 0.5694618272841051
+  }
+ },
+ "checks": {
+  "P1_dynamical_sector_small": true,
+  "P2_gauge_consistency_bounded": true,
+  "P4_C1_identity_bounded": false,
+  "C_sup_dynamical_sector_bounded": true,
+  "P3_monitor_every_invariance": true,
+  "D_c_dormant_no_feedback": true
+ },
+ "finding": {
+  "what": "C1 (uu-Einstein) identity violated at O(1) on Gaussian runs, non-converging with N; engine's own monitor agrees",
+  "localization": "pulse region (kink in p at fixed u); t-sandwich O(1) confined to the outer-edge cell",
+  "impact": "c is dormant (no feedback path into evolution slopes); dynamical sectors clean; r converges 2nd order (IVP-07); committed observables rest on the converging sectors"
+ },
+ "ivp": "IVP08",
+ "timestamp": "2026-10-09 06:30:22",
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Linux-5.10.134-013.15.kangaroo.al8.x86_64-x86_64-with-glibc2.41",
+  "processor": "unknown"
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "campaign": "chb_a_star_ladder",
+ "project_version": "2.0.1",
+ "remediation": "F-1 of independent_verification: replaces the stale reference 0.0805333 (N=1600) that did not reproduce under blind bisection (IVP-09)",
+ "protocol": {
+  "classification": "apparent horizon with finite M_AH",
+  "tol": 5e-08,
+  "max_iter": 40,
+  "engine": "engine/solver.py RK2-Heun Goursat march"
+ },
+ "ladder": {
+  "N200": {
+   "a_star": 0.10510427951812748,
+   "iters": 21,
+   "wall_s": 2.6,
+   "bracket_final": [
+    0.05,
+    0.15
+   ],
+   "probe_minus_1e-6_supercritical": false,
+   "probe_plus_1e-6_supercritical": true,
+   "straddle_ok": true
+  },
+  "N400": {
+   "a_star": 0.08820343494415286,
+   "iters": 20,
+   "wall_s": 6.4,
+   "bracket_final": [
+    0.07510427951812748,
+    0.11510427951812748
+   ],
+   "probe_minus_1e-6_supercritical": false,
+   "probe_plus_1e-6_supercritical": true,
+   "straddle_ok": true
+  },
+  "N800": {
+   "a_star": 0.080533242225647,
+   "iters": 20,
+   "wall_s": 18.3,
+   "bracket_final": [
+    0.058203434944152865,
+    0.09820343494415286
+   ],
+   "probe_minus_1e-6_supercritical": false,
+   "probe_plus_1e-6_supercritical": true,
+   "straddle_ok": true
+  },
+  "N1600": {
+   "a_star": 0.0777437257766724,
+   "iters": 20,
+   "wall_s": 58.5,
+   "bracket_final": [
+    0.05053324222564701,
+    0.090533242225647
+   ],
+   "probe_minus_1e-6_supercritical": false,
+   "probe_plus_1e-6_supercritical": true,
+   "straddle_ok": true
+  },
+  "N3200": {
+   "a_star": 0.07682116031646731,
+   "iters": 20,
+   "wall_s": 210.2,
+   "bracket_final": [
+    0.04774372577667241,
+    0.0877437257766724
+   ],
+   "probe_minus_1e-6_supercritical": false,
+   "probe_plus_1e-6_supercritical": true,
+   "straddle_ok": true
+  }
+ },
+ "timestamp": "2026-10-09 04:50:22",
+ "wall_total_s": 380.7976179122925
+}

@@ -1,0 +1,166 @@
+{
+ "status": "PASS",
+ "pre_registered": {
+  "P1": "runtime third-party imports \u2286 {numpy, mpmath}",
+  "P2": "tests third-party imports \u2286 {numpy, mpmath, pytest}",
+  "P3a": "scripts/rebuild_data.py third-party imports \u2286 {numpy, mpmath}",
+  "P3b_advisory": "no undeclared imports anywhere in scripts/ (advisory \u2014 outside runtime/test/data path)",
+  "P4": "no network-capable imports anywhere",
+  "P5": "no subprocess invocation in runtime code",
+  "P6": "no absolute-path or out-of-tree file access in runtime code"
+ },
+ "import_graph": {
+  "campaigns": {
+   "stdlib": [
+    "argparse",
+    "csv",
+    "json",
+    "math",
+    "os",
+    "sys",
+    "time"
+   ],
+   "third-party": [
+    "numpy"
+   ],
+   "local": [
+    "constants",
+    "solver"
+   ]
+  },
+  "chbridge": {
+   "local": [
+    "constants",
+    "hawking"
+   ],
+   "stdlib": [
+    "csv",
+    "json",
+    "math",
+    "os"
+   ],
+   "third-party": [
+    "mpmath",
+    "numpy"
+   ]
+  },
+  "engine": {
+   "stdlib": [
+    "__future__",
+    "dataclasses",
+    "json",
+    "math",
+    "os",
+    "time"
+   ],
+   "third-party": [
+    "numpy"
+   ]
+  },
+  "independent_verification": {
+   "stdlib": [
+    "__future__",
+    "argparse",
+    "ast",
+    "csv",
+    "hashlib",
+    "json",
+    "math",
+    "os",
+    "platform",
+    "re",
+    "shutil",
+    "subprocess",
+    "sys",
+    "tempfile",
+    "time",
+    "warnings",
+    "zipfile"
+   ],
+   "local": [
+    "chbridge",
+    "ivp_common",
+    "solver"
+   ],
+   "third-party": [
+    "mpmath",
+    "numpy",
+    "sympy"
+   ]
+  },
+  "scripts": {
+   "stdlib": [
+    "argparse",
+    "csv",
+    "json",
+    "math",
+    "os",
+    "sys"
+   ],
+   "local": [
+    "chbridge",
+    "figstyle",
+    "workbook_style"
+   ],
+   "third-party": [
+    "matplotlib",
+    "numpy",
+    "openpyxl"
+   ]
+  },
+  "tests": {
+   "stdlib": [
+    "csv",
+    "json",
+    "math",
+    "os",
+    "sys",
+    "tempfile"
+   ],
+   "local": [
+    "chbridge",
+    "solver"
+   ],
+   "third-party": [
+    "numpy"
+   ]
+  }
+ },
+ "runtime_third_party": [
+  "mpmath",
+  "numpy"
+ ],
+ "scripts_undeclared": [
+  "openpyxl"
+ ],
+ "suspicious": {
+  "network": [],
+  "subprocess": [],
+  "env_probes": [],
+  "subprocess_advisory": [
+   "independent_verification/IVP15_cross_language.py:27 import subprocess"
+  ]
+ },
+ "open_sites": 0,
+ "out_of_tree_access": [],
+ "out_of_tree_syspath": [],
+ "checks": {
+  "P1_runtime_deps_subset": true,
+  "P2_test_deps_subset": true,
+  "P3a_data_rebuild_strict": true,
+  "P4_no_network_imports": true,
+  "P5_no_subprocess_in_runtime": true,
+  "P6_no_absolute_path_reads": true,
+  "P7_ivp_suite_deps_subset": true
+ },
+ "checks_advisory": {
+  "P3b_scripts_undeclared_imports_advisory": false
+ },
+ "ivp": "IVP03",
+ "timestamp": "2026-10-09 05:29:08",
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Linux-5.10.134-013.15.kangaroo.al8.x86_64-x86_64-with-glibc2.41",
+  "processor": "unknown"
+ }
+}

@@ -1,0 +1,142 @@
+{
+ "status": "PARTIAL",
+ "pre_registered": {
+  "cross_twin_tol": 1e-11,
+  "verifier_ref_tol": "5e-7 for 6-7-digit printed fields (printf budget), 1e-11 for 12+-digit fields",
+  "note": "toolchain-absent twins are INCONCLUSIVE, never skipped"
+ },
+ "twins": {
+  "c": {
+   "status": "OK",
+   "n_fields": 12
+  },
+  "cpp": {
+   "status": "OK",
+   "n_fields": 12
+  },
+  "javascript": {
+   "status": "OK",
+   "n_fields": 12
+  },
+  "julia": {
+   "status": "INCONCLUSIVE",
+   "reason": "toolchain 'julia' not present on this machine",
+   "reproduce": " && julia bridge.jl"
+  },
+  "rust": {
+   "status": "INCONCLUSIVE",
+   "reason": "toolchain 'rustc' not present on this machine",
+   "reproduce": "rustc -O bridge.rs -o bridge && ./bridge"
+  },
+  "go": {
+   "status": "INCONCLUSIVE",
+   "reason": "toolchain 'go' not present on this machine",
+   "reproduce": " && go run bridge.go"
+  }
+ },
+ "fields": {
+  "c": {
+   "delta_C": 0.4487989505128276,
+   "b_Ch": 0.3765101981412664,
+   "PAGE_FRACTION": 0.6464466094067263,
+   "Delta*gamma": 1.28656,
+   "M_CMB": 4.501595e+22,
+   "T_H(1e12": 122690100000.0,
+   "S_BH(1e12)/kB": 2.652887e+40,
+   "t_evap(1e12": 8.411478e+19,
+   "P_H(1e12": 356162200.0,
+   "S_rad_half": 0.62996052494744,
+   "S_rad_page": 0.5,
+   "S_rad_08": 0.65800481066466
+  },
+  "cpp": {
+   "delta_C": 0.4487989505128276,
+   "b_Ch": 0.3765101981412664,
+   "PAGE_FRACTION": 0.6464466094067263,
+   "Delta*gamma": 1.28656,
+   "M_CMB": 4.501595e+22,
+   "T_H(1e12": 122690100000.0,
+   "S_BH(1e12)/kB": 2.652887e+40,
+   "t_evap(1e12": 8.411478e+19,
+   "P_H(1e12": 356162200.0,
+   "S_rad_half": 0.62996052494744,
+   "S_rad_page": 0.5,
+   "S_rad_08": 0.65800481066466
+  },
+  "javascript": {
+   "delta_C": 0.448798950513,
+   "b_Ch": 0.376510198141,
+   "PAGE_FRACTION": 0.646446609407,
+   "Delta*gamma": 1.28656,
+   "M_CMB": 4.501595e+22,
+   "T_H(1e12": 122690100000.0,
+   "S_BH(1e12)/kB": 2.652887e+40,
+   "t_evap(1e12": 8.411478e+19,
+   "P_H(1e12": 356162200.0,
+   "S_rad_half": 0.62996052494744,
+   "S_rad_page": 0.5,
+   "S_rad_08": 0.65800481066466
+  }
+ },
+ "pairwise": [
+  {
+   "twin_a": "c",
+   "twin_b": "cpp",
+   "n_fields": 12,
+   "worst_rel_diff": 0.0,
+   "worst_field": "",
+   "ok": true
+  },
+  {
+   "twin_a": "c",
+   "twin_b": "javascript",
+   "n_fields": 12,
+   "worst_rel_diff": 7.075452831666526e-13,
+   "worst_field": "b_Ch",
+   "ok": true
+  },
+  {
+   "twin_a": "cpp",
+   "twin_b": "javascript",
+   "n_fields": 12,
+   "worst_rel_diff": 7.075452831666526e-13,
+   "worst_field": "b_Ch",
+   "ok": true
+  }
+ ],
+ "twin_vs_verifier": [
+  {
+   "twin": "c",
+   "worst_rel_diff_vs_tol": 0.5369725370814493,
+   "worst_field": "T_H(1e12",
+   "ok": true
+  },
+  {
+   "twin": "cpp",
+   "worst_rel_diff_vs_tol": 0.5369725370814493,
+   "worst_field": "T_H(1e12",
+   "ok": true
+  },
+  {
+   "twin": "javascript",
+   "worst_rel_diff_vs_tol": 0.5369725370814493,
+   "worst_field": "T_H(1e12",
+   "ok": true
+  }
+ ],
+ "checks": {
+  "pair_c_cpp": true,
+  "pair_c_javascript": true,
+  "pair_cpp_javascript": true,
+  "c_vs_verifier_mpmath": true,
+  "cpp_vs_verifier_mpmath": true,
+  "javascript_vs_verifier_mpmath": true
+ },
+ "ivp": "IVP15",
+ "timestamp": "2026-10-09 06:40:39",
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Linux-5.10.134-013.15.kangaroo.al8.x86_64-x86_64-with-glibc2.41",
+  "processor": "unknown"
+ }
+}

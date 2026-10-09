@@ -1,0 +1,298 @@
+{
+ "campaign": "chb_c2",
+ "engine": "engine/solver.py \u2014 double-null characteristic march (Goursat, RK2-Heun)",
+ "project_version": "2.1.0",
+ "units": "4 pi G = 1 (kappa = 2), geometric engine units",
+ "family": {
+  "u0": -1.0,
+  "v_p": 0.5,
+  "sigma": 0.1,
+  "v0": 0.0,
+  "u_range": [
+   -1.0,
+   1.05
+  ],
+  "v_range": [
+   0.0,
+   1.0
+  ]
+ },
+ "grid": {
+  "N": 800
+ },
+ "a_star_N800": 0.08053436279296877,
+ "subcritical": {
+  "n_runs": 13,
+  "eps_span_decades": 3.0,
+  "flipped_runs": 0,
+  "rows": [
+   {
+    "A": 0.01743863,
+    "eps": 0.06309573444801933,
+    "flipped": false,
+    "q_max": 0.015836645193445693,
+    "v_qmax": 0.6508135168961202,
+    "n_peaks": 2,
+    "q_final_over_qmax": 0.5599580252031778,
+    "stop": "completed"
+   },
+   {
+    "A": 0.04505302,
+    "eps": 0.03548133892335755,
+    "flipped": false,
+    "q_max": 0.1106839405457965,
+    "v_qmax": 0.6508135168961202,
+    "n_peaks": 2,
+    "q_final_over_qmax": 0.5558301120827254,
+    "stop": "completed"
+   },
+   {
+    "A": 0.06058174,
+    "eps": 0.0199526231496888,
+    "flipped": false,
+    "q_max": 0.21185596733063936,
+    "v_qmax": 0.6508135168961202,
+    "n_peaks": 2,
+    "q_final_over_qmax": 0.5516738866443512,
+    "stop": "completed"
+   },
+   {
+    "A": 0.06931418,
+    "eps": 0.011220184543019636,
+    "flipped": false,
+    "q_max": 0.29232617361006824,
+    "v_qmax": 0.6508135168961202,
+    "n_peaks": 2,
+    "q_final_over_qmax": 0.548319878426154,
+    "stop": "completed"
+   },
+   {
+    "A": 0.07422479,
+    "eps": 0.006309573444801929,
+    "flipped": false,
+    "q_max": 0.3502774513557104,
+    "v_qmax": 0.6508135168961202,
+    "n_peaks": 2,
+    "q_final_over_qmax": 0.5456506962481836,
+    "stop": "completed"
+   },
+   {
+    "A": 0.07698623,
+    "eps": 0.0035481338923357532,
+    "flipped": false,
+    "q_max": 0.3899980003005616,
+    "v_qmax": 0.6508135168961202,
+    "n_peaks": 3,
+    "q_final_over_qmax": 0.6275979673827885,
+    "stop": "completed"
+   },
+   {
+    "A": 0.0785391,
+    "eps": 0.001995262314968879,
+    "flipped": false,
+    "q_max": 0.41636729032597275,
+    "v_qmax": 0.6508135168961202,
+    "n_peaks": 3,
+    "q_final_over_qmax": 0.6943492838622194,
+    "stop": "completed"
+   },
+   {
+    "A": 0.07941234,
+    "eps": 0.001122018454301963,
+    "flipped": false,
+    "q_max": 0.43336634188543477,
+    "v_qmax": 0.6508135168961202,
+    "n_peaks": 3,
+    "q_final_over_qmax": 0.7432374869018697,
+    "stop": "completed"
+   },
+   {
+    "A": 0.07990341,
+    "eps": 0.000630957344480193,
+    "flipped": false,
+    "q_max": 0.46822957055869874,
+    "v_qmax": 0.8260325406758449,
+    "n_peaks": 3,
+    "q_final_over_qmax": 0.737422838843051,
+    "stop": "completed"
+   },
+   {
+    "A": 0.08017955,
+    "eps": 0.0003548133892335753,
+    "flipped": false,
+    "q_max": 0.5038200606083596,
+    "v_qmax": 0.8260325406758449,
+    "n_peaks": 3,
+    "q_final_over_qmax": 0.7175491545956356,
+    "stop": "completed"
+   },
+   {
+    "A": 0.08033484,
+    "eps": 0.00019952623149688788,
+    "flipped": false,
+    "q_max": 0.5387289633711799,
+    "v_qmax": 0.8260325406758449,
+    "n_peaks": 3,
+    "q_final_over_qmax": 0.6858365448840227,
+    "stop": "completed"
+   },
+   {
+    "A": 0.08042216,
+    "eps": 0.0001122018454301963,
+    "flipped": false,
+    "q_max": 0.5644501566615899,
+    "v_qmax": 0.8260325406758449,
+    "n_peaks": 3,
+    "q_final_over_qmax": 0.6638046796986006,
+    "stop": "completed"
+   },
+   {
+    "A": 0.08047127,
+    "eps": 6.309573444801929e-05,
+    "flipped": false,
+    "q_max": 0.5844946664840335,
+    "v_qmax": 0.8260325406758449,
+    "n_peaks": 3,
+    "q_final_over_qmax": 0.6467139647214063,
+    "stop": "completed"
+   }
+  ],
+  "slowdown_fit": {
+   "slope_ln_eps": -0.03344907918769632,
+   "intercept": 0.5102532011167805,
+   "r2": 0.7142857142857144,
+   "slope_err": 0.0063784891300363395,
+   "n_points": 13,
+   "honest_note": "fixed grid, 40 compactness samples per run; the slowdown is the DSS logarithmic approach only in the near-critical band"
+  },
+  "echo_rate_fit": {
+   "echoes_per_efold": 0.1908986733640667,
+   "intercept": 1.4285714285714286,
+   "r2": 0.7142857142857144,
+   "err": 0.03640294867785027,
+   "n_points": 13,
+   "honest_note": "40 compactness samples per run bound the countable echoes; 1/Delta ~ 0.29 is the anchor for comparison, never a fit target"
+  }
+ },
+ "bifurcation": {
+  "n_runs": 13,
+  "rows": [
+   {
+    "A": 0.39676213,
+    "eps": 0.31622776601683794,
+    "M_code": 0.03518978551089466,
+    "stop": "AH mass saturated",
+    "sane": true,
+    "f_tilde": 1.0
+   },
+   {
+    "A": 0.24209417,
+    "eps": 0.16155980984398738,
+    "M_code": 0.029508519617261877,
+    "stop": "AH mass saturated",
+    "sane": true,
+    "f_tilde": 0.8385535515164229
+   },
+   {
+    "A": 0.16307478,
+    "eps": 0.08254041852680181,
+    "M_code": 18272770.341877647,
+    "stop": "AH mass saturated",
+    "sane": false
+   },
+   {
+    "A": 0.12270401,
+    "eps": 0.042169650342858224,
+    "M_code": 0.022453060565010407,
+    "stop": "AH mass saturated",
+    "sane": true,
+    "f_tilde": 0.6380561926999812
+   },
+   {
+    "A": 0.10207871,
+    "eps": 0.021544346900318832,
+    "M_code": 0.021917885113269822,
+    "stop": "AH mass saturated",
+    "sane": true,
+    "f_tilde": 0.6228479314397669
+   },
+   {
+    "A": 0.0915413,
+    "eps": 0.011006941712522093,
+    "M_code": 0.020642398156972924,
+    "stop": "AH mass saturated",
+    "sane": true,
+    "f_tilde": 0.5866019885396032
+   },
+   {
+    "A": 0.08615778,
+    "eps": 0.005623413251903491,
+    "M_code": 0.018731924791060846,
+    "stop": "AH mass saturated",
+    "sane": true,
+    "f_tilde": 0.5323114227354837
+   },
+   {
+    "A": 0.08340735,
+    "eps": 0.002872984833353663,
+    "M_code": 0.013499567949370864,
+    "stop": "AH mass saturated",
+    "sane": true,
+    "f_tilde": 0.3836217741421423
+   },
+   {
+    "A": 0.08200216,
+    "eps": 0.001467799267622069,
+    "M_code": 9054.720212837636,
+    "stop": "completed",
+    "sane": false
+   },
+   {
+    "A": 0.08128426,
+    "eps": 0.0007498942093324559,
+    "M_code": 5727674.933352499,
+    "stop": "completed",
+    "sane": false
+   },
+   {
+    "A": 0.08091748,
+    "eps": 0.0003831186849557285,
+    "M_code": 0.02124836620432455,
+    "stop": "completed",
+    "sane": true,
+    "f_tilde": 0.6038219868588319
+   },
+   {
+    "A": 0.0807301,
+    "eps": 0.00019573417814876596,
+    "M_code": 0.02262134870029034,
+    "stop": "completed",
+    "sane": true,
+    "f_tilde": 0.6428384933828832
+   },
+   {
+    "A": 0.08063436,
+    "eps": 0.0001,
+    "M_code": 0.022709058423906303,
+    "stop": "completed",
+    "sane": true,
+    "f_tilde": 0.6453309701724564
+   }
+  ],
+  "summary": {
+   "M_sat_N800": 0.03518978551089466,
+   "M_sat_reference_N400": 0.0794,
+   "eps_half": 0.004859801757908699,
+   "f_tilde_min_below_1e2": 0.3836217741421423,
+   "honest_note": "the exponent fit is C3's committed measurement; C2 commits the SHAPE (f~ table, eps_half) only"
+  }
+ },
+ "honest_notes": {
+  "sampling": "q(v) is sampled by 40 engine snapshots per run; peak counts and v_qmax carry that sampling step",
+  "gamma": "the mass-scaling exponent is deliberately NOT re-fit here \u2014 C3 owns that committed measurement",
+  "flipped": "subcritical runs that formed an apparent horizon are kept verbatim with flipped=true (A*_800 is a fixed-grid quantity; the closest eps can cross it)",
+  "junk": "supercritical rows with overflowing masses are kept with sane=false, never dropped"
+ },
+ "timestamp": "2026-10-09 07:58:56",
+ "wall_total_s": 24.227858304977417
+}

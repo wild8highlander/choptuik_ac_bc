@@ -1,0 +1,33 @@
+{
+ "status": "PASS",
+ "pre_registered": {
+  "method": "SymPy differentiation from scratch of the published Roberts-Oshiro form; residuals reduced sqrt-free; must simplify to exactly 0; kappa free-symbol proof",
+  "note": "stronger than numeric regression: residuals vanish IDENTICALLY, not approximately"
+ },
+ "residuals": {
+  "SC": "0",
+  "UV": "0",
+  "C1(kappa=2)": "0",
+  "C2(kappa=2)": "0",
+  "TH+MD": "0"
+ },
+ "kappa_factorization": "sigma**2*v**2*(kappa - 2)/4",
+ "numeric_worst_residual": 0.0,
+ "checks": {
+  "residual_SC_zero": true,
+  "residual_UV_zero": true,
+  "residual_C1(kappa=2)_zero": true,
+  "residual_C2(kappa=2)_zero": true,
+  "residual_TH+MD_zero": true,
+  "C1_kappa_free_vanishes_at_2": true,
+  "C1_kappa_free_NONZERO_away_from_2": true,
+  "numeric_spot_check_below_1e-20": true
+ },
+ "ivp": "IVP06",
+ "timestamp": "2026-10-09 06:29:59",
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Linux-5.10.134-013.15.kangaroo.al8.x86_64-x86_64-with-glibc2.41",
+  "processor": "unknown"
+ }
+}

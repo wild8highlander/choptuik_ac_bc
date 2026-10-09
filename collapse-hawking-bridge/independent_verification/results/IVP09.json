@@ -1,0 +1,269 @@
+{
+ "status": "FAIL",
+ "pre_registered": {
+  "blindness": "no committed A* value read before measurement",
+  "coarse_scan": "A in [0.02, 0.30] step 0.01 at N=200",
+  "tolerance": 2e-06,
+  "criteria": "shallow grids (N=200/400/800) reproduce within 5e-6; deep-grid reference reproduces within 2e-6; ladder converged N800->N1600 within 2e-6; monotone probes"
+ },
+ "scan": [
+  {
+   "A": 0.02,
+   "supercritical": false,
+   "M_AH": 0.0
+  },
+  {
+   "A": 0.03,
+   "supercritical": false,
+   "M_AH": 0.0
+  },
+  {
+   "A": 0.04,
+   "supercritical": false,
+   "M_AH": 0.0
+  },
+  {
+   "A": 0.05,
+   "supercritical": false,
+   "M_AH": 0.0
+  },
+  {
+   "A": 0.06,
+   "supercritical": false,
+   "M_AH": 0.0
+  },
+  {
+   "A": 0.07,
+   "supercritical": false,
+   "M_AH": 0.0
+  },
+  {
+   "A": 0.08,
+   "supercritical": false,
+   "M_AH": 0.0
+  },
+  {
+   "A": 0.09,
+   "supercritical": false,
+   "M_AH": 0.0
+  },
+  {
+   "A": 0.1,
+   "supercritical": false,
+   "M_AH": 0.0
+  },
+  {
+   "A": 0.11,
+   "supercritical": true,
+   "M_AH": 0.05387977875092993
+  },
+  {
+   "A": 0.12,
+   "supercritical": true,
+   "M_AH": 0.07152860044520899
+  },
+  {
+   "A": 0.13,
+   "supercritical": true,
+   "M_AH": 0.06403271267221369
+  },
+  {
+   "A": 0.14,
+   "supercritical": true,
+   "M_AH": 0.06961839546247285
+  },
+  {
+   "A": 0.15,
+   "supercritical": true,
+   "M_AH": 0.06252147086852837
+  },
+  {
+   "A": 0.16,
+   "supercritical": true,
+   "M_AH": 0.05955557929260698
+  },
+  {
+   "A": 0.17,
+   "supercritical": true,
+   "M_AH": 0.05926546950418751
+  },
+  {
+   "A": 0.18,
+   "supercritical": true,
+   "M_AH": 0.06188204242035841
+  },
+  {
+   "A": 0.19,
+   "supercritical": true,
+   "M_AH": 0.07006930833847294
+  },
+  {
+   "A": 0.2,
+   "supercritical": true,
+   "M_AH": 0.04971497780296914
+  },
+  {
+   "A": 0.21,
+   "supercritical": true,
+   "M_AH": 0.05758327480621564
+  },
+  {
+   "A": 0.22,
+   "supercritical": true,
+   "M_AH": 3.3789914068307514
+  },
+  {
+   "A": 0.23,
+   "supercritical": true,
+   "M_AH": 0.0731105324009925
+  },
+  {
+   "A": 0.24,
+   "supercritical": true,
+   "M_AH": 0.08015033898474695
+  },
+  {
+   "A": 0.25,
+   "supercritical": true,
+   "M_AH": 0.0913645502654504
+  },
+  {
+   "A": 0.26,
+   "supercritical": true,
+   "M_AH": 0.08977488100208832
+  },
+  {
+   "A": 0.27,
+   "supercritical": true,
+   "M_AH": 0.09067179524056446
+  },
+  {
+   "A": 0.28,
+   "supercritical": true,
+   "M_AH": 0.11734967078227096
+  },
+  {
+   "A": 0.29,
+   "supercritical": true,
+   "M_AH": 0.12519806168434908
+  },
+  {
+   "A": 0.3,
+   "supercritical": true,
+   "M_AH": 0.10321993515879314
+  }
+ ],
+ "ladder": {
+  "N200": {
+   "a_star": 0.1051043701171875,
+   "iters": 13,
+   "wall_s": 1.9,
+   "bracket": [
+    0.1,
+    0.11
+   ]
+  },
+  "N400": {
+   "a_star": 0.08820335388183595,
+   "iters": 16,
+   "wall_s": 5.7,
+   "bracket": [
+    0.0451043701171875,
+    0.1151043701171875
+   ]
+  },
+  "N800": {
+   "a_star": 0.08053306579589846,
+   "iters": 14,
+   "wall_s": 14.9,
+   "bracket": [
+    0.07820335388183595,
+    0.09820335388183594
+   ]
+  },
+  "N1600": {
+   "a_star": 0.07774314880371098,
+   "iters": 14,
+   "wall_s": 47.5,
+   "bracket": [
+    0.07053306579589846,
+    0.09053306579589845
+   ]
+  },
+  "N3200": {
+   "a_star": 0.07682090759277348,
+   "iters": 14,
+   "wall_s": 166.5,
+   "bracket": [
+    0.06774314880371099,
+    0.08774314880371098
+   ]
+  }
+ },
+ "monotonicity_probes": [
+  {
+   "n": 1600,
+   "A_below": 0.0777,
+   "A_above": 0.0785,
+   "below_supercritical": false,
+   "above_supercritical": true,
+   "ok": true
+  },
+  {
+   "n": 3200,
+   "A_below": 0.0755,
+   "A_above": 0.077,
+   "below_supercritical": false,
+   "above_supercritical": true,
+   "ok": true
+  }
+ ],
+ "comparison": [
+  {
+   "n": 200,
+   "ivp_a_star": 0.1051043701171875,
+   "committed": 0.1051048278808594,
+   "abs_diff": 4.577636718988698e-07,
+   "tol": 2e-06,
+   "agree": true
+  },
+  {
+   "n": 400,
+   "ivp_a_star": 0.08820335388183595,
+   "committed": 0.0882011413574219,
+   "abs_diff": 2.2125244140552836e-06,
+   "tol": 2e-06,
+   "agree": false
+  },
+  {
+   "n": 800,
+   "ivp_a_star": 0.08053306579589846,
+   "committed": 0.08053436279296877,
+   "abs_diff": 1.2969970703130551e-06,
+   "tol": 2e-06,
+   "agree": true
+  },
+  {
+   "n": 1600,
+   "ivp_a_star": 0.07774314880371098,
+   "committed": 0.0777437257766724,
+   "abs_diff": 5.769729614218955e-07,
+   "tol": 2e-06,
+   "agree": true
+  }
+ ],
+ "checks": {
+  "shallow_grids_N200_400_800_reproduce": true,
+  "deep_grid_reference_N1600_reproduces": true,
+  "ladder_converged_N800_to_N1600": false,
+  "classification_monotone_at_deep_grids": true
+ },
+ "wall_s": 268.78809213638306,
+ "ivp": "IVP09",
+ "timestamp": "2026-10-09 06:35:26",
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Linux-5.10.134-013.15.kangaroo.al8.x86_64-x86_64-with-glibc2.41",
+  "processor": "unknown"
+ }
+}

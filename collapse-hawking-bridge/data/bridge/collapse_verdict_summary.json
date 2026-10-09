@@ -1,0 +1,43 @@
+{
+ "campaign": "C1",
+ "a_star_grid": {
+  "N200": 0.1051048278808594,
+  "N400": 0.0882011413574219,
+  "N800": 0.08053436279296877
+ },
+ "a_star_reference_N1600": 0.0777437257766724,
+ "a_star_drift_N800_vs_reference": 0.0027906370162963656,
+ "roberts_convergence_orders": [
+  2.031290713055658,
+  2.093263680804257
+ ],
+ "M_code_sat": 0.07944263231868816,
+ "mass_floor_N800_code": 0.022851814807726425,
+ "f_tilde_range_resolved": [
+  0.28765178268584063,
+  1.0
+ ],
+ "gamma_campaign": "honestly unmeasurable: fixed-grid floor dominates (C3 floor-biased gamma_eff = 0.005 +- 0.035 at N=800; C3b per-grid remediation concurs: 0.041 / 0.060 at N=1600/3200, floor-dominated)",
+ "gamma_Ch_anchor": 0.374,
+ "b_Ch": 0.3765101981412664,
+ "b_Ch_lit": 0.37651,
+ "junk_rows": 6,
+ "M_CMB_kg": 4.5015948405198975e+22,
+ "members": {
+  "near_floor": {
+   "eps": 0.0004436687330978611,
+   "f_tilde": 0.28765178268584063,
+   "M_code": 0.022851814807726425
+  },
+  "mid": {
+   "eps": 0.013111339374215644,
+   "f_tilde": 0.26844718925284194,
+   "M_code": 0.021326151352798816
+  },
+  "saturated": {
+   "eps": 0.5011872336272722,
+   "f_tilde": 1.0,
+   "M_code": 0.07944263231868816
+  }
+ }
+}

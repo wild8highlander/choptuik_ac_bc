@@ -1,0 +1,9 @@
+bridge_quantity,value,source
+Critical exponent gamma (literature anchor),0.374,literature anchor; NOT fitted in this project
+"b_Ch = 1 - cos(2pi/7) (septinial constant, exact)",0.3765101981412664,"Klein-quartic spinor phases, septinial sector"
+|gamma_Ch - b_Ch|,0.0025101981412664065,"0.67% — a COMPARISON, never a fit"
+delta_C = pi/7 (septinial spinor phase),0.4487989505128276,exact
+Echo period Delta (engine measurement),3.44,effective period at fixed grid (NOT-DSS verdict)
+t_Page / t_evap (Page model),0.6464466094067263,unitary entropy-flux model
+"Delta * gamma (product, C3 target)",1.27,project invariant; anchors give 1.28656 (1.3%)
+"A* (N=800), fixed-grid observable",0.08053436279296877,ladder drift 2.79e-3 to N=1600 (F-1 remediation); the stale 1.06e-6 agreement is RETRACTED

@@ -1,0 +1,9 @@
+quantity,value_m,formula
+Planck length l_P,1.6162550244237053e-35,sqrt(hbar G / c^3)
+Planck barrier r_P,3.07088454640504e-35,r_P ~ 1.9 l_P — end of semiclassical evaporation
+r_s of born BH at Planck input,9.299931410534e-36,"2G M / c^2, M = 0.2877 m_P"
+r_s of CMB-mass BH,6.685912950467687e-05,"2G M / c^2, M = 4.50e22 kg"
+r_s of born BH at CMB input,1.9235371558495537e-05,M = 0.2877 M_CMB
+r_s of Earth-mass BH,0.0088701028718461,2G M / c^2
+r_s of solar BH,2954.007736491099,2G M / c^2
+Hubble radius c / H0,1.3672226821619751e+26,c / H0

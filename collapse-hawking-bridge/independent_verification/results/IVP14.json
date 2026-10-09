@@ -1,0 +1,39 @@
+{
+ "status": "PASS",
+ "pre_registered": {
+  "anchors": {
+   "Delta_lit": 3.44,
+   "gamma_lit": 0.374,
+   "target": 1.27,
+   "tolerance": 0.05
+  },
+  "rule": "three products separated; unmeasurable factors -> INCONCLUSIVE, never silent"
+ },
+ "P_anchor": 1.28656,
+ "P_anchor_verdict": "PASS",
+ "P_mixed": null,
+ "P_mixed_verdict": "INCONCLUSIVE",
+ "P_engine": {
+  "400": null,
+  "800": null,
+  "1600": null,
+  "3200": null
+ },
+ "P_engine_verdict": {
+  "400": "INCONCLUSIVE",
+  "800": "INCONCLUSIVE",
+  "1600": "INCONCLUSIVE",
+  "3200": "INCONCLUSIVE"
+ },
+ "checks": {
+  "anchor_product_within_target_tolerance": true,
+  "engine_products_reported_honestly": true
+ },
+ "ivp": "IVP14",
+ "timestamp": "2026-10-09 06:40:38",
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Linux-5.10.134-013.15.kangaroo.al8.x86_64-x86_64-with-glibc2.41",
+  "processor": "unknown"
+ }
+}

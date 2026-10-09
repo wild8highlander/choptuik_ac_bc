@@ -1,0 +1,8 @@
+quantity,value_m_s2,formula
+MOND acceleration a0 (literature anchor),1.2e-10,a0 = 1.2e-10 m/s^2
+c H0,6.57358300489592e-10,c H0
+c H0 / 2pi (MOND coincidence),1.0462182290540606e-10,"c H0 / 2pi — a NUMERICAL coincidence with a0, not a derivation"
+"Surface gravity, CMB-mass BH",6.721259949054143e+20,"kappa = c^4/(4GM), M = 4.50e22 kg (T_H = T_CMB)"
+"Surface gravity, born BH at CMB input",2.3362043618540643e+21,"kappa for M = f_tilde * M_CMB, f_tilde = 0.2877"
+"Surface gravity, solar BH",15212471647152.807,kappa = c^4/(4GM_sun)
+g at r_s of Sgr A*,3540254.048674146,kappa for M = 4.297e6 M_sun

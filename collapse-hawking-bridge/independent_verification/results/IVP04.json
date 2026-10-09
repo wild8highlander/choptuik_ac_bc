@@ -1,0 +1,221 @@
+{
+ "status": "PASS",
+ "pre_registered": {
+  "method": "re-derive all closed forms in mpmath dps=50 from CODATA-2018 exact definitions; import chbridge only in comparison phase",
+  "tolerances": {
+   "float64 closed forms": 1e-09,
+   "Planck units": 1e-12
+  }
+ },
+ "internal_checks": {
+  "T_H(M_CMB) == T_CMB": true,
+  "S_BH * T_H == M c^2 / 2 (first law)": true,
+  "t_evap == M c^2 / (3 P_H) (luminosity integral, P ~ M^-2)": true,
+  "rho_mean * r_s^3 == 3M/4pi (definition)": true
+ },
+ "comparison_rows": [
+  {
+   "quantity": "r_s(1e12)",
+   "verifier": 1.4852320538237332e-15,
+   "chbridge": 1.485232053823733e-15,
+   "rel_diff": 1.3278411666212155e-16,
+   "ok": true
+  },
+  {
+   "quantity": "S_BH/kB(1e12)",
+   "verifier": 2.652886829696343e+40,
+   "chbridge": 2.6528868296963427e+40,
+   "rel_diff": 1.8228079782099207e-16,
+   "ok": true
+  },
+  {
+   "quantity": "T_H(1e12)",
+   "verifier": 122690067059.4017,
+   "chbridge": 122690067059.4017,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "P_H(1e12)",
+   "verifier": 356162214.47784936,
+   "chbridge": 356162214.4778495,
+   "rel_diff": 3.347050436710353e-16,
+   "ok": true
+  },
+  {
+   "quantity": "t_evap(1e12)",
+   "verifier": 8.411477899702108e+19,
+   "chbridge": 8.411477899702105e+19,
+   "rel_diff": 3.895629328249259e-16,
+   "ok": true
+  },
+  {
+   "quantity": "rho_mean(1e12)",
+   "verifier": 7.28665907296963e+55,
+   "chbridge": 7.286659072969634e+55,
+   "rel_diff": 4.483139240806667e-16,
+   "ok": true
+  },
+  {
+   "quantity": "kappa_sg(1e12)",
+   "verifier": 3.025638910845516e+31,
+   "chbridge": 3.025638910845516e+31,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "r_s(4.5016e22)",
+   "verifier": 6.685920613492917e-05,
+   "chbridge": 6.685920613492917e-05,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "S_BH/kB(4.5016e22)",
+   "verifier": 5.375916666308886e+61,
+   "chbridge": 5.375916666308886e+61,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "T_H(4.5016e22)",
+   "verifier": 2.7254768762084973,
+   "chbridge": 2.7254768762084973,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "P_H(4.5016e22)",
+   "verifier": 1.7575756967090639e-13,
+   "chbridge": 1.7575756967090646e-13,
+   "rel_diff": 4.308812817736236e-16,
+   "ok": true
+  },
+  {
+   "quantity": "t_evap(4.5016e22)",
+   "verifier": 7.673138099973352e+51,
+   "chbridge": 7.673138099973352e+51,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "rho_mean(4.5016e22)",
+   "verifier": 3.595792696772024e+34,
+   "chbridge": 3.595792696772024e+34,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "kappa_sg(4.5016e22)",
+   "verifier": 6.72125224552496e+20,
+   "chbridge": 6.72125224552496e+20,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "r_s(1.98892e30)",
+   "verifier": 2954.0077364910994,
+   "chbridge": 2954.007736491099,
+   "rel_diff": 1.539425050479499e-16,
+   "ok": true
+  },
+  {
+   "quantity": "S_BH/kB(1.98892e30)",
+   "verifier": 1.049429705985892e+77,
+   "chbridge": 1.0494297059858918e+77,
+   "rel_diff": 2.449998181058684e-16,
+   "ok": true
+  },
+  {
+   "quantity": "T_H(1.98892e30)",
+   "verifier": 6.16867782813797e-08,
+   "chbridge": 6.16867782813797e-08,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "P_H(1.98892e30)",
+   "verifier": 9.003538232569081e-29,
+   "chbridge": 9.003538232569085e-29,
+   "rel_diff": 4.980436546177578e-16,
+   "ok": true
+  },
+  {
+   "quantity": "t_evap(1.98892e30)",
+   "verifier": 6.617961753550781e+74,
+   "chbridge": 6.617961753550779e+74,
+   "rel_diff": 3.035183082232247e-16,
+   "ok": true
+  },
+  {
+   "quantity": "rho_mean(1.98892e30)",
+   "verifier": 1.842017790892263e+19,
+   "chbridge": 1.8420177908922634e+19,
+   "rel_diff": 2.2236484469652816e-16,
+   "ok": true
+  },
+  {
+   "quantity": "kappa_sg(1.98892e30)",
+   "verifier": 15212471647152.805,
+   "chbridge": 15212471647152.807,
+   "rel_diff": 1.2838972162459546e-16,
+   "ok": true
+  },
+  {
+   "quantity": "l_P",
+   "verifier": 1.6162550244237053e-35,
+   "chbridge": 1.6162550244237053e-35,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "t_P",
+   "verifier": 5.391246448313604e-44,
+   "chbridge": 5.391246448313604e-44,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "m_P",
+   "verifier": 2.1764343427178984e-08,
+   "chbridge": 2.1764343427178984e-08,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "T_P",
+   "verifier": 1.4167841621573425e+32,
+   "chbridge": 1.4167841621573425e+32,
+   "rel_diff": 0.0,
+   "ok": true
+  },
+  {
+   "quantity": "rho_P",
+   "verifier": 5.154848503244933e+96,
+   "chbridge": 5.154848503244934e+96,
+   "rel_diff": 1.8401487346038943e-16,
+   "ok": true
+  },
+  {
+   "quantity": "M_CMB",
+   "verifier": 4.5015948405198975e+22,
+   "chbridge": 4.5015948405198975e+22,
+   "rel_diff": 0.0,
+   "ok": true
+  }
+ ],
+ "n_mismatches": 0,
+ "solar_mass_provenance": {
+  "project_input_M_sun": 1.98892e+30,
+  "iau2015_GM_over_G": 1.9884098706980507e+30,
+  "rel_diff": 0.00025655138282439837,
+  "verdict": "INPUT-PROVENANCE note: chbridge uses M_sun = 1.98892e30 kg; the IAU 2015 nominal solar mass parameter gives 1.98841e30 kg (rel diff ~2.6e-4). This is a declared input constant, not a derived value; every closed form above was compared at the project's own input mass, so no check depends on this choice."
+ },
+ "ivp": "IVP04",
+ "timestamp": "2026-10-09 06:29:34",
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Linux-5.10.134-013.15.kangaroo.al8.x86_64-x86_64-with-glibc2.41",
+  "processor": "unknown"
+ }
+}

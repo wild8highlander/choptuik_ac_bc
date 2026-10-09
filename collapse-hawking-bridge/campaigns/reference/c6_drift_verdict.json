@@ -1,0 +1,218 @@
+{
+ "campaign": "chb_c6_drift",
+ "project_version": "2.1.0",
+ "title": "the resolution-drift law (why one formula gives different values)",
+ "inputs": {
+  "ladder": "campaigns/reference/a_star_ladder.csv (committed F-1 remediation artifact, unchanged since 2.0.1)",
+  "profiles": "campaigns/reference/profiles_sub_supercritical.json (C1)",
+  "subcritical_scan": "campaigns/reference/subcritical_scan.csv (C2)"
+ },
+ "ladder_analysis": {
+  "ladder": [
+   {
+    "N": 200,
+    "a_star": 0.1051042795
+   },
+   {
+    "N": 400,
+    "a_star": 0.0882034349
+   },
+   {
+    "N": 800,
+    "a_star": 0.0805332422
+   },
+   {
+    "N": 1600,
+    "a_star": 0.0777437258
+   },
+   {
+    "N": 3200,
+    "a_star": 0.0768211603
+   }
+  ],
+  "per_doubling_drifts": [
+   0.016900844599999992,
+   0.007670192700000009,
+   0.0027895163999999972,
+   0.0009225654999999999
+  ],
+  "p_eff_measured": [
+   1.1397606168586747,
+   1.4592477901009107,
+   1.5962917853321519
+  ],
+  "monotone_from_above": true,
+  "p_eff_strictly_climbing": true,
+  "faster_than_1_over_N": true,
+  "drift_N800_to_N1600": 0.0027895163999999972,
+  "drift_N1600_to_N3200": 0.0009225654999999999
+ },
+ "extrapolation_stress_test": {
+  "model": "A*_N = A_inf + a/N + b/N^2 (LSQ, 5 points)",
+  "A_inf_fit": 0.07514951772941178,
+  "a_fit": 4.191893528855132,
+  "b_fit": 361.83191624541854,
+  "r2": 0.9992523358638473,
+  "residuals": [
+   -5.050377982290799e-05,
+   0.00031273387191653457,
+   -0.0004215048096141566,
+   -0.0001670659772296107,
+   0.0003263406947501407
+  ],
+  "p_eff_of_fitted_law_at_200_400_800": [
+   1.3156074039907741,
+   1.1881471931200778,
+   1.1041542287066557
+  ],
+  "p_eff_measured_at_200_400_800": [
+   1.1397606168586747,
+   1.4592477901009107,
+   1.5962917853321519
+  ],
+  "trajectory_incompatible": true,
+  "verdict": "REJECTED as an extrapolation law: the fitted p_eff decreases with N while the measured climbs; the five-point fit is descriptive only.  A_inf is NOT claimable from this ladder (honest negative)."
+ },
+ "parabola_checks": [
+  {
+   "N": 200,
+   "h": 0.005,
+   "worst_deficit": 6.249999999985434e-06,
+   "worst_pred_kappa_h2_8": 6.25e-06,
+   "worst_relerr": 2.3306280950291525e-12,
+   "mean_deficit": 2.0833333333333334e-06,
+   "mean_pred_kappa_h2_24": 2.0833333333333334e-06,
+   "mean_relerr": 0.0,
+   "chord_length": 1.147790628411619,
+   "arc_length_exact": 1.147793574696319,
+   "arc_rel_deficit": 2.5669116511251033e-06,
+   "chord_sum_closed_form_relerr": 0.0
+  },
+  {
+   "N": 400,
+   "h": 0.0025,
+   "worst_deficit": 1.5625000000518696e-06,
+   "worst_pred_kappa_h2_8": 1.5625e-06,
+   "worst_relerr": 3.319650869297586e-11,
+   "mean_deficit": 5.208333333333334e-07,
+   "mean_pred_kappa_h2_24": 5.208333333333334e-07,
+   "mean_relerr": 0.0,
+   "chord_length": 1.1477928381263525,
+   "arc_length_exact": 1.147793574696319,
+   "arc_rel_deficit": 6.417268599845372e-07,
+   "chord_sum_closed_form_relerr": 0.0
+  },
+  {
+   "N": 800,
+   "h": 0.00125,
+   "worst_deficit": 3.906250000129674e-07,
+   "worst_pred_kappa_h2_8": 3.90625e-07,
+   "worst_relerr": 3.319650869297586e-11,
+   "mean_deficit": 1.3020833333333334e-07,
+   "mean_pred_kappa_h2_24": 1.3020833333333334e-07,
+   "mean_relerr": 0.0,
+   "chord_length": 1.1477933905539028,
+   "arc_length_exact": 1.147793574696319,
+   "arc_rel_deficit": 1.604316492986868e-07,
+   "chord_sum_closed_form_relerr": 1.9345346187947367e-16
+  },
+  {
+   "N": 1600,
+   "h": 0.000625,
+   "worst_deficit": 9.765624997548628e-08,
+   "worst_pred_kappa_h2_8": 9.765625e-08,
+   "worst_relerr": 2.510205856110642e-10,
+   "mean_deficit": 3.2552083333333335e-08,
+   "mean_pred_kappa_h2_24": 3.2552083333333335e-08,
+   "mean_relerr": 0.0,
+   "chord_length": 1.1477935286607197,
+   "arc_length_exact": 1.147793574696319,
+   "arc_rel_deficit": 4.010790821684651e-08,
+   "chord_sum_closed_form_relerr": 0.0
+  },
+  {
+   "N": 3200,
+   "h": 0.0003125,
+   "worst_deficit": 2.441406254938272e-08,
+   "worst_pred_kappa_h2_8": 2.44140625e-08,
+   "worst_relerr": 2.0227161688212564e-09,
+   "mean_deficit": 8.138020833333334e-09,
+   "mean_pred_kappa_h2_24": 8.138020833333334e-09,
+   "mean_relerr": 0.0,
+   "chord_length": 1.1477935631874194,
+   "arc_length_exact": 1.147793574696319,
+   "arc_rel_deficit": 1.0026976804411447e-08,
+   "chord_sum_closed_form_relerr": 0.0
+  }
+ ],
+ "tension_calibration": {
+  "kappa_code": 2728.601032485463,
+  "v_snapshot": 0.5852842809364548,
+  "v_ah": 0.5986622073578595,
+  "q_peak": 0.7107966385151739,
+  "r_peak": 0.05470434034006484,
+  "n_fit_points": 5,
+  "profile_r_spacing_h": -0.0034128661101005915,
+  "stored_profile_points": 233
+ },
+ "sensitivity_calibration": {
+  "a_star_N800": 0.08053436279296877,
+  "eps_pair": [
+   6.309279296877468e-05,
+   0.00011220279296876579
+  ],
+  "A_pair": [
+   0.08047127,
+   0.08042216
+  ],
+  "q_pair": [
+   0.5844946664840335,
+   0.5644501566615899
+  ],
+  "dq_max_per_efold": 0.03481754944833004,
+  "sensitivity_s_per_code_unit": 413.8152494549526,
+  "method": "finite difference over the two deepest-eps sane rows of C2"
+ },
+ "channel_decomposition": [
+  {
+   "N": 200,
+   "h_r": -0.013651464440402366,
+   "observed_drift": 0.016900844599999992,
+   "flattening_channel_dA": 0.00015360383037656177,
+   "share": 0.009088529834571809
+  },
+  {
+   "N": 400,
+   "h_r": -0.006825732220201183,
+   "observed_drift": 0.007670192700000009,
+   "flattening_channel_dA": 3.840095759414044e-05,
+   "share": 0.00500651797107267
+  },
+  {
+   "N": 800,
+   "h_r": -0.0034128661101005915,
+   "observed_drift": 0.0027895163999999972,
+   "flattening_channel_dA": 9.60023939853511e-06,
+   "share": 0.0034415425550232003
+  },
+  {
+   "N": 1600,
+   "h_r": -0.0017064330550502957,
+   "observed_drift": 0.0009225654999999999,
+   "flattening_channel_dA": 2.4000598496337776e-06,
+   "share": 0.0026015061799230274
+  }
+ ],
+ "theorem": {
+  "name": "T10 (parabolic-tension drift)",
+  "statement": "a threshold formula evaluated on grid-sampled parabolic structures is grid-dependent: the sampled family's compaction peak is flattened by exactly kappa h^2/8 (worst alignment; kappa h^2/24 on average) and its chord-chain tension differs from the continuum arc, so the fixed-grid threshold obeys A*_N - A*cont = kappa* h^2/(8 s) + O(h^3) > 0 \u2014 the drift EXISTS, is POSITIVE (the ladder approaches the continuum threshold from above), and its leading exact channel is O(h^2).",
+  "status": "analytically derived (exact lemmas, machine-verified); channel magnitudes measured on committed artifacts"
+ },
+ "honest_notes": [
+  "no A_inf is claimed: the two-term extrapolation law is REJECTED by its own p_eff trajectory (fitted decreases, measured climbs) \u2014 every A*_N is a fixed-grid observable, as committed since the F-1 remediation",
+  "the exact flattening channel is real but SUB-DOMINANT (share 2.6e-03..9.1e-03 across N=200..1600): the observed monotone drift is attributed (HYPOTHESIS, labeled) to march-error amplification under near-critical lingering \u2014 the threshold-side twin of the mass-floor law (T5)",
+  "the parabola experiments are exact arithmetic checks of the lemmas, not engine runs; the engine-side confirmation is the committed ladder itself plus the IVP-09/IVP-11 blind measurements",
+  "the direction 'from above' is proven WITHIN the parabolic channel; the observed ladder is consistent with it (monotone decreasing)"
+ ],
+ "wall_total_s": 0.0
+}

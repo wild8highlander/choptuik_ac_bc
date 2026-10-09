@@ -1,0 +1,63 @@
+{
+ "status": "PASS",
+ "pre_registered": {
+  "method": "floor_M(N) from verifier-own scans + direct probes; two fits (C/N and C/N^p)",
+  "criterion": "measured exponent p in [0.7, 1.3]"
+ },
+ "floors": {
+  "400": {
+   "floor_M": 0.02570195365913107,
+   "source": "IVP-11 scan minimum"
+  },
+  "800": {
+   "floor_M": 0.016212414584373416,
+   "source": "IVP-11 scan minimum"
+  },
+  "1600": {
+   "floor_M": 0.008025704739315945,
+   "source": "IVP-11 scan minimum"
+  },
+  "3200": {
+   "floor_M": 0.0042672974325812,
+   "source": "IVP-11 scan minimum"
+  }
+ },
+ "probes": {
+  "400": {
+   "0.001": null,
+   "0.0003": null
+  },
+  "800": {
+   "0.001": 0.01786629821823764,
+   "0.0003": null
+  },
+  "1600": {
+   "0.001": 0.009671546158436024,
+   "0.0003": 0.010386988081262434
+  },
+  "3200": {
+   "0.001": 0.0050582422253153455,
+   "0.0003": 0.005053049657652305
+  }
+ },
+ "fit_A": {
+  "C_over_N": 12.436798124579127,
+  "max_rel_residual": 0.20971330521412876
+ },
+ "fit_B": {
+  "p": 0.8785849337821644,
+  "C": 5.265793400349004,
+  "p_err": 0.05043935718491962,
+  "r2": 0.9934514038777528
+ },
+ "checks": {
+  "floor_law_p_in_[0.7,1.3]": true
+ },
+ "ivp": "IVP12",
+ "timestamp": "2026-10-09 06:40:20",
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Linux-5.10.134-013.15.kangaroo.al8.x86_64-x86_64-with-glibc2.41",
+  "processor": "unknown"
+ }
+}
