@@ -1,0 +1,13 @@
+{
+ "committed_points": [
+  40.0,
+  80.0,
+  160.0,
+  320.0
+ ],
+ "envelope_holds_on_resolved": true,
+ "err_exponent_measured": -2.5883919967409437,
+ "err_prefactor_measured": 75.84677623967902,
+ "honest_note": "the measured exponent rides the interpolation noise below the 2/N envelope; the RESOLUTION floor itself is 2/N by construction (p=1)",
+ "resolution_envelope": "err <= 2/N (the Fourier window in gap units)"
+}

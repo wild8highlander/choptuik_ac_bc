@@ -1,0 +1,12 @@
+{
+ "check": "dimensions audit",
+ "checks": {
+  "M_CMB_in_[1e21,1e24]_kg": true,
+  "M_QCD_in_[1e10,1e12]_kg": true,
+  "S_BH/kB(M_CMB)_in_[1e58,1e65]": true,
+  "T_H(M_QCD)=T_QCD_order_1e12_K": true,
+  "r_s(M_CMB)_in_[1e-5,1e-3]_m": true,
+  "t_evap(M_CMB)_in_[1e48,1e56]_s": true
+ },
+ "verdict": "PASS"
+}

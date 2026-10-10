@@ -1,0 +1,14 @@
+{
+ "check": "dependency audit",
+ "external_used": [
+  "matplotlib",
+  "mpmath",
+  "numpy",
+  "openpyxl",
+  "pytest",
+  "scipy",
+  "sympy"
+ ],
+ "undeclared": [],
+ "verdict": "PASS"
+}

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 120 120" role="img" aria-label="QHB logo">
+
+  <defs>
+    <linearGradient id="gringFalse" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0d78c"/><stop offset="0.55" stop-color="#c9a53d"/><stop offset="1" stop-color="#8c7225"/>
+    </linearGradient>
+    <linearGradient id="garcFalse" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3f93b0"/><stop offset="1" stop-color="#c9a53d"/>
+    </linearGradient>
+  </defs>
+
+  <g>
+    <circle cx="60" cy="60" r="34" fill="none" stroke="url(#gringFalse)" stroke-width="4.5"/>
+    <circle cx="73.1" cy="76.5" r="3.4" fill="url(#gringFalse)"></circle><circle cx="46.9" cy="43.5" r="1.9" fill="#c9a53d" opacity="0.55"/><circle cx="49.5" cy="78.3" r="3.4" fill="url(#gringFalse)"></circle><circle cx="70.5" cy="41.7" r="1.9" fill="#c9a53d" opacity="0.55"/><circle cx="38.9" cy="60.0" r="3.4" fill="url(#gringFalse)"></circle><circle cx="81.1" cy="60.0" r="1.9" fill="#c9a53d" opacity="0.55"/>
+  </g>
+  <path d="M 8 96 Q 60 6 112 96" fill="none" stroke="url(#garcFalse)" stroke-width="2.6" stroke-linecap="round" opacity="0.95">
+    
+  </path>
+</svg>

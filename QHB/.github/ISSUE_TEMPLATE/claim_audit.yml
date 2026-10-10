@@ -1,0 +1,24 @@
+name: Claim audit
+description: Challenge a specific claim (C1-C12, T1-T20, P-*) with evidence.
+labels: [audit, honesty-discipline]
+body:
+  - type: input
+    id: claim
+    attributes:
+      label: Claim ID
+      placeholder: "T19 / P-C2 / X11"
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Contradicting evidence or gap
+    validations:
+      required: true
+  - type: checkboxes
+    id: discipline
+    attributes:
+      label: Honesty discipline
+      options:
+        - label: I checked the machine JSON layer referenced by the claim
+          required: true

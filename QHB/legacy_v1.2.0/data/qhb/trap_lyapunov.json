@@ -1,0 +1,12 @@
+{
+ "free": {
+  "mean": 0.2706920600063321,
+  "median": 0.26153536711283876
+ },
+ "n_trials": 100,
+ "statement": "the wall does not change the chaos (both exponents positive and comparable) \u2014 it changes the EXIT: bound chaos is the committed confinement picture",
+ "trap_V08_Om2": {
+  "mean": 0.2995691904927553,
+  "median": 0.2885152126535749
+ }
+}

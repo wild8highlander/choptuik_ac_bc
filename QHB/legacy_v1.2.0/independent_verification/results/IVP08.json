@@ -1,0 +1,7 @@
+{
+ "check": "seed determinism",
+ "r_mc_run1": 0.2060783904204957,
+ "r_mc_run2": 0.2060783904204957,
+ "seed": 20261010,
+ "verdict": "PASS"
+}

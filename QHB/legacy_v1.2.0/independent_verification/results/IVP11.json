@@ -1,0 +1,9 @@
+{
+ "aref_invariants_max_50dig": 0.0,
+ "charpoly_dev": "0",
+ "charpoly_symbolic": "Mul(Rational(1, 16), Pow(pi, Integer(-4)), Pow(Symbol('a', positive=True), Integer(-8)), Pow(Symbol('lambda'), Integer(2",
+ "check": "vortex layer (SymPy charpoly + mpmath Aref invariants + eigen gate)",
+ "max_re_on_imag_pairs": 2.7755575615628914e-17,
+ "omega_numeric": 0.477464829275686,
+ "verdict": "PASS"
+}

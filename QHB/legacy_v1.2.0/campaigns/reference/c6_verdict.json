@@ -1,0 +1,102 @@
+{
+ "campaign": "qhb_c6",
+ "engine": "closed-form Schwarzschild mapping (qhb.bridge), exact arithmetic; the only campaign input from the machine is the committed Delta_0 of c1_verdict.json",
+ "project_version": "1.0.0",
+ "timestamp": "2026-10-09T18:59:39",
+ "hypothesis_status": "MARKED HYPOTHESIS \u2014 the code-unit gap -> Hz mapping through a contact temperature; the branches are comparison anchors, never fit targets",
+ "Delta0_source": "campaigns/reference/c1_verdict.json (static gap, N=64)",
+ "Delta0": 0.523004556028156,
+ "branches": [
+  {
+   "name": "Lambda_QCD",
+   "anchor": "Lambda_QCD = 332.0 MeV (one-loop MS-bar)",
+   "honesty": "a renormalisation scale, NOT a temperature; the k_B conversion is a comparison device only",
+   "T_K": 3852700016354.6274,
+   "f_contact_Hz": 8.027724283721929e+22,
+   "M_contact_kg": 31845216741.138695,
+   "M_over_Msun": 1.6011311033696024e-20,
+   "M_over_mP": 1.4631829739173693e+18,
+   "r_s_over_lP": 2.9263659478347387e+18,
+   "f_gap_Hz": 4.198536374924434e+22,
+   "E_gap_J": 2.7819796547576e-11,
+   "E_gap_MeV": 173.6375126013478,
+   "t_evap_s": 2716470139274030.5,
+   "rho_over_rhoP": 1.393875953470664e-38
+  },
+  {
+   "name": "QCD_crossover",
+   "anchor": "T_QCD = 155.16 MeV / k_B (lattice-QCD crossover; the committed T8 contact)",
+   "honesty": "the only true TEMPERATURE of the three \u2014 the deconfinement bath; the committed contact of the bridge",
+   "T_K": 1800557031739.7107,
+   "f_contact_Hz": 3.7517521080189593e+22,
+   "M_contact_kg": 68140061601.302185,
+   "M_over_Msun": 3.4259830260293117e-20,
+   "M_over_mP": 3.1308117255772534e+18,
+   "r_s_over_lP": 6.261623451154507e+18,
+   "f_gap_Hz": 1.9621834455821542e+22,
+   "E_gap_J": 1.3001565157596062e-11,
+   "E_gap_MeV": 81.14938691332868,
+   "t_evap_s": 2.6612144550147564e+16,
+   "rho_over_rhoP": 3.0444405676303944e-39
+  },
+  {
+   "name": "electroweak",
+   "anchor": "v_EW = 246.22 GeV (PDG VEV of EW symmetry breaking)",
+   "honesty": "a vacuum expectation value (energy), NOT a bath temperature; the EW-epoch bath was of the same order (1e2 GeV, comparison). The LEAST honest branch \u2014 marked",
+   "T_K": 2.8572644518880613e+21,
+   "f_contact_Hz": 5.9535731118614865e+31,
+   "M_contact_kg": 42.93969603630106,
+   "M_over_Msun": 2.1589453591044919e-29,
+   "M_over_mP": 1972937809.0348737,
+   "r_s_over_lP": 3945875618.069748,
+   "f_gap_Hz": 3.113745862150284e+31,
+   "E_gap_J": 0.02063189851188001,
+   "E_gap_MeV": 128774181785.25258,
+   "t_evap_s": 6.659616269415178e-12,
+   "rho_over_rhoP": 7.666455381498631e-21
+  }
+ ],
+ "gates": {
+  "G1_round_trip": {
+   "rows": [
+    {
+     "name": "Lambda_QCD",
+     "rel_dev": 0.0
+    },
+    {
+     "name": "QCD_crossover",
+     "rel_dev": 1.3559172006015808e-16
+    },
+    {
+     "name": "electroweak",
+     "rel_dev": 0.0
+    }
+   ],
+   "ok": true
+  },
+  "G2_monotonicity": {
+   "ok": true
+  },
+  "G3_ratio_identity": {
+   "max_rel_dev": 2.0754482469980636e-16,
+   "ok": true
+  },
+  "G4_order_window": {
+   "Lambda_over_E_gap_QCD": 4.091220064972166,
+   "ok": true
+  }
+ },
+ "verdicts": {
+  "mapping_round_trip": "PASS",
+  "branch_monotonicity": "PASS",
+  "linear_ratio_carried": "PASS (arithmetic identity, carried as an honesty note \u2014 not a discovery)",
+  "order_window_QCD": "REPORTED (Lambda within one decade of the mapped gap quantum; comparison only)"
+ },
+ "honest_notes": [
+  "Lambda_QCD is a renormalisation scale, not a temperature; its branch exists for comparison and carries the weakest claim",
+  "the electroweak branch converts a VEV (energy) to a temperature-equivalent; the EW bath temperature was of the same order but is a different quantity \u2014 least honest branch",
+  "the mapping f_gap = Delta_0 * k_B T / h is linear, so branch RATIOS are arithmetic; the physical content claimed is only the three-branch spread itself and the QCD contact",
+  "E_gap(QCD) ~ 81.1 MeV sits within one decade of Lambda_QCD = 332 MeV \u2014 an order-of-magnitude coincidence, explicitly NOT a derivation of Lambda_QCD"
+ ],
+ "wall_s": 0.00016427040100097656
+}

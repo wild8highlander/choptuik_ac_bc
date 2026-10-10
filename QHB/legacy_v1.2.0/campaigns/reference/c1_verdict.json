@@ -1,0 +1,149 @@
+{
+ "campaign": "qhb_c1",
+ "engine": "qhb.gap \u2014 two-band Floquet, exact 2x2 piecewise exponentials",
+ "project_version": "1.0.0",
+ "timestamp": "2026-10-09T18:22:35",
+ "units": "code units: hopping J=1, Omega0=2, Omega tones (2,3,7)*Omega0",
+ "geometry": {
+  "N": 64,
+  "kappa": 0.05,
+  "q_pk": 1.5,
+  "h": 0.12307692307692308,
+  "L": 8.0
+ },
+ "static": {
+  "E0": -0.19638776687984047,
+  "E1": 0.3266167891483155,
+  "Delta0": 0.523004556028156,
+  "s_dDelta_dqpk": -1.0039829422867075,
+  "lemmaA_worst": 9.467455621301776e-05,
+  "lemmaA_mean": 3.155818540433925e-05
+ },
+ "window": {
+  "betas": [
+   0.0,
+   0.05,
+   0.1,
+   0.125,
+   0.15,
+   0.175,
+   0.2
+  ],
+  "rows": [
+   {
+    "beta": 0.0,
+    "gap": 0.523004556028156,
+    "shift": 0.0
+   },
+   {
+    "beta": 0.05,
+    "gap": 0.5228669567011655,
+    "shift": -0.000137599326990534
+   },
+   {
+    "beta": 0.1,
+    "gap": 0.5224543096460785,
+    "shift": -0.0005502463820774572
+   },
+   {
+    "beta": 0.125,
+    "gap": 0.5221449725754304,
+    "shift": -0.0008595834527256319
+   },
+   {
+    "beta": 0.15,
+    "gap": 0.5217670661036042,
+    "shift": -0.001237489924551749
+   },
+   {
+    "beta": 0.175,
+    "gap": 0.5213206931227563,
+    "shift": -0.00168386290539968
+   },
+   {
+    "beta": 0.2,
+    "gap": 0.5208059749678549,
+    "shift": -0.00219858106030113
+   }
+  ],
+  "B2": -0.05496702944778643,
+  "r2": 0.9999998189622825,
+  "max_residual": 4.7307925348134827e-07
+ },
+ "wing": {
+  "betas": [
+   0.25,
+   0.325,
+   0.4,
+   0.475,
+   0.55,
+   0.625,
+   0.7,
+   0.775,
+   0.85
+  ],
+  "shifts": [
+   -0.003432475784989064,
+   -0.005791820885177712,
+   -0.008756162374069065,
+   -0.012318306333802154,
+   -0.016469611231117787,
+   -0.02119999506457826,
+   -0.026497939080463606,
+   -0.03235048798303741,
+   -0.038743246547372046
+  ],
+  "honest_note": "pre-asymptotic wing carried, NOT fitted; quartic response visible"
+ },
+ "per_sector": {
+  "B2_A_pi2": -0.05054834882342389,
+  "B2_B_pi3": -0.0044007709966184015,
+  "B2_C_pi7": -2.7100920734702617e-05
+ },
+ "cross_share": 0.00016721465727557379,
+ "theorem_T2": {
+  "b_flip_evenness_dev": 0.0,
+  "a_flip_dev": 1.5425772161847817e-06,
+  "both_flip_dev": 1.5425772161847817e-06,
+  "a_only_all_order_dev": 8.881784197001252e-16,
+  "b0_identity_dev": 0.0,
+  "statement": "EXACT: gap even under the global b-flip (sigma_z conjugation) \u2014 dev = 0; a-only drive all-order zero (integer-tone cancellation) \u2014 dev = 0. NOT exact: the a-flip alone deviates by ~7.3e-7 at beta=0.4 \u2014 the genuine odd-in-a response through second-order a*b cross terms (Magnus [w sigma_z, v sigma_x]); carried as data, not smoothed away."
+ },
+ "M_convergence": {
+  "rows": [
+   {
+    "M": 480,
+    "gap": 0.5093682750578485
+   },
+   {
+    "M": 960,
+    "gap": 0.5093676353636301
+   },
+   {
+    "M": 1920,
+    "gap": 0.5093674754338098
+   },
+   {
+    "M": 3840,
+    "gap": 0.5093674354509619
+   }
+  ],
+  "p_eff": [
+   1.9999434776705889,
+   1.9999858246961368
+  ]
+ },
+ "gap_shift_beta05": -0.003432475784989064,
+ "verdicts": {
+  "T2_b_flip_exact": "PASS",
+  "T2_a_only": "PASS",
+  "T2_a_flip_residual": "REPORTED (genuine odd-in-a response, carried as data)",
+  "T3_quadratic_window": "PASS"
+ },
+ "honest_notes": [
+  "B2 is a committed machine law on window [0, 0.2]; outside it the response is quartic-dominated (wing rows carried unfitted).",
+  "The a-channel acts only jointly with the b-channel; alone it is invisible to all orders on integer tones (measured exactly 0).",
+  "The G-model is a toy: no claim that this Delta_F is the Yang-Mills mass gap; the mapping to physical scales is a marked hypothesis."
+ ],
+ "wall_s": 0.9368855953216553
+}

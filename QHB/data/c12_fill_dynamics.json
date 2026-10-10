@@ -1,0 +1,84 @@
+{
+ "at_eta_B": {
+  "eta": 6.1e-10,
+  "max_fill": 0.001,
+  "n_steps": 1000000,
+  "n_wells": 200,
+  "p_inject": 6.1e-07,
+  "saturated": 0,
+  "total_hits": 1,
+  "trace": [
+   {
+    "max_fill": 0.001,
+    "saturated": 0,
+    "step": 100000
+   },
+   {
+    "max_fill": 0.001,
+    "saturated": 0,
+    "step": 200000
+   },
+   {
+    "max_fill": 0.001,
+    "saturated": 0,
+    "step": 300000
+   },
+   {
+    "max_fill": 0.001,
+    "saturated": 0,
+    "step": 400000
+   },
+   {
+    "max_fill": 0.001,
+    "saturated": 0,
+    "step": 500000
+   },
+   {
+    "max_fill": 0.001,
+    "saturated": 0,
+    "step": 600000
+   },
+   {
+    "max_fill": 0.001,
+    "saturated": 0,
+    "step": 700000
+   },
+   {
+    "max_fill": 0.001,
+    "saturated": 0,
+    "step": 800000
+   },
+   {
+    "max_fill": 0.001,
+    "saturated": 0,
+    "step": 900000
+   },
+   {
+    "max_fill": 0.001,
+    "saturated": 0,
+    "step": 1000000
+   }
+  ]
+ },
+ "control_eta_0.5": {
+  "eta": 0.5,
+  "max_fill": 1.0,
+  "n_steps": 200000,
+  "n_wells": 200,
+  "p_inject": 1.0,
+  "saturated": 100,
+  "total_hits": 197232,
+  "trace": [
+   {
+    "max_fill": 0.5710000000000004,
+    "saturated": 0,
+    "step": 100000
+   },
+   {
+    "max_fill": 1.0,
+    "saturated": 100,
+    "step": 200000
+   }
+  ]
+ }
+}

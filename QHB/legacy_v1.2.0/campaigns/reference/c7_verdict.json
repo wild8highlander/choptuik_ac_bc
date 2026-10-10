@@ -1,0 +1,458 @@
+{
+ "campaign": "qhb_c7",
+ "engine": "engine/solver.py v1.1.0 \u2014 the same RK4 trio with the Cornell-like confining core U_conf = sigma * r_soft (backward compatible; sigma = 0 is byte-identical to the committed v1.0.0 path)",
+ "project_version": "1.1.0",
+ "timestamp": "2026-10-09T19:16:10",
+ "units": "code units G = m = 1; softening eps^2 = 1e-2; dt = 2e-3; t_end = 12; R_esc = 12; wall R_b = 8, w = 1, p = 2; sigma in units of the pair potential per code length",
+ "hypothesis_status": "MARKED HYPOTHESIS (engine-level) \u2014 the linear core is a Cornell-flux-tube TOY, not QCD; the Kepler anchor validates the engine only at sigma = 0",
+ "ensemble": {
+  "n_trials": 300,
+  "seed": 20261010,
+  "E_band": [
+   -0.6,
+   -0.05
+  ],
+  "note": "the band is defined on the NEWTONIAN energy (sigma = 0); with sigma > 0 the total energy carries the sigma*r_soft shift \u2014 honest bookkeeping, the band is the selection rule",
+  "rejected_draws": 18187
+ },
+ "regression_gate": {
+  "P_esc_sigma0": 0.24333333333333335,
+  "P_esc_committed_c2": 0.24333333333333335,
+  "dev": 0.0,
+  "ok": true,
+  "statement": "the anchor is never re-fitted: the sigma extension reproduces the C2 free-trio count exactly"
+ },
+ "free_sigma_ladder": [
+  {
+   "sigma": 0.0,
+   "P_esc": 0.24333333333333335,
+   "err": 0.024773791408275413,
+   "n_alive_end": 227,
+   "E_drift_surv": 4.968507163737436e-05
+  },
+  {
+   "sigma": 0.002,
+   "P_esc": 0.20333333333333334,
+   "err": 0.02323710315342605,
+   "n_alive_end": 239,
+   "E_drift_surv": 5.342764151785161e-05
+  },
+  {
+   "sigma": 0.005,
+   "P_esc": 0.17333333333333334,
+   "err": 0.02185473929447866,
+   "n_alive_end": 248,
+   "E_drift_surv": 6.0228682377537864e-05
+  },
+  {
+   "sigma": 0.01,
+   "P_esc": 0.13,
+   "err": 0.0194164878389476,
+   "n_alive_end": 261,
+   "E_drift_surv": 8.673931991318898e-05
+  },
+  {
+   "sigma": 0.02,
+   "P_esc": 0.06,
+   "err": 0.013711309200802086,
+   "n_alive_end": 282,
+   "E_drift_surv": 0.00028767101549184905
+  },
+  {
+   "sigma": 0.05,
+   "P_esc": 0.0033333333333333335,
+   "err": 0.003327773140415986,
+   "n_alive_end": 299,
+   "E_drift_surv": 0.001119294831823593
+  },
+  {
+   "sigma": 0.1,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": 0.004096278402896064
+  },
+  {
+   "sigma": 0.5,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": 3.675443162788511e-05
+  }
+ ],
+ "L1_leakage_law": {
+  "monotone_nonincreasing": true,
+  "P_esc_free": 0.24333333333333335,
+  "sigma_star_P05": 0.05,
+  "statement": "the flux tube closes the finite-time escape channel: P_esc falls monotonically from 0.2433 to <= 0.05 at sigma* = 0.05 and to 0.0000 at sigma = 0.5 within t_end = 12"
+ },
+ "grid": [
+  {
+   "sigma": 0.0,
+   "V0": 0.0,
+   "Omega": 0.0,
+   "P_esc": 0.24333333333333335,
+   "err": 0.024773791408275413,
+   "n_alive_end": 227,
+   "E_drift_surv": 4.968507163737436e-05
+  },
+  {
+   "sigma": 0.0,
+   "V0": 0.02,
+   "Omega": 0.0,
+   "P_esc": 0.07,
+   "err": 0.014730919862656237,
+   "n_alive_end": 279,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.0,
+   "V0": 0.05,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.0,
+   "V0": 0.1,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.0,
+   "V0": 0.2,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.0,
+   "V0": 0.4,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.01,
+   "V0": 0.0,
+   "Omega": 0.0,
+   "P_esc": 0.13,
+   "err": 0.0194164878389476,
+   "n_alive_end": 261,
+   "E_drift_surv": 8.673931991318898e-05
+  },
+  {
+   "sigma": 0.01,
+   "V0": 0.02,
+   "Omega": 0.0,
+   "P_esc": 0.023333333333333334,
+   "err": 0.008715673408461504,
+   "n_alive_end": 293,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.01,
+   "V0": 0.05,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.01,
+   "V0": 0.1,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.01,
+   "V0": 0.2,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.01,
+   "V0": 0.4,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.02,
+   "V0": 0.0,
+   "Omega": 0.0,
+   "P_esc": 0.06,
+   "err": 0.013711309200802086,
+   "n_alive_end": 282,
+   "E_drift_surv": 0.00028767101549184905
+  },
+  {
+   "sigma": 0.02,
+   "V0": 0.02,
+   "Omega": 0.0,
+   "P_esc": 0.01,
+   "err": 0.005744562646538029,
+   "n_alive_end": 297,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.02,
+   "V0": 0.05,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.02,
+   "V0": 0.1,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.02,
+   "V0": 0.2,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.02,
+   "V0": 0.4,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.0,
+   "V0": 0.0,
+   "Omega": 2.0,
+   "P_esc": 0.24333333333333335,
+   "err": 0.024773791408275413,
+   "n_alive_end": 227,
+   "E_drift_surv": 4.968507163737436e-05
+  },
+  {
+   "sigma": 0.0,
+   "V0": 0.02,
+   "Omega": 2.0,
+   "P_esc": 0.17666666666666667,
+   "err": 0.0220193517582115,
+   "n_alive_end": 247,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.0,
+   "V0": 0.05,
+   "Omega": 2.0,
+   "P_esc": 0.02666666666666667,
+   "err": 0.009301533127313934,
+   "n_alive_end": 292,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.0,
+   "V0": 0.1,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.0,
+   "V0": 0.2,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.0,
+   "V0": 0.4,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.01,
+   "V0": 0.0,
+   "Omega": 2.0,
+   "P_esc": 0.13,
+   "err": 0.0194164878389476,
+   "n_alive_end": 261,
+   "E_drift_surv": 8.673931991318898e-05
+  },
+  {
+   "sigma": 0.01,
+   "V0": 0.02,
+   "Omega": 2.0,
+   "P_esc": 0.08,
+   "err": 0.015663120165960973,
+   "n_alive_end": 276,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.01,
+   "V0": 0.05,
+   "Omega": 2.0,
+   "P_esc": 0.01,
+   "err": 0.005744562646538029,
+   "n_alive_end": 297,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.01,
+   "V0": 0.1,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.01,
+   "V0": 0.2,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.01,
+   "V0": 0.4,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.02,
+   "V0": 0.0,
+   "Omega": 2.0,
+   "P_esc": 0.06,
+   "err": 0.013711309200802086,
+   "n_alive_end": 282,
+   "E_drift_surv": 0.00028767101549184905
+  },
+  {
+   "sigma": 0.02,
+   "V0": 0.02,
+   "Omega": 2.0,
+   "P_esc": 0.02666666666666667,
+   "err": 0.009301533127313934,
+   "n_alive_end": 292,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.02,
+   "V0": 0.05,
+   "Omega": 2.0,
+   "P_esc": 0.0033333333333333335,
+   "err": 0.003327773140415986,
+   "n_alive_end": 299,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.02,
+   "V0": 0.1,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.02,
+   "V0": 0.2,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "sigma": 0.02,
+   "V0": 0.4,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  }
+ ],
+ "L2_boundary_collapse": {
+  "P_threshold": 0.05,
+  "V0_star_per_Omega_per_sigma": {
+   "0.0": {
+    "0.0": 0.028571428571428574,
+    "0.01": 0.015,
+    "0.02": 0.003999999999999998
+   },
+   "2.0": {
+    "0.0": 0.04533333333333334,
+    "0.01": 0.032857142857142856,
+    "0.02": 0.005999999999999998
+   }
+  },
+  "shrink_factors_Om0_to_Om2": {
+   "0.0": 7.142857142857147,
+   "2.0": 7.555555555555558
+  },
+  "statement": "the wall boundary moves DOWN with the confining core: V0* shrinks by a factor 7.1 (Omega = 0.0), 7.6 (Omega = 2.0) as sigma goes 0 -> 0.02; beyond the grid core (sigma >= 0.05) the free trio is already sealed and NO wall is needed at all \u2014 the anharmonic core replaces the oscillating wall of T6"
+ },
+ "L3_bound_chaos": {
+  "n_trials": 100,
+  "sigma": 0.02,
+  "V0": 0.0,
+  "Omega": 0.0,
+  "median": 0.26439741503983316,
+  "mean": 0.2870921160620458,
+  "share_positive": 1.0,
+  "statement": "with the flux tube sealing the trap and NO wall, the largest Lyapunov exponent stays positive \u2014 the anharmonic mirror of T6: confinement without order"
+ },
+ "verdicts": {
+  "regression": "PASS",
+  "L1_leakage": "CONFIRMED (monotone, sigma* = 0.05)",
+  "L2_boundary_collapse": "CONFIRMED (V0* shrinks x7.1, x7.6; free trio sealed at sigma >= 0.05)",
+  "L3_bound_chaos": "CONFIRMED (median 0.264 > 0)"
+ },
+ "honest_notes": [
+  "the linear core is a Cornell-like TOY of the flux tube, not QCD; no claim is made about actual quark kinetics",
+  "with sigma > 0 the two-body Kepler anchor no longer applies (it is a Newton-law anchor); the anharmonic runs carry an ENGINE-LEVEL hypothesis mark, the only validation left is the sigma = 0 regression gate and the energy-drift report",
+  "the ensemble band is selected on the Newtonian energy; with sigma > 0 the total energy is shifted by the sigma*r_soft term \u2014 the selection rule is carried, the shift is not hidden",
+  "escape statistics at sigma > 0 measure FINITE-TIME leakage (t_end = 12); with a linear term true asymptotic escape requires infinite time \u2014 the toy confines in the t_end sense, honestly worded"
+ ],
+ "wall_s": 297.2737009525299
+}

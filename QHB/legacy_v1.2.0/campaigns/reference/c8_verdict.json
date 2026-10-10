@@ -1,0 +1,238 @@
+{
+ "campaign": "qhb_c8",
+ "engine": "deterministic RK4 of the committed pairwise system (numpy) + an mpmath 50-digit cross-check; no MC, no seeds",
+ "project_version": "1.0.0",
+ "timestamp": "2026-10-09T19:03:45",
+ "model": {
+  "system": "dn_+/dt = 1 - lambda(1-alpha) n_+ n_- ; dn_-/dt = 1 - lambda(1+alpha) n_+ n_-",
+  "nondimensionalisation": "N_* = Gamma_b / H (the linear steady state), tau = H t, lambda = k Gamma_b / H^2",
+  "freezeout": "tau_f = 1 (t_f = 1/H, the committed convention)",
+  "honesty": "MARKED HYPOTHESIS \u2014 the trigger-asymmetry reading of the pair event is a toy of the Wu mechanism, not a weak-interaction calculation"
+ },
+ "X1_no_door_exact": {
+  "r": 0.0,
+  "n_plus": 0.7615941559557647,
+  "n_minus": 0.7615941559557647,
+  "ok": true
+ },
+ "X2_monotone_imbalance": {
+  "ok": true
+ },
+ "convergence": {
+  "ladder": [
+   {
+    "n_steps": 256,
+    "r": 0.27237180435508407
+   },
+   {
+    "n_steps": 512,
+    "r": 0.2723718043507004
+   },
+   {
+    "n_steps": 1024,
+    "r": 0.2723718043504266
+   },
+   {
+    "n_steps": 2048,
+    "r": 0.27237180435040936
+   }
+  ],
+  "p_eff": 3.9871863142722366,
+  "ok": true
+ },
+ "mpmath_anchor": {
+  "r_mp_50d": "0.27237180435040915884",
+  "r_numpy": 0.27237180435040953,
+  "dev": 3.885780586188048e-16,
+  "ok": true
+ },
+ "grid": [
+  {
+   "alpha": 0.0,
+   "lambda": 0.01,
+   "r_pair": 0.0,
+   "r_linear_at_x=lambda": 0.0,
+   "n_plus": 0.9966799462495581,
+   "n_minus": 0.9966799462495581
+  },
+  {
+   "alpha": 0.0,
+   "lambda": 0.1,
+   "r_pair": 0.0,
+   "r_linear_at_x=lambda": 0.0,
+   "n_plus": 0.9679481335147494,
+   "n_minus": 0.9679481335147494
+  },
+  {
+   "alpha": 0.0,
+   "lambda": 1.0,
+   "r_pair": 0.0,
+   "r_linear_at_x=lambda": 0.0,
+   "n_plus": 0.7615941559557647,
+   "n_minus": 0.7615941559557647
+  },
+  {
+   "alpha": 0.0,
+   "lambda": 10.0,
+   "r_pair": 0.0,
+   "r_linear_at_x=lambda": 0.0,
+   "n_plus": 0.31509658251300027,
+   "n_minus": 0.31509658251300027
+  },
+  {
+   "alpha": 0.0,
+   "lambda": 100.0,
+   "r_pair": 0.0,
+   "r_linear_at_x=lambda": 0.0,
+   "n_plus": 0.09999999958776935,
+   "n_minus": 0.09999999958776935
+  },
+  {
+   "alpha": 0.25,
+   "lambda": 0.01,
+   "r_pair": 0.0008327780587767863,
+   "r_linear_at_x=lambda": 0.0012479160225644203,
+   "n_plus": 0.9975099604249712,
+   "n_minus": 0.9958499340416138
+  },
+  {
+   "alpha": 0.25,
+   "lambda": 0.1,
+   "r_pair": 0.008278057979679643,
+   "r_linear_at_x=lambda": 0.01229108455174139,
+   "n_plus": 0.9759617850106084,
+   "n_minus": 0.9599363083510096
+  },
+  {
+   "alpha": 0.25,
+   "lambda": 1.0,
+   "r_pair": 0.0780499836633123,
+   "r_linear_at_x=lambda": 0.10414684701815774,
+   "n_plus": 0.8215592419978204,
+   "n_minus": 0.7025987366630336
+  },
+  {
+   "alpha": 0.25,
+   "lambda": 10.0,
+   "r_pair": 0.47943418793390946,
+   "r_linear_at_x=lambda": 0.24974239916329893,
+   "n_plus": 0.5070485495491878,
+   "n_minus": 0.17841424924864438
+  },
+  {
+   "alpha": 0.25,
+   "lambda": 100.0,
+   "r_pair": 0.9082656631330152,
+   "r_linear_at_x=lambda": 0.24999999999999994,
+   "n_plus": 0.4118799606757113,
+   "n_minus": 0.01979993445951999
+  },
+  {
+   "alpha": 0.5,
+   "lambda": 0.01,
+   "r_pair": 0.0016655546320981868,
+   "r_linear_at_x=lambda": 0.0024958281596917146,
+   "n_plus": 0.9983399750922536,
+   "n_minus": 0.9950199252767552
+  },
+  {
+   "alpha": 0.5,
+   "lambda": 0.1,
+   "r_pair": 0.016554654215430432,
+   "r_linear_at_x=lambda": 0.024578469019144334,
+   "n_plus": 0.9839758928892237,
+   "n_minus": 0.9519276786676824
+  },
+  {
+   "alpha": 0.5,
+   "lambda": 1.0,
+   "r_pair": 0.1548639525324461,
+   "r_linear_at_x=lambda": 0.20617316994705592,
+   "n_plus": 0.8817586829038564,
+   "n_minus": 0.6452760487115686
+  },
+  {
+   "alpha": 0.5,
+   "lambda": 10.0,
+   "r_pair": 0.7371087255299877,
+   "r_linear_at_x=lambda": 0.49746055139191125,
+   "n_plus": 0.7020840972509497,
+   "n_minus": 0.10625229175284802
+  },
+  {
+   "alpha": 0.5,
+   "lambda": 100.0,
+   "r_pair": 0.9704410723266772,
+   "r_linear_at_x=lambda": 0.5000000000000001,
+   "n_plus": 0.6700170137416144,
+   "n_minus": 0.01005104122484542
+  },
+  {
+   "alpha": 0.9,
+   "lambda": 0.01,
+   "r_pair": 0.002997990352029105,
+   "r_linear_at_x=lambda": 0.0044924697994905135,
+   "n_plus": 0.999667995899873,
+   "n_minus": 0.993691922097595
+  },
+  {
+   "alpha": 0.9,
+   "lambda": 0.1,
+   "r_pair": 0.029790522775325266,
+   "r_linear_at_x=lambda": 0.04422136685912191,
+   "n_plus": 0.9967959962974837,
+   "n_minus": 0.9391239296522715
+  },
+  {
+   "alpha": 0.9,
+   "lambda": 1.0,
+   "r_pair": 0.2723718043504063,
+   "r_linear_at_x=lambda": 0.3602220478793605,
+   "n_plus": 0.976767455227112,
+   "n_minus": 0.5585816493151543
+  },
+  {
+   "alpha": 0.9,
+   "lambda": 10.0,
+   "r_pair": 0.8827925907793875,
+   "r_linear_at_x=lambda": 0.8462755330823878,
+   "n_plus": 0.9504825970589513,
+   "n_minus": 0.05916934412007812
+  },
+  {
+   "alpha": 0.9,
+   "lambda": 100.0,
+   "r_pair": 0.9882817721562738,
+   "r_linear_at_x=lambda": 0.8999956868206453,
+   "n_plus": 0.9476623782144689,
+   "n_minus": 0.005585186074910009
+  }
+ ],
+ "door_stays": {
+  "ok": true,
+  "statement": "r_pair > 0 for every alpha > 0 cell and grows with lambda \u2014 the door survives the kinetics change"
+ },
+ "shape_moves": {
+  "ok": true,
+  "r_pair_at_lambda_100_alpha_09": 0.9882817721562738,
+  "linear_limit_alpha": 0.9,
+  "dev_from_linear_limit": 0.08828177215627375,
+  "statement": "the pairwise door has NO alpha asymptote: with the linear death term gone, the imbalance accumulates toward the FULL residual (r -> 1) \u2014 the door stays, the shape moves"
+ },
+ "verdicts": {
+  "X1_no_door": "PASS (exact)",
+  "X2_monotone": "PASS",
+  "convergence_RK4": "PASS",
+  "mpmath_50d": "PASS",
+  "door_stays": "CONFIRMED",
+  "shape_moves": "CONFIRMED (r_pair -> full imbalance, the linear alpha-limit is gone)",
+  "T7_extension": "NEGATIVE (honest) \u2014 the closed form of T7 does NOT extend to pairwise kinetics; exactness is a property of the linear model"
+ },
+ "honest_notes": [
+  "the closed-form exactness of T7 is LOST in the pairwise model; the committed replacement is the convergence ladder + the 50-digit cross-check, not a formula",
+  "matching lambda to the linear x is a comparison device; the two models have different dimensionless structure and only the shape-level statement (door survives, asymptote moves) is claimed",
+  "the full-imbalance limit r -> 1 is a property of the toy (no linear death term to stop the accumulation); cosmogenesis claims remain out of scope exactly as in C3",
+  "the pairwise asymmetry lives in the TRIGGER species (which member initiates the weak step); an event still consumes a pair \u2014 this is the committed reading of the Wu door, marked as a hypothesis"
+ ],
+ "wall_s": 3.2086803913116455
+}

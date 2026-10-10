@@ -1,0 +1,20 @@
+Isaev Proprietary License v1.0
+
+Copyright (c) 2026 Isaev, Ishak Khamzatovich (Nalchik, Kabardino-Balkarian
+Republic, Russian Federation). Co-authorship of the research packaging:
+wild8highlander (GitHub).
+
+1. Research and scientific use of this package is permitted, including
+   reading, running the campaigns, and citing the results.
+2. Redistribution, repackaging, and the creation of derivative
+   distributions require the author's prior written permission.
+3. The honesty discipline of the package is part of the license: any
+   quotation of the package's numbers must carry their status markers
+   (anchor / comparison / hypothesis / honest negative) and the verdict
+   file they come from.
+4. The parent package (Collapse-Hawking Bridge) retains its own
+   proprietary license; the inherited constants and theorems are used
+   here under the same authorship.
+
+THE PACKAGE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. THE
+AUTHOR IS NOT LIABLE FOR ANY DAMAGES ARISING FROM ITS USE.

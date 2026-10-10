@@ -1,0 +1,265 @@
+{
+ "campaign": "qhb_c3",
+ "engine": "engine/solver.py wu_mc \u2014 Poisson births, thinned survival",
+ "project_version": "1.0.0",
+ "timestamp": "2026-10-09T18:22:08",
+ "model": "linear two-rate W-model (qhb/wu.py): Gamma_+/- = Gamma(1 -/+ alpha); freeze-out t_f = 1/H; x = Gamma/H",
+ "closed_form": "r(alpha, x) = [f(1-alpha) - f(1+alpha)] / [f(1-alpha) + f(1+alpha)], f(u) = (1-e^(-x u))/u",
+ "grid": {
+  "alpha": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   0.9,
+   1.0
+  ],
+  "x": [
+   0.01,
+   0.1,
+   1.0,
+   10.0,
+   100.0
+  ],
+  "n_real_per_cell": 200000,
+  "seed": 20261010
+ },
+ "rows": [
+  {
+   "alpha": 0.0,
+   "x": 0.01,
+   "r_exact": 0.0,
+   "r_mc": 0.001538856116953065,
+   "dev": 0.001538856116953065
+  },
+  {
+   "alpha": 0.0,
+   "x": 0.1,
+   "r_exact": 0.0,
+   "r_mc": -0.001975372725437611,
+   "dev": 0.001975372725437611
+  },
+  {
+   "alpha": 0.0,
+   "x": 1.0,
+   "r_exact": 0.0,
+   "r_mc": 0.0017459223524006434,
+   "dev": 0.0017459223524006434
+  },
+  {
+   "alpha": 0.0,
+   "x": 10.0,
+   "r_exact": 0.0,
+   "r_mc": -0.000433820796384766,
+   "dev": 0.000433820796384766
+  },
+  {
+   "alpha": 0.0,
+   "x": 100.0,
+   "r_exact": 0.0,
+   "r_mc": -0.0006992710606082158,
+   "dev": 0.0006992710606082158
+  },
+  {
+   "alpha": 0.25,
+   "x": 0.01,
+   "r_exact": 0.0012479160225644203,
+   "r_mc": 0.0028234086242299797,
+   "dev": 0.0015754926016655593
+  },
+  {
+   "alpha": 0.25,
+   "x": 0.1,
+   "r_exact": 0.01229108455174139,
+   "r_mc": 0.010756880071616275,
+   "dev": 0.001534204480125114
+  },
+  {
+   "alpha": 0.25,
+   "x": 1.0,
+   "r_exact": 0.10414684701815774,
+   "r_mc": 0.10505860904056942,
+   "dev": 0.0009117620224116801
+  },
+  {
+   "alpha": 0.25,
+   "x": 10.0,
+   "r_exact": 0.24974239916329893,
+   "r_mc": 0.24844781970445184,
+   "dev": 0.0012945794588470894
+  },
+  {
+   "alpha": 0.25,
+   "x": 100.0,
+   "r_exact": 0.24999999999999994,
+   "r_mc": 0.24870543815757917,
+   "dev": 0.0012945618424207717
+  },
+  {
+   "alpha": 0.5,
+   "x": 0.01,
+   "r_exact": 0.0024958281596917146,
+   "r_mc": 0.004615384615384616,
+   "dev": 0.0021195564556929013
+  },
+  {
+   "alpha": 0.5,
+   "x": 0.1,
+   "r_exact": 0.024578469019144334,
+   "r_mc": 0.022088063394860243,
+   "dev": 0.002490405624284091
+  },
+  {
+   "alpha": 0.5,
+   "x": 1.0,
+   "r_exact": 0.20617316994705592,
+   "r_mc": 0.20661031665475746,
+   "dev": 0.00043714670770153563
+  },
+  {
+   "alpha": 0.5,
+   "x": 10.0,
+   "r_exact": 0.49746055139191125,
+   "r_mc": 0.49670543725901234,
+   "dev": 0.0007551141328989153
+  },
+  {
+   "alpha": 0.5,
+   "x": 100.0,
+   "r_exact": 0.5000000000000001,
+   "r_mc": 0.49895027417600996,
+   "dev": 0.0010497258239901552
+  },
+  {
+   "alpha": 0.75,
+   "x": 0.01,
+   "r_exact": 0.0037437325259929563,
+   "r_mc": 0.005639579594975647,
+   "dev": 0.001895847068982691
+  },
+  {
+   "alpha": 0.75,
+   "x": 0.1,
+   "r_exact": 0.03685845776022573,
+   "r_mc": 0.03449054717760925,
+   "dev": 0.0023679105826164767
+  },
+  {
+   "alpha": 0.75,
+   "x": 1.0,
+   "r_exact": 0.3041195168350168,
+   "r_mc": 0.3028834555440437,
+   "dev": 0.0012360612909730895
+  },
+  {
+   "alpha": 0.75,
+   "x": 10.0,
+   "r_exact": 0.7306544284185503,
+   "r_mc": 0.730183372138878,
+   "dev": 0.0004710562796723661
+  },
+  {
+   "alpha": 0.75,
+   "x": 100.0,
+   "r_exact": 0.749999999996962,
+   "r_mc": 0.7493409261707671,
+   "dev": 0.0006590738261949003
+  },
+  {
+   "alpha": 0.9,
+   "x": 0.01,
+   "r_exact": 0.0044924697994905135,
+   "r_mc": 0.005639579594975647,
+   "dev": 0.0011471097954851338
+  },
+  {
+   "alpha": 0.9,
+   "x": 0.1,
+   "r_exact": 0.04422136685912191,
+   "r_mc": 0.042599430725440424,
+   "dev": 0.001621936133681487
+  },
+  {
+   "alpha": 0.9,
+   "x": 1.0,
+   "r_exact": 0.3602220478793605,
+   "r_mc": 0.35917894381642623,
+   "dev": 0.0010431040629342858
+  },
+  {
+   "alpha": 0.9,
+   "x": 10.0,
+   "r_exact": 0.8462755330823878,
+   "r_mc": 0.8469471712419593,
+   "dev": 0.0006716381595714971
+  },
+  {
+   "alpha": 0.9,
+   "x": 100.0,
+   "r_exact": 0.8999956868206453,
+   "r_mc": 0.8997803341624341,
+   "dev": 0.00021535265821126526
+  },
+  {
+   "alpha": 1.0,
+   "x": 0.01,
+   "r_exact": 0.0049916252361764,
+   "r_mc": 0.006329655290394321,
+   "dev": 0.0013380300542179206
+  },
+  {
+   "alpha": 1.0,
+   "x": 0.1,
+   "r_exact": 0.04912736400639442,
+   "r_mc": 0.04708824890122601,
+   "dev": 0.0020391151051684098
+  },
+  {
+   "alpha": 1.0,
+   "x": 1.0,
+   "r_exact": 0.3963239664987252,
+   "r_mc": 0.39490435674801694,
+   "dev": 0.0014196097507082617
+  },
+  {
+   "alpha": 1.0,
+   "x": 10.0,
+   "r_exact": 0.9047619049488574,
+   "r_mc": 0.904436583024813,
+   "dev": 0.0003253219240444416
+  },
+  {
+   "alpha": 1.0,
+   "x": 100.0,
+   "r_exact": 0.9900497512437811,
+   "r_mc": 0.9899839906519589,
+   "dev": 6.576059182228366e-05
+  }
+ ],
+ "max_dev_formula_vs_mc": 0.002490405624284091,
+ "anchor": {
+  "alpha_Wu": 0.9,
+  "alpha_status": "approximate literature anchor (the 1957 experiment demonstrated parity violation qualitatively; 0.9 is a rounded literature-scale value, not a reanalysis)",
+  "x_committed": 100.0,
+  "r_at_anchor": 0.8999956868206453
+ },
+ "eta_comparison": {
+  "eta_baryon_anchor": 6.1e-10,
+  "x_required_for_eta": 1.355555672022447e-09,
+  "honest_note": "the door OPENS (r -> alpha at large x) but the committed toy does not reproduce cosmogenesis: leaving only eta = 6.1e-10 requires x = 1.36e-9 (freeze-out almost immediately after the door opens) - the model realizes the Sakharov ingredients qualitatively, not quantitatively"
+ },
+ "sakharov_bookkeeping": {
+  "CP_violation": "realized (alpha channel, Wu 1957 anchor)",
+  "out_of_equilibrium": "realized (Hawking flux births, freeze-out)",
+  "B_violation": "NOT realized (the toy conserves baryon number; the imbalance is a door, not baryogenesis)"
+ },
+ "verdicts": {
+  "T7_closed_form": "FAIL",
+  "T7_limits": "PASS (r(0,x)=0, r(alpha,inf)=alpha, r(alpha,0)=0; 50-digit layer)"
+ },
+ "honest_notes": [
+  "the W-model is linear mean field; pair-consuming kinetics would change the shape, not the door (honest scope)",
+  "'full asymmetry' of the hypothesis is carried as r -> alpha: the door opens fully only for alpha = 1 and fast freeze-out"
+ ],
+ "wall_s": 0.3548717498779297
+}

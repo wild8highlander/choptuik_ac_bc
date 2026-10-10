@@ -1,0 +1,12 @@
+{
+ "B2_none_at_M3840": 1.505387152034111e-15,
+ "abs_B2_C_at_M3840": 2.7101811046469026e-05,
+ "check": "competing-model gates (doubled resolution)",
+ "evenness_devs_M3840": {
+  "A": 0.0,
+  "ABC": 0.0,
+  "B": 0.0,
+  "C": 0.0
+ },
+ "verdict": "PASS"
+}

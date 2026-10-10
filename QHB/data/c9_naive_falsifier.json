@@ -1,0 +1,9 @@
+{
+ "beta_c_naive": 2.991,
+ "delta_at_beta_c": 0.22899525149999994,
+ "delta_at_flank_root": 0.2356194876946191,
+ "falsified": true,
+ "flank_ratio": 6.482242591288409,
+ "flank_root": 2.9660810826496466,
+ "ratio_measured": 6.300000000000001
+}

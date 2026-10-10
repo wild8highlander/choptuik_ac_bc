@@ -1,0 +1,32 @@
+name: Release (zip + SHA256SUMS)
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Iron QA gate
+        run: |
+          pip install -r requirements.txt
+          python tools/check_json.py
+          python tools/check_numbers.py
+          python tools/check_release.py
+      - name: Build release zip
+        run: |
+          V=$(cat VERSION)
+          zip -r "QHB_Unified_${V}.zip" . -x ".git/*" "docs/*" ".github/*" "SHA256SUMS.txt"
+          sha256sum "QHB_Unified_${V}.zip" > SHA256SUMS.txt
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            QHB_Unified_*.zip
+            SHA256SUMS.txt
+          generate_release_notes: true

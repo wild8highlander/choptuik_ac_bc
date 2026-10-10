@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Quark–Hawking Bridge — Unified Archive v2.3.0</title>
+<style>
+  :root { --gold:#c9a53d; --gold-hl:#f0d78c; --teal:#3f93b0; --ink:#f2ede0;
+          --bg:#0b1220; --bg2:#10233a; --mut:#9db1c7; --ok:#59c98a; --brick:#9c3b2e; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 55%,var(--bg) 100%);
+         color:var(--ink); font-family:Georgia,'Times New Roman',serif; overflow-x:hidden; }
+  .mono { font-family:'Cascadia Code','Fira Code',Consolas,monospace; }
+  .grid { position:fixed; inset:0; pointer-events:none; opacity:.13;
+          background-image:radial-gradient(#5b79a6 1.1px, transparent 1.1px); background-size:38px 38px; }
+  header { min-height:92vh; display:flex; flex-direction:column; justify-content:center;
+           align-items:center; text-align:center; padding:60px 20px 40px; position:relative; }
+  .kicker { font-family:Verdana,sans-serif; letter-spacing:6px; font-size:13px;
+            color:var(--gold); text-transform:uppercase; margin-bottom:22px;
+            animation:fadeUp 1s ease both .1s; }
+  h1 { font-size:clamp(38px,7vw,84px); font-weight:bold; letter-spacing:1px;
+       background:linear-gradient(100deg,#f0d78c 10%,#ffffff 45%,#c9a53d 80%);
+       -webkit-background-clip:text; background-clip:text; color:transparent;
+       background-size:220% 100%; animation:shine 7s ease-in-out infinite; }
+  @keyframes shine { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
+  .sub { margin-top:18px; color:var(--mut); font-size:clamp(15px,2vw,19px); max-width:760px;
+         animation:fadeUp 1s ease both .3s; }
+  .formula { margin-top:34px; font-size:clamp(16px,2.6vw,26px); color:var(--gold-hl);
+             animation:fadeUp 1s ease both .5s; }
+  .orbit { position:relative; width:190px; height:190px; margin:44px auto 8px; }
+  .ring { position:absolute; inset:0; border-radius:50%; border:3px solid var(--gold);
+          box-shadow:0 0 34px rgba(201,165,61,.35), inset 0 0 24px rgba(201,165,61,.18);
+          animation:pulse 4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { box-shadow:0 0 24px rgba(201,165,61,.25);} 50% { box-shadow:0 0 46px rgba(201,165,61,.5);} }
+  .q { position:absolute; width:15px; height:15px; border-radius:50%; background:var(--gold-hl);
+       top:50%; left:50%; margin:-7.5px;
+       animation:orbit 9s linear infinite; box-shadow:0 0 12px rgba(240,215,140,.9); }
+  .q:nth-child(2) { animation-duration:9s; animation-delay:-3s; }
+  .q:nth-child(3) { animation-duration:9s; animation-delay:-6s; }
+  @keyframes orbit { from { transform:rotate(0) translateX(74px) rotate(0); }
+                     to { transform:rotate(360deg) translateX(74px) rotate(-360deg); } }
+  .spark { position:absolute; width:9px; height:9px; border-radius:50%; background:#fff;
+           top:50%; left:50%; margin:-4.5px; box-shadow:0 0 16px #fff;
+           animation:arc 6s ease-in-out infinite; }
+  @keyframes arc { 0% { transform:translate(-95px,70px); opacity:0; }
+                   12% { opacity:1; } 50% { transform:translate(0,-95px); }
+                   88% { opacity:1; } 100% { transform:translate(95px,70px); opacity:0; } }
+  .badges { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:34px;
+            animation:fadeUp 1s ease both .7s; }
+  .b { font-family:Verdana,sans-serif; font-size:13px; padding:9px 18px; border-radius:20px;
+       border:1.4px solid var(--gold); color:var(--gold-hl); }
+  .b.g { border-color:var(--teal); color:#8fd0e8; }
+  .b.k { border-color:var(--ok); color:var(--ok); }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(18px);} to { opacity:1; transform:none;} }
+  main { max-width:1060px; margin:0 auto; padding:30px 22px 80px; }
+  h2 { font-size:clamp(24px,3.4vw,34px); margin:56px 0 18px; color:var(--gold-hl); }
+  h2 span { color:var(--mut); font-family:Verdana,sans-serif; font-size:13px; letter-spacing:3px;
+            display:block; text-transform:uppercase; margin-bottom:8px; }
+  p.lead { color:var(--mut); font-size:17px; line-height:1.75; max-width:840px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:24px; }
+  .card { background:rgba(15,27,45,.75); border:1px solid #22365442; border-radius:14px; padding:20px;
+          transition:transform .25s ease, border-color .25s ease; }
+  .card:hover { transform:translateY(-4px); border-color:var(--gold); }
+  .card .n { font-size:26px; color:var(--gold-hl); }
+  .card .l { font-family:Verdana,sans-serif; font-size:12.5px; color:var(--mut); margin-top:6px; }
+  .card .v { color:var(--ok); font-family:Verdana,sans-serif; font-size:12px; margin-top:10px; }
+  table { width:100%; border-collapse:collapse; margin-top:18px; font-size:14.5px; }
+  th { font-family:Verdana,sans-serif; font-size:12px; text-transform:uppercase; letter-spacing:1.5px;
+       color:var(--gold); text-align:left; padding:10px 12px; border-bottom:1.5px solid var(--gold); }
+  td { padding:10px 12px; border-bottom:1px solid #22365466; color:var(--ink); }
+  tr:hover td { background:rgba(201,165,61,.05); }
+  .new td:first-child { color:var(--ok); font-weight:bold; }
+  .pip { display:flex; flex-wrap:wrap; gap:0; margin-top:26px; align-items:stretch; }
+  .stage { flex:1 1 160px; background:rgba(15,27,45,.75); border:1px solid #22365466;
+           padding:16px; position:relative; }
+  .stage b { color:var(--gold-hl); font-size:15px; }
+  .stage small { display:block; color:var(--mut); margin-top:6px; font-family:Verdana,sans-serif; font-size:11.5px; }
+  .arrow { align-self:center; color:var(--gold); font-size:22px; padding:0 10px; }
+  footer { text-align:center; color:#63788e; font-family:Verdana,sans-serif; font-size:13px;
+           padding:44px 20px 60px; border-top:1px solid #22365444; margin-top:70px; }
+  footer a { color:var(--gold); text-decoration:none; }
+  a.tl { color:var(--teal); text-decoration:none; }
+</style>
+</head>
+<body>
+<div class="grid"></div>
+<header>
+  <div class="kicker">Quark–Hawking Bridge · Unified Archive</div>
+  <h1>Confinement, Branch Laws &amp; Ladders to Infinity</h1>
+  <div class="sub">A falsification-first research program: three-quark escape into a false
+  vacuum, a vortex anchor ω = 3/(2π), the asymmetric lock η<sub>crit</sub>, a cosmological cooling
+  scenario below T<sub>death</sub> — every number with a machine layer, every claim with a falsifier.</div>
+  <div class="orbit">
+    <div class="ring"></div>
+    <div class="q"></div><div class="q"></div><div class="q"></div>
+    <div class="spark"></div>
+  </div>
+  <div class="formula mono">χ(C₀) = λ²(λ²+(2+γ)²)(λ²+3(1+2γ)) — exact · Mathlib-ported</div>
+  <div class="badges">
+    <div class="b k">v2.3.0 · Mathlib edition</div>
+    <div class="b">18 closed Lean kernels</div>
+    <div class="b g">X1–X13 external bounds</div>
+    <div class="b g">5 convergence ladders</div>
+    <div class="b">Iron-QA · CI · SHA256</div>
+  </div>
+</header>
+<main>
+  <h2><span>The layers</span>From canon to the Mathlib port</h2>
+  <div class="pip">
+    <div class="stage"><b>canon v1.3.0</b><small>12 campaigns · 15 theorems · IVP-12 audit</small></div>
+    <div class="arrow">→</div>
+    <div class="stage"><b>extra v2.0.0</b><small>mpmath dps=100 · SymPy · 6 sensitive tests</small></div>
+    <div class="arrow">→</div>
+    <div class="stage"><b>roadmap v2.1.0</b><small>R1–R7 executed · predictions P-R*</small></div>
+    <div class="arrow">→</div>
+    <div class="stage"><b>analytic v2.2.0</b><small>T19 proof · cooling scenario · 5 ladders</small></div>
+    <div class="arrow">→</div>
+    <div class="stage"><b>github v2.3.0</b><small>Mathlib port · X1–X13 · Iron-QA · CI</small></div>
+  </div>
+
+  <h2><span>Master numbers</span>The canon at a glance</h2>
+  <div class="cards">
+    <div class="card"><div class="n">3.3583</div><div class="l">valley floor β*</div><div class="v">C9 · dps=100 verified</div></div>
+    <div class="card"><div class="n">0.2433 ± 0.0043</div><div class="l">free-trio escape P<sub>esc</sub></div><div class="v">10 000 trials · seed 777040</div></div>
+    <div class="card"><div class="n">0.0908885</div><div class="l">asymmetric lock η<sub>crit</sub></div><div class="v">margin 1.49×10⁸ vs η<sub>B</sub></div></div>
+    <div class="card"><div class="n">673·t<sub>c</sub></div><div class="l">cooling deadline (α=1/2)</div><div class="v">P-C1 · MC ≤ 1.2σ</div></div>
+  </div>
+
+  <h2><span>External bounds</span>X1–X13</h2>
+  <p class="lead">The package predicts no physical fluxes; the X-table fixes the empirical arena
+  of real searches inside which any future physical prediction must live. Rows X9–X13 were
+  verified against 2024–2026 primary sources at release time.</p>
+  <table>
+    <tr><th>#</th><th>Who</th><th>Channel</th><th>Status</th></tr>
+    <tr><td>X1</td><td>de Rújula–Glashow 1984</td><td>nuclearite yardstick</td><td>F ≈ 7.8·(1 g/m) cm⁻²s⁻¹sr⁻¹</td></tr>
+    <tr><td>X2</td><td>MACRO 1997–2001</td><td>underground nuclearites</td><td>&lt; 2.7×10⁻¹⁶ cm⁻²s⁻¹sr⁻¹</td></tr>
+    <tr><td>X4</td><td>ANTARES 2023</td><td>m ≤ 10¹⁷ GeV/c²</td><td>~5×10⁻¹⁷ cm⁻²s⁻¹sr⁻¹</td></tr>
+    <tr class="new"><td>X9</td><td>SQM-ISS 2024–25</td><td>ISS dual-mode detector</td><td>prospective · install 2025+</td></tr>
+    <tr class="new"><td>X10</td><td>IceCube 2025</td><td>sub-relativistic monopoles</td><td>&gt; 1 order improvement</td></tr>
+    <tr class="new"><td>X12</td><td>Macro recast 2024–26</td><td>extended mass functions</td><td>methodology standard</td></tr>
+  </table>
+
+  <h2><span>Verification</span>Iron-QA gates</h2>
+  <p class="lead">Four static gates plus CI: <span class="mono">check_json</span> (every artifact parses),
+  <span class="mono">check_numbers</span> (master numbers vs machine layers),
+  <span class="mono">check_release</span> (VERSION / CHANGELOG / links / SHA256SUMS),
+  <span class="mono">check_lean_kernels</span> (18 closed kernels, no stray <span class="mono">sorry</span>).
+  The Lean/Mathlib workflow builds both scaffolds on every push and fails on any
+  <span class="mono">sorryAx</span> in the closed kernels.</p>
+
+  <h2><span>Get started</span>Links</h2>
+  <p class="lead">Full narrative: <span class="mono">MONOGRAPH/</span> (RU/EN, PDF+DOCX).
+  Formalization: <span class="mono">monolith/lean/</span>. Machine layers:
+  <span class="mono">monolith/**.json</span>. Publishing runbook: <span class="mono">GITHUB_SETUP.md</span>.
+  Citation: <span class="mono">CITATION.cff</span>.</p>
+</main>
+<footer>
+  Quark–Hawking Bridge · Isaac Isaev · wild8highlander · 2026<br/>
+  <a href="https://github.com/wild8highlander/Quark_Hawking_Bridge">repository</a> ·
+  built with a falsifier before every promise
+</footer>
+</body>
+</html>

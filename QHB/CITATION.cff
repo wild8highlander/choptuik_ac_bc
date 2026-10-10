@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this package, please cite it as below."
+title: "Quark-Hawking Bridge: Unified Monolithic Edition"
+version: 2.3.0
+date-released: "2026-10-10"
+authors:
+  - family-names: Isaev
+    given-names: Isaac
+  - name: wild8highlander
+keywords:
+  - mass gap
+  - confinement
+  - Yang-Mills
+  - Kirchhoff vortices
+  - Lean4
+  - Mathlib
+  - reproducible research
+abstract: >-
+  Unified monolithic edition of the Quark-Hawking Bridge program: 12 campaigns,
+  15 theorems, 30-claim Evidence Engine, roadmap R1-R7 executed, analytic branch-law
+  proof (T19) with a full Mathlib port (18 closed kernels), cosmological cooling
+  scenario below T_death, five convergence ladders to infinity, external bounds
+  X1-X13, and an iron reproducibility layer (Iron-QA, CI, SHA256SUMS).
+preferred-citation:
+  type: manual
+  title: "Quark-Hawking Bridge: Unified Monolithic Edition v2.3.0"
+  authors:
+    - family-names: Isaev
+      given-names: Isaac
+    - name: wild8highlander
+  year: 2026

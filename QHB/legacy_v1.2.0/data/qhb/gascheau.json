@@ -1,0 +1,8 @@
+{
+ "growth_rate_n": 1.224744871391589,
+ "nu": 0.3333333333333333,
+ "stable": false,
+ "theorem": "T4 \u2014 equilateral solution unstable for equal masses (1/3 > 1/27); no static rigid triangle",
+ "threshold": 0.037037037037037035,
+ "verdict": "UNSTABLE"
+}

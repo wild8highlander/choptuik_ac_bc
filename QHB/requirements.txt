@@ -1,0 +1,6 @@
+numpy
+sympy
+mpmath
+matplotlib
+pytest
+openpyxl

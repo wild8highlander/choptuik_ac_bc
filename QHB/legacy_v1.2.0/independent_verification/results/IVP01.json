@@ -1,0 +1,26 @@
+{
+ "check": "release integrity",
+ "files": {
+  "c1_verdict.json": {
+   "exists": true,
+   "sha256": "bafc860204465fbe5e565384ffe6ca0f7c22d6410b0319dac55a4e9aed7bc3a4"
+  },
+  "c2_verdict.json": {
+   "exists": true,
+   "sha256": "86b483b944b8babb98e5c237e5774ba512858f9b37da70484720adb1f424d343"
+  },
+  "c3_verdict.json": {
+   "exists": true,
+   "sha256": "d41913f5b338f8c5a0fe34262d7e6ba41a5bd7acd18a69e79508badf6b6d9891"
+  },
+  "c4_verdict.json": {
+   "exists": true,
+   "sha256": "3ab87296994a7d009cca1b9e68f93e2053c5255b138413edff3d4eb842565523"
+  },
+  "c5_verdict.json": {
+   "exists": true,
+   "sha256": "98f17cbfa4106913e1baa2bd476b4269f448626c43819574c06977c05abf607e"
+  }
+ },
+ "verdict": "PASS"
+}

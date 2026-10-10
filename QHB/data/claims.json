@@ -1,0 +1,557 @@
+{
+ "claims": [
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Finite-volume gap Delta_F(beta, L) > 0 over the whole explored region (detector threshold Delta_thresh = 0.0363485).",
+   "falsifier": "one CLOSED cell on the C1/C9 grid",
+   "id": "T1",
+   "ru": "\u041a\u043e\u043d\u0435\u0447\u043d\u043e\u0431\u044a\u0451\u043c\u043d\u044b\u0439 \u0437\u0430\u0437\u043e\u0440 Delta_F(beta, L) > 0 \u0432\u043e \u0432\u0441\u0435\u0439 \u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u043d\u043d\u043e\u0439 \u043e\u0431\u043b\u0430\u0441\u0442\u0438 (\u043f\u043e\u0440\u043e\u0433 \u0434\u0435\u0442\u0435\u043a\u0442\u043e\u0440\u0430 Delta_thresh = 0.0363485).",
+   "source": "C1/C9",
+   "status": "exact",
+   "tables": [
+    "c1_gap_grid.json",
+    "c9_phase_grid.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Wilson law W = exp(-sigma R T) in the model class; sigma(beta) = 0.25 (Delta/Delta_min)^{3/2}.",
+   "falsifier": "log-slope fit deviating from sigma(beta) by > 1e-12",
+   "id": "T2",
+   "ru": "\u0417\u0430\u043a\u043e\u043d \u0412\u0438\u043b\u044c\u0441\u043e\u043d\u0430 W = exp(-sigma R T) \u0432 \u043c\u043e\u0434\u0435\u043b\u044c\u043d\u043e\u043c \u043a\u043b\u0430\u0441\u0441\u0435; sigma(beta) = 0.25 (Delta/Delta_min)^{3/2}.",
+   "source": "C2",
+   "status": "measured-law",
+   "tables": [
+    "c2_sigma_scan.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Quantum spin corrections of the bridge equal pi^2/8 and pi^5/704 (mpmath-verified, 100 digits).",
+   "falsifier": "100-digit mismatch",
+   "id": "T3",
+   "ru": "\u041a\u0432\u0430\u043d\u0442\u043e\u0432\u044b\u0435 \u0441\u043f\u0438\u043d-\u043f\u043e\u043f\u0440\u0430\u0432\u043a\u0438 \u043c\u043e\u0441\u0442\u0430 \u0440\u0430\u0432\u043d\u044b pi^2/8 \u0438 pi^5/704 (\u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e mpmath, 100 \u0437\u043d\u0430\u043a\u043e\u0432).",
+   "source": "C3",
+   "status": "exact",
+   "tables": [
+    "c3_spin_constants.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Bridge temperature T_c = sqrt(sigma)/2pi * (1 + pi^2/8b^2 + pi^5/704 b^4); total correction +11.28% at beta*.",
+   "falsifier": "correction outside [0.11, 0.115] at beta*",
+   "id": "T4",
+   "ru": "\u041c\u043e\u0441\u0442\u043e\u0432\u0430\u044f \u0442\u0435\u043c\u043f\u0435\u0440\u0430\u0442\u0443\u0440\u0430 T_c = sqrt(sigma)/2pi * (1 + pi^2/8b^2 + pi^5/704 b^4); \u043f\u043e\u043b\u043d\u0430\u044f \u043f\u043e\u043f\u0440\u0430\u0432\u043a\u0430 +11.28% \u043f\u0440\u0438 beta*.",
+   "source": "C3",
+   "status": "measured-law",
+   "tables": [
+    "c3_bridge_scan.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Detector response tail at E > E_max = 2.5 is NOT resolved: residuals are sign-constant (50/50 positive), the runs test is degenerate - randomness is rejected; only an amplitude upper bound is claimed.",
+   "falsifier": "runs test |z| < 1.96 in the tail window",
+   "id": "T5",
+   "ru": "\u0425\u0432\u043e\u0441\u0442 \u043e\u0442\u043a\u043b\u0438\u043a\u0430 \u0434\u0435\u0442\u0435\u043a\u0442\u043e\u0440\u0430 \u043f\u0440\u0438 E > E_max = 2.5 \u041d\u0415 \u0440\u0430\u0437\u0440\u0435\u0448\u0451\u043d: \u043e\u0441\u0442\u0430\u0442\u043a\u0438 \u0437\u043d\u0430\u043a\u043e\u043f\u043e\u0441\u0442\u043e\u044f\u043d\u043d\u044b (50/50 \u043f\u043e\u043b\u043e\u0436\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0445), \u0442\u0435\u0441\u0442 \u0441\u0435\u0440\u0438\u0439 \u0432\u044b\u0440\u043e\u0436\u0434\u0435\u043d - \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u043e\u0441\u0442\u044c \u043e\u0442\u0432\u0435\u0440\u0433\u0430\u0435\u0442\u0441\u044f; \u0437\u0430\u044f\u0432\u043b\u044f\u0435\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0432\u0435\u0440\u0445\u043d\u044f\u044f \u0433\u0440\u0430\u043d\u0438\u0446\u0430 \u0430\u043c\u043f\u043b\u0438\u0442\u0443\u0434\u044b.",
+   "source": "C4",
+   "status": "honest-negative",
+   "tables": [
+    "c4_tail_audit.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Free three-body escape: P_esc = 0.2433 +/- 0.0043 (analytic and Monte-Carlo) - without the bridge coupling escape is substantial.",
+   "falsifier": "MC p-hat outside analytic +/- 3 se",
+   "id": "T6",
+   "ru": "\u0421\u0432\u043e\u0431\u043e\u0434\u043d\u043e\u0435 \u0442\u0440\u0451\u0445\u0447\u0430\u0441\u0442\u0438\u0447\u043d\u043e\u0435 \u0431\u0435\u0433\u0441\u0442\u0432\u043e: P_esc = 0.2433 +/- 0.0043 (\u0430\u043d\u0430\u043b\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u0438 \u0438 \u041c\u043e\u043d\u0442\u0435-\u041a\u0430\u0440\u043b\u043e) - \u0431\u0435\u0437 \u043c\u043e\u0441\u0442\u043e\u0432\u043e\u0439 \u0441\u0432\u044f\u0437\u0438 \u0431\u0435\u0433\u0441\u0442\u0432\u043e \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u043e.",
+   "source": "C5",
+   "status": "honest-negative",
+   "tables": [
+    "c5_free_three_body.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Y-string vertex is the Fermat point: 120-degree angles (SymPy gradient check).",
+   "falsifier": "SymPy gradient not identically zero at symmetric config",
+   "id": "T7",
+   "ru": "\u0412\u0435\u0440\u0448\u0438\u043d\u0430 Y-\u0441\u0442\u0440\u0443\u043d\u044b - \u0442\u043e\u0447\u043a\u0430 \u0424\u0435\u0440\u043c\u0430: \u0443\u0433\u043b\u044b 120 \u0433\u0440\u0430\u0434\u0443\u0441\u043e\u0432 (SymPy-\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0433\u0440\u0430\u0434\u0438\u0435\u043d\u0442\u0430).",
+   "source": "C6",
+   "status": "exact",
+   "tables": [
+    "c6_y_spectrum.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Y-string spectrum E_Y = sigma * L_Fermat over 9 triangle shapes; minimum at the equilateral configuration.",
+   "falsifier": "non-equilateral shape with lower E_Y",
+   "id": "T8",
+   "ru": "\u0421\u043f\u0435\u043a\u0442\u0440 Y-\u0441\u0442\u0440\u0443\u043d E_Y = sigma * L_Fermat \u043d\u0430 9 \u0444\u043e\u0440\u043c\u0430\u0445 \u0442\u0440\u0435\u0443\u0433\u043e\u043b\u044c\u043d\u0438\u043a\u0430; \u043c\u0438\u043d\u0438\u043c\u0443\u043c \u0432 \u0440\u0430\u0432\u043d\u043e\u0441\u0442\u043e\u0440\u043e\u043d\u043d\u0435\u0439 \u043a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u0438.",
+   "source": "C6",
+   "status": "measured-law",
+   "tables": [
+    "c6_y_spectrum.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Tunneling window is closed: T(0) = exp(-2S(0)) = 9.21e-13 < 1e-12; open only for E < 0.0059.",
+   "falsifier": "T(0) > 1e-12",
+   "id": "T9",
+   "ru": "\u0422\u0443\u043d\u043d\u0435\u043b\u044c\u043d\u043e\u0435 \u043e\u043a\u043d\u043e \u0437\u0430\u043a\u0440\u044b\u0442\u043e: T(0) = exp(-2S(0)) = 9.21e-13 < 1e-12; \u043e\u043a\u043d\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u043e \u043b\u0438\u0448\u044c \u043f\u0440\u0438 E < 0.0059.",
+   "source": "C7",
+   "status": "measured-law",
+   "tables": [
+    "c7_wkb_window.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Bootstrap bias of the valley-floor estimate is small: bias = 0.0046 (0.38 boot_se), jackknife 0.0016; both << Delta_F,min (2.6%).",
+   "falsifier": "|bias| > 0.5 * boot_se or > 0.05 * Delta_F_min",
+   "id": "T10",
+   "ru": "\u0411\u0443\u0442\u0441\u0442\u0440\u0430\u043f-\u0441\u043c\u0435\u0449\u0435\u043d\u0438\u0435 \u043e\u0446\u0435\u043d\u043a\u0438 \u0434\u043d\u0430 \u0434\u043e\u043b\u0438\u043d\u044b \u043c\u0430\u043b\u043e: bias = 0.0046 (0.38 boot_se), \u0434\u0436\u0435\u043a\u043d\u0430\u0439\u0444 0.0016; \u043e\u0431\u0430 << Delta_F,min (2.6%).",
+   "source": "C8",
+   "status": "measured-law",
+   "tables": [
+    "c8_bootstrap.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Equilateral vortex triangle spectrum: {0, 0, +-(3/2pi)i, +-(3/2pi)i}; characteristic polynomial lam^2 (4 pi^2 lam^2 + 9)^2 / (16 pi^4) (SymPy, zero deviation).",
+   "falsifier": "any Re(lambda) != 0 or polynomial mismatch",
+   "id": "T11",
+   "ru": "\u0421\u043f\u0435\u043a\u0442\u0440 \u0440\u0430\u0432\u043d\u043e\u0441\u0442\u043e\u0440\u043e\u043d\u043d\u0435\u0433\u043e \u0442\u0440\u0435\u0443\u0433\u043e\u043b\u044c\u043d\u0438\u043a\u0430 \u0432\u0438\u0445\u0440\u0435\u0439: {0, 0, +-(3/2pi)i, +-(3/2pi)i}; \u0445\u0430\u0440\u0430\u043a\u0442\u0435\u0440\u0438\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u043f\u043e\u043b\u0438\u043d\u043e\u043c lam^2 (4 pi^2 lam^2 + 9)^2 / (16 pi^4) (SymPy, \u043e\u0442\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u0435 0).",
+   "source": "C11",
+   "status": "exact",
+   "tables": [
+    "c11_spectrum.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Aref boundedness: H < 0 implies motion bounded by the radius 2*sqrt(I); measured r_max = 2.7654 << 12 (no wall); rigid rotation omega with deviation <= 2e-14.",
+   "falsifier": "r_max > 2*sqrt(I) or H >= 0 run escaping",
+   "id": "T12",
+   "ru": "\u041e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d\u043d\u043e\u0441\u0442\u044c \u043f\u043e \u0410\u0440\u0435\u0444\u0443: H < 0 \u0432\u043b\u0435\u0447\u0451\u0442 \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d\u043d\u043e\u0441\u0442\u044c \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f \u0440\u0430\u0434\u0438\u0443\u0441\u043e\u043c 2*sqrt(I); \u0438\u0437\u043c\u0435\u0440\u0435\u043d\u043e r_max = 2.7654 << 12 (\u0441\u0442\u0435\u043d\u044b \u043d\u0435\u0442); \u0436\u0451\u0441\u0442\u043a\u043e\u0435 \u0432\u0440\u0430\u0449\u0435\u043d\u0438\u0435 omega \u0441 \u043e\u0442\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u0435\u043c <= 2e-14.",
+   "source": "C11",
+   "status": "measured-law",
+   "tables": [
+    "c11_aref_run.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Anchored-sector static barrier V* = 0.9359375 (maximum of V(s) = V* s^2 e^{2-2s} exactly at s = 1); all 300 trajectories with E < V* fail to escape: 0/300.",
+   "falsifier": "one escape with E < V*",
+   "id": "T13",
+   "ru": "\u0421\u0442\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0431\u0430\u0440\u044c\u0435\u0440 \u044f\u043a\u043e\u0440\u043d\u043e\u0439 \u0441\u0435\u043a\u0446\u0438\u0438 V* = 0.9359375 (\u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c V(s) = V* s^2 e^{2-2s} \u0442\u043e\u0447\u043d\u043e \u043f\u0440\u0438 s = 1); \u0432\u0441\u0435 300 \u0442\u0440\u0430\u0435\u043a\u0442\u043e\u0440\u0438\u0439 \u0441 E < V* \u043d\u0435 \u0443\u0431\u0435\u0433\u0430\u044e\u0442: 0/300.",
+   "source": "C11",
+   "status": "measured-law",
+   "tables": [
+    "c11_barrier_scan.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Asymmetric lock: for any asymmetry eta < eta_crit = Delta_F,min/2 = 0.0908885 the gap-closure barrier stays positive (worst case: loss exactly 2*eta, SymPy inequality).",
+   "falsifier": "negative worst-case barrier at eta < eta_crit",
+   "id": "T14",
+   "ru": "\u0410\u0441\u0438\u043c\u043c\u0435\u0442\u0440\u0438\u0447\u043d\u044b\u0439 \u0437\u0430\u043c\u043e\u043a: \u043f\u0440\u0438 \u043b\u044e\u0431\u043e\u0439 \u0430\u0441\u0438\u043c\u043c\u0435\u0442\u0440\u0438\u0438 eta < eta_crit = Delta_F,min/2 = 0.0908885 \u0431\u0430\u0440\u044c\u0435\u0440 \u0437\u0430\u043c\u044b\u043a\u0430\u043d\u0438\u044f \u0437\u0430\u0437\u043e\u0440\u0430 \u043e\u0441\u0442\u0430\u0451\u0442\u0441\u044f \u043f\u043e\u043b\u043e\u0436\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u043c (\u0445\u0443\u0434\u0448\u0438\u0439 \u0441\u043b\u0443\u0447\u0430\u0439: \u043f\u043e\u0442\u0435\u0440\u044f \u0440\u043e\u0432\u043d\u043e 2*eta, SymPy-\u043d\u0435\u0440\u0430\u0432\u0435\u043d\u0441\u0442\u0432\u043e).",
+   "source": "C12",
+   "status": "exact",
+   "tables": [
+    "c12_phase_grid.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "Planck 2018",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Free quarks as separate asymptotic states are impossible: gap filling is self-limiting (0 saturated wells in 1e6 steps at eta_B) and the probability of a macroscopic accumulation (N ~ 1e30) is < 10^(-1.2e31).",
+   "falsifier": "saturated well at eta_B or P(nugget) > 10^-300",
+   "id": "T15",
+   "ru": "\u0421\u0432\u043e\u0431\u043e\u0434\u043d\u044b\u0435 \u043a\u0432\u0430\u0440\u043a\u0438 \u043a\u0430\u043a \u043e\u0442\u0434\u0435\u043b\u044c\u043d\u044b\u0435 \u0430\u0441\u0438\u043c\u043f\u0442\u043e\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u044f \u043d\u0435\u0432\u043e\u0437\u043c\u043e\u0436\u043d\u044b: \u0437\u0430\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0435 \u0449\u0435\u043b\u0435\u0439 \u0441\u0430\u043c\u043e\u0442\u043e\u0440\u043c\u043e\u0437\u0438\u0442\u0441\u044f (0 \u043d\u0430\u0441\u044b\u0449\u0435\u043d\u043d\u044b\u0445 \u044f\u043c \u0437\u0430 1e6 \u0448\u0430\u0433\u043e\u0432 \u043f\u0440\u0438 eta_B), \u0430 \u0432\u0435\u0440\u043e\u044f\u0442\u043d\u043e\u0441\u0442\u044c \u043c\u0430\u043a\u0440\u043e\u0441\u043a\u043e\u043f\u0438\u0447\u0435\u0441\u043a\u043e\u0433\u043e \u043d\u0430\u043a\u043e\u043f\u043b\u0435\u043d\u0438\u044f (N ~ 10^30) < 10^(-1.2e31).",
+   "source": "C12",
+   "status": "honest-negative",
+   "tables": [
+    "c12_fill_dynamics.json",
+    "c12_nugget_bound.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "C1 9x9 grid: all cells OPEN; grid minimum 0.174490 at (beta, L) = (3.45625, 6).",
+   "falsifier": "rerun deviates from pinned table",
+   "id": "C1-RES",
+   "ru": "\u0421\u0435\u0442\u043a\u0430 C1 9x9: \u0432\u0441\u0435 \u044f\u0447\u0435\u0439\u043a\u0438 OPEN; \u0441\u0435\u0442\u043e\u0447\u043d\u044b\u0439 \u043c\u0438\u043d\u0438\u043c\u0443\u043c 0.174490 \u043f\u0440\u0438 (beta, L) = (3.45625, 6).",
+   "source": "C1",
+   "status": "measured-law",
+   "tables": [
+    "c1_gap_grid.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "The continuum gap Delta_cont is NOT claimed: the evidence is finite-volume only (L <= 32).",
+   "falsifier": "any text claiming Delta_cont as established",
+   "id": "C1-NEG",
+   "ru": "\u041a\u043e\u043d\u0442\u0438\u043d\u0443\u0430\u043b\u044c\u043d\u044b\u0439 \u0437\u0430\u0437\u043e\u0440 Delta_cont \u041d\u0415 \u0443\u0442\u0432\u0435\u0440\u0436\u0434\u0430\u0435\u0442\u0441\u044f: \u0434\u043e\u043a\u0430\u0437\u0430\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u0430 \u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0431\u044a\u0451\u043c\u043d\u044b\u0435 (L <= 32).",
+   "source": "C1",
+   "status": "honest-negative",
+   "tables": []
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Only an upper bound on the tail amplitude is claimed for E > 2.5; the tail shape is not established.",
+   "falsifier": "resolved tail shape claim",
+   "id": "C4-NEG",
+   "ru": "\u041e \u0445\u0432\u043e\u0441\u0442\u0435 \u043e\u0442\u043a\u043b\u0438\u043a\u0430 \u043f\u0440\u0438 E > 2.5 \u0443\u0442\u0432\u0435\u0440\u0436\u0434\u0430\u0435\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0432\u0435\u0440\u0445\u043d\u044f\u044f \u0433\u0440\u0430\u043d\u0438\u0446\u0430 \u0430\u043c\u043f\u043b\u0438\u0442\u0443\u0434\u044b; \u0444\u043e\u0440\u043c\u0430 \u0445\u0432\u043e\u0441\u0442\u0430 \u043d\u0435 \u0443\u0441\u0442\u0430\u043d\u0430\u0432\u043b\u0438\u0432\u0430\u0435\u0442\u0441\u044f.",
+   "source": "C4",
+   "status": "honest-negative",
+   "tables": [
+    "c4_tail_audit.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "C9 valley floor: beta* = 3.3583, Delta_F,min = 0.181777 (parabolic refinement of the grid argmin).",
+   "falsifier": "refined valley deviates by > 1e-9",
+   "id": "C9-VALLEY",
+   "ru": "\u0414\u043d\u043e \u0434\u043e\u043b\u0438\u043d\u044b C9: beta* = 3.3583, Delta_F,min = 0.181777 (\u043f\u0430\u0440\u0430\u0431\u043e\u043b\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u0443\u0442\u043e\u0447\u043d\u0435\u043d\u0438\u0435 \u0441\u0435\u0442\u043e\u0447\u043d\u043e\u0433\u043e \u0430\u0440\u0433\u043c\u0438\u043d\u0438\u043c\u0443\u043c\u0430).",
+   "source": "C9",
+   "status": "measured-law",
+   "tables": [
+    "c9_valley.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "The naive narrow-window extrapolation (beta_c = 2.9910) is falsified by direct probe: the measured gap is 6.3x the threshold.",
+   "falsifier": "gap at beta_c below threshold",
+   "id": "C9-FALS",
+   "ru": "\u041d\u0430\u0438\u0432\u043d\u0430\u044f \u044d\u043a\u0441\u0442\u0440\u0430\u043f\u043e\u043b\u044f\u0446\u0438\u044f \u0443\u0437\u043a\u043e\u0433\u043e \u043e\u043a\u043d\u0430 (\u0431\u0435\u0442\u0430_c = 2.9910) \u0444\u0430\u043b\u044c\u0441\u0438\u0444\u0438\u0446\u0438\u0440\u043e\u0432\u0430\u043d\u0430 \u043f\u0440\u044f\u043c\u044b\u043c \u0437\u043e\u043d\u0434\u043e\u043c: \u0438\u0437\u043c\u0435\u0440\u0435\u043d\u043d\u044b\u0439 \u0437\u0430\u0437\u043e\u0440 6.3x \u043f\u043e\u0440\u043e\u0433\u0430.",
+   "source": "C9",
+   "status": "honest-negative",
+   "tables": [
+    "c9_naive_falsifier.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "The 9x41 phase map: all 369 cells OPEN - the gap does not close anywhere in the window (finite-range statement).",
+   "falsifier": "one CLOSED cell",
+   "id": "C9-ALL",
+   "ru": "\u0424\u0430\u0437\u043e\u0432\u0430\u044f \u043a\u0430\u0440\u0442\u0430 9x41: \u0432\u0441\u0435 369 \u044f\u0447\u0435\u0435\u043a OPEN - \u0437\u0430\u0437\u043e\u0440 \u043d\u0435 \u0437\u0430\u043c\u044b\u043a\u0430\u0435\u0442\u0441\u044f \u043d\u0438\u0433\u0434\u0435 \u0432 \u043e\u043a\u043d\u0435 (\u0437\u0430\u044f\u0432\u043b\u0435\u043d\u0438\u0435 \u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0433\u043e \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d\u0430).",
+   "source": "C9",
+   "status": "measured-law",
+   "tables": [
+    "c9_phase_grid.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Causal shares A/B/C: 91.95% / 8.00% / 0.049%; additivity with bias 1.3e-4.",
+   "falsifier": "share deviation > 0.01 pct-point on rerun",
+   "id": "C10-SHARES",
+   "ru": "\u041a\u0430\u0443\u0437\u0430\u043b\u044c\u043d\u044b\u0435 \u0434\u043e\u043b\u0438 A/B/C: 91.95% / 8.00% / 0.049%; \u0430\u0434\u0434\u0438\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0441 \u0441\u043c\u0435\u0449\u0435\u043d\u0438\u0435\u043c 1.3e-4.",
+   "source": "C10",
+   "status": "measured-law",
+   "tables": [
+    "c10_shares.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "The pure-braking estimator B2 vanishes exactly on the symmetric control (the even sector is annihilated identically).",
+   "falsifier": "|B2| > 1e-12 on control",
+   "id": "C10-B2",
+   "ru": "\u0427\u0438\u0441\u0442\u043e \u0442\u043e\u0440\u043c\u043e\u0437\u043d\u0430\u044f \u043e\u0446\u0435\u043d\u043a\u0430 B2 \u043e\u0431\u043d\u0443\u043b\u044f\u0435\u0442\u0441\u044f \u0442\u043e\u0447\u043d\u043e \u043d\u0430 \u0441\u0438\u043c\u043c\u0435\u0442\u0440\u0438\u0447\u043d\u043e\u043c \u043a\u043e\u043d\u0442\u0440\u043e\u043b\u0435 (\u0447\u0435\u0442\u043d\u0430\u044f \u0441\u0435\u043a\u0446\u0438\u044f annihil\u0438\u0440\u0443\u0435\u0442\u0441\u044f \u0442\u043e\u0436\u0434\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u043e).",
+   "source": "C10",
+   "status": "exact",
+   "tables": [
+    "c10_braking.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Out-of-window the C10 model is NOT valid: residuals grow as (t-t1)^4.071 - no out-of-window claims are made.",
+   "falsifier": "power < 3.5 or > 4.7",
+   "id": "C10-NEG",
+   "ru": "\u0412\u043d\u0435 \u043e\u043a\u043d\u0430 \u043c\u043e\u0434\u0435\u043b\u044c C10 \u041d\u0415 \u0432\u0430\u043b\u0438\u0434\u043d\u0430: \u043e\u0441\u0442\u0430\u0442\u043a\u0438 \u0440\u0430\u0441\u0442\u0443\u0442 \u043a\u0430\u043a (t-t1)^4.071 - \u043d\u0438\u043a\u0430\u043a\u0438\u0435 \u0432\u043d\u0435\u043e\u043a\u043e\u043d\u043d\u044b\u0435 \u0443\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u044f \u043d\u0435 \u0434\u0435\u043b\u0430\u044e\u0442\u0441\u044f.",
+   "source": "C10",
+   "status": "honest-negative",
+   "tables": [
+    "c10_out_of_window.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "The C12 eta phase map: OPEN for all eta < 0.0908885; the phase boundary passes exactly through eta_crit (the worst step profile loses exactly 2*eta).",
+   "falsifier": "boundary off eta_crit by > 1e-6",
+   "id": "C12-GRID",
+   "ru": "\u0424\u0430\u0437\u043e\u0432\u0430\u044f \u043a\u0430\u0440\u0442\u0430 C12 \u043f\u043e eta: OPEN \u0434\u043b\u044f \u0432\u0441\u0435\u0445 eta < 0.0908885; \u0433\u0440\u0430\u043d\u0438\u0446\u0430 \u0444\u0430\u0437\u044b \u043f\u0440\u043e\u0445\u043e\u0434\u0438\u0442 \u0442\u043e\u0447\u043d\u043e \u0447\u0435\u0440\u0435\u0437 eta_crit (\u0445\u0443\u0434\u0448\u0438\u0439 \u043f\u0440\u043e\u0444\u0438\u043b\u044c step \u0434\u0430\u0451\u0442 \u043f\u043e\u0442\u0435\u0440\u044e 2*eta).",
+   "source": "C12",
+   "status": "measured-law",
+   "tables": [
+    "c12_phase_grid.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Positive cascade control: at eta = 0.5 (> eta_crit) wells saturate; at eta_B - zero within 1e6 steps.",
+   "falsifier": "saturation at eta_B or no saturation at eta = 0.5",
+   "id": "C12-FILL",
+   "ru": "\u041f\u043e\u0437\u0438\u0442\u0438\u0432\u043d\u044b\u0439 \u043a\u043e\u043d\u0442\u0440\u043e\u043b\u044c \u043a\u0430\u0441\u043a\u0430\u0434\u0430: \u043f\u0440\u0438 eta = 0.5 (> eta_crit) \u043d\u0430\u0441\u044b\u0449\u0435\u043d\u0438\u0435 \u044f\u043c \u043f\u0440\u043e\u0438\u0441\u0445\u043e\u0434\u0438\u0442; \u043f\u0440\u0438 eta_B - \u043d\u043e\u043b\u044c \u0437\u0430 1e6 \u0448\u0430\u0433\u043e\u0432.",
+   "source": "C12",
+   "status": "honest-negative",
+   "tables": [
+    "c12_fill_dynamics.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "Planck 2018",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Comparison with experiment: free-quark/nugget searches give n < ~1e-27 per nucleon; the model prediction at eta_B is zero saturated accumulations (compatible).",
+   "falsifier": "nugget detection above bound",
+   "id": "C12-EXP",
+   "ru": "\u0421\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0441 \u044d\u043a\u0441\u043f\u0435\u0440\u0438\u043c\u0435\u043d\u0442\u043e\u043c: \u043f\u043e\u0438\u0441\u043a \u0441\u0432\u043e\u0431\u043e\u0434\u043d\u044b\u0445 \u043a\u0432\u0430\u0440\u043a\u043e\u0432/\u043d\u0430\u0433\u0433\u0435\u0442\u043e\u0432 \u0434\u0430\u0451\u0442 n < ~1e-27 \u043d\u0430 \u043d\u0443\u043a\u043b\u043e\u043d; \u043f\u0440\u0435\u0434\u0441\u043a\u0430\u0437\u0430\u043d\u0438\u0435 \u043c\u043e\u0434\u0435\u043b\u0438 \u043f\u0440\u0438 eta_B - \u043d\u043e\u043b\u044c \u043d\u0430\u0441\u044b\u0449\u0435\u043d\u043d\u044b\u0445 \u043d\u0430\u043a\u043e\u043f\u043b\u0435\u043d\u0438\u0439 (\u0441\u043e\u0432\u043c\u0435\u0441\u0442\u0438\u043c\u043e).",
+   "source": "C12",
+   "status": "comparison",
+   "tables": [
+    "c12_nugget_bound.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "Hypothesis (NOT claimed): the continuum gap Delta_cont exists and equals the finite-volume limit.",
+   "falsifier": "L-extrapolation beyond L = 32",
+   "id": "HYPO-CONT",
+   "ru": "\u0413\u0438\u043f\u043e\u0442\u0435\u0437\u0430 (\u041d\u0415 \u0443\u0442\u0432\u0435\u0440\u0436\u0434\u0430\u0435\u0442\u0441\u044f): \u043a\u043e\u043d\u0442\u0438\u043d\u0443\u0430\u043b\u044c\u043d\u044b\u0439 \u0437\u0430\u0437\u043e\u0440 Delta_cont \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442 \u0438 \u0441\u043e\u0432\u043f\u0430\u0434\u0430\u0435\u0442 \u0441 \u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0431\u044a\u0451\u043c\u043d\u044b\u043c \u043f\u0440\u0435\u0434\u0435\u043b\u043e\u043c.",
+   "source": "C1",
+   "status": "hypothesis",
+   "tables": []
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "IVP-12 audit: 12 independent verification passes, 12/12 PASS (including SymPy symbolic checks for T11/T13/T14).",
+   "falsifier": "any IVP FAIL",
+   "id": "AUDIT",
+   "ru": "\u0410\u0443\u0434\u0438\u0442 IVP-12: 12 \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u044b\u0445 \u0432\u0435\u0440\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u043e\u043d\u043d\u044b\u0445 \u043f\u0440\u043e\u0445\u043e\u0434\u043e\u0432, 12/12 PASS (\u0432\u043a\u043b\u044e\u0447\u0430\u044f SymPy-\u0441\u0438\u043c\u0432\u043e\u043b\u0438\u043a\u0443 T11/T13/T14).",
+   "source": "audit",
+   "status": "exact",
+   "tables": [
+    "audit_ivp12.json"
+   ]
+  },
+  {
+   "budget": {
+    "external": "none",
+    "model": "reduced model class",
+    "numerical": "fp64 + mpmath pin",
+    "statistical": "binomial/seed",
+    "systematic": "grid resolution"
+   },
+   "en": "No nondeterminism found: rebuild_data reproduces all tables byte-identically.",
+   "falsifier": "any byte drift on rebuild",
+   "id": "DETERM",
+   "ru": "\u041d\u0435\u0434\u0435\u0442\u0435\u0440\u043c\u0438\u043d\u0438\u0437\u043c \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d: rebuild_data \u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0438\u0442 \u0432\u0441\u0435 \u0442\u0430\u0431\u043b\u0438\u0446\u044b \u043f\u043e\u0431\u0430\u0439\u0442\u043d\u043e.",
+   "source": "tools",
+   "status": "honest-negative",
+   "tables": []
+  }
+ ],
+ "summary": {
+  "by_status": {
+   "comparison": 1,
+   "exact": 7,
+   "honest-negative": 9,
+   "hypothesis": 1,
+   "measured-law": 12
+  },
+  "n_claims": 30,
+  "statuses": [
+   "exact",
+   "measured-law",
+   "honest-negative",
+   "hypothesis",
+   "comparison"
+  ]
+ }
+}

@@ -1,0 +1,116 @@
+{
+ "campaign": "qhb_c5",
+ "engine": "exact tridiagonal eigensolver on the sampled parabola",
+ "project_version": "1.0.0",
+ "timestamp": "2026-10-09T17:46:22",
+ "geometry": {
+  "kappa": 0.05,
+  "q_pk": 0.4,
+  "N_ladder": [
+   32,
+   64,
+   128,
+   256,
+   512
+  ]
+ },
+ "ladder": [
+  {
+   "N": 32,
+   "h": 0.24242424242424243,
+   "Delta_N": 0.5216921478133105
+  },
+  {
+   "N": 64,
+   "h": 0.12307692307692308,
+   "Delta_N": 0.523004556028156
+  },
+  {
+   "N": 128,
+   "h": 0.06201550387596899,
+   "Delta_N": 0.5233447197987668
+  },
+  {
+   "N": 256,
+   "h": 0.0311284046692607,
+   "Delta_N": 0.523431317626901
+  },
+  {
+   "N": 512,
+   "h": 0.015594541910331383,
+   "Delta_N": 0.5234531648384939
+  }
+ ],
+ "p_eff": [
+  {
+   "pair": "N=32->128",
+   "p": 1.9479151303417506
+  },
+  {
+   "pair": "N=64->256",
+   "p": 1.9738267460469634
+  },
+  {
+   "pair": "N=128->512",
+   "p": 1.9868816855680476
+  }
+ ],
+ "fit": {
+  "Delta_cont_fit": 0.5234604405880744,
+  "Delta_cont_status": "NOT CLAIMED \u2014 two-term extrapolation of a pre-asymptotic ladder (honest negative, mirrors CHB A*_inf)",
+  "C_measured": 0.030089025856430203,
+  "max_abs_residual": 9.813274404191219e-08
+ },
+ "exact_channel": {
+  "C_exact_s_kappa_over_8": -0.006274893389291922,
+  "s": -1.0039829422867075,
+  "kappa": 0.05,
+  "share_of_measured": -0.20854425195526693,
+  "honest_note": "the Lemma-A channel is a committed fraction of the observed drift; the rest is kinetic-term dispersion (also O(h^2)) \u2014 marked hypothesis"
+ },
+ "lemma_A_machine_check": {
+  "rows": [
+   {
+    "N": 32,
+    "sampled_depth": 0.39963269054178147,
+    "expected_worst": 0.39963269054178147,
+    "dev": 0.0
+   },
+   {
+    "N": 33,
+    "sampled_depth": 0.4,
+    "expected_worst": 0.4,
+    "dev": 0.0
+   },
+   {
+    "N": 64,
+    "sampled_depth": 0.399905325443787,
+    "expected_worst": 0.399905325443787,
+    "dev": 0.0
+   },
+   {
+    "N": 65,
+    "sampled_depth": 0.4,
+    "expected_worst": 0.4,
+    "dev": 0.0
+   },
+   {
+    "N": 128,
+    "sampled_depth": 0.3999759629829938,
+    "expected_worst": 0.3999759629829938,
+    "dev": 0.0
+   }
+  ],
+  "ok": true
+ },
+ "verdicts": {
+  "T10_drift": "PASS",
+  "T10_lemmaA": "PASS",
+  "T10_share": "REPORTED (honest window, no dominance claim)"
+ },
+ "honest_notes": [
+  "the drift here approaches the continuum gap from BELOW (flattened peak -> smaller gap), the sign mirror of the CHB threshold ladder \u2014 the sign is carried, not hidden",
+  "Delta_cont is not claimed; only the h^2 law and its exact-channel share are committed"
+ ],
+ "wall_s": 0.45249271392822266
+}

@@ -1,0 +1,12 @@
+* text=auto
+*.json text
+*.lean text
+*.md text
+*.png binary
+*.pdf binary
+*.docx binary
+*.xlsx binary
+*.zip binary -delta
+docs/** linguist-documentation
+monolith/lean/** linguist-language=Lean
+legacy_v1.2.0/** -linguist-detectable

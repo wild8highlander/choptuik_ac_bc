@@ -1,0 +1,6 @@
+{
+ "T0": 9.214637827196525e-13,
+ "log10_prob_30quarks": -361.06565188955256,
+ "log10_prob_macro_N1e30": -1.203552172965175e+31,
+ "statement": "P(nugget of 1e30 quarks) < 10^(-1.2e31); even 30 simultaneous tunneled quarks: 10^(-361)"
+}

@@ -1,0 +1,17 @@
+{
+ "check": "50-digit rederivation",
+ "note": "float projections of 50-digit values; the qhb.validate layer pins them to 5e-16",
+ "values": {
+  "M_CMB": 4.5015948405198975e+22,
+  "M_QCD": 68140061601.302185,
+  "aA": 0.43468705225182025,
+  "aB": 0.0572427393911862,
+  "aC": 0.0008276304915843546,
+  "bA": 1.2337005501361697,
+  "bB": 0.5483113556160755,
+  "bC": 0.10071024899070774,
+  "b_Ch": 0.37651019814126646,
+  "gascheau_growth": 1.224744871391589
+ },
+ "verdict": "PASS"
+}

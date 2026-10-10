@@ -1,0 +1,89 @@
+{
+ "campaign": "qhb_c4",
+ "engine": "period-sampled Floquet spectroscopy (exact U, FFT peak)",
+ "project_version": "1.0.0",
+ "timestamp": "2026-10-09T17:55:59",
+ "detector": {
+  "beta_demo": 0.5,
+  "U_steps_per_period": 1920,
+  "sampling": "once per period T0 = pi (Omega0 = 2)",
+  "beat_phase_step_rad": 1.600224993190615,
+  "reference_gap": 0.5093674354509619
+ },
+ "rows": [
+  {
+   "T_sim": 20.0,
+   "N_samples": 6,
+   "beats_in_window": 1.5281023063528856,
+   "resolution": 0.3333333333333333,
+   "gap_meas": 0.5274314238163894,
+   "err": 0.018063988365427552,
+   "resolved": false
+  },
+  {
+   "T_sim": 40.0,
+   "N_samples": 13,
+   "beats_in_window": 3.310888330431252,
+   "resolution": 0.15384615384615385,
+   "gap_meas": 0.5047821600388643,
+   "err": 0.0045852754120975225,
+   "resolved": true
+  },
+  {
+   "T_sim": 80.0,
+   "N_samples": 25,
+   "beats_in_window": 6.367092943137023,
+   "resolution": 0.08,
+   "gap_meas": 0.5077353388597707,
+   "err": 0.0016320965911911234,
+   "resolved": true
+  },
+  {
+   "T_sim": 160.0,
+   "N_samples": 51,
+   "beats_in_window": 12.988869603999527,
+   "resolution": 0.0392156862745098,
+   "gap_meas": 0.5092928344459047,
+   "err": 7.460100505718437e-05,
+   "resolved": true
+  },
+  {
+   "T_sim": 320.0,
+   "N_samples": 102,
+   "beats_in_window": 25.977739207999054,
+   "resolution": 0.0196078431372549,
+   "gap_meas": 0.509335019877108,
+   "err": 3.241557385380567e-05,
+   "resolved": true
+  }
+ ],
+ "floor_law": {
+  "resolution_envelope": "err <= 2/N (the Fourier window in gap units)",
+  "envelope_holds_on_resolved": true,
+  "err_exponent_measured": -2.5883919967409437,
+  "err_prefactor_measured": 75.84677623967902,
+  "honest_note": "the measured exponent rides the interpolation noise below the 2/N envelope; the RESOLUTION floor itself is 2/N by construction (p=1)",
+  "committed_points": [
+   40.0,
+   80.0,
+   160.0,
+   320.0
+  ]
+ },
+ "honest_negatives": [
+  {
+   "T_sim": 20.0,
+   "beats": 1.5281023063528856,
+   "reason": "beats < 3 in the window (the CHB echo language)"
+  }
+ ],
+ "verdicts": {
+  "T9_floor_law": "PASS",
+  "T9_unresolved_tail": "CONFIRMED"
+ },
+ "honest_notes": [
+  "the floor is the Fourier resolution 2/N of the sample window \u2014 a property of the DETECTOR, not of the physics",
+  "period-sampling folds nothing here (beat phase step 1.600 rad < pi), but the folding rule is carried in the detector anyway"
+ ],
+ "wall_s": 0.4883725643157959
+}

@@ -1,0 +1,352 @@
+{
+ "campaign": "qhb_c2",
+ "engine": "engine/solver.py \u2014 vectorised RK4 trio, early-escape freeze",
+ "project_version": "1.0.0",
+ "timestamp": "2026-10-09T17:52:06",
+ "units": "code units G = m = 1; softening eps^2 = 1e-2; dt = 2e-3; t_end = 12; R_esc = 12; wall R_b = 8, w = 1, p = 2",
+ "ensemble": {
+  "n_trials": 300,
+  "seed": 20261010,
+  "E_band": [
+   -0.6,
+   -0.05
+  ],
+  "rejected_draws": 18187
+ },
+ "gascheau": {
+  "nu": 0.3333333333333333,
+  "threshold": 0.037037037037037035,
+  "stable": false,
+  "verdict": "UNSTABLE",
+  "growth_rate_n": 1.224744871391589,
+  "theorem": "T4 \u2014 equilateral solution unstable for equal masses (1/3 > 1/27); no static rigid triangle"
+ },
+ "grid": [
+  {
+   "V0": 0.0,
+   "Omega": 0.0,
+   "P_esc": 0.24333333333333335,
+   "err": 0.024773791408275413,
+   "n_alive_end": 227,
+   "E_drift_surv": 4.968507163737436e-05
+  },
+  {
+   "V0": 0.1,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.2,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.4,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.8,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 1.6,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 3.2,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 6.4,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 12.8,
+   "Omega": 0.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.0,
+   "Omega": 1.0,
+   "P_esc": 0.24333333333333335,
+   "err": 0.024773791408275413,
+   "n_alive_end": 227,
+   "E_drift_surv": 4.968507163737436e-05
+  },
+  {
+   "V0": 0.1,
+   "Omega": 1.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.2,
+   "Omega": 1.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.4,
+   "Omega": 1.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.8,
+   "Omega": 1.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 1.6,
+   "Omega": 1.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 3.2,
+   "Omega": 1.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 6.4,
+   "Omega": 1.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 12.8,
+   "Omega": 1.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.0,
+   "Omega": 2.0,
+   "P_esc": 0.24333333333333335,
+   "err": 0.024773791408275413,
+   "n_alive_end": 227,
+   "E_drift_surv": 4.968507163737436e-05
+  },
+  {
+   "V0": 0.1,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.2,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.4,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.8,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 1.6,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 3.2,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 6.4,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 12.8,
+   "Omega": 2.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.0,
+   "Omega": 4.0,
+   "P_esc": 0.24333333333333335,
+   "err": 0.024773791408275413,
+   "n_alive_end": 227,
+   "E_drift_surv": 4.968507163737436e-05
+  },
+  {
+   "V0": 0.1,
+   "Omega": 4.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.2,
+   "Omega": 4.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.4,
+   "Omega": 4.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 0.8,
+   "Omega": 4.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 1.6,
+   "Omega": 4.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 3.2,
+   "Omega": 4.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 6.4,
+   "Omega": 4.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  },
+  {
+   "V0": 12.8,
+   "Omega": 4.0,
+   "P_esc": 0.0,
+   "err": 5.773502691896258e-08,
+   "n_alive_end": 300,
+   "E_drift_surv": null
+  }
+ ],
+ "T5_free_negative": {
+  "P_esc_free": 0.24333333333333335,
+  "E_drift_surv": 4.968507163737436e-05,
+  "statement": "without the wall the Newtonian trio unbinds on the committed ensemble \u2014 static gravity does not confine"
+ },
+ "T6_trap": {
+  "P_threshold": 0.36787944117144233,
+  "V0_star_per_Omega": {
+   "0.0": null,
+   "1.0": null,
+   "2.0": null,
+   "4.0": null
+  },
+  "honest_note": "P_esc drops from the free value to < 1/e already at the first nonzero V0 cell for every committed Omega; V0* is bounded above by the grid, not resolved inside the first cell"
+ },
+ "lyapunov": {
+  "n_trials": 100,
+  "free": {
+   "median": 0.26153536711283876,
+   "mean": 0.2706920600063321
+  },
+  "trap_V08_Om2": {
+   "median": 0.2885152126535749,
+   "mean": 0.2995691904927553
+  },
+  "statement": "the wall does not change the chaos (both exponents positive and comparable) \u2014 it changes the EXIT: bound chaos is the committed confinement picture"
+ },
+ "verdicts": {
+  "T4_gascheau": "UNSTABLE (exact)",
+  "T5_free_escapes": "CONFIRMED (P_esc = 0.2433)",
+  "T6_trap": "CONFIRMED (P_esc < 1e-4 at every committed V0 >= 0.4 cell)"
+ },
+ "honest_notes": [
+  "softening eps^2 = 1e-2 is a committed toy-model regularisation; escape statistics, not micro-dynamics, are the observable",
+  "for V0 > 0 the wall does physical work: the energy-drift metric is reported only on V0 = 0 runs",
+  "the toy model is NOT QCD; the confinement claim of the package is a marked hypothesis about mechanism, not a derivation"
+ ],
+ "wall_s": 214.77696895599365
+}

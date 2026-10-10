@@ -1,0 +1,133 @@
+# AB-CLOUD RESEARCH — CUSTOM RESEARCH LICENSE
+# (Личная лицензия автора / Personal Author License)
+
+**Copyright (c) 2026 Isaev Iskhak Khamzatovich (ORCID 0009-0003-7299-0701).**
+**All rights reserved. Все права принадлежат автору полностью и исключительно.**
+
+---
+
+## ENGLISH
+
+### 1. Ownership / Ownership
+
+All copyright, related and neighbouring rights to this repository — including but
+not limited to the monographs, verification suites, source code, figures, data
+compilations, presentations, preprints and documentation — belong **fully and
+exclusively** to **Isaev Iskhak Khamzatovich** (the "Author"). No joint
+ownership, licence back, or implied transfer arises from publication of this
+repository.
+
+### 2. Permissions granted / What you MAY do
+
+Without a separate written agreement you may:
+
+1. **View and read** any part of this repository;
+2. **Clone and fork** the repository for private, non-commercial academic study;
+3. **Run** the code (Julia / Python / multi-language suites) locally for
+   scholarly verification and reproducibility checks;
+4. **Cite** the work and quote short excerpts (with full attribution to the
+   Author and a link to this repository and the DOI
+   [10.5281/zenodo.21825394](https://doi.org/10.5281/zenodo.21825394));
+5. **Reference** figures or results in academic texts, provided the source is
+   credited and the citation includes the DOI.
+
+### 3. Restrictions / What you MAY NOT do
+
+Unless explicitly agreed in writing by the Author, you may **not**:
+
+1. Redistribute, republish or mirror substantial parts of the content
+   (monographs, full verification tables, figure collections) — in source or
+   derived form, including on other forges, preprint servers or archives;
+2. Use the content commercially, or include it in paid products, courses or
+   services;
+3. Present modified versions as your own work, remove or alter attribution,
+   copyright notices, DOI references or this licence text;
+4. Use the Author's name, ORCID or imagery to endorse derivative works.
+
+### 4. Third-party data / Third-party data
+
+Zeta-zero datasets included under `verification/data/` are compiled from
+publicly available tables (A. Odlyzko and others) and remain governed by the
+terms of their original sources; the Author claims no ownership over the
+underlying zero values.
+
+### 5. Warranty / Warranty
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+THE AUTHOR IS NOT LIABLE FOR ANY DAMAGES ARISING FROM USE OF THE WORK.
+
+### 6. Contact / Contact
+
+For any use beyond Section 2 — including republication, translation,
+adaptation or commercial licensing — contact the Author:
+**Isaev Iskhak Khamzatovich** · [aslan08_05@mail.ru](mailto:aslan08_05@mail.ru) ·
+[ORCID 0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701) ·
+DOI [10.5281/zenodo.21825394](https://doi.org/10.5281/zenodo.21825394)
+
+---
+
+## РУССКИЙ (полный текст)
+
+### 1. Правообладание
+
+Все авторские, смежные и иные исключительные права на материалы данного
+репозитория — включая, помимо прочего, монографии, верификационные сюиты,
+исходный код, графику, подборки данных, презентации, препринты и документацию —
+принадлежат **в полном объёме и исключительно** **Исаеву Исхаку Хамзатовичу**
+(далее — «Автор»). Публикация репозитория не создаёт совместной собственности,
+обратной лицензии или подразумеваемой передачи прав.
+
+### 2. Разрешённое использование
+
+Без отдельного письменного соглашения Вы вправе:
+
+1. Просматривать и читать любые материалы репозитория;
+2. Клонировать и форкировать репозиторий для частного некоммерческого
+   академического изучения;
+3. Запускать код (Julia / Python / многоязычные сюиты) локально в научных
+   целях проверки воспроизводимости;
+4. Цитировать работу и приводить краткие выдержки с обязательной атрибуцией
+   Автора, ссылкой на репозиторий и DOI
+   [10.5281/zenodo.21825394](https://doi.org/10.5281/zenodo.21825394);
+5. Ссылаться на рисунки и результаты в научных текстах при указании источника.
+
+### 3. Ограничения
+
+Без явного письменного согласия Автора запрещено:
+
+1. Распространять, переопубликовывать или зеркалировать существенные части
+   материалов (монографии, полные таблицы верификации, подборки рисунков) —
+   в исходном или производном виде, включая другие хостинги, препринт-серверы
+   и архивы;
+2. Использовать материалы в коммерческих целях или включать их в платные
+   продукты, курсы и услуги;
+3. Выдавать изменённые версии за собственную работу, удалять или изменять
+   атрибуцию, уведомления об авторских правах, ссылки на DOI или текст
+   настоящей лицензии;
+4. Использовать имя Автора, его ORCID или графику для одобрения производных
+   работ.
+
+### 4. Сторонние данные
+
+Наборы нулей дзета-функции в `verification/data/` составлены из общедоступных
+таблиц (А. Одлыжко и др.) и регулируются условиями их исходных источников;
+Автор не заявляет прав на сами значения нулей.
+
+### 5. Отказ от гарантий
+
+РАБОТА ПРЕДОСТАВЛЯЕТСЯ «КАК ЕСТЬ», БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ЯВНЫХ ИЛИ
+ПОДРАЗУМЕВАЕМЫХ. АВТОР НЕ НЕСЁТ ОТВЕТСТВЕННОСТИ ЗА УЩЕРБ, ВОЗНИКШИЙ В
+РЕЗУЛЬТАТЕ ИСПОЛЬЗОВАНИЯ РАБОТЫ.
+
+### 6. Контакты
+
+Любое использование сверх раздела 2 — включая переиздание, перевод,
+адаптацию и коммерческое лицензирование — только по согласованию с Автором:
+**Исаев Искхак Хамзатович** · [aslan08_05@mail.ru](mailto:aslan08_05@mail.ru) ·
+[ORCID 0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701)
+
+---
+
+*This licence is provided in English and Russian; in case of ambiguity the
+English text shall prevail. / Лицензия составлена на английском и русском
+языках; при разночтениях преимущественную силу имеет английский текст.*

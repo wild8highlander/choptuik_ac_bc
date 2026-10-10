@@ -1,0 +1,228 @@
+{
+ "campaign": "qhb_c10",
+ "engine": "the committed G-model with per-sector amplitude masks (no new parameters; the masks ARE the competing models)",
+ "project_version": "1.2.0",
+ "timestamp": "2026-10-09T21:47:59",
+ "window": {
+  "fit": [
+   0.0,
+   0.01,
+   0.02,
+   0.03,
+   0.04,
+   0.05,
+   0.06,
+   0.07,
+   0.08,
+   0.09,
+   0.1,
+   0.11,
+   0.12,
+   0.13,
+   0.14,
+   0.15,
+   0.16,
+   0.17,
+   0.18,
+   0.19,
+   0.2
+  ],
+  "fit_sub": [
+   0.0,
+   0.02,
+   0.04,
+   0.06,
+   0.08,
+   0.1
+  ],
+  "forecast_betas": [
+   0.3,
+   0.4,
+   0.5,
+   0.6,
+   0.8
+  ]
+ },
+ "ablation": [
+  {
+   "config": "none",
+   "B2": 0.0,
+   "max_abs_residual": 0.0,
+   "b_flip_dev": 0.0
+  },
+  {
+   "config": "A",
+   "B2": -0.05056381507312875,
+   "max_abs_residual": 7.07046561062262e-07,
+   "b_flip_dev": 0.0
+  },
+  {
+   "config": "B",
+   "B2": -0.004400857525849919,
+   "max_abs_residual": 3.955942048114794e-09,
+   "b_flip_dev": 0.0
+  },
+  {
+   "config": "C",
+   "B2": -2.7100923829903274e-05,
+   "max_abs_residual": 1.4221289568189114e-13,
+   "b_flip_dev": 0.0
+  },
+  {
+   "config": "AB",
+   "B2": -0.05495868729992595,
+   "max_abs_residual": 7.890339498942828e-07,
+   "b_flip_dev": 0.0
+  },
+  {
+   "config": "AC",
+   "B2": -0.05059083988144892,
+   "max_abs_residual": 7.080662960739711e-07,
+   "b_flip_dev": 0.0
+  },
+  {
+   "config": "BC",
+   "B2": -0.004427951597569147,
+   "max_abs_residual": 4.048018604834672e-09,
+   "b_flip_dev": 0.0
+  },
+  {
+   "config": "ABC",
+   "B2": -0.05498463802663271,
+   "max_abs_residual": 8.0446076417863e-07,
+   "b_flip_dev": 0.0
+  }
+ ],
+ "causal_shares": {
+  "A": 0.9194796209319696,
+  "B": 0.08002756128650051,
+  "C": 0.0004928177815298647
+ },
+ "additivity": [
+  {
+   "config": "AB",
+   "B2_measured": -0.05495868729992595,
+   "B2_additive_prediction": -0.05496467259897867,
+   "cross_share": 0.00010889356325996421
+  },
+  {
+   "config": "AC",
+   "B2_measured": -0.05059083988144892,
+   "B2_additive_prediction": -0.050590915996958655,
+   "cross_share": 1.5045291874123912e-06
+  },
+  {
+   "config": "BC",
+   "B2_measured": -0.004427951597569147,
+   "B2_additive_prediction": -0.004427958449679823,
+   "cross_share": 1.5474649894760337e-06
+  },
+  {
+   "config": "ABC",
+   "B2_measured": -0.05498463802663271,
+   "B2_additive_prediction": -0.054991773522808575,
+   "cross_share": 0.00012975570196700664
+  }
+ ],
+ "forecast": {
+  "B2_fit_on_subwindow": -0.055027892629525024,
+  "rows": [
+   {
+    "beta": 0.3,
+    "true_shift": -0.004937837326986383,
+    "quadratic_forecast": -0.004952510336657252,
+    "error": 1.467300967086891e-05,
+    "error_share": 0.0029715457799060407,
+    "effective_power_note": -0.002700806731580539
+   },
+   {
+    "beta": 0.4,
+    "true_shift": -0.008756162374069065,
+    "quadratic_forecast": -0.008804462820724005,
+    "error": 4.830044665493985e-05,
+    "error_share": 0.005516166168637895,
+    "effective_power_note": -0.003968138367051002
+   },
+   {
+    "beta": 0.5,
+    "true_shift": -0.013637080594346207,
+    "quadratic_forecast": -0.013756973157381256,
+    "error": 0.00011989256303504905,
+    "error_share": 0.008791659050893581,
+    "effective_power_note": -0.005438692215290218
+   },
+   {
+    "beta": 0.6,
+    "true_shift": -0.01955953983821468,
+    "quadratic_forecast": -0.019810041346629007,
+    "error": 0.0002505015084143282,
+    "error_share": 0.012807126879585785,
+    "effective_power_note": -0.007102409341214121
+   },
+   {
+    "beta": 0.8,
+    "true_shift": -0.0344221366799351,
+    "quadratic_forecast": -0.03521785128289602,
+    "error": 0.0007957146029609202,
+    "error_share": 0.0231163628905334,
+    "effective_power_note": -0.010990079191370124
+   }
+  ],
+  "effective_residual_power": 4.071280338530462
+ },
+ "gates": {
+  "Q1_evenness_all_configs": {
+   "ok": true
+  },
+  "Q2_braking_only_invisible": {
+   "B2_none": 0.0,
+   "ok": true
+  },
+  "Q3_additivity": {
+   "rows": [
+    {
+     "config": "AB",
+     "B2_measured": -0.05495868729992595,
+     "B2_additive_prediction": -0.05496467259897867,
+     "cross_share": 0.00010889356325996421
+    },
+    {
+     "config": "AC",
+     "B2_measured": -0.05059083988144892,
+     "B2_additive_prediction": -0.050590915996958655,
+     "cross_share": 1.5045291874123912e-06
+    },
+    {
+     "config": "BC",
+     "B2_measured": -0.004427951597569147,
+     "B2_additive_prediction": -0.004427958449679823,
+     "cross_share": 1.5474649894760337e-06
+    },
+    {
+     "config": "ABC",
+     "B2_measured": -0.05498463802663271,
+     "B2_additive_prediction": -0.054991773522808575,
+     "cross_share": 0.00012975570196700664
+    }
+   ],
+   "max_cross_share": 0.00012975570196700664,
+   "ok": true
+  },
+  "Q4_forecast": {
+   "status": "REPORTED \u2014 the out-of-window failure is the committed result"
+  }
+ },
+ "verdicts": {
+  "factorial_causal_map": "PASS",
+  "braking_invisible": "PASS",
+  "out_of_window_forecast": "REPORTED (quadratic fails; error share grows 0.3% -> 2.3% over the forecast range \u2014 carried as data)",
+  "sector_C_role": "REPORTED (0.05% of the response \u2014 structurally present, causally a spectator in magnitude)"
+ },
+ "honest_notes": [
+  "the ablation masks are the competing models: within the committed two-band toy, no simpler transverse drive reproduces the full response \u2014 A alone reaches 92%, and the hierarchy 1865 : 1 is the committed sector structure",
+  "the septinial C sector is causally nearly invisible in MAGNITUDE (0.05%) \u2014 its role is the structural completeness of the family, not the size of the shift; carried, not hidden",
+  "the out-of-window forecast failure does not touch T3 (a window law); it quantifies how FAST the naive extrapolation fails \u2014 the honest scope marker every window law must carry",
+  "this campaign compares STRUCTURAL variants of one toy model; it does not compare QHB against external QCD data (no such comparison is claimed anywhere in the package)"
+ ],
+ "wall_s": 3.710369825363159
+}

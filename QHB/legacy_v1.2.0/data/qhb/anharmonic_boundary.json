@@ -1,0 +1,45 @@
+{
+ "L1": {
+  "P_esc_free": 0.24333333333333335,
+  "monotone_nonincreasing": true,
+  "sigma_star_P05": 0.05,
+  "statement": "the flux tube closes the finite-time escape channel: P_esc falls monotonically from 0.2433 to <= 0.05 at sigma* = 0.05 and to 0.0000 at sigma = 0.5 within t_end = 12"
+ },
+ "L2": {
+  "P_threshold": 0.05,
+  "V0_star_per_Omega_per_sigma": {
+   "0.0": {
+    "0.0": 0.028571428571428574,
+    "0.01": 0.015,
+    "0.02": 0.003999999999999998
+   },
+   "2.0": {
+    "0.0": 0.04533333333333334,
+    "0.01": 0.032857142857142856,
+    "0.02": 0.005999999999999998
+   }
+  },
+  "shrink_factors_Om0_to_Om2": {
+   "0.0": 7.142857142857147,
+   "2.0": 7.555555555555558
+  },
+  "statement": "the wall boundary moves DOWN with the confining core: V0* shrinks by a factor 7.1 (Omega = 0.0), 7.6 (Omega = 2.0) as sigma goes 0 -> 0.02; beyond the grid core (sigma >= 0.05) the free trio is already sealed and NO wall is needed at all \u2014 the anharmonic core replaces the oscillating wall of T6"
+ },
+ "L3": {
+  "Omega": 0.0,
+  "V0": 0.0,
+  "mean": 0.2870921160620458,
+  "median": 0.26439741503983316,
+  "n_trials": 100,
+  "share_positive": 1.0,
+  "sigma": 0.02,
+  "statement": "with the flux tube sealing the trap and NO wall, the largest Lyapunov exponent stays positive \u2014 the anharmonic mirror of T6: confinement without order"
+ },
+ "regression_gate": {
+  "P_esc_committed_c2": 0.24333333333333335,
+  "P_esc_sigma0": 0.24333333333333335,
+  "dev": 0.0,
+  "ok": true,
+  "statement": "the anchor is never re-fitted: the sigma extension reproduces the C2 free-trio count exactly"
+ }
+}

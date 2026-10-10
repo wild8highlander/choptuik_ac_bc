@@ -1,0 +1,11 @@
+{
+ "A_fit": 1.0,
+ "T_fit": 0.2,
+ "degenerate": true,
+ "n_neg": 0,
+ "n_pos": 50,
+ "runs_z": -999.0,
+ "tail_amplitude_max": 0.00025791308458160666,
+ "tail_resolved": false,
+ "upper_bound_95": 0.000348182664185169
+}

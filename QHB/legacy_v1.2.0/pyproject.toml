@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quark-hawking-bridge"
+version = "1.0.0"
+description = "A dimensionless mapping from the three septinial corrections to the confinement gap, the Wu door and the three-body trap"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "Isaev Proprietary v1.0" }
+authors = [
+  { name = "Isaev, Ishak Khamzatovich" },
+]
+dependencies = ["numpy>=1.22", "scipy>=1.8", "mpmath>=1.2"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "matplotlib>=3.5", "sympy>=1.10", "openpyxl>=3.0"]
+workbook = ["openpyxl>=3.0"]
+
+[tool.setuptools]
+packages = ["qhb", "engine"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,10 @@
+{
+ "check": "phase map gate (fresh cells + own bisection)",
+ "floor": 0.03125,
+ "fresh_cells": 50,
+ "fresh_min_Delta_F": 0.13041141990228589,
+ "valley_committed": 3.358254942345086,
+ "valley_dev": 2.2165677411756235e-05,
+ "valley_fresh_beta_star": 3.3582327766676743,
+ "verdict": "PASS"
+}

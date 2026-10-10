@@ -1,0 +1,29 @@
+{
+ "exact_channel": {
+  "C_exact_s_kappa_over_8": -0.006274893389291922,
+  "honest_note": "the Lemma-A channel is a committed fraction of the observed drift; the rest is kinetic-term dispersion (also O(h^2)) \u2014 marked hypothesis",
+  "kappa": 0.05,
+  "s": -1.0039829422867075,
+  "share_of_measured": -0.20854425195526693
+ },
+ "fit": {
+  "C_measured": 0.030089025856430203,
+  "Delta_cont_fit": 0.5234604405880744,
+  "Delta_cont_status": "NOT CLAIMED \u2014 two-term extrapolation of a pre-asymptotic ladder (honest negative, mirrors CHB A*_inf)",
+  "max_abs_residual": 9.813274404191219e-08
+ },
+ "p_eff": [
+  {
+   "p": 1.9479151303417506,
+   "pair": "N=32->128"
+  },
+  {
+   "p": 1.9738267460469634,
+   "pair": "N=64->256"
+  },
+  {
+   "p": 1.9868816855680476,
+   "pair": "N=128->512"
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+name = "qhb"
+version = "2.3.0"
+defaultTargets = ["QHB_Theorems", "QHB_T19_Mathlib"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover/mathlib4"
+rev = "PINNED_AT_RELEASE"

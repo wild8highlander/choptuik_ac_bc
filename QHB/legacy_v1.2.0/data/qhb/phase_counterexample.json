@@ -1,0 +1,7 @@
+{
+ "B2_committed": -0.05496702944778643,
+ "Delta_F_measured_at_beta_c": 0.19776410288008184,
+ "beta_c_quadratic_forecast": 2.991045795495071,
+ "ratio_to_floor": 6.328451292162619,
+ "statement": "the quadratic window law extrapolated beyond [0, 0.2] forecasts closure at beta_c; the map keeps the gap open there and everywhere on the searched range \u2014 a machine-found counterexample to naive window extrapolation (T3 itself is a window law and is untouched)"
+}

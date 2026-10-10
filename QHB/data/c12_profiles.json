@@ -1,0 +1,47 @@
+[
+ {
+  "drop_at_unit_eta": 2.0,
+  "name": "step",
+  "sup": 1.0
+ },
+ {
+  "drop_at_unit_eta": 2.0,
+  "name": "tent",
+  "sup": 1.0
+ },
+ {
+  "drop_at_unit_eta": 2.0,
+  "name": "cosw",
+  "sup": 1.0
+ },
+ {
+  "drop_at_unit_eta": 2.0,
+  "name": "quad",
+  "sup": 1.0
+ },
+ {
+  "drop_at_unit_eta": 0.973630309091,
+  "name": "expo",
+  "sup": 0.966890309091
+ },
+ {
+  "drop_at_unit_eta": 2.0,
+  "name": "sign2",
+  "sup": 1.0
+ },
+ {
+  "drop_at_unit_eta": -2.0,
+  "name": "saw",
+  "sup": 1.0
+ },
+ {
+  "drop_at_unit_eta": 2.0,
+  "name": "sgn3",
+  "sup": 1.0
+ },
+ {
+  "drop_at_unit_eta": 2.0,
+  "name": "sinw",
+  "sup": 1.0
+ }
+]

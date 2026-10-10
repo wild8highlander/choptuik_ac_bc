@@ -1,0 +1,11 @@
+{
+ "barrier_zero_eta": 0.181777,
+ "conclusion": "complete matter-antimatter asymmetry keeps the gap open for every eta < 0.0908885 (= 1.49e8 x eta_B); free quarks cannot exist as separate asymptotic states",
+ "eta_B": 6.1e-10,
+ "eta_crit": 0.0908885,
+ "margin": 148997540.98360655,
+ "tunneling": {
+  "T_zero": 9.214637827196525e-13,
+  "window_E_max": 0.0059057225093015475
+ }
+}

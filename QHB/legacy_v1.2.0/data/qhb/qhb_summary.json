@@ -1,0 +1,59 @@
+{
+ "B2_per_sector": [
+  -0.05054834882342389,
+  -0.0044007709966184015,
+  -2.7100920734702617e-05
+ ],
+ "P_esc_free": 0.24333333333333335,
+ "V0_star": {
+  "0.0": null,
+  "1.0": null,
+  "2.0": null,
+  "4.0": null
+ },
+ "anh_P_esc_free": 0.24333333333333335,
+ "anh_V0_star_shrink": {
+  "0.0": 7.142857142857147,
+  "2.0": 7.555555555555558
+ },
+ "anh_lyapunov_median": 0.26439741503983316,
+ "anh_sigma_star": 0.05,
+ "aref_inv_drift": 1.4690471061840071e-12,
+ "aref_r_max": 2.7654226821814167,
+ "barrier_V_star": 0.9359375,
+ "barrier_median_wall_work": 0.14586477301414702,
+ "compete_max_cross": 0.00012975570196700664,
+ "compete_residual_power": 4.071280338530462,
+ "compete_share_A": 0.9194796209319696,
+ "compete_share_B": 0.08002756128650051,
+ "compete_share_C": 0.0004928177815298647,
+ "cross_share": 0.00016721465727557379,
+ "drift_C_measured": 0.030089025856430203,
+ "drift_p_eff": [
+  1.9479151303417506,
+  1.9738267460469634,
+  1.9868816855680476
+ ],
+ "drift_share_exact": -0.20854425195526693,
+ "floor_envelope_holds": true,
+ "gap_B2": -0.05496702944778643,
+ "gap_B2_r2": 0.9999998189622825,
+ "gap_static": 0.523004556028156,
+ "lyapunov_free_median": 0.26153536711283876,
+ "lyapunov_trap_median": 0.2885152126535749,
+ "map_E_gap_MeV_QCD": 81.14938691332868,
+ "map_Lambda_over_Egap": 4.091220064972166,
+ "pair_full_imbalance": 0.9882817721562738,
+ "pair_p_eff": 3.9871863142722366,
+ "pair_r_anchor": 0.2723718043504063,
+ "pair_r_zero_alpha": 0.0,
+ "phase_counterexample_ratio": 6.328451292162619,
+ "phase_map_min_gap": 0.12444910136617082,
+ "phase_valley_beta_q04": 3.358254942345086,
+ "version": "1.2.0",
+ "vortex_charpoly_dev": 1.7499058301810136e-16,
+ "vortex_omega_dev": 1.5654144647214707e-14,
+ "vortex_omega_exact": 0.477464829275686,
+ "wu_max_dev": 0.002490405624284091,
+ "wu_r_anchor": 0.8999956868206453
+}

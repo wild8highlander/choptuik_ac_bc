@@ -1,0 +1,33 @@
+name: Bug report
+description: A reproducible defect in code, data, or documents of the release.
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Release version
+      placeholder: "2.3.0"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Include the exact command and the failing artifact.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. python tools/check_numbers.py
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expect
+    attributes:
+      label: Expected behaviour (which claim/number is affected)
+    validations:
+      required: true

@@ -1,0 +1,9 @@
+{
+ "char_eq": "lambda**4 + lambda**2 + 27*nu/4",
+ "check": "symbolic (SymPy)",
+ "gascheau_verdict": "UNSTABLE",
+ "lemma_A_identity": "kappa*h^2/8 == kappa*(h/2)^2/2 (exact)",
+ "nu_equal_masses": "1/3",
+ "stability_condition": "1 - 27*nu >= 0",
+ "verdict": "PASS"
+}

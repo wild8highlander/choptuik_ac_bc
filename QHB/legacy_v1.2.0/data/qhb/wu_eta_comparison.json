@@ -1,0 +1,5 @@
+{
+ "eta_baryon_anchor": 6.1e-10,
+ "honest_note": "the door OPENS (r -> alpha at large x) but the committed toy does not reproduce cosmogenesis: leaving only eta = 6.1e-10 requires x = 1.36e-9 (freeze-out almost immediately after the door opens) - the model realizes the Sakharov ingredients qualitatively, not quantitatively",
+ "x_required_for_eta": 1.355555672022447e-09
+}

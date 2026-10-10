@@ -1,0 +1,6 @@
+{
+ "check": "canonical job (fresh interpreter)",
+ "dev_Delta0": 0.0,
+ "dev_gap_beta02": 0.0,
+ "verdict": "PASS"
+}

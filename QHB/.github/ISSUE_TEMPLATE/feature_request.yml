@@ -1,0 +1,17 @@
+name: Feature request
+description: New computation, figure, language twin, or formalization.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+    validations:
+      required: true
+  - type: textarea
+    id: falsifier
+    attributes:
+      label: Falsifier
+      description: How would we detect that this change is wrong? (falsification-first policy)
+    validations:
+      required: true

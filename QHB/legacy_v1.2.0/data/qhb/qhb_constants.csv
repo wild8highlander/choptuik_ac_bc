@@ -1,0 +1,22 @@
+constant,formula,value,status
+delta_A,"pi/2",1.5707963267948966,exact
+delta_B,"pi/3",1.0471975511965976,exact
+delta_C,"pi/7",0.44879895051282759,exact
+bA_berry,"pi^2/8",1.2337005501361697,exact
+bB_berry,"pi^2/18",0.54831135561607547,exact
+bC_berry,"pi^2/98",0.10071024899070774,exact
+aA_braking,"pi^5/704",0.43468705225182019,exact
+aB_braking,"pi^5/5346",0.057242739391186195,exact
+aC_braking,"pi^5/369754",0.00082763049158435448,exact
+b_Ch,"1-cos(2pi/7)",0.37651019814126641,exact
+gap_b_Ch_gammaCh_pct,"|gamma_Ch-b_Ch|/b_Ch",0.0066670123509498715,comparison (CHB)
+page_fraction,"1-2^(-3/2)",0.64644660940672627,exact
+Delta_gamma_anchor,"3.44*0.374",1.2865599999999999,comparison (CHB)
+M_CMB_kg,"hbar c^3/(8 pi G kB T_CMB)",4.5015948405198975e+22,closed form
+M_QCD_kg,"hbar c^3/(8 pi G kB T_QCD)",68140061601.302185,closed form (T8)
+M_QCD_vs_literature,"M_QCD/1e11 kg",0.68140061601302182,comparison (PBH@QCD ~ 1e11 kg)
+A_Wu_anchor,"approximate",0.90000000000000002,literature anchor (approx)
+eta_baryon,"PDG anchor",6.0999999999999996e-10,literature anchor
+gap_static,"code units (C1)",0.52300455602815599,committed [C1]
+gap_B2,"code units (C1)",-0.054967029447786427,committed [C1]
+seed,"MC seed",20261010,determinism

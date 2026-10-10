@@ -1,0 +1,2146 @@
+{
+ "campaign": "qhb_c9",
+ "engine": "exact tridiagonal statics + piecewise-constant Floquet exponentials (the committed G-model, no new parameters)",
+ "project_version": "1.2.0",
+ "timestamp": "2026-10-09T21:46:12",
+ "map": {
+  "N": 64,
+  "detector_floor_2oN": 0.03125,
+  "beta_grid": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0,
+   1.25,
+   1.5,
+   1.75,
+   2.0,
+   2.25,
+   2.5,
+   2.75,
+   3.0,
+   3.25,
+   3.5,
+   3.75,
+   4.0,
+   4.25,
+   4.5,
+   4.75,
+   5.0,
+   5.25,
+   5.5,
+   5.75,
+   6.0,
+   6.25,
+   6.5,
+   6.75,
+   7.0,
+   7.25,
+   7.5,
+   7.75,
+   8.0,
+   8.25,
+   8.5,
+   8.75,
+   9.0,
+   9.25,
+   9.5,
+   9.75,
+   10.0
+  ],
+  "qpk_grid": [
+   0.2,
+   0.3,
+   0.4,
+   0.5,
+   0.6,
+   0.7,
+   0.8,
+   0.9,
+   1.0
+  ],
+  "regime_bound": "Delta_0 <= Omega_0/2 = 1 -> q_pk >= 0.2 (the shallow-well branch is OUTSIDE the two-band reduction and is not mapped)",
+  "rows": [
+   {
+    "q_pk": 0.2,
+    "Delta_0": 0.9547879260995247,
+    "cells": [
+     {
+      "beta": 0.0,
+      "Delta_F": 0.9547879260995251,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.25,
+      "Delta_F": 0.9482709569384298,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.5,
+      "Delta_F": 0.9289200161283411,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.75,
+      "Delta_F": 0.8973212350054567,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.0,
+      "Delta_F": 0.8544256074594441,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.25,
+      "Delta_F": 0.8015329091074987,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.5,
+      "Delta_F": 0.740280984685479,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.75,
+      "Delta_F": 0.67264531332516,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.0,
+      "Delta_F": 0.600965690831454,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.25,
+      "Delta_F": 0.5280324355555639,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.5,
+      "Delta_F": 0.4572787165657526,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.75,
+      "Delta_F": 0.3931106998841374,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.0,
+      "Delta_F": 0.3412396982833994,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.25,
+      "Delta_F": 0.308281591739459,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.5,
+      "Delta_F": 0.29923033857152936,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.75,
+      "Delta_F": 0.31361996978967155,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.0,
+      "Delta_F": 0.345339260815273,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.25,
+      "Delta_F": 0.3866752366132038,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.5,
+      "Delta_F": 0.43132832131787646,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.75,
+      "Delta_F": 0.4748758913565312,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.0,
+      "Delta_F": 0.5142676887512188,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.25,
+      "Delta_F": 0.5473375946970114,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.5,
+      "Delta_F": 0.5725233156570253,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.75,
+      "Delta_F": 0.5887456338168553,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.0,
+      "Delta_F": 0.5953736770373166,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.25,
+      "Delta_F": 0.5922201196826977,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.5,
+      "Delta_F": 0.5795327529976388,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.75,
+      "Delta_F": 0.5579716048561774,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.0,
+      "Delta_F": 0.528581159395477,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.25,
+      "Delta_F": 0.49278219011083557,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.5,
+      "Delta_F": 0.4524166979584556,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.75,
+      "Delta_F": 0.4098835441273496,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.0,
+      "Delta_F": 0.36839291058439305,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.25,
+      "Delta_F": 0.3322920933562914,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.5,
+      "Delta_F": 0.3071317689357025,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.75,
+      "Delta_F": 0.29863634095430114,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.0,
+      "Delta_F": 0.31011878772562373,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.25,
+      "Delta_F": 0.34043171471237743,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.5,
+      "Delta_F": 0.3850595065579605,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.75,
+      "Delta_F": 0.43873227983440444,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 10.0,
+      "Delta_F": 0.49687478098212057,
+      "phase": "OPEN"
+     }
+    ],
+    "phases_present": [
+     "OPEN"
+    ],
+    "min_gap_on_grid": 0.29863634095430114
+   },
+   {
+    "q_pk": 0.3,
+    "Delta_0": 0.6618807141572771,
+    "cells": [
+     {
+      "beta": 0.0,
+      "Delta_F": 0.6618807141572773,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.25,
+      "Delta_F": 0.6574933034181565,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.5,
+      "Delta_F": 0.6444537817115621,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.75,
+      "Delta_F": 0.6231247478600155,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.0,
+      "Delta_F": 0.594101618798317,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.25,
+      "Delta_F": 0.5582104927713551,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.5,
+      "Delta_F": 0.5165121845680518,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.75,
+      "Delta_F": 0.4703167995604851,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.0,
+      "Delta_F": 0.42122107822432,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.25,
+      "Delta_F": 0.3711927392016514,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.5,
+      "Delta_F": 0.32273763970886593,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.75,
+      "Delta_F": 0.27916935139351895,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.0,
+      "Delta_F": 0.24484607689257687,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.25,
+      "Delta_F": 0.22473782368791517,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.5,
+      "Delta_F": 0.22231437672659782,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.75,
+      "Delta_F": 0.2368195709795522,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.0,
+      "Delta_F": 0.26362840189209713,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.25,
+      "Delta_F": 0.2972770374902942,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.5,
+      "Delta_F": 0.3333915450521836,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.75,
+      "Delta_F": 0.36889333199407326,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.0,
+      "Delta_F": 0.4016344346656946,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.25,
+      "Delta_F": 0.4300647692738464,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.5,
+      "Delta_F": 0.45303088963878135,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.75,
+      "Delta_F": 0.4696717710691656,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.0,
+      "Delta_F": 0.4793710240372251,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.25,
+      "Delta_F": 0.4817398156043462,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.5,
+      "Delta_F": 0.4766171414187468,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.75,
+      "Delta_F": 0.46408188929859406,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.0,
+      "Delta_F": 0.44447628586968047,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.25,
+      "Delta_F": 0.418445646144465,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.5,
+      "Delta_F": 0.38700823297423304,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.75,
+      "Delta_F": 0.35168500741941333,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.0,
+      "Delta_F": 0.31474252607907593,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.25,
+      "Delta_F": 0.2796102991169227,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.5,
+      "Delta_F": 0.2513965982276949,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.75,
+      "Delta_F": 0.23678693170897325,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.0,
+      "Delta_F": 0.24172283372760517,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.25,
+      "Delta_F": 0.2674440325671148,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.5,
+      "Delta_F": 0.30996024930478017,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.75,
+      "Delta_F": 0.3634918053227607,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 10.0,
+      "Delta_F": 0.4229537243623205,
+      "phase": "OPEN"
+     }
+    ],
+    "phases_present": [
+     "OPEN"
+    ],
+    "min_gap_on_grid": 0.22231437672659782
+   },
+   {
+    "q_pk": 0.4,
+    "Delta_0": 0.523004556028156,
+    "cells": [
+     {
+      "beta": 0.0,
+      "Delta_F": 0.523004556028156,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.25,
+      "Delta_F": 0.5195720802431669,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.5,
+      "Delta_F": 0.5093674754338098,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.75,
+      "Delta_F": 0.4926656815404349,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.0,
+      "Delta_F": 0.4699199909057006,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.25,
+      "Delta_F": 0.4417628483135383,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.5,
+      "Delta_F": 0.4090127418085965,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.75,
+      "Delta_F": 0.37269166522697916,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.0,
+      "Delta_F": 0.33406449715077735,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.25,
+      "Delta_F": 0.29472223063708713,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.5,
+      "Delta_F": 0.2567408439282328,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.75,
+      "Delta_F": 0.22292888550953305,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.0,
+      "Delta_F": 0.1970211350398794,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.25,
+      "Delta_F": 0.18320762443352478,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.5,
+      "Delta_F": 0.18418231290508125,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.75,
+      "Delta_F": 0.19897920503414168,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.0,
+      "Delta_F": 0.22365294095880128,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.25,
+      "Delta_F": 0.2538257559567969,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.5,
+      "Delta_F": 0.28607447735364566,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.75,
+      "Delta_F": 0.31799404198770787,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.0,
+      "Delta_F": 0.3478852813844071,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.25,
+      "Delta_F": 0.37448793751393517,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.5,
+      "Delta_F": 0.39681589277591356,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.75,
+      "Delta_F": 0.4140671304777157,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.0,
+      "Delta_F": 0.4255818791985644,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.25,
+      "Delta_F": 0.43083371987131835,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.5,
+      "Delta_F": 0.42944504933983363,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.75,
+      "Delta_F": 0.4212202732397199,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.0,
+      "Delta_F": 0.40619074755612106,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.25,
+      "Delta_F": 0.38466874377918914,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.5,
+      "Delta_F": 0.35731738487537523,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.75,
+      "Delta_F": 0.3252634014959932,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.0,
+      "Delta_F": 0.29031392090555874,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.25,
+      "Delta_F": 0.2553830366922212,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.5,
+      "Delta_F": 0.22520311118035763,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.75,
+      "Delta_F": 0.20685058186333571,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.0,
+      "Delta_F": 0.2079892403243615,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.25,
+      "Delta_F": 0.23163296950899892,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.5,
+      "Delta_F": 0.27392698934964477,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.75,
+      "Delta_F": 0.3283768131136413,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 10.0,
+      "Delta_F": 0.3893737504533745,
+      "phase": "OPEN"
+     }
+    ],
+    "phases_present": [
+     "OPEN"
+    ],
+    "min_gap_on_grid": 0.18320762443352478
+   },
+   {
+    "q_pk": 0.5,
+    "Delta_0": 0.44564570496834466,
+    "cells": [
+     {
+      "beta": 0.0,
+      "Delta_F": 0.4456457049683449,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.25,
+      "Delta_F": 0.442734072000472,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.5,
+      "Delta_F": 0.4340766576853463,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.75,
+      "Delta_F": 0.4199031297306701,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.0,
+      "Delta_F": 0.40059271060215673,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.25,
+      "Delta_F": 0.3766758788435558,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.5,
+      "Delta_F": 0.3488421220379756,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.75,
+      "Delta_F": 0.3179583874471126,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.0,
+      "Delta_F": 0.2851093375965612,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.25,
+      "Delta_F": 0.25168043569973486,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.5,
+      "Delta_F": 0.21951367393008914,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.75,
+      "Delta_F": 0.19114459524663885,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.0,
+      "Delta_F": 0.1699687821663547,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.25,
+      "Delta_F": 0.15973355448504822,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.5,
+      "Delta_F": 0.16266786405792977,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.75,
+      "Delta_F": 0.17766965200917095,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.0,
+      "Delta_F": 0.20118510168154358,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.25,
+      "Delta_F": 0.22945922696599763,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.5,
+      "Delta_F": 0.2596101575730141,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.75,
+      "Delta_F": 0.289615029455502,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.0,
+      "Delta_F": 0.3180265579570385,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.25,
+      "Delta_F": 0.3437413065824586,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.5,
+      "Delta_F": 0.36585524926588353,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.75,
+      "Delta_F": 0.38358375141725265,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.0,
+      "Delta_F": 0.3962267902880494,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.25,
+      "Delta_F": 0.4031688261503077,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.5,
+      "Delta_F": 0.4039059211047098,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.75,
+      "Delta_F": 0.3980918393733881,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.0,
+      "Delta_F": 0.3855938216731387,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.25,
+      "Delta_F": 0.36655162278197584,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.5,
+      "Delta_F": 0.341443804114558,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.75,
+      "Delta_F": 0.31118672085716126,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.0,
+      "Delta_F": 0.2773298887106743,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.25,
+      "Delta_F": 0.24247248774771224,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.5,
+      "Delta_F": 0.21106074657057716,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.75,
+      "Delta_F": 0.19031025566896553,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.0,
+      "Delta_F": 0.18901336440911032,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.25,
+      "Delta_F": 0.21151373946415575,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.5,
+      "Delta_F": 0.2539763671668225,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.75,
+      "Delta_F": 0.30926861889730595,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 10.0,
+      "Delta_F": 0.37138459415053626,
+      "phase": "OPEN"
+     }
+    ],
+    "phases_present": [
+     "OPEN"
+    ],
+    "min_gap_on_grid": 0.15973355448504822
+   },
+   {
+    "q_pk": 0.6,
+    "Delta_0": 0.39887692510822076,
+    "cells": [
+     {
+      "beta": 0.0,
+      "Delta_F": 0.3988769251082218,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.25,
+      "Delta_F": 0.3962770101422508,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.5,
+      "Delta_F": 0.3885458431452169,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.75,
+      "Delta_F": 0.3758867115638358,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.0,
+      "Delta_F": 0.3586354679306225,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.25,
+      "Delta_F": 0.33726257127839254,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.5,
+      "Delta_F": 0.31238117967870793,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.75,
+      "Delta_F": 0.2847660870752051,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.0,
+      "Delta_F": 0.25539456722807286,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.25,
+      "Delta_F": 0.22552974322449004,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.5,
+      "Delta_F": 0.19687517796186182,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.75,
+      "Delta_F": 0.1718060649543034,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.0,
+      "Delta_F": 0.15351654058645536,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.25,
+      "Delta_F": 0.14547906079741812,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.5,
+      "Delta_F": 0.14962250110727138,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.75,
+      "Delta_F": 0.1647568626046081,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.0,
+      "Delta_F": 0.18757659943157745,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.25,
+      "Delta_F": 0.2147131538792859,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.5,
+      "Delta_F": 0.24361627708067557,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.75,
+      "Delta_F": 0.272495758996786,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.0,
+      "Delta_F": 0.3000561282075249,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.25,
+      "Delta_F": 0.32528593105735704,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.5,
+      "Delta_F": 0.3473257000531156,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.75,
+      "Delta_F": 0.36539492106421245,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.0,
+      "Delta_F": 0.37876305653451103,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.25,
+      "Delta_F": 0.38675630761278557,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.5,
+      "Delta_F": 0.38879287021772835,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.75,
+      "Delta_F": 0.38443707666187343,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.0,
+      "Delta_F": 0.373461106177702,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.25,
+      "Delta_F": 0.35590592618018246,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.5,
+      "Delta_F": 0.33214404687076393,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.75,
+      "Delta_F": 0.3029687664839562,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.0,
+      "Delta_F": 0.26977424660590366,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.25,
+      "Delta_F": 0.23495977006250524,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.5,
+      "Delta_F": 0.2027661398923719,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.75,
+      "Delta_F": 0.18044557909274528,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.0,
+      "Delta_F": 0.17753043458806927,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.25,
+      "Delta_F": 0.19933929836292652,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.5,
+      "Delta_F": 0.24202375136367804,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.75,
+      "Delta_F": 0.29794914649107396,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 10.0,
+      "Delta_F": 0.3608298038563955,
+      "phase": "OPEN"
+     }
+    ],
+    "phases_present": [
+     "OPEN"
+    ],
+    "min_gap_on_grid": 0.14547906079741812
+   },
+   {
+    "q_pk": 0.7,
+    "Delta_0": 0.3693490361057501,
+    "cells": [
+     {
+      "beta": 0.0,
+      "Delta_F": 0.3693490361057501,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.25,
+      "Delta_F": 0.3669448460126401,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.5,
+      "Delta_F": 0.3597953535741325,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.75,
+      "Delta_F": 0.3480875227255844,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.0,
+      "Delta_F": 0.3321302943652953,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.25,
+      "Delta_F": 0.3123567745743565,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.5,
+      "Delta_F": 0.28933248889346386,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.75,
+      "Delta_F": 0.2637746125711744,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.0,
+      "Delta_F": 0.23659325780805274,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.25,
+      "Delta_F": 0.20897524589602945,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.5,
+      "Delta_F": 0.18253837673159046,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.75,
+      "Delta_F": 0.1595591247785726,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.0,
+      "Delta_F": 0.143106020027576,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.25,
+      "Delta_F": 0.1364731856309045,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.5,
+      "Delta_F": 0.14138986490139271,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.75,
+      "Delta_F": 0.15660913852913105,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.0,
+      "Delta_F": 0.17898928276478432,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.25,
+      "Delta_F": 0.20541069284136593,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.5,
+      "Delta_F": 0.23353420024478688,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.75,
+      "Delta_F": 0.2617167943271266,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.0,
+      "Delta_F": 0.2887582967445117,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.25,
+      "Delta_F": 0.31370383161325965,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.5,
+      "Delta_F": 0.33571971063468564,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.75,
+      "Delta_F": 0.35402524128717694,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.0,
+      "Delta_F": 0.36786807532121135,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.25,
+      "Delta_F": 0.37653597003932116,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.5,
+      "Delta_F": 0.3793975796719373,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.75,
+      "Delta_F": 0.375961699368891,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.0,
+      "Delta_F": 0.3659424115222485,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.25,
+      "Delta_F": 0.3493207297300427,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.5,
+      "Delta_F": 0.32640459929444754,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.75,
+      "Delta_F": 0.29791148818270363,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.0,
+      "Delta_F": 0.26513796692335667,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.25,
+      "Delta_F": 0.23035373025662897,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.5,
+      "Delta_F": 0.19765626056443253,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.75,
+      "Delta_F": 0.17429646449861536,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.0,
+      "Delta_F": 0.17029331626160493,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.25,
+      "Delta_F": 0.1916636398754208,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.5,
+      "Delta_F": 0.2345393590925815,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.75,
+      "Delta_F": 0.29091384264475106,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 10.0,
+      "Delta_F": 0.354309472463588,
+      "phase": "OPEN"
+     }
+    ],
+    "phases_present": [
+     "OPEN"
+    ],
+    "min_gap_on_grid": 0.1364731856309045
+   },
+   {
+    "q_pk": 0.8,
+    "Delta_0": 0.3503027984348147,
+    "cells": [
+     {
+      "beta": 0.0,
+      "Delta_F": 0.35030279843481527,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.25,
+      "Delta_F": 0.3480244488528763,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.5,
+      "Delta_F": 0.34124897624629447,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.75,
+      "Delta_F": 0.33015293885194463,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.0,
+      "Delta_F": 0.3150280929812759,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.25,
+      "Delta_F": 0.29628365111119725,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.5,
+      "Delta_F": 0.2744546240334791,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.75,
+      "Delta_F": 0.25022124424589753,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.0,
+      "Delta_F": 0.22445058579463417,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.25,
+      "Delta_F": 0.19828071711236772,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.5,
+      "Delta_F": 0.17327496442787993,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.75,
+      "Delta_F": 0.1516474116710722,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.0,
+      "Delta_F": 0.1363862350163063,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.25,
+      "Delta_F": 0.13066774409491977,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.5,
+      "Delta_F": 0.1360872582777095,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.75,
+      "Delta_F": 0.1513609950621333,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.0,
+      "Delta_F": 0.17345671379611827,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.25,
+      "Delta_F": 0.19941776913032538,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.5,
+      "Delta_F": 0.22704182354601565,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.75,
+      "Delta_F": 0.25478083175297295,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.0,
+      "Delta_F": 0.2814957287424016,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.25,
+      "Delta_F": 0.3062673890187546,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.5,
+      "Delta_F": 0.3282776662096658,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.75,
+      "Delta_F": 0.3467445234707194,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.0,
+      "Delta_F": 0.3609004640537614,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.25,
+      "Delta_F": 0.37000778907566234,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.5,
+      "Delta_F": 0.37340311018709627,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.75,
+      "Delta_F": 0.3705598716139116,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.0,
+      "Delta_F": 0.36115556160784434,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.25,
+      "Delta_F": 0.34513359203919025,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.5,
+      "Delta_F": 0.3227613109337404,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.75,
+      "Delta_F": 0.2947081119646635,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.0,
+      "Delta_F": 0.2622079273995568,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.25,
+      "Delta_F": 0.22744561211236958,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.5,
+      "Delta_F": 0.1944204395463125,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.75,
+      "Delta_F": 0.17037069863742405,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.0,
+      "Delta_F": 0.16563576278463343,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.25,
+      "Delta_F": 0.1867217803289405,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.5,
+      "Delta_F": 0.22974312777087902,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.75,
+      "Delta_F": 0.2864276628014071,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 10.0,
+      "Delta_F": 0.3501679031764984,
+      "phase": "OPEN"
+     }
+    ],
+    "phases_present": [
+     "OPEN"
+    ],
+    "min_gap_on_grid": 0.13066774409491977
+   },
+   {
+    "q_pk": 0.9,
+    "Delta_0": 0.3379201966350015,
+    "cells": [
+     {
+      "beta": 0.0,
+      "Delta_F": 0.33792019663500117,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.25,
+      "Delta_F": 0.3357234988283735,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.5,
+      "Delta_F": 0.32919072309036057,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.75,
+      "Delta_F": 0.3184917110489214,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.0,
+      "Delta_F": 0.3039071149332384,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.25,
+      "Delta_F": 0.2858306915124549,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.5,
+      "Delta_F": 0.2647776960169732,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.75,
+      "Delta_F": 0.24140443578214632,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.0,
+      "Delta_F": 0.21655013178019566,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.25,
+      "Delta_F": 0.1913213800986946,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.5,
+      "Delta_F": 0.16724650894903115,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.75,
+      "Delta_F": 0.14649966651091173,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.0,
+      "Delta_F": 0.13201706135283486,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.25,
+      "Delta_F": 0.1268969357483214,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.5,
+      "Delta_F": 0.13264505446077868,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.75,
+      "Delta_F": 0.1479537865942655,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.0,
+      "Delta_F": 0.169863975887534,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.25,
+      "Delta_F": 0.19552601933716196,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.5,
+      "Delta_F": 0.22282680941245925,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.75,
+      "Delta_F": 0.25028001112457865,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.0,
+      "Delta_F": 0.2767861023499618,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.25,
+      "Delta_F": 0.30144884667070615,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.5,
+      "Delta_F": 0.323459708576173,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.75,
+      "Delta_F": 0.34203523484558773,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.0,
+      "Delta_F": 0.3563976175506318,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.25,
+      "Delta_F": 0.36579234015395734,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.5,
+      "Delta_F": 0.3695351682556016,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.75,
+      "Delta_F": 0.36707678969139157,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.0,
+      "Delta_F": 0.35807129825102524,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.25,
+      "Delta_F": 0.3424381315913254,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.5,
+      "Delta_F": 0.3204187035722419,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.75,
+      "Delta_F": 0.29265152637596703,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.0,
+      "Delta_F": 0.260329972304272,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.25,
+      "Delta_F": 0.22558326009512575,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.5,
+      "Delta_F": 0.19234436740471939,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.75,
+      "Delta_F": 0.1678379387376665,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.0,
+      "Delta_F": 0.16261383578357114,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.25,
+      "Delta_F": 0.18351420300704047,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.5,
+      "Delta_F": 0.22663991534160632,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.75,
+      "Delta_F": 0.28353457667638127,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 10.0,
+      "Delta_F": 0.34750383157121756,
+      "phase": "OPEN"
+     }
+    ],
+    "phases_present": [
+     "OPEN"
+    ],
+    "min_gap_on_grid": 0.1268969357483214
+   },
+   {
+    "q_pk": 1.0,
+    "Delta_0": 0.3298750641681887,
+    "cells": [
+     {
+      "beta": 0.0,
+      "Delta_F": 0.32987506416818824,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.25,
+      "Delta_F": 0.3277313510619908,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.5,
+      "Delta_F": 0.32135606939714556,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 0.75,
+      "Delta_F": 0.31091471648792024,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.0,
+      "Delta_F": 0.29668075753725764,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.25,
+      "Delta_F": 0.27903793906784946,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.5,
+      "Delta_F": 0.2584887146877013,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 1.75,
+      "Delta_F": 0.23567388629482533,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.0,
+      "Delta_F": 0.21141463527027904,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.25,
+      "Delta_F": 0.18679721365627877,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.5,
+      "Delta_F": 0.16332740739836904,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 2.75,
+      "Delta_F": 0.1431537098755482,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.0,
+      "Delta_F": 0.12917867561758212,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.25,
+      "Delta_F": 0.12444910136617082,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.5,
+      "Delta_F": 0.13041141990228589,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 3.75,
+      "Delta_F": 0.1457426210366668,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.0,
+      "Delta_F": 0.16753193171792957,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.25,
+      "Delta_F": 0.19299978603120915,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.5,
+      "Delta_F": 0.22009115915118782,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 4.75,
+      "Delta_F": 0.2473597854009182,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.0,
+      "Delta_F": 0.2737317418633991,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.25,
+      "Delta_F": 0.2983255018783024,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.5,
+      "Delta_F": 0.3203385550490456,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 5.75,
+      "Delta_F": 0.3389862916913293,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.0,
+      "Delta_F": 0.35348400723707596,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.25,
+      "Delta_F": 0.36306614870708076,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.5,
+      "Delta_F": 0.36703493871979576,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 6.75,
+      "Delta_F": 0.3648263838615815,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.0,
+      "Delta_F": 0.3560795533450869,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.25,
+      "Delta_F": 0.34069851387698735,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.5,
+      "Delta_F": 0.31890802865518064,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 7.75,
+      "Delta_F": 0.29132670917241255,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.0,
+      "Delta_F": 0.2591216539498922,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.25,
+      "Delta_F": 0.22438574724223104,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.5,
+      "Delta_F": 0.1910078590316886,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 8.75,
+      "Delta_F": 0.16620133397883063,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.0,
+      "Delta_F": 0.16065352911381203,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.25,
+      "Delta_F": 0.18143286828123295,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.5,
+      "Delta_F": 0.22463056488785216,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 9.75,
+      "Delta_F": 0.281665342397839,
+      "phase": "OPEN"
+     },
+     {
+      "beta": 10.0,
+      "Delta_F": 0.3457854085069154,
+      "phase": "OPEN"
+     }
+    ],
+    "phases_present": [
+     "OPEN"
+    ],
+    "min_gap_on_grid": 0.12444910136617082
+   }
+  ]
+ },
+ "valley": [
+  {
+   "q_pk": 0.2,
+   "beta_star": 8.734045802234272,
+   "Delta_F_min": 0.2985954606135679,
+   "above_floor": true
+  },
+  {
+   "q_pk": 0.3,
+   "beta_star": 3.407657266159715,
+   "Delta_F_min": 0.22108964060878278,
+   "above_floor": true
+  },
+  {
+   "q_pk": 0.4,
+   "beta_star": 3.358254942345086,
+   "Delta_F_min": 0.18177661794447575,
+   "above_floor": true
+  },
+  {
+   "q_pk": 0.5,
+   "beta_star": 3.3194585378523955,
+   "Delta_F_min": 0.1592084689351254,
+   "above_floor": true
+  },
+  {
+   "q_pk": 0.6,
+   "beta_star": 3.2903733399345327,
+   "Delta_F_min": 0.1453151395483201,
+   "above_floor": true
+  },
+  {
+   "q_pk": 0.7,
+   "beta_star": 3.269127456885741,
+   "Delta_F_min": 0.13643843088427632,
+   "above_floor": true
+  },
+  {
+   "q_pk": 0.8,
+   "beta_star": 3.2537963936904735,
+   "Delta_F_min": 0.13066632788506016,
+   "above_floor": true
+  },
+  {
+   "q_pk": 0.9,
+   "beta_star": 3.2432419870029126,
+   "Delta_F_min": 0.1268930034325364,
+   "above_floor": true
+  },
+  {
+   "q_pk": 1.0,
+   "beta_star": 3.2362331186619304,
+   "Delta_F_min": 0.12443230981160691,
+   "above_floor": true
+  }
+ ],
+ "counterexample": {
+  "B2_committed": -0.05496702944778643,
+  "beta_c_quadratic_forecast": 2.991045795495071,
+  "Delta_F_measured_at_beta_c": 0.19776410288008184,
+  "ratio_to_floor": 6.328451292162619,
+  "statement": "the quadratic window law extrapolated beyond [0, 0.2] forecasts closure at beta_c; the map keeps the gap open there and everywhere on the searched range \u2014 a machine-found counterexample to naive window extrapolation (T3 itself is a window law and is untouched)"
+ },
+ "gates": {
+  "P1_no_closure": {
+   "map_min_Delta_F": 0.12444910136617082,
+   "floor": 0.03125,
+   "ok": true
+  },
+  "P2_valley_refinement": {
+   "rows": [
+    {
+     "q_pk": 0.3,
+     "beta_star_coarse": 3.407657266159715,
+     "beta_star_fine_M3840": 3.407629914870094,
+     "dev": 2.7351289621169173e-05,
+     "Delta_F_min_fine": 0.22108964479848137
+    },
+    {
+     "q_pk": 0.4,
+     "beta_star_coarse": 3.358254942345086,
+     "beta_star_fine_M3840": 3.3582339345506327,
+     "dev": 2.1007794453353767e-05,
+     "Delta_F_min_fine": 0.18177663228486307
+    },
+    {
+     "q_pk": 0.5,
+     "beta_star_coarse": 3.3194585378523955,
+     "beta_star_fine_M3840": 3.3196088044274816,
+     "dev": 0.00015026657508609986,
+     "Delta_F_min_fine": 0.15920848646120178
+    }
+   ],
+   "max_dev": 0.00015026657508609986,
+   "ok": true
+  },
+  "P3_N_stability": {
+   "rows": [
+    {
+     "N": 32,
+     "floor_2oN": 0.0625,
+     "Delta_0": 0.5216921478133105,
+     "beta_star": 3.3576572661597153,
+     "Delta_F_min": 0.18139783905395745
+    },
+    {
+     "N": 64,
+     "floor_2oN": 0.03125,
+     "Delta_0": 0.523004556028156,
+     "beta_star": 3.358254942345086,
+     "Delta_F_min": 0.18177661794447575
+    },
+    {
+     "N": 128,
+     "floor_2oN": 0.015625,
+     "Delta_0": 0.5233447197987668,
+     "beta_star": 3.358254942345086,
+     "Delta_F_min": 0.18187477312530786
+    }
+   ],
+   "shifts": [
+    0.0005976761853707657,
+    0.0
+   ],
+   "ok": true
+  },
+  "P4_counterexample": {
+   "ratio_to_floor": 6.328451292162619,
+   "ok": true
+  }
+ },
+ "verdicts": {
+  "phase_structure": "OPEN on the whole committed (beta, q_pk) map; the narrowing valley is the measured phase feature",
+  "no_closure": "PASS (finite-range honest statement: no closure for beta <= 10.0, q_pk in [0.2, 1.0])",
+  "valley_reproducible": "PASS",
+  "naive_window_counterexample": "REPORTED (falsified inside the searched range)"
+ },
+ "honest_notes": [
+  "no closure is a FINITE-RANGE statement about beta <= 10 \u2014 never a proof of eternal openness",
+  "the two-band reduction is valid only while Delta_0 <= Omega_0/2 = 1; the shallow-well branch (q_pk < 0.2) is outside the committed regime and is honestly excluded",
+  "the detector floor 2/N is the committed C4 envelope: SUBFLOOR cells would be cells where a real spectroscopy campaign at this resolution could not separate the gap",
+  "the valley REOPENS: quasi-energy band structure \u2014 the drive narrows and re-opens the gap; the window law sees none of this (its honest scope is [0, 0.2])"
+ ],
+ "wall_s": 10.572203874588013
+}

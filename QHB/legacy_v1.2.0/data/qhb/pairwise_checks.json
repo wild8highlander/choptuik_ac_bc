@@ -1,0 +1,50 @@
+{
+ "X1": {
+  "n_minus": 0.7615941559557647,
+  "n_plus": 0.7615941559557647,
+  "ok": true,
+  "r": 0.0
+ },
+ "X2": {
+  "ok": true
+ },
+ "convergence": {
+  "ladder": [
+   {
+    "n_steps": 256,
+    "r": 0.27237180435508407
+   },
+   {
+    "n_steps": 512,
+    "r": 0.2723718043507004
+   },
+   {
+    "n_steps": 1024,
+    "r": 0.2723718043504266
+   },
+   {
+    "n_steps": 2048,
+    "r": 0.27237180435040936
+   }
+  ],
+  "ok": true,
+  "p_eff": 3.9871863142722366
+ },
+ "door_stays": {
+  "ok": true,
+  "statement": "r_pair > 0 for every alpha > 0 cell and grows with lambda \u2014 the door survives the kinetics change"
+ },
+ "mpmath": {
+  "dev": 3.885780586188048e-16,
+  "ok": true,
+  "r_mp_50d": "0.27237180435040915884",
+  "r_numpy": 0.27237180435040953
+ },
+ "shape_moves": {
+  "dev_from_linear_limit": 0.08828177215627375,
+  "linear_limit_alpha": 0.9,
+  "ok": true,
+  "r_pair_at_lambda_100_alpha_09": 0.9882817721562738,
+  "statement": "the pairwise door has NO alpha asymptote: with the linear death term gone, the imbalance accumulates toward the FULL residual (r -> 1) \u2014 the door stays, the shape moves"
+ }
+}
