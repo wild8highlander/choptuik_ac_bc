@@ -233,7 +233,6 @@ export function figureSection3(cfg: QCDConfig): SectionFigure {
   }
 
   // Folded spacing pdf overlay.
-  const eigsForSpacing = eigs;
   const sGrid = Array.from({ length: 60 }, (_, i) => (i / 60) * 4);
   const guePdf = sGrid.map((s) => gueSpacingPdf(s));
   const poiPdf = sGrid.map((s) => poissonSpacingPdf(s));
@@ -301,7 +300,7 @@ export function figureSection3(cfg: QCDConfig): SectionFigure {
 
 // ─── Section 4: N-scaling 1/√N ──────────────────────────────────────────────
 export function figureSection4(cfg: QCDConfig): SectionFigure {
-  const rows = nScalingTest(cfg.N_values, cfg.kappa_T_custom, cfg.seed);
+  const rows = nScalingTest(cfg.N_values, cfg.seed);
   const N = rows.map((r) => r.N);
   const absMean = rows.map((r) => r.abs_mean);
   const theory = rows.map((r) => r.theoretical_1_over_sqrt_N);
@@ -368,7 +367,7 @@ export function figureSection4(cfg: QCDConfig): SectionFigure {
 }
 
 // ─── Section 5: tau_relax dynamics ──────────────────────────────────────────
-export function figureSection5(_cfg: QCDConfig): SectionFigure {
+export function figureSection5(): SectionFigure {
   const r = tauRelaxDynamics();
   const figure: PlotlyFigure = {
     data: [
@@ -477,7 +476,7 @@ export function figureSection6(cfg: QCDConfig): SectionFigure {
 }
 
 // ─── Section 7: Cabibbo angle coincidence ───────────────────────────────────
-export function figureSection7(_cfg: QCDConfig): SectionFigure {
+export function figureSection7(): SectionFigure {
   const cab = cabibboCoincidence();
   // 3D bar chart: predicted vs measured θ_C, b_Ch, c_theta, etc.
   const labels = ["b_Ch", "c_θ", "sin(2θ_C)", "θ_C pred", "θ_C meas", "dev %"];
@@ -522,7 +521,7 @@ export function figureSection7(_cfg: QCDConfig): SectionFigure {
 }
 
 // ─── Section 8: CP 8-step chain (3D bars) ───────────────────────────────────
-export function figureSection8(_cfg: QCDConfig): SectionFigure {
+export function figureSection8(): SectionFigure {
   const chain = cpSolutionChain();
   // Each step gets a bar; height = step number; color by step
   const steps = chain.steps;
@@ -578,7 +577,7 @@ export function figureSection8(_cfg: QCDConfig): SectionFigure {
 }
 
 // ─── Section 9: jet wake bridge ─────────────────────────────────────────────
-export function figureSection9(_cfg: QCDConfig): SectionFigure {
+export function figureSection9(): SectionFigure {
   const jwb = jetWakeBridge();
   // Surface: chi_eff(Lambda, delta) = delta * Lambda^4
   const N = 25;

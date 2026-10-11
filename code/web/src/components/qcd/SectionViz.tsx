@@ -144,6 +144,9 @@ export default function SectionViz({ sectionId }: { sectionId: number }) {
             <PlotlyChart figure={figure} height={460} />
           ) : (
             <div className="rounded-md border bg-card overflow-hidden">
+              {/* Dynamic API-served figure — next/image optimization does not
+                  apply to runtime-generated endpoints, so <img> is used. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={`/api/figures/${sectionId}?variant=${showStatic}`}
                 alt={`Section ${sectionId} ${showStatic} figure`}
@@ -170,7 +173,7 @@ export default function SectionViz({ sectionId }: { sectionId: number }) {
           <CardContent>
             <ScrollArea className="max-h-72 rounded-md border">
               <Table>
-                <TableHeader sticky>
+                <TableHeader className="sticky top-0 bg-card z-10">
                   <TableRow>
                     {table.columns.map((c) => (
                       <TableHead key={c} className="text-xs">{t(c)}</TableHead>

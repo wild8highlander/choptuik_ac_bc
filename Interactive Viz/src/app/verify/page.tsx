@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/table";
 import { runVerification } from "@/lib/compute";
 import type { VerificationEntry } from "@/lib/types";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Play, RotateCcw, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 
 export default function VerifyPage() {
@@ -24,7 +24,9 @@ export default function VerifyPage() {
   const [running, setRunning] = useState(false);
   const [allResults, setAllResults] = useState<VerificationEntry[]>([]);
 
-  const allChecks = runVerification();
+  // Deterministic, params-free — compute once per mount (also avoids
+  // re-running all the math on every render).
+  const allChecks = useMemo(() => runVerification(), []);
 
   const runAnimatedVerification = useCallback(() => {
     setRunning(true);
@@ -54,8 +56,9 @@ export default function VerifyPage() {
   }, [allChecks]);
 
   useEffect(() => {
-    runAnimatedVerification();
-  }, []);
+    const cleanup = runAnimatedVerification();
+    return cleanup;
+  }, [runAnimatedVerification]);
 
   const passCount = results.filter((v) => v.passed).length;
   const failCount = results.filter((v) => !v.passed).length;

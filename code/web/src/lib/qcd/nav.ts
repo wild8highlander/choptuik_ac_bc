@@ -43,7 +43,7 @@ export function initNavFromURL() {
   if (typeof window === "undefined") return;
   const params = new URLSearchParams(window.location.search);
   const v = params.get("view");
-  if (v === "home" || v === "dashboard" || v === "about" || /^section:\d+$/.test(v)) {
+  if (v !== null && (v === "home" || v === "dashboard" || v === "about" || /^section:\d+$/.test(v))) {
     current = v as NavKey;
     emit();
   }

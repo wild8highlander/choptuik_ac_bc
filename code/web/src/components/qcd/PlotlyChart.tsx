@@ -60,6 +60,12 @@ interface Props {
   height?: number;
 }
 
+/** Minimal typing for the subset of the Plotly UMD API we use. */
+interface PlotlyModule {
+  react: (el: HTMLElement, data: PlotlyTrace[], layout?: Record<string, unknown>, config?: Record<string, unknown>) => unknown;
+  purge: (el: HTMLElement) => void;
+}
+
 export default function PlotlyChart({ figure, className, height = 460 }: Props) {
   const elRef = useRef<HTMLDivElement>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
@@ -67,14 +73,18 @@ export default function PlotlyChart({ figure, className, height = 460 }: Props) 
 
   useEffect(() => {
     let cancelled = false;
-    let plotly: any;
+    let plotly: PlotlyModule | null = null;
+    // Capture the node once — the ref may point elsewhere by cleanup time.
+    const el = elRef.current;
 
     (async () => {
       try {
         // plotly.js-dist-min is a UMD bundle that mutates `window.Plotly`.
-        const mod: any = await import("plotly.js-dist-min");
+        const mod = (await import("plotly.js-dist-min")) as unknown as {
+          default?: PlotlyModule;
+        } & PlotlyModule;
         plotly = mod.default ?? mod;
-        if (cancelled || !elRef.current) return;
+        if (cancelled || !el) return;
 
         const layout = Object.assign(
           {
@@ -111,7 +121,7 @@ export default function PlotlyChart({ figure, className, height = 460 }: Props) 
           figure.config ?? {},
         );
 
-        plotly.react(elRef.current, figure.data, layout, config);
+        plotly.react(el, figure.data, layout, config);
         if (!cancelled) setStatus("ready");
       } catch (err) {
         console.error("Plotly render failed", err);
@@ -121,9 +131,9 @@ export default function PlotlyChart({ figure, className, height = 460 }: Props) 
 
     return () => {
       cancelled = true;
-      if (plotly && elRef.current) {
+      if (plotly && el) {
         try {
-          plotly.purge(elRef.current);
+          plotly.purge(el);
         } catch {
           /* ignore */
         }

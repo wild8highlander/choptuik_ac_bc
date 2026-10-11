@@ -41,7 +41,7 @@ import { cn } from "@/lib/utils";
 /** Slider metadata for one section. */
 interface SliderSpec {
   key: string;             // i18n key suffix (e.g. "kappaT" -> "dashboard.slider.kappaT")
-  store: "kappa_T_custom" | "n_flavors" | "seed" | "N_custom" | "kappa_values";
+  store?: "kappa_T_custom" | "n_flavors" | "seed" | "N_custom" | "kappa_values";
   // For non-store-backed sliders we use a local override map
   localKey?: string;       // if set, value lives in localOverride state
   min: number;
@@ -164,11 +164,13 @@ export default function DashboardView() {
   const setSlider = useCallback((spec: SliderSpec, value: number) => {
     const v = spec.integer ? Math.round(value) : value;
     if (spec.localKey) {
-      setLocalOverrides((s) => ({ ...s, [spec.localKey]: v }));
+      const localKey = spec.localKey;
+      setLocalOverrides((s) => ({ ...s, [localKey]: v }));
     } else if (spec.store) {
-      setConfig({ [spec.store]: v } as Partial<typeof config>);
+      const storeKey = spec.store;
+      setConfig({ [storeKey]: v } as Partial<typeof config>);
     }
-  }, [setConfig, config]);
+  }, [setConfig]);
 
   /** Reset the active section's sliders to defaults. */
   const resetSection = useCallback(() => {
@@ -308,8 +310,8 @@ function SectionDashboard({
       return localOverrides[spec.localKey] ?? spec.default;
     }
     if (spec.store) {
-      // @ts-expect-error dynamic key access
-      return config[spec.store] ?? spec.default;
+      const raw: unknown = config[spec.store];
+      return typeof raw === "number" ? raw : spec.default;
     }
     return spec.default;
   };

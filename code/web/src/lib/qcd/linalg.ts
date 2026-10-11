@@ -58,7 +58,6 @@ export function symmetrize(M: Float64Array, n: number): Float64Array {
 export function eigvalshSym(M: Float64Array, n: number, maxSweeps = 100): number[] {
   // Work on a copy.
   const a = Float64Array.from(M);
-  const off = new Float64Array(n);
   // Use cyclic Jacobi: iterate over upper-triangle pairs.
   for (let sweep = 0; sweep < maxSweeps; sweep++) {
     // off-diagonal sum of squares
@@ -83,7 +82,7 @@ export function eigvalshSym(M: Float64Array, n: number, maxSweeps = 100): number
         if (sweep > 3 && Math.abs(app) + g === Math.abs(app) && Math.abs(aqq) + g === Math.abs(aqq)) {
           a[p * n + q] = 0;
         } else if (Math.abs(apq) > thresh) {
-          let theta = (aqq - app) / (2 * apq);
+          const theta = (aqq - app) / (2 * apq);
           let t: number;
           if (Math.abs(theta) > 1e15) {
             t = 0.5 / theta;

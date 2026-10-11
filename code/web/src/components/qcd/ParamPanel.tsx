@@ -38,7 +38,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 
 export default function ParamPanel() {
-  const { config, setConfig, toggleSection, resetConfig, setResult, runStatus, setRunStatus } = useQCDStore();
+  const { config, setConfig, toggleSection, resetConfig, setResult, setRunStatus } = useQCDStore();
   const { t, lang } = useTranslation();
   const [busy, setBusy] = useState(false);
 

@@ -20,7 +20,6 @@ import {
   classifyBF,
   eigvalshSym,
   foldedSpacings,
-  gaussian,
   gueSpacingPdf,
   mean,
   mulberry32,
@@ -171,7 +170,7 @@ export function kappaTSweep(kappas: number[], seed = 42): SweepRow[] {
 }
 
 // ─── 5. N-scaling: <λ> -> 0 as 1/sqrt(N) ─────────────────────────────────────
-export function nScalingTest(Ns: number[], kappaT = KAPPA_T_BESTFIT, seed = 42): NScalingRow[] {
+export function nScalingTest(Ns: number[], seed = 42): NScalingRow[] {
   const rng = mulberry32(seed);
   const rows: NScalingRow[] = [];
   for (const N of Ns) {

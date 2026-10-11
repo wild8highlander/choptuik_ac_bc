@@ -29,15 +29,14 @@ java-webapp/target/
 .mvn/wrapper/maven-wrapper.jar
 
 # Node.js / Next.js
-interactive-viz/node_modules/
-interactive-viz/.next/
-interactive-viz/out/
-interactive-viz/.env
-interactive-viz/.env.local
-interactive-viz/.env.production
-code/web/node_modules/
-code/web/.next/
-code/web/out/
+node_modules/
+.next/
+.next-dev/
+out/
+*.tsbuildinfo
+"Interactive Viz/.env"
+"Interactive Viz/.env.local"
+"Interactive Viz/.env.production"
 code/web/.env
 code/web/.env.local
 code/web/.env.production
