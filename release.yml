@@ -1,0 +1,46 @@
+# Release notes — automatic category configuration.
+# PR titles/labels are mapped into these sections of the GitHub Release draft.
+# Labels must match the repo labeler (.github/labeler/config.yml).
+
+changelog:
+  exclude:
+    labels:
+      - skip-changelog
+      - question
+      - wontfix
+    authors:
+      - dependabot[bot]
+  categories:
+    - title: 🔴 Breaking changes
+      labels:
+        - breaking
+        - breaking-change
+    - title: 🎓 Theorems & monographs
+      labels:
+        - mathematical
+        - documentation
+        - theorems
+    - title: 🧪 Verification & campaigns
+      labels:
+        - verification
+        - bug
+    - title: 📊 Visualization & figures
+      labels:
+        - visualization
+        - ligo
+        - hypothesis-testing
+    - title: 🧱 Core implementations (Python · Julia · Java · Web)
+      labels:
+        - python
+        - julia
+        - java
+        - web-app
+        - enhancement
+    - title: 🛠 Infrastructure & CI
+      labels:
+        - ci
+        - dependencies
+        - security
+    - title: 📝 Other changes
+      labels:
+        - "*"
