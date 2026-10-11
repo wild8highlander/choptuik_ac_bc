@@ -1,7 +1,7 @@
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/logo/choptyuk_logo_dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="assets/logo/choptyuk_logo_light.png">
-  <img alt="Choptuik AC-BC — Spinor corrections b-C &amp; a-C, the Choptyuk problem, and the Direct Einstein programme" src="assets/logo/choptyuk_logo_dark.png" width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/logo/choptyuk_banner_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="assets/logo/choptyuk_banner_dark.png">
+  <img alt="Choptuik AC-BC — critical collapse cascade: concentric gold rings converging on a luminous core; spinor corrections b-C &amp; a-C, the Choptyuk problem, and the Direct Einstein programme — machine-verified" src="assets/logo/choptyuk_banner_dark.png" width="100%">
 </picture>
 
 # Spinor Corrections b-C & a-C, the Choptyuk Problem, and the Direct Einstein Programme
@@ -19,13 +19,20 @@ ORCID [0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701) · Nalchik, K
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg?logo=python&logoColor=white)](python/)
 [![Julia 1.9+](https://img.shields.io/badge/Julia-1.9+-955880.svg?logo=julia)](julia/)
 [![Java 17+](https://img.shields.io/badge/Java-17+-orange.svg?logo=openjdk)](java-webapp/)
-[![Next.js 15](https://img.shields.io/badge/Next.js-15-black.svg?logo=next.js)](Interactive%20Viz/)
+[![Next.js 15 · 16](https://img.shields.io/badge/Next.js-15%20·%2016-black.svg?logo=next.js)](Interactive%20Viz/)
+[![TypeScript 5](https://img.shields.io/badge/TypeScript-5-3178C6.svg?logo=typescript&logoColor=white)](code/web/)
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg?logo=docker&logoColor=white)](docker/)
 [![Lean 4 + Mathlib](https://img.shields.io/badge/Lean%204-Mathlib-6b2c8f.svg?logo=lean&logoColor=white)](QHB/monolith/lean/)
 [![CI](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/ci.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/ci.yml)
 [![DOI](https://img.shields.io/badge/Zenodo-10.5281%2Fzenodo.15152720-blue.svg?logo=zenodo)](https://doi.org/10.5281/zenodo.15152720)
+[![ORCID](https://img.shields.io/badge/ORCID-0009--0003--7299--0701-a6ce39?logo=orcid&logoColor=white)](https://orcid.org/0009-0003-7299-0701)
+[![Security](https://img.shields.io/badge/Security-OpenSSF%20Scorecard-yellow.svg)](https://securityscorecards.dev/viewer/?uri=github.com/wild8highlander/choptuik_ac_bc)
+[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](.pre-commit-config.yaml)
+[![Codecov](https://img.shields.io/badge/Coverage-Codecov-f39f37?logo=codecov)](https://codecov.io/gh/wild8highlander/choptuik_ac_bc)
 [![Tests: ED](https://img.shields.io/badge/Tests%20ED-58%2F58%20%2B10-brightgreen.svg)](Einstein%20Direct/tests/)
 [![Tests: CHB](https://img.shields.io/badge/Tests%20CHB-63%2F63-brightgreen.svg)](Collapse%20Hawking%20Bridge/tests/)
 [![Tests: QHB](https://img.shields.io/badge/Tests%20QHB-154%20collected-brightgreen.svg)](QHB/tests/)
+[![Discussions](https://img.shields.io/badge/Discussions-open-181717?logo=github)](https://github.com/wild8highlander/choptuik_ac_bc/discussions)
 
 > 🇬🇧 **Language:** this is the compact English edition. The full flagship README is in Russian:
 > [`README.md`](README.md). Russian mirrors inside packages:

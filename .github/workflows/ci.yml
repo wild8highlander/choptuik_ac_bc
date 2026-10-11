@@ -174,18 +174,50 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: interactive-viz/package-lock.json
+          cache-dependency-path: "Interactive Viz/package-lock.json"
 
       - name: Install dependencies
-        working-directory: interactive-viz
+        working-directory: "Interactive Viz"
         run: npm ci
 
       - name: Lint
-        working-directory: interactive-viz
+        working-directory: "Interactive Viz"
         run: npm run lint --if-present
 
       - name: Build
-        working-directory: interactive-viz
+        working-directory: "Interactive Viz"
+        run: npm run build
+
+  # ── Web dashboard (code/web) ────────────────────────────
+  webapp-ci:
+    name: Web dashboard (code/web)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: code/web/package.json
+
+      - name: Install dependencies
+        working-directory: code/web
+        run: npm install
+
+      - name: Lint
+        working-directory: code/web
+        run: npm run lint
+
+      - name: Type check
+        working-directory: code/web
+        run: npx tsc --noEmit
+
+      - name: Build
+        working-directory: code/web
         run: npm run build
 
   # ── Cross-implementation consistency ───────────────────────
