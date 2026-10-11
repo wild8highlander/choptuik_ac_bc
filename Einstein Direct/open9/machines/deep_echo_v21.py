@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 КАМПАНИЯ v21: ГЛУБИННАЯ КАМПАНИЯ ЭХА — ИСПОЛНЕНИЕ ПРОТОКОЛА РАЗДЕЛА 5
@@ -71,12 +70,11 @@ RESULTS = os.path.join(BASE, "results")
 OUT_PATH = os.path.join(RESULTS, "v21_deep_echo.json")
 CKPT_PATH = os.path.join(RESULTS, "v21_checkpoints.json")
 
-from zoom_solver import ZoomRunner, echo_peaks, echo_period_from_peaks  # noqa: E402
-from grid_machine_annulus import A_STAR  # noqa: E402
-from m1_tracker import fit_m1_m3  # noqa: E402
-from depth_z30 import (adaptive_gamma_estimator, ols_gamma,  # noqa: E402
-                       GAMMA, Z_TARGET, Z_WALL, SEED)
-from amplitude_ladder import wiggle_fit_free_freq, fit_exponent  # noqa: E402
+from amplitude_ladder import fit_exponent, wiggle_fit_free_freq
+from depth_z30 import GAMMA, SEED, Z_TARGET, Z_WALL, adaptive_gamma_estimator, ols_gamma
+from grid_machine_annulus import A_STAR
+from m1_tracker import fit_m1_m3
+from zoom_solver import ZoomRunner, echo_peaks, echo_period_from_peaks
 
 T_START = time.time()
 
@@ -502,7 +500,7 @@ def _stage_analysis(runner):
         row = {"zoom_index": s, "rows": int(b - a),
                "z_start": float(z_all[a]), "z_end": float(z_all[b - 1]),
                "v_lo": float(v_all[a]), "v_hi": float(v_all[b - 1]),
-               "n_peaks": int(len(vp)),
+               "n_peaks": len(vp),
                "v_peaks": [float(x) for x in vp],
                "Q_peaks": [float(x) for x in yp]}
         if len(vp) >= 4:

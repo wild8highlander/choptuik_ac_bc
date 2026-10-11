@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 OPEN9-Q2 / КАМПАНИЯ v20a: ЛЕСТНИЦА АМПЛИТУД — ИЗМЕРЕНИЕ ПОКАЗАТЕЛЯ p
@@ -52,8 +51,8 @@ os.chdir(BASE)
 RESULTS = os.path.join(BASE, "results")
 OUT_PATH = os.path.join(RESULTS, "v20a_amplitude_ladder.json")
 
-from zoom_solver import ZoomRunner, echo_peaks, echo_period_from_peaks  # noqa: E402
-from grid_machine_annulus import A_STAR  # noqa: E402
+from grid_machine_annulus import A_STAR
+from zoom_solver import ZoomRunner, echo_peaks, echo_period_from_peaks
 
 T_START = time.time()
 EPS_LADDER = [3e-3, 1e-3, 3e-4, 1e-4]     # от грубой к глубокой ступени
@@ -96,7 +95,7 @@ def wiggle_fit_free_freq(v_peaks, q_peaks, delta, n_vstar=120):
                         "omega_over_2pi_per_delta": float(w / w0),
                         "slope_b": float(sol[0]),
                         "amp_c1": float(np.hypot(sol[2], sol[3])),
-                        "n_peaks": int(len(vp))}
+                        "n_peaks": len(vp)}
     return best
 
 
@@ -130,7 +129,7 @@ def rung(eps):
     rec["stop"] = str(d.stopped)
     rec["M_AH_max"] = float(d.m_ah_max)
     vp, yp = echo_peaks(r.track, "Q")
-    rec["n_Q_peaks"] = int(len(vp))
+    rec["n_Q_peaks"] = len(vp)
     log(f"  z = {rec['z_reached']:.2f}, зумов = {d.zooms}, стоп = {d.stopped}, "
         f"пиков Q = {len(vp)} ({rec['runtime_s']:.0f} c)")
     if len(vp) >= 4:

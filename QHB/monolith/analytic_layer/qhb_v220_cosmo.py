@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 QHB v2.2.0 — Космологическая сценаризация остывания сектора зазора ниже T_death.
 
@@ -26,15 +25,17 @@ T_death(N) = B0 / ln(N*nu/eps_H); мостовая температура T_c = 
 
 Результат: /home/z/my-project/qhb_work/v220_cosmo.json
 """
-import json, math, sys
+import json
+import math
+import sys
 
 WORK = "/home/z/my-project/qhb_work"
 sys.path.insert(0, f"{WORK}/QHB_Unified_v2.1.0")
 
-import numpy as np
 import mpmath as mp
+import numpy as np
+from qhb.constants import DELTA_F_MIN, ETA_B, K_GAP
 from qhb.core import bridge_temperature
-from qhb.constants import DELTA_F_MIN, K_GAP, ETA_B
 
 mp.mp.dps = 50
 SEED_R = 777003

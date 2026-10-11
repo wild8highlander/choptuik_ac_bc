@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Scrub version labels (vN) out of einstein_direct/README_EN.md.
 
 Steps:
@@ -10,7 +9,6 @@ Steps:
 5. Report any leftover tokens.
 """
 import re
-import sys
 
 PATH = "README_EN.md"
 s = open(PATH, encoding="utf-8").read()

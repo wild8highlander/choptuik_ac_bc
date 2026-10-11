@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 ladder.py — ladders of fundamental scales across the two bridge sides.
 
@@ -18,11 +17,21 @@ import csv
 import math
 import os
 
-from .constants import (G, c, hbar, k_B, H0, T_CMB, a0, l_P, t_P, m_P, Mpc,
-                        M_sun, M_earth, M_moon, yr, b_Ch, delta_C,
-                        f_qnm_schwarzschild, kretschmann_horizon,
-                        kretschmann_planck)
-from .hawking import r_s, T_H, t_evap, surface_gravity, equal_CMB_mass
+from .constants import (
+    H0,
+    M_earth,
+    M_sun,
+    Mpc,
+    a0,
+    b_Ch,
+    c,
+    delta_C,
+    kretschmann_horizon,
+    kretschmann_planck,
+    l_P,
+    m_P,
+)
+from .hawking import equal_CMB_mass, r_s, surface_gravity
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

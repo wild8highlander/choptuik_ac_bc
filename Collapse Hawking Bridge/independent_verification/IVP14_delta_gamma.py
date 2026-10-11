@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-14 — independent Delta*gamma falsification test.
 
@@ -34,7 +33,7 @@ import sys
 
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, IVP_DIR)
-from ivp_common import save_result, log, worst_status, read_committed_verdict  # noqa: E402
+from ivp_common import log, read_committed_verdict, save_result, worst_status
 
 # literature anchors, written verbatim in this file (NOT imported)
 DELTA_LIT = 3.44

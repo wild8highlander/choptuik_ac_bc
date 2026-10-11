@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 report_engine.py — Multi-format report generator for QCD bridge results.
 
@@ -13,12 +12,10 @@ from __future__ import annotations
 import csv
 import json
 import logging
-import os
-import time
 from dataclasses import asdict, is_dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import numpy as np
 
@@ -100,7 +97,7 @@ class ReportEngine:
     def tr(self):
         return self.i18n.get(self.language, self.i18n["en"])
 
-    def generate(self, result, formats: Optional[List[str]] = None) -> Dict[str, str]:
+    def generate(self, result, formats: list[str] | None = None) -> dict[str, str]:
         """Generate reports in all requested formats.
 
         Args:
@@ -116,7 +113,7 @@ class ReportEngine:
 
         # Normalize to JSON-safe structure
         data = _to_serializable(result)
-        paths: Dict[str, str] = {}
+        paths: dict[str, str] = {}
         for fmt in formats:
             try:
                 method = getattr(self, f"_write_{fmt}")
@@ -129,14 +126,14 @@ class ReportEngine:
         return paths
 
     # ── JSON ─────────────────────────────────────────────────────────────
-    def _write_json(self, data: Dict) -> str:
+    def _write_json(self, data: dict) -> str:
         path = self.output_dir / "report.json"
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False, default=str)
         return str(path)
 
     # ── TXT ──────────────────────────────────────────────────────────────
-    def _write_txt(self, data: Dict) -> str:
+    def _write_txt(self, data: dict) -> str:
         path = self.output_dir / "report.txt"
         lines = []
         lines.append("=" * 78)
@@ -170,7 +167,7 @@ class ReportEngine:
             f.write("\n".join(lines))
         return str(path)
 
-    def _dump_dict_txt(self, d: Any, lines: List[str], indent: int = 0):
+    def _dump_dict_txt(self, d: Any, lines: list[str], indent: int = 0):
         pad = " " * indent
         if isinstance(d, dict):
             for k, v in d.items():
@@ -200,7 +197,7 @@ class ReportEngine:
         return str(v)
 
     # ── CSV ──────────────────────────────────────────────────────────────
-    def _write_csv(self, data: Dict) -> str:
+    def _write_csv(self, data: dict) -> str:
         path = self.output_dir / "report.csv"
         results = data.get("results", {})
         with open(path, "w", newline="", encoding="utf-8") as f:
@@ -235,7 +232,7 @@ class ReportEngine:
                 self._dump_csv_rows(section, item, writer, prefix=f"{prefix}[{i}]")
 
     # ── Markdown ─────────────────────────────────────────────────────────
-    def _write_md(self, data: Dict) -> str:
+    def _write_md(self, data: dict) -> str:
         path = self.output_dir / "report.md"
         lines = []
         lines.append(f"# {self.tr['title']}")
@@ -269,7 +266,7 @@ class ReportEngine:
             f.write("\n".join(lines))
         return str(path)
 
-    def _dump_md(self, d: Any, lines: List[str], level: int = 4):
+    def _dump_md(self, d: Any, lines: list[str], level: int = 4):
         header = "#" * level
         if isinstance(d, dict):
             for k, v in d.items():
@@ -294,7 +291,7 @@ class ReportEngine:
             lines.append("")
 
     # ── HTML ─────────────────────────────────────────────────────────────
-    def _write_html(self, data: Dict) -> str:
+    def _write_html(self, data: dict) -> str:
         path = self.output_dir / "report.html"
         results = data.get("results", {})
         html = []
@@ -361,16 +358,22 @@ class ReportEngine:
         return f"<span class='value'>{self._fmt_val(d)}</span>"
 
     # ── PDF ──────────────────────────────────────────────────────────────
-    def _write_pdf(self, data: Dict) -> str:
+    def _write_pdf(self, data: dict) -> str:
         path = self.output_dir / "report.pdf"
         try:
-            from reportlab.lib.pagesizes import A4
-            from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-            from reportlab.platypus import (
-                SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Preformatted
-            )
             from reportlab.lib import colors
             from reportlab.lib.enums import TA_LEFT
+            from reportlab.lib.pagesizes import A4
+            from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+            from reportlab.platypus import (
+                PageBreak,
+                Paragraph,
+                Preformatted,
+                SimpleDocTemplate,
+                Spacer,
+                Table,
+                TableStyle,
+            )
             cm = RL_CM
         except ImportError:
             # Fallback: write a minimal PDF stub
@@ -430,8 +433,8 @@ class ReportEngine:
         return str(path)
 
     def _dump_pdf(self, d: Any, story, styles, body_style, depth: int = 0):
-        from reportlab.platypus import Paragraph, Spacer, Table, TableStyle
         from reportlab.lib import colors
+        from reportlab.platypus import Paragraph, Spacer, Table, TableStyle
         cm = RL_CM
         if isinstance(d, dict):
             rows = []
@@ -462,13 +465,13 @@ class ReportEngine:
                 story.append(Spacer(1, 4))
 
     # ── DOCX ─────────────────────────────────────────────────────────────
-    def _write_docx(self, data: Dict) -> str:
+    def _write_docx(self, data: dict) -> str:
         path = self.output_dir / "report.docx"
         try:
             from docx import Document
-            from docx.shared import Pt, Cm, RGBColor
-            from docx.enum.text import WD_ALIGN_PARAGRAPH
             from docx.enum.table import WD_TABLE_ALIGNMENT
+            from docx.enum.text import WD_ALIGN_PARAGRAPH
+            from docx.shared import Cm, Pt, RGBColor
         except ImportError:
             with open(path, "wb") as f:
                 f.write(b"python-docx not installed; install with: pip install python-docx\n")

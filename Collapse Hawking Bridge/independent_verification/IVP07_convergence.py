@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-07 — independent method-of-convergence test of the engine.
 
@@ -33,8 +32,14 @@ import numpy as np
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(IVP_DIR)
 sys.path.insert(0, IVP_DIR)
-from ivp_common import (save_result, log, worst_status, load_engine,  # noqa: E402
-                        make_independent_roberts, read_committed_verdict)
+from ivp_common import (
+    load_engine,
+    log,
+    make_independent_roberts,
+    read_committed_verdict,
+    save_result,
+    worst_status,
+)
 
 SIGMA = 0.12          # verifier-chosen (different from engine's 0.1 test)
 U_BOX = (-0.25, 0.75) # verifier-chosen window

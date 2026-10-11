@@ -11,7 +11,7 @@ verification non-interactively.
 | File | Contents |
 |------|----------|
 | `Dockerfile` | Single-stage image on `python:3.12-slim`. Installs `gcc`, `g++`, `gfortran`, OpenBLAS/LAPACK, then `python/requirements.txt` plus `python-docx reportlab markdown jinja2` for the multi-format report writers. Copies `python/` into `/app`. Default command: `python /app/python/run.py --mode verify --non-interactive --output-dir /app/output` |
-| `docker-compose.yml` | Three services: `python-verify` (builds the image, mounts `../output`), `interactive-viz` (Node image, mounts `../interactive-viz`, port 3000), `java-webapp` (Maven + JDK image, mounts `../java-webapp`, port 8080). Named volumes cache `node_modules` and the Maven repository |
+| `docker-compose.yml` | Three services: `python-verify` (builds the image, mounts `../output`), `interactive-viz` (Node image, mounts `../Interactive Viz`, port 3000), `java-webapp` (Maven + JDK image, mounts `../java-webapp`, port 8080). Named volumes cache `node_modules` and the Maven repository |
 
 ## How to run
 

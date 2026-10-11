@@ -34,7 +34,7 @@
 - [ ] Python: `pytest python/tests/ -v` passes
 - [ ] Julia: `julia --project=julia -e 'using Pkg; Pkg.test()'` passes
 - [ ] Java: `cd java-webapp && mvn verify` passes
-- [ ] Next.js: `cd interactive-viz && npm run build` passes
+- [ ] Next.js: `cd "Interactive Viz" && npm run build` passes
 - [ ] Cross-implementation consistency verified
 - [ ] Enhanced verification: `verify_all()` passes
 

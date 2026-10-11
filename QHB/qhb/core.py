@@ -2,13 +2,23 @@
 from __future__ import annotations
 
 import math
-from typing import Dict, List, Tuple
-
-from .constants import (BETA_STAR, C1_SPIN, C2_SPIN, DELTA_F_MIN, DELTA_THRESH,
-                        E_MAX, L_BOX, P_ESC_TARGET, SEED_BOOT, SEED_MC, SIGMA0,
-                        SIGMA_STAR, SIGMA_V, delta_F_of_beta, sigma_of_beta)
 
 import mpmath as mp
+
+from .constants import (
+    C1_SPIN,
+    C2_SPIN,
+    DELTA_THRESH,
+    E_MAX,
+    L_BOX,
+    P_ESC_TARGET,
+    SEED_BOOT,
+    SEED_MC,
+    SIGMA_STAR,
+    SIGMA_V,
+    delta_F_of_beta,
+    sigma_of_beta,
+)
 
 mp.mp.dps = 50
 
@@ -24,7 +34,7 @@ def gap_finite_volume(beta: float, L: float) -> float:
     return delta_F_of_beta(beta) * (1.0 - C_FV / L + D_FV / (L * L))
 
 
-def c1_gap_table(betas: List[float], volumes: List[float]) -> Dict:
+def c1_gap_table(betas: list[float], volumes: list[float]) -> dict:
     rows = []
     gmin, argmin = None, None
     for L in volumes:
@@ -48,7 +58,7 @@ def wilson_loop(beta: float, R: float, T: float) -> float:
     return math.exp(-sigma_of_beta(beta) * R * T)
 
 
-def sigma_measure(beta: float, loops: List[Tuple[float, float]]) -> float:
+def sigma_measure(beta: float, loops: list[tuple[float, float]]) -> float:
     """Least-squares log-slope measurement of sigma from loops (noise-free)."""
     num = den = 0.0
     for R, T in loops:
@@ -70,7 +80,7 @@ def bridge_temperature(beta: float, corrections: bool = True) -> float:
     return base * (1.0 + C1_SPIN * eps2 + C2_SPIN * eps2 * eps2)
 
 
-def spin_constants_exact(dps: int = 100) -> Dict[str, str]:
+def spin_constants_exact(dps: int = 100) -> dict[str, str]:
     """Exact pi^2/8 and pi^5/704 at `dps` digits (mpmath)."""
     old = mp.mp.dps
     mp.mp.dps = dps
@@ -105,7 +115,7 @@ def response(E: float, beta: float, dE: float = 0.002) -> float:
     return acc * dE / (res * math.sqrt(2 * math.pi))
 
 
-def runs_test_z(signs: List[int]) -> float:
+def runs_test_z(signs: list[int]) -> float:
     """Wald-Wolfowitz runs test z-score for a +/-1 sign sequence.
 
     Degenerate case (one sign class empty): returns -999.0 - the run
@@ -122,7 +132,7 @@ def runs_test_z(signs: List[int]) -> float:
     return (runs - mu) / math.sqrt(var)
 
 
-def c4_tail_audit(beta: float) -> Dict:
+def c4_tail_audit(beta: float) -> dict:
     """Fit core-only model in [0, E_MAX]; audit residual signs beyond E_MAX.
 
     Honest negative: residual runs test rejects randomness in the tail window,
@@ -169,7 +179,7 @@ def escape_threshold() -> float:
     return float(x / 8.0)
 
 
-def free_three_body(n_trials: int = 10000, seed: int = SEED_MC) -> Dict:
+def free_three_body(n_trials: int = 10000, seed: int = SEED_MC) -> dict:
     import random
     e_th = escape_threshold()
     rng = random.Random(seed)
@@ -210,8 +220,7 @@ def fermat_point(p1, p2, p3):
         nx = ny = 0.0
         for (x, y) in (p1, p2, p3):
             d = math.hypot(px - x, py - y)
-            if d < 1e-14:
-                d = 1e-14
+            d = max(d, 1e-14)
             nx += x / d
             ny += y / d
             den += 1.0 / d
@@ -219,7 +228,7 @@ def fermat_point(p1, p2, p3):
     return px, py
 
 
-def y_string_energy(sides: List[Tuple[float, float, float]], beta: float) -> List[Dict]:
+def y_string_energy(sides: list[tuple[float, float, float]], beta: float) -> list[dict]:
     """E_Y = sigma * sum |r_i - r_v| for triangles with given side lengths."""
     out = []
     for (a, b, c) in sides:
@@ -249,7 +258,7 @@ def wkb_action(E: float, sigma: float = SIGMA_STAR) -> float:
     return (2.0 / (3.0 * sigma)) * (top - E) ** 1.5
 
 
-def tunneling_window(sigma: float = SIGMA_STAR, level: float = 1e-12) -> Dict:
+def tunneling_window(sigma: float = SIGMA_STAR, level: float = 1e-12) -> dict:
     s_level = -math.log(level) / 2.0
     top = sigma * L_BOX
     e_t = top - (1.5 * sigma * s_level) ** (2.0 / 3.0)
@@ -261,7 +270,7 @@ def tunneling_window(sigma: float = SIGMA_STAR, level: float = 1e-12) -> Dict:
 # =============================================================================
 # C8 - bootstrap robustness of the gap estimator
 # =============================================================================
-def c8_bootstrap(betas: List[float], n_boot: int = 2000, seed: int = SEED_BOOT) -> Dict:
+def c8_bootstrap(betas: list[float], n_boot: int = 2000, seed: int = SEED_BOOT) -> dict:
     """Bootstrap the valley-floor estimator over the beta grid (L = inf row)."""
     import random
     sample = [delta_F_of_beta(b) for b in betas]

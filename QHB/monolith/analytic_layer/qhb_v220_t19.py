@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 QHB v2.2.0 — T19: АНАЛИТИЧЕСКОЕ ДОКАЗАТЕЛЬСТВО ЗАКОНОВ ВЕТВЕЙ R2.
 
@@ -29,7 +28,9 @@ QHB v2.2.0 — T19: АНАЛИТИЧЕСКОЕ ДОКАЗАТЕЛЬСТВО ЗА
 
 Результат: /home/z/my-project/qhb_work/v220_t19.json
 """
-import json, math, sys
+import json
+import math
+import sys
 
 import sympy as sp
 
@@ -286,8 +287,6 @@ print("C3 Synge charpoly grid dev:", res["corollary_C3_synge"]["equals_target_gr
 # Следствие C2: закон дисперсии для общих Gamma — численно 50 знаков
 # (точно для семейства (1,1,gamma); на случайных тройках — высокая точность)
 # ---------------------------------------------------------------------------
-import numpy as np
-from fractions import Fraction
 
 def spec_numeric(G3):
     """Числовой спектр C0 для произвольных Gamma (a=1), 50 знаков mpmath.
@@ -344,6 +343,7 @@ def spec_numeric(G3):
     return om, roots
 
 import random
+
 rng = random.Random(902107)
 triples = [(1, 1, 1), (1, 1, 2), (2, 3, 5), (1, 2, 3), (0.7, 1.3, 2.1), (1, 1, 0.4),
            (1.5, 1.5, 1.5), (0.5, 0.9, 1.7), (2, 2, 3), (1, 1, -0.3), (1.2, 0.9, -0.4), (3, 1, 1)]
@@ -383,6 +383,8 @@ print("C2 general-Gamma max dev:", dev_max)
 # ---------------------------------------------------------------------------
 sys.path.insert(0, "/home/z/my-project/qhb_work/QHB_Unified_v2.1.0")
 import numpy as _np2
+
+
 def corot_spectrum_np(g3val):
     g = [1.0, 1.0, float(g3val)]
     gt = sum(g)

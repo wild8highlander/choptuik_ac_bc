@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-05 — dimensional-analysis audit.
 
@@ -30,7 +29,7 @@ import sympy as sp
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(IVP_DIR)
 sys.path.insert(0, IVP_DIR)
-from ivp_common import save_result, log, worst_status  # noqa: E402
+from ivp_common import log, save_result, worst_status
 
 # basis symbols
 L, M, T, TH = sp.symbols("L M T Theta")
@@ -89,7 +88,7 @@ def dim_vector(expr_str):
 def engine_code_checks():
     """Code inspection of engine/solver.py (constants, not measurements)."""
     src = open(os.path.join(ROOT, "engine", "solver.py"), encoding="utf-8").read()
-    m = re.search(r"^KAPPA\s*=\s*([0-9.]+)", src, re.M)
+    m = re.search(r"^KAPPA\s*=\s*([0-9.]+)", src, re.MULTILINE)
     return {
         "kappa_declared": float(m.group(1)) if m else None,
         "KAPPA_occurrences": len(re.findall(r"KAPPA", src)),

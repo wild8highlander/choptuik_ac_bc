@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-06 — independent symbolic residual test of the Roberts-Oshiro
 solution against the Einstein-scalar system solved by the engine.
@@ -36,14 +35,14 @@ symbolic result numerically.
 import os
 import sys
 
-import sympy as sp
 import mpmath as mp
+import sympy as sp
 
 mp.mp.dps = 30
 
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, IVP_DIR)
-from ivp_common import save_result, log, worst_status  # noqa: E402
+from ivp_common import log, save_result, worst_status
 
 u, v, s, kap = sp.symbols("u v sigma kappa", real=True, positive=True)
 

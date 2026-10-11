@@ -1,6 +1,8 @@
-# -*- coding: utf-8 -*-
 """IVP03 — dependency audit: the declared deps cover every import."""
-import os, sys, ast
+import ast
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ivp_common import ROOT, write_verdict
 

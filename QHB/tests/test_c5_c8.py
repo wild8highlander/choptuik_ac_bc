@@ -2,8 +2,8 @@
 import math
 
 import pytest
-
-from qhb import constants as C, core
+from qhb import constants as C
+from qhb import core
 from qhb.pins import C5_N_TRIALS, C5_SEED
 
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 УРОВЕНЬ O6+: ДИНАМИКА ИСТОЧНИКОВ БАШНИ ЦЕНТРА (МАШИННЫЙ ВЫВОД)
@@ -43,7 +42,6 @@ import os
 import time
 import traceback
 
-import numpy as np
 import sympy as sp
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -261,7 +259,7 @@ def to_z(expr):
 
 
 def purify(ze):
-    for k in range(0, 9):
+    for k in range(9):
         cand = sp.simplify(sp.expand(ze * S**k))
         if not cand.has(S):
             return k, cand

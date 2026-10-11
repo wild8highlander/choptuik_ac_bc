@@ -10,7 +10,6 @@ No external vortex libraries are used.  The layer implements:
 from __future__ import annotations
 
 import math
-from typing import Dict, List, Tuple
 
 from .constants import OMEGA, SEED_C11, V_STAR
 
@@ -18,7 +17,7 @@ from .constants import OMEGA, SEED_C11, V_STAR
 # -----------------------------------------------------------------------------
 # Kirchhoff dynamics
 # -----------------------------------------------------------------------------
-def velocity_field(pos: List[Tuple[float, float]]) -> List[Tuple[float, float]]:
+def velocity_field(pos: list[tuple[float, float]]) -> list[tuple[float, float]]:
     """Point-vortex velocity field, equal circulations Gamma = 1."""
     n = len(pos)
     vel = []
@@ -36,7 +35,7 @@ def velocity_field(pos: List[Tuple[float, float]]) -> List[Tuple[float, float]]:
     return vel
 
 
-def hamiltonian(pos: List[Tuple[float, float]]) -> float:
+def hamiltonian(pos: list[tuple[float, float]]) -> float:
     h = 0.0
     n = len(pos)
     for i in range(n):
@@ -58,7 +57,7 @@ def rk4_step(pos, dt):
             for i in range(len(pos))]
 
 
-def equilateral(a: float, shift: Tuple[float, float] = (0.0, 0.0)) -> List[Tuple[float, float]]:
+def equilateral(a: float, shift: tuple[float, float] = (0.0, 0.0)) -> list[tuple[float, float]]:
     R = a / math.sqrt(3.0)
     return [(shift[0] + R, shift[1]),
             (shift[0] - R / 2, shift[1] + R * math.sqrt(3) / 2),
@@ -68,7 +67,7 @@ def equilateral(a: float, shift: Tuple[float, float] = (0.0, 0.0)) -> List[Tuple
 # -----------------------------------------------------------------------------
 # invariants
 # -----------------------------------------------------------------------------
-def invariants(pos) -> Dict:
+def invariants(pos) -> dict:
     """Aref invariants in the vorticity-centroid frame (P = 0 by construction)."""
     cx = sum(p[0] for p in pos) / len(pos)
     cy = sum(p[1] for p in pos) / len(pos)
@@ -94,7 +93,7 @@ def max_pairwise(pos) -> float:
 # -----------------------------------------------------------------------------
 # C11 campaign pieces
 # -----------------------------------------------------------------------------
-def rigid_rotation_check(dt: float = 1e-4, T: float = 2.0) -> Dict:
+def rigid_rotation_check(dt: float = 1e-4, T: float = 2.0) -> dict:
     """Integrate the exact rotating triangle; fit omega from the polar angle."""
     a = 1.0
     pos = equilateral(a)
@@ -125,7 +124,7 @@ def rigid_rotation_check(dt: float = 1e-4, T: float = 2.0) -> Dict:
 
 
 def aref_boundedness(a0: float, delta: float, T_sim: float, dt: float,
-                     seed: int = SEED_C11, theta: float = 0.0) -> Dict:
+                     seed: int = SEED_C11, theta: float = 0.0) -> dict:
     """Perturbed triangle with H < 0: motion bounded; measure r_max.
 
     Exact bound (T12): max pairwise distance <= 2 sqrt(I) for all time;
@@ -160,7 +159,7 @@ def anchored_potential(s: float) -> float:
 
 
 def anchored_escape_scan(n_tr: int = 300, T_sim: float = 200.0, dt: float = 0.01,
-                         seed: int = SEED_C11) -> Dict:
+                         seed: int = SEED_C11) -> dict:
     """Sample n_tr trajectories below the barrier; count escapes (expect 0).
 
     Energy E = V(s0) + sdot0^2/2 with s0 in (0, 0.6), sdot0 in (0, 0.5).

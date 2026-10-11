@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 OPEN9-Q9: ВНЕЦЕПОЧЕЧНАЯ СТАТИКА — СЕРТИФИЦИРОВАННАЯ ПЕРЕПИСЬ КРАВЧИКА (v19)
@@ -52,7 +51,6 @@ from __future__ import annotations
 import json
 import math
 import os
-import sys
 import time
 from collections import deque
 
@@ -60,7 +58,6 @@ for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
            "NUMEXPR_NUM_THREADS"):
     os.environ.setdefault(_v, "1")
 
-import numpy as np
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 RESULTS = os.path.join(BASE, "results")
@@ -73,7 +70,7 @@ OUT_PATH = os.path.join(RESULTS, "q9_krawczyk_census.json")
 class IV:
     """Интервал с внешним округлением (math.nextafter)."""
 
-    __slots__ = ("lo", "hi")
+    __slots__ = ("hi", "lo")
 
     def __init__(self, lo, hi=None):
         if hi is None:

@@ -15,7 +15,7 @@ body:
       options:
         - Mathematical theory (spinor corrections, Dirac operator, Choptyuk formula)
         - Computational methods (numerical verification, arbitrary precision)
-        -> Implementation (Python/Julia/Java/TypeScript)
+        - Implementation (Python/Julia/Java/TypeScript)
         - 4D/Kähler extension (K3 surface, Seiberg-Witten)
         - Tyukovsky equations
         - Einstein GR / QNM predictions

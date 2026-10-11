@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Pytest bootstrap: put the repository root on sys.path."""
 import os
 import sys

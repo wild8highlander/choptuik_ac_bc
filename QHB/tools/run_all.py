@@ -13,11 +13,21 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from qhb import (asymmetry, claims, competing, constants as C, core,
-                 phase_map, vortex)
-from qhb.pins import (C5_N_TRIALS, C5_SEED, C11_AREF_A0, C11_AREF_DELTA,
-                      C11_AREF_DT, C11_AREF_T, C11_AREF_THETA, C11_ROT_DT,
-                      C11_ROT_T, C12_FILL_RATE, C12_FILL_SEED)
+from qhb import asymmetry, claims, competing, core, phase_map, vortex
+from qhb import constants as C
+from qhb.pins import (
+    C5_N_TRIALS,
+    C5_SEED,
+    C11_AREF_A0,
+    C11_AREF_DELTA,
+    C11_AREF_DT,
+    C11_AREF_T,
+    C11_AREF_THETA,
+    C11_ROT_DT,
+    C11_ROT_T,
+    C12_FILL_RATE,
+    C12_FILL_SEED,
+)
 
 DATA = ROOT / "data"
 
@@ -121,7 +131,7 @@ def main() -> None:
                                    C11_AREF_DT, theta=C11_AREF_THETA)
     dump("c11_aref_run.json", aref)
     # barrier scan + escape scan
-    ss = [round(0.05 * i, 4) for i in range(0, 61)]
+    ss = [round(0.05 * i, 4) for i in range(61)]
     dump("c11_barrier_scan.json",
          {"s": ss, "V": [vortex.anchored_potential(s) for s in ss],
           "V_star": C.V_STAR})

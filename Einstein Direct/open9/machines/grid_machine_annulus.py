@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 КОЛЬЦЕВАЯ МАШИНА: КОЛЬЦЕВАЯ ЧЁТНОСТЬ + ЭХО-ОСОЗНАННЫЕ ФИТЫ -> ПРОЦЕНТНОЕ tau*
@@ -54,9 +53,14 @@ for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
     os.environ.setdefault(_v, "1")
 
 import numpy as np
-
-from zoom_solver import (ZoomRunner, echo_peaks, echo_period_from_peaks,
-                         RESULTS, V_P, SIGMA)
+from zoom_solver import (
+    RESULTS,
+    SIGMA,
+    V_P,
+    ZoomRunner,
+    echo_peaks,
+    echo_period_from_peaks,
+)
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 A_STAR = 0.0805333
@@ -198,7 +202,7 @@ def fit_tau_star(rows, z_window=None, delta_grid=None, lam_grid=None,
         "tau_star": float(np.exp(a0)), "tau_star_err_rel": se_a0,
         "wiggle_amp": float(np.hypot(A1, A2)),
         "c_drift": c, "lambda_drift": float(l_fit),
-        "delta_fit": float(d_fit), "n_rows": int(len(z)),
+        "delta_fit": float(d_fit), "n_rows": len(z),
         "z_window": [float(z.min()), float(z.max())],
         "rss": rss,
         "a0": a0, "A1": A1, "A2": A2, "z0": z0,
@@ -362,7 +366,7 @@ def run_chunk(eps_list, n=800, max_zooms=14, annulus=True, ann_factor=10.0,
                 {"zoom": c["zoom"], "lam": round(c["lam"], 3),
                  "z": round(c["z"], 4), "c1_max": c["c1_max"]}
                 for c in d.stage_constraints],
-            "Q_peaks_n": int(len(vp)),
+            "Q_peaks_n": len(vp),
         }
         if len(vp) >= 4:
             D, Derr, npk = echo_period_from_peaks(vp)

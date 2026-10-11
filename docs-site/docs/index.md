@@ -50,7 +50,7 @@ Dirac operator on the trivial spinor structure.
 | Python 3.10+ | `python/` | CLI + Interactive Menu |
 | Julia 1.9+ | `julia/` | REPL + Interactive Menu |
 | Java 17+ | `java-webapp/` | Spring Boot REST API |
-| Next.js 15 | `interactive-viz/` | Real-time Dashboard |
+| Next.js 15 | `Interactive Viz/` | Real-time Dashboard |
 
 ## Installation
 

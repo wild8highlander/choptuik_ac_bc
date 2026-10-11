@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 import json
-import math
 import os
 
 import pytest

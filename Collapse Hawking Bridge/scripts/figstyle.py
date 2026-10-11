@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 figstyle.py — the visual identity of the Collapse-Hawking Bridge figures.
 
@@ -22,7 +21,7 @@ for _p in ("/usr/share/fonts/truetype/chinese/NotoSansSC-Regular.ttf",
     except Exception:
         pass
 
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
 
 plt.rcParams["font.sans-serif"] = ["DejaVu Sans", "Noto Sans SC"]
 plt.rcParams["axes.unicode_minus"] = False

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Iron-QA: every JSON artifact in the release must parse and carry its layer meta."""
-import json, sys, pathlib
+import json
+import pathlib
+import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 

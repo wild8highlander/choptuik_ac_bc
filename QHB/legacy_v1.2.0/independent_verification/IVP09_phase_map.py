@@ -1,14 +1,15 @@
-# -*- coding: utf-8 -*-
 """IVP09 — the phase map gate: a fresh interpreter re-derives the
 committed no-closure statement and the valley locus at the committed
 geometry from scratch (own bisection, no campaign imports)."""
-import os, sys
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ivp_common import write_verdict, ROOT
+from ivp_common import ROOT, write_verdict
+
 sys.path.insert(0, ROOT)
 
-import math
-from qhb.gap import static_gap, floquet_gap, KAPPA
+from qhb.gap import KAPPA, floquet_gap, static_gap
 
 FLOOR = 2.0 / 64.0
 
@@ -37,6 +38,7 @@ for _ in range(40):
 b_star = 0.5 * (lo + hi)
 
 import json
+
 with open(os.path.join(ROOT, "campaigns", "reference", "c9_verdict.json"),
           encoding="utf-8") as fh:
     c9 = json.load(fh)

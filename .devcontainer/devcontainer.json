@@ -21,7 +21,7 @@
   "postCreateCommand": {
     "python": "pip install -r python/requirements.txt 2>/dev/null || true",
     "julia": "cd julia && julia --project=. -e 'using Pkg; Pkg.instantiate()' 2>/dev/null || true",
-    "node": "cd interactive-viz && npm install 2>/dev/null || true"
+    "node": "cd 'Interactive Viz' && npm install 2>/dev/null || true"
   },
 
   "customizations": {
@@ -34,8 +34,8 @@
         "bradlc.vscode-tailwindcss",
         "esbenp.prettier-vscode",
         "charliermarsh.ruff",
-        " biomejs.biome",
-        " davidanson.vscode-markdownlint"
+        "biomejs.biome",
+        "davidanson.vscode-markdownlint"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Кампания [сессия 22 / v18b]: GLOBAL-STATIC-SEARCH — глобальный поиск
 недегенератных статических ветвей (nsolve/стрельба вне книжных стартов).
 
@@ -63,9 +62,9 @@ os.chdir(BASE)
 RESULTS = os.path.join(BASE, "results")
 T_START = time.time()
 
-import dae_nonlinear_core as dnc                       # noqa: E402
-from hexcycle_dae import make_state, chain_poles       # noqa: E402
-from clock_closure_t1c import build_point              # noqa: E402
+import dae_nonlinear_core as dnc
+from clock_closure_t1c import build_point
+from hexcycle_dae import chain_poles, make_state
 
 
 def log(msg):
@@ -491,20 +490,20 @@ def main() -> None:
         bp = build_point(kv)
         p = {"T0h_star": float(bp["sysd"]["x_star"][0]),
              "tau_star": bp["sysd"]["tau_star"]}
-        log(f"  [G0] якоря ...")
+        log("  [G0] якоря ...")
         p["G0_anchors"] = layer_G0(bp)
         g0 = p["G0_anchors"]
         log(f"    полюс(а) цепочки: {g0['poles']}; плоская линия: "
             f"F_max = {g0['flat_line']['F_max']:.2e} "
             f"({g0['flat_line']['n_points']} точек); полубашня-предел: "
             f"F_max = {g0['half_tower_limit']['F_max']:.2e}")
-        log(f"  [G1a] теорема факторизации rest-уравнений (точно) ...")
+        log("  [G1a] теорема факторизации rest-уравнений (точно) ...")
         p["G1a_factorization_theorem"] = layer_G1a(bp, kv)
-        log(f"  [G1] глобальный 2D-скан на цепочке ...")
+        log("  [G1] глобальный 2D-скан на цепочке ...")
         p["G1_chain_2d_scan"] = layer_G1(bp)
-        log(f"  [G2] внецепочечный свободный Ньютон ...")
+        log("  [G2] внецепочечный свободный Ньютон ...")
         p["G2_free_newton"] = layer_G2(bp)
-        log(f"  [G3] стрельба/продолжение от x* ...")
+        log("  [G3] стрельба/продолжение от x* ...")
         p["G3_shooting_continuation"] = layer_G3(bp)
         out["points"][label] = p
 

@@ -18,8 +18,12 @@ sys.path.insert(0, "/home/z/my-project/skills/xlsx/templates")
 
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
-from templates.base import (setup_sheet, style_header_row, style_data_row,
-                            font_caption, font_body, font_subheader)
+from templates.base import (
+    font_caption,
+    setup_sheet,
+    style_data_row,
+    style_header_row,
+)
 
 DATA = ROOT / "data"
 

@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Автономный смоук-набор папки open9/ (без путей репо).
 
 Запуск из open9/:  python3 -m pytest tests/test_open9_standalone.py -q
 """
 import json
-import math
 import os
 import sys
 
@@ -69,7 +67,6 @@ def test_v20a_honest():
 
 
 def test_v20b_certified():
-    import numpy as np
     d = _res("v20b_depth_z30.json")
     d1 = d["D1_linear_sector"]
     assert d1["phase_drift_max_rad"] < 1e-12
@@ -81,7 +78,6 @@ def test_v20b_certified():
 
 # ---------- автономность: машина v20b реально бежит из папки ----------
 def test_depth_z30_runs_standalone(tmp_path):
-    import importlib
     import depth_z30 as dz
     out = dz.d1_linear_sector_certified()
     assert out["nilpotency_max_abs_B2"] < 1e-12

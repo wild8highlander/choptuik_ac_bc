@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
 """IVP06 — symbolic layer (SymPy): the Gascheau criterion and Lemma A
 in exact rational arithmetic."""
-import os, sys
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ivp_common import write_verdict
 import sympy as sp
+from ivp_common import write_verdict
 
 lam = sp.symbols("lambda")
 nu = sp.symbols("nu", positive=True)

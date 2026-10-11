@@ -13,7 +13,6 @@ Physical picture (model class, honest scope):
 from __future__ import annotations
 
 import math
-from typing import Dict, List
 
 from .constants import DELTA_F_MIN, ETA_B, ETA_CRIT, TUNNEL_T_ZERO
 from .core import tunneling_window
@@ -28,7 +27,7 @@ def barrier_worst(eta: float) -> float:
 X_STAR = 0.181777          # valley location in the unit-gap coordinate
 
 
-def profiles() -> List[Dict]:
+def profiles() -> list[dict]:
     """Nine unit-sup-norm perturbation profiles U1(x), x in [0, 0.5].
 
     drop_at_unit_eta = U1(0) - U1(x_star): the barrier loss at eta = 1.
@@ -55,7 +54,7 @@ def profiles() -> List[Dict]:
     return out
 
 
-def phase_grid_eta(n_eta: int = 41) -> Dict:
+def phase_grid_eta(n_eta: int = 41) -> dict:
     """Grid over eta in [1e-12, 10^-0.5]: OPEN while eta < eta_crit."""
     lo, hi = math.log10(1e-12), -0.5
     cells = []
@@ -70,7 +69,7 @@ def phase_grid_eta(n_eta: int = 41) -> Dict:
             "eta_crit": ETA_CRIT, "cells": cells}
 
 
-def asymmetry_margin() -> Dict:
+def asymmetry_margin() -> dict:
     return {"eta_B": ETA_B, "eta_crit": ETA_CRIT,
             "margin": ETA_CRIT / ETA_B,
             "log10_margin": math.log10(ETA_CRIT / ETA_B)}
@@ -79,7 +78,7 @@ def asymmetry_margin() -> Dict:
 # --- T15: gap-filling toy dynamics --------------------------------------------
 def fill_dynamics(n_wells: int = 200, n_steps: int = 1_000_000, eta: float = ETA_B,
                   rate_scale: float = 1000.0, seed: int = 424243,
-                  fill_per_hit: float = 0.001, record_every: int = 100_000) -> Dict:
+                  fill_per_hit: float = 0.001, record_every: int = 100_000) -> dict:
     """Toy negative-feedback dynamics: hits fill wells; saturated well = nugget.
 
     Injection probability per step: p = eta * rate_scale (capped at 1).
@@ -109,7 +108,7 @@ def fill_dynamics(n_wells: int = 200, n_steps: int = 1_000_000, eta: float = ETA
             "max_fill": max_fill, "trace": trace[:10]}
 
 
-def nugget_bound(log10_n: float = 30.0) -> Dict:
+def nugget_bound(log10_n: float = 30.0) -> dict:
     """Combinatorial nugget bound from the C7 tunneling window.
 
     A free quark appears per attempt with probability T(0) ~ 9.21e-13.
@@ -128,7 +127,7 @@ def nugget_bound(log10_n: float = 30.0) -> Dict:
                           "even 30 simultaneous tunneled quarks: 10^(-361)")}
 
 
-def c12_summary() -> Dict:
+def c12_summary() -> dict:
     tw = tunneling_window()
     return {"eta_crit": ETA_CRIT, "eta_B": ETA_B,
             "margin": ETA_CRIT / ETA_B,

@@ -1,7 +1,6 @@
 """C9 phase map and C10 competing models."""
 import pytest
-
-from qhb import competing, constants as C, phase_map
+from qhb import competing, phase_map
 
 
 def test_c9_grid_all_open():

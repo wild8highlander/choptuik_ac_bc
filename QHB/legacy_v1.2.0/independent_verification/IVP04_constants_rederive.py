@@ -1,10 +1,12 @@
-# -*- coding: utf-8 -*-
 """IVP04 — independent 50-digit rederivation of every closed-form constant
 (own mpmath code paths, not qhb.validate)."""
-import os, sys
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ivp_common import write_verdict
-from mpmath import mp, mpf, pi, cos
+from mpmath import cos, mp, mpf, pi
+
 mp.dps = 50
 
 checks = {}

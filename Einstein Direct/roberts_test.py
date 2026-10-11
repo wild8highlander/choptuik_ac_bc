@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ВАЛИДАЦИЯ 1: эволюция точного решения Робертса–Оширо.
 
@@ -15,7 +14,6 @@ import json
 import os
 
 import numpy as np
-
 from solver import DoubleNullSolver, RobertsData, SolverConfig
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -79,7 +77,7 @@ def main():
                   f"p_r = {o_r:.2f}, p_Phi = {o_P:.2f}")
     with open(os.path.join(RESULTS, "roberts_test.json"), "w", encoding="utf-8") as fh:
         json.dump(results, fh, ensure_ascii=False, indent=2)
-    print(f"\n  Сохранено: results/roberts_test.json")
+    print("\n  Сохранено: results/roberts_test.json")
 
 
 if __name__ == "__main__":

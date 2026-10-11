@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Campaigns C2, C3b and C6: the committed verdicts, pinned.
 
 The pins assert the *committed machine outputs* (campaigns/reference/).
@@ -22,7 +21,6 @@ by PREREGISTRATION.md. The C3 verdict-semantics pins replaced the old
 """
 import csv
 import json
-import math
 import os
 
 import chbridge.constants as K

@@ -1,13 +1,11 @@
-# -*- coding: utf-8 -*-
 """Bridge: born spectrum, ensemble members, master table, determinism."""
-import csv
 import json
 import math
 import os
 
 from chbridge import bridge as B
-from chbridge.hawking import equal_CMB_mass, T_H
-from chbridge.constants import T_CMB, l_P
+from chbridge.constants import T_CMB
+from chbridge.hawking import T_H, equal_CMB_mass
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

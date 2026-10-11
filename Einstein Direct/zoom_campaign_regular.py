@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ЗУМ-КАМПАНИЯ (ПРОТОКОЛ): РЕГУЛЯРНОЕ ЗАМЫКАНИЕ ЦЕНТРА
 =====================================================
@@ -22,8 +21,7 @@ import os
 import time
 
 import numpy as np
-
-from zoom_solver import (ZoomRunner, echo_peaks, RESULTS, V_P, SIGMA)
+from zoom_solver import RESULTS, SIGMA, V_P, ZoomRunner, echo_peaks
 
 A_FIXED_GRID = 0.0805333
 GAMMA_LIT = 0.374
@@ -104,7 +102,7 @@ def main():
             "junk_diag_at_stop": junk_diag(r),
         }
         vp, yp = echo_peaks(r.track, "Q")
-        rec["Q_peaks_n"] = int(len(vp))
+        rec["Q_peaks_n"] = len(vp)
         rec["Q_peaks_v"] = [round(float(x), 5) for x in vp[:12]]
         runs.append(rec)
         print(f"  eps={eps:.1e}: stop={d.stopped}, M_frozen={d.m_ah:.6f}, "

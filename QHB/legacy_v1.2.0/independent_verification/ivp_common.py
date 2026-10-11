@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
 """ivp_common.py — shared helpers of the IVP audit."""
 import hashlib
 import json
 import os
-import subprocess
-import sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 

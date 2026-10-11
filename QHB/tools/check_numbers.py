@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Iron-QA: master numbers of the QHB canon, checked against machine JSON layers.
 
 Every assertion is a dotted-path lookup with an explicit tolerance, so a silent
 regression in any layer fails the build instead of propagating into documents.
 """
-import json, math, sys, pathlib
+import json
+import math
+import pathlib
+import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FAIL = []
@@ -42,7 +44,8 @@ def near(label, value, expected, digits):
 
 print("[check_numbers] canon v1.3.0 (via qhb.constants)")
 sys.path.insert(0, str(ROOT))
-import qhb.constants as K  # noqa: E402
+import qhb.constants as K
+
 
 def kget(name):
     return getattr(K, name)

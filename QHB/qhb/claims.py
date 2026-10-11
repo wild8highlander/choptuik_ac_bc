@@ -6,13 +6,8 @@ Every claim carries a one-line falsifier and a 5-field uncertainty budget
 """
 from __future__ import annotations
 
-from typing import Dict, List
 
-from .constants import (BETA_C_NAIVE, BETA_STAR, DELTA_F_MIN, DELTA_THRESH,
-                        ETA_B, ETA_CRIT, OMEGA, V_STAR)
-
-
-def claims_registry() -> List[Dict]:
+def claims_registry() -> list[dict]:
     B = {"statistical": "binomial/seed", "systematic": "grid resolution",
          "model": "reduced model class", "numerical": "fp64 + mpmath pin",
          "external": "none"}
@@ -173,7 +168,7 @@ def claims_registry() -> List[Dict]:
     ]
 
 
-def claims_summary(reg: List[Dict]) -> Dict:
+def claims_summary(reg: list[dict]) -> dict:
     from collections import Counter
     c = Counter(r["status"] for r in reg)
     return {"n_claims": len(reg), "by_status": dict(c),

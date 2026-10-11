@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 campaign C4 — the spectral floor law (theorem T9).
 
@@ -27,10 +26,8 @@ import time
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import numpy as np
-
-from qhb.gap import (static_of_chain, floquet_gap, T_PERIOD, OMEGA0,
-                     M_STEPS, _expm_h2)
 from qhb.constants import BERRY_TRIO, BRAKING_TRIO, __version__
+from qhb.gap import M_STEPS, OMEGA0, T_PERIOD, _expm_h2, floquet_gap, static_of_chain
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(HERE, "reference")

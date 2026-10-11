@@ -5,7 +5,7 @@
 set -e
 echo "=== Starting Interactive Visualization ==="
 
-cd interactive-viz
+cd "Interactive Viz"
 if [ ! -d "node_modules" ]; then
     echo "Installing dependencies..."
     npm install

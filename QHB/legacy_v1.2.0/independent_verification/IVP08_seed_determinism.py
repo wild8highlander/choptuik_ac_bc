@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
 """IVP08 — seed determinism: the MC cell is bit-identical across runs."""
-import os, sys
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ivp_common import ROOT, write_verdict
+
 sys.path.insert(0, ROOT)
-import numpy as np
 from engine.solver import wu_mc
 
 r1 = wu_mc(0.5, 1.0, n_real=50_000)

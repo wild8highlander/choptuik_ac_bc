@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 bridge.py — the Quark-Hawking Bridge mapping.
 
@@ -25,11 +24,27 @@ from r_s/l_P and T_H/T_QCD to the Wu residual and the code-unit gap.
 """
 import math
 
-from .constants import (G, c, hbar, k_B, h, M_sun, M_earth, M_moon, T_CMB,
-                        T_QCD_K, LAMBDA_QCD_MeV, MeV_J, m_P, l_P, t_P, rho_P,
-                        yr, Gyr, AU, lyr, FTILDE_MEMBERS, FTILDE_LABELS,
-                        A_WU_ANCHOR, SEED, e_charge)
 from . import wu as _wu
+from .constants import (
+    A_WU_ANCHOR,
+    FTILDE_LABELS,
+    FTILDE_MEMBERS,
+    T_CMB,
+    T_QCD_K,
+    G,
+    Gyr,
+    LAMBDA_QCD_MeV,
+    M_sun,
+    MeV_J,
+    c,
+    h,
+    hbar,
+    k_B,
+    l_P,
+    m_P,
+    rho_P,
+    yr,
+)
 
 PAGE_FRACTION = 1.0 - 2.0 ** (-1.5)   # inherited CHB exact identity
 
@@ -228,6 +243,5 @@ def write_outputs(rows, out_dir):
     path = os.path.join(out_dir, "bridge_master.csv")
     with open(path, "w", encoding="utf-8", newline="") as fh:
         fh.write(",".join(_COLUMNS) + "\n")
-        for r in rows:
-            fh.write(",".join(_fmt(r[c]) for c in _COLUMNS) + "\n")
+        fh.writelines(",".join(_fmt(r[c]) for c in _COLUMNS) + "\n" for r in rows)
     return path

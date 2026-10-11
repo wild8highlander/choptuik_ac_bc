@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Кампания [сессия 20 / v16]: HEXCYCLE-DAE — маршрут через цикл фигур
 (пирамида -> конус -> усечённый конус -> параболический пивот -> чаша ->
 лог-замыкание), встроенный в нелинейную DAE башни.
@@ -65,8 +64,8 @@ RESULTS = os.path.join(BASE, "results")
 T_START = time.time()
 
 import dae_nonlinear_core as dnc
-from dae_nonlinear_core import NonlinearDAE, log
 import sympy_hexcycle as hx
+from dae_nonlinear_core import NonlinearDAE, log
 
 
 # ------------------------------------------------------------------ якоря ---

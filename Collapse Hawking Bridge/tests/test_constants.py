@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Constants of the project: exact identities and committed campaign values."""
 import math
 import os

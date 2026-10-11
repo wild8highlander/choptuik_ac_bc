@@ -2,10 +2,17 @@
 import math
 
 import pytest
-
-from qhb import asymmetry, constants as C, vortex
-from qhb.pins import (C11_AREF_A0, C11_AREF_DELTA, C11_AREF_DT, C11_AREF_T,
-                      C11_AREF_THETA, C11_ROT_DT, C11_ROT_T)
+from qhb import asymmetry, vortex
+from qhb import constants as C
+from qhb.pins import (
+    C11_AREF_A0,
+    C11_AREF_DELTA,
+    C11_AREF_DT,
+    C11_AREF_T,
+    C11_AREF_THETA,
+    C11_ROT_DT,
+    C11_ROT_T,
+)
 
 
 def test_c11_rigid_rotation_dev():

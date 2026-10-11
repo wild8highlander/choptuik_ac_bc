@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 make_logo.py — the official logo of the Collapse-Hawking Bridge.
 
@@ -21,9 +20,9 @@ Out:  figures/logo/chb_logo_{light,dark}.{png,svg}
 """
 import os
 
+import matplotlib
 import numpy as np
 
-import matplotlib
 matplotlib.use("Agg")
 import matplotlib.font_manager as fm
 

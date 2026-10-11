@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 ТРИ ПОПРАВКИ (b-C, a-C, a-B) В БАШНЯХ: КАНАЛЫ СВЯЗИ, ИСПРАВЛЕННЫЕ ТОЧКИ,
@@ -139,7 +138,7 @@ def load_patched(kc1, kc2, kth):
     exec(compile(src, mod.__file__, "exec"), mod.__dict__)  # noqa: S102
     sys.modules.pop("sympy_p4_einstein_hilbert", None)
     sys.modules["sympy_center_o6"] = mod
-    import sympy_p4_einstein_hilbert as p4  # noqa: E402
+    import sympy_p4_einstein_hilbert as p4
     return mod, p4
 
 
@@ -633,7 +632,7 @@ def s4_pencil(payload, scheme_name, kappa_vals, tau_star):
         "scheme": scheme_name,
         "tau_star": tv,
         "max_residual_at_point": float(resmax),
-        "n_QEP_roots": int(len(lams)),
+        "n_QEP_roots": len(lams),
         "genuine_modes": genuine,
         "n_phantoms": len(phantoms),
         "phantoms": phantoms,
@@ -694,8 +693,8 @@ def verdict(results):
     lines = []
     leak = s1["kappa_leaks_in_geometry"]
     lines.append(
-        ("геометрия SC/UV/Mdef без kappa: утечек НЕТ — 'ошибки' в уравнениях нет"
-         if not leak else f"kappa-утечки: {leak}"))
+        "геометрия SC/UV/Mdef без kappa: утечек НЕТ — 'ошибки' в уравнениях нет"
+         if not leak else f"kappa-утечки: {leak}")
     cons = s1["c1_ring_consistency"]
     ok_cons = all(v["vanishes_at_K1_eq_K2"] for k, v in cons.items()
                   if k in ("C1_xi1", "C1_xi2", "C1_xi3"))

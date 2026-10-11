@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 campaign C5 — the gap-drift law (theorem T10, the heir of CHB T10).
 
@@ -31,10 +30,15 @@ import time
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import numpy as np
-
-from qhb.gap import (static_gap, static_of_chain, gap_response,
-                     parabolic_profile, lemma_a_worst, KAPPA, Q_PK)
 from qhb.constants import __version__
+from qhb.gap import (
+    KAPPA,
+    Q_PK,
+    lemma_a_worst,
+    parabolic_profile,
+    static_gap,
+    static_of_chain,
+)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(HERE, "reference")

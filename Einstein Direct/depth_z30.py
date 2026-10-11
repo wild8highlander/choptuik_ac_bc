@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 OPEN9-Q3 / КАМПАНИЯ v20b: ГЛУБИНА z >= 30 — СЕРТИФИЦИРОВАННЫЙ МИР ЛИНЕЙНОГО
@@ -242,7 +241,7 @@ def adaptive_gamma_estimator(zs, ms_obs, floor_est):
         A = np.vstack([zi, np.ones(len(zi))]).T
         sol, *_ = np.linalg.lstsq(A, np.log(mi), rcond=None)
         cands["ols_survivors"] = {"gamma": float(-sol[0]), "ci95": None,
-                                  "ci_width": None, "n_used": int(len(zi))}
+                                  "ci_width": None, "n_used": len(zi)}
     for p in (50, 70, 85):
         g = percentile_gamma(zs, ms, p)
         if g:

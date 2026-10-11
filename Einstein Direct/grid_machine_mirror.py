@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 ЗЕРКАЛЬНЫЕ КОЛЬЦЕВЫЕ ПАРЫ (XI, -XI) -> ЧИСТОЕ ИЗМЕРЕНИЕ W2/t0^2
@@ -38,7 +37,6 @@
 from __future__ import annotations
 
 import json
-import math
 import os
 import sys
 import time
@@ -48,8 +46,7 @@ for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
     os.environ.setdefault(_v, "1")
 
 import numpy as np
-
-from zoom_solver import ZoomRunner, RESULTS, V_P, SIGMA
+from zoom_solver import RESULTS, SIGMA, V_P, ZoomRunner
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 A_STAR = 0.0805333

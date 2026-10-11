@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Campaign C1 — reference campaign of the Collapse-Hawking Bridge.
 
@@ -29,7 +28,7 @@ import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "engine"))
-from solver import DoubleNullSolver, GaussianPulseData, RobertsData, SolverConfig  # noqa: E402
+from solver import DoubleNullSolver, GaussianPulseData, RobertsData, SolverConfig
 
 OUT = os.path.join(ROOT, "campaigns", "reference")
 os.makedirs(OUT, exist_ok=True)

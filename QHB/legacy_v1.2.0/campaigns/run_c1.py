@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 campaign C1 — the gap law of the three corrections (theorems T2/T3).
 
@@ -26,10 +25,14 @@ import time
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import numpy as np
-
-from qhb.gap import (static_of_chain, floquet_gap, evenness_dev,
-                     lemma_a_worst, lemma_a_mean, M_STEPS, OMEGA0)
 from qhb.constants import BERRY_TRIO, BRAKING_TRIO, __version__
+from qhb.gap import (
+    evenness_dev,
+    floquet_gap,
+    lemma_a_mean,
+    lemma_a_worst,
+    static_of_chain,
+)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(HERE, "reference")
@@ -57,7 +60,7 @@ def main():
           f"mean={lemma_a_mean(0.05, hstep):.6e}")
 
     # --- rigid-trio scan ------------------------------------------------------
-    window = [0.05 * k for k in range(0, 5)] + [0.025 * k for k in range(4, 9)]
+    window = [0.05 * k for k in range(5)] + [0.025 * k for k in range(4, 9)]
     window = sorted(set([round(b, 6) for b in window]))
     wing = [0.25 + 0.075 * k for k in range(9)]
     rows_window, rows_wing = [], []

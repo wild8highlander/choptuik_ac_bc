@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Pins for the v1.2.0 campaigns C9 (phase map), C10 (competing models),
 C11 (vortex anchor + static barrier)."""
 import json

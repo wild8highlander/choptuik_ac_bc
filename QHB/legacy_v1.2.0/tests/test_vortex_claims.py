@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Unit pins of the classical vortex layer (qhb.vortex) and the Evidence
 Engine registry (results/claims_registry.json)."""
 import math
@@ -10,11 +9,18 @@ import pytest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from qhb.vortex import (lagrange_omega, relative_equilibrium_omega,
-                        circumradius, equilateral_positions, aref_launch,
-                        invariants_of, kirchhoff_run, linearize_triangle_exact,
-                        triangle_shape_error)
-from qhb.claims import load_registry, validate, STATUSES
+from qhb.claims import STATUSES, load_registry, validate
+from qhb.vortex import (
+    aref_launch,
+    circumradius,
+    equilateral_positions,
+    invariants_of,
+    kirchhoff_run,
+    lagrange_omega,
+    linearize_triangle_exact,
+    relative_equilibrium_omega,
+    triangle_shape_error,
+)
 
 
 class TestVortexExact:

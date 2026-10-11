@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 bridge.py — THE BRIDGE: from engine code units to physical black holes.
 
@@ -33,12 +32,31 @@ import json
 import math
 import os
 
-from .constants import (CAMPAIGN, BRIDGE_SCALES, c, G, l_P, k_B, hbar,
-                        T_CMB, gamma_Ch, b_Ch, qnm_rel_shift,
-                        f_qnm_schwarzschild, kretschmann_horizon,
-                        kretschmann_planck)
-from .hawking import (r_s, S_BH, T_H, P_H, t_evap, t_page, rho_mean,
-                      surface_gravity, equal_CMB_mass, fmt_time, fmt_len)
+from .constants import (
+    BRIDGE_SCALES,
+    CAMPAIGN,
+    T_CMB,
+    b_Ch,
+    f_qnm_schwarzschild,
+    gamma_Ch,
+    k_B,
+    kretschmann_horizon,
+    kretschmann_planck,
+    l_P,
+    qnm_rel_shift,
+)
+from .hawking import (
+    P_H,
+    S_BH,
+    T_H,
+    equal_CMB_mass,
+    fmt_time,
+    r_s,
+    rho_mean,
+    surface_gravity,
+    t_evap,
+    t_page,
+)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VERDICT_DEFAULT = os.path.join(ROOT, "campaigns", "reference", "c1_verdict.json")

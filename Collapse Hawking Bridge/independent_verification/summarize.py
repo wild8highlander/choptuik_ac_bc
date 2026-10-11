@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 summarize.py — aggregate results/*.json into the IVP-15 verdict table
 (markdown + console).  Re-runnable at any time after the IVP scripts.

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 chbridge — Collapse-Hawking Bridge, v2.2.0.
 
@@ -33,14 +32,40 @@ Versioning: 2.2.0 (honest-verdict release: the Δ·γ anchor product reclassifie
 See CHANGELOG.md.
 """
 
-from .constants import (G, c, hbar, k_B, T_CMB, l_P, t_P, m_P, M_sun,
-                        gamma_Ch, b_Ch, delta_C, echo_delta,
-                        CAMPAIGN, __version__)
+from .constants import (
+                        CAMPAIGN,
+                        T_CMB,
+                        G,
+                        M_sun,
+                        __version__,
+                        b_Ch,
+                        c,
+                        delta_C,
+                        echo_delta,
+                        gamma_Ch,
+                        hbar,
+                        k_B,
+                        l_P,
+                        m_P,
+                        t_P,
+)
 from .hawking import PAGE_FRACTION
 
 __all__ = [
-    "__version__",
-    "G", "c", "hbar", "k_B", "T_CMB", "l_P", "t_P", "m_P", "M_sun",
-    "gamma_Ch", "b_Ch", "delta_C", "echo_delta", "PAGE_FRACTION",
-    "CAMPAIGN",
+                        "CAMPAIGN",
+                        "PAGE_FRACTION",
+                        "T_CMB",
+                        "G",
+                        "M_sun",
+                        "__version__",
+                        "b_Ch",
+                        "c",
+                        "delta_C",
+                        "echo_delta",
+                        "gamma_Ch",
+                        "hbar",
+                        "k_B",
+                        "l_P",
+                        "m_P",
+                        "t_P",
 ]

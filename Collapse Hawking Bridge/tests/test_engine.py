@@ -1,16 +1,14 @@
-# -*- coding: utf-8 -*-
 """Engine smoke test: Roberts-Oshiro regression at N=200 (~1 s)."""
-import math
-
-import numpy as np
 
 import os
 import sys
 
+import numpy as np
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "engine"))
 
-from solver import DoubleNullSolver, RobertsData, SolverConfig  # noqa: E402
+from solver import DoubleNullSolver, RobertsData, SolverConfig
 
 
 def test_roberts_regression_n200():

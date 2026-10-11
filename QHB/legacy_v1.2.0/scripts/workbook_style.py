@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 """workbook_style.py — Ink & Gold header/zebra styling for the workbook."""
-from openpyxl.styles import Font, PatternFill, Border, Side
+from openpyxl.styles import Border, Font, PatternFill, Side
 
 PAL = {
     "accent": "8C6D1F",

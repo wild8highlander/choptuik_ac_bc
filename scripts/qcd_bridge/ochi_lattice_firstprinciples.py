@@ -41,12 +41,10 @@ Expected outcome:
 """
 
 import json
-import time
 from pathlib import Path
 
 import numpy as np
 from scipy.stats import gaussian_kde
-
 
 # =============================================================================
 # 1.  First-principles chGUE spectrum (lattice QCD Dirac operator)
@@ -395,7 +393,7 @@ def main():
 
     # Full O_chi spectrum
     eigs_lat = np.linalg.eigvalsh(O_lat)
-    print(f"\nFull O_chi (lattice) spectrum at κ_T=2:")
+    print("\nFull O_chi (lattice) spectrum at κ_T=2:")
     print(f"  Range: [{eigs_lat.min():.4f}, {eigs_lat.max():.4f}]")
     eigs_lat_unfold = unfold(eigs_lat)
     r_lat = folded_ratios(eigs_lat_unfold)
@@ -411,7 +409,7 @@ def main():
     eigs_k3_unfold = unfold(eigs_k3)
     r_k3 = folded_ratios(eigs_k3_unfold)
     r_bar_k3 = float(np.mean(r_k3))
-    print(f"\nK3-based O_chi (for comparison):")
+    print("\nK3-based O_chi (for comparison):")
     print(f"  Range: [{eigs_k3.min():.4f}, {eigs_k3.max():.4f}]")
     print(f"  Folded ratio r_bar: {r_bar_k3:.4f}")
 

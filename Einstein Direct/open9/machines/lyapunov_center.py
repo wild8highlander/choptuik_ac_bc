@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 OPEN9-Q8: КОНЕЧНОАМПЛИТУДНЫЙ ЦИКЛ DSS — ЦЕНТР ЛЯПУНОВА? (v19)
@@ -49,7 +48,6 @@ from __future__ import annotations
 import json
 import os
 import re
-import sys
 import time
 
 for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",

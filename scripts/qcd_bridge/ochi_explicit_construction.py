@@ -29,12 +29,10 @@ to assess epistemic parity / interchangeability.
 """
 
 import json
-import time
 from pathlib import Path
 
 import numpy as np
 from scipy.stats import gaussian_kde
-
 
 # =============================================================================
 # 1.  K3 intersection form
@@ -335,11 +333,11 @@ def compare_parameters():
     for k, v in QCD_EMPIRICAL_PARAMS.items():
         print(f"  {k:<20s} = {v['value']:<14.6g} {v['unit']:<20s} | {v['origin']}")
 
-    print(f"\n--- 4 framework parameters (Choptuik-QCD bridge) ---")
+    print("\n--- 4 framework parameters (Choptuik-QCD bridge) ---")
     for k, v in FRAMEWORK_PARAMS.items():
         print(f"  {k:<20s} = {v['value']:<14.6g} {v['unit']:<20s} | {v['origin']}")
 
-    print(f"\n--- 3 realisations of c_C (third Isaev correction) ---")
+    print("\n--- 3 realisations of c_C (third Isaev correction) ---")
     for k, v in THREE_CORRECTIONS.items():
         print(f"  {k:<20s} = {v['value']:<14.6g} {v['unit']:<20s} | {v['origin']}")
 
@@ -381,12 +379,12 @@ def compare_parameters():
     print("=" * 92)
     print("COUNTING: epistemic parity")
     print("=" * 92)
-    print(f"  QCD empirical inputs (canonical 8):    8  (alpha_s, 6 quark masses, theta_QCD)")
-    print(f"  QCD empirical inputs (extended 11):   11  (+ f_pi, Lambda_QCD, V_us, delta_CKM)")
-    print(f"  Framework inputs (canonical 4):        4  (delta_C, a_C, b_C, c_C)")
-    print(f"  Framework inputs (with 3 c_C real.):   6  (delta_C, a_C, b_C, c_K3, c_AB, c_theta)")
-    print(f"  Of the 3 c_C realisations, 1 is from QCD data (c_theta uses V_us)")
-    print(f"  Net NEW framework inputs:               5  (delta_C, a_C, b_C, c_K3, c_AB)")
+    print("  QCD empirical inputs (canonical 8):    8  (alpha_s, 6 quark masses, theta_QCD)")
+    print("  QCD empirical inputs (extended 11):   11  (+ f_pi, Lambda_QCD, V_us, delta_CKM)")
+    print("  Framework inputs (canonical 4):        4  (delta_C, a_C, b_C, c_C)")
+    print("  Framework inputs (with 3 c_C real.):   6  (delta_C, a_C, b_C, c_K3, c_AB, c_theta)")
+    print("  Of the 3 c_C realisations, 1 is from QCD data (c_theta uses V_us)")
+    print("  Net NEW framework inputs:               5  (delta_C, a_C, b_C, c_K3, c_AB)")
     print()
     print("  QCD itself has ~8 empirical parameters that are NOT derived from first")
     print("  principles — they are measured. The framework adds 5 more in the SAME")
@@ -582,7 +580,7 @@ def main():
     print("\n" + "=" * 92)
     print("VERDICT")
     print("=" * 92)
-    print(f"The candidate O_chi = Q_K3 ⊕ M_F + V_T (N=28) has been constructed.")
+    print("The candidate O_chi = Q_K3 ⊕ M_F + V_T (N=28) has been constructed.")
     print(f"At kappa_T = 1.0 (canonical T-breaking strength ~ b_C = {B_C}):")
     print(f"  - r_bar distribution mean = {results_sweep[1.0]['obs_rbar_mean']:.4f}")
     print(f"  - GUE reference mean       = {gue_means.mean():.4f}")

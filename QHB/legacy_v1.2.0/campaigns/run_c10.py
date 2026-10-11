@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 campaign C10 — the competing models: is the septinial structure
 necessary? (v1.2.0)
@@ -53,17 +52,16 @@ import time
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-import numpy as np
 
-from qhb.gap import static_gap, floquet_gap, KAPPA
-from qhb.constants import (BERRY_TRIO, BRAKING_TRIO, __version__)
+from qhb.constants import BERRY_TRIO, BRAKING_TRIO, __version__
+from qhb.gap import KAPPA, floquet_gap, static_gap
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(HERE, "reference")
 
 N_CHAIN = 64
-WINDOW = tuple(round(0.01 * k, 4) for k in range(0, 21))     # [0, 0.2], 21 pts
-FIT_SUB = tuple(round(0.02 * k, 4) for k in range(0, 6))     # [0, 0.1], 6 pts
+WINDOW = tuple(round(0.01 * k, 4) for k in range(21))     # [0, 0.2], 21 pts
+FIT_SUB = tuple(round(0.02 * k, 4) for k in range(6))     # [0, 0.1], 6 pts
 FORECAST_BETAS = (0.3, 0.4, 0.5, 0.6, 0.8)
 
 CONFIGS = {

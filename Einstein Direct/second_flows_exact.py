@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """ТОЧНЫЙ анализ QEP второго потока в baseline-точке (все значения в Q(sqrt3)).
 
 Закрывает два оставшихся вопроса:
@@ -16,9 +15,8 @@ import sys
 import time
 import warnings
 
-import numpy as np
-import sympy as sp
 import mpmath as mp
+import sympy as sp
 
 BASE = "/home/z/my-project/choptuik_ac_bc/einstein_direct"
 sys.path.insert(0, BASE)
@@ -164,7 +162,7 @@ def main() -> None:
     lam = LAM
     t0 = time.time()
     pts_ = []
-    for j_ in range(0, 45):
+    for j_ in range(45):
         lj = sp.Integer(j_)
         Mj = A_ex + lj * B_ex + lj**2 * C_ex
         Gj = (Mj.T * Mj)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 ladder.py — comparison ladders and the constants registry.
 
@@ -18,15 +17,37 @@ no derivation claimed in either direction:
 Plus qhb_constants.csv — the machine-readable registry of the package
 constants (the "bridge_constants.csv" of CHB, mirrored).
 """
-import math
 
-from .constants import (G, c, hbar, k_B, h, T_CMB, T_QCD_K, LAMBDA_QCD_MeV,
-                        MeV_J, m_P, l_P, t_P, rho_P, E_P, M_sun, M_earth,
-                        M_moon, b_Ch, gamma_Ch, echo_delta, BERRY_TRIO,
-                        BRAKING_TRIO, FTILDE_MEMBERS, delta_A, delta_B,
-                        delta_C, A_WU_ANCHOR, eta_baryon, SEED)
-from .bridge import (T_H, rho_mean, equal_cmb_mass, equal_qcd_mass,
-                     bridge_scales, nu_of_T, lambda_qcd_hz, PAGE_FRACTION)
+from .bridge import (
+    PAGE_FRACTION,
+    T_H,
+    bridge_scales,
+    equal_cmb_mass,
+    equal_qcd_mass,
+    nu_of_T,
+    rho_mean,
+)
+from .constants import (
+    A_WU_ANCHOR,
+    BERRY_TRIO,
+    BRAKING_TRIO,
+    E_P,
+    FTILDE_MEMBERS,
+    SEED,
+    T_CMB,
+    T_QCD_K,
+    LAMBDA_QCD_MeV,
+    MeV_J,
+    b_Ch,
+    delta_A,
+    delta_B,
+    delta_C,
+    echo_delta,
+    eta_baryon,
+    gamma_Ch,
+    h,
+    rho_P,
+)
 
 
 def density_ladder():
@@ -121,10 +142,9 @@ def write_outputs(density, temperature, gap, registry, out_dir):
         path = os.path.join(out_dir, name)
         with open(path, "w", encoding="utf-8", newline="") as fh:
             fh.write(",".join(header) + "\n")
-            for r in rows:
-                fh.write(",".join(
+            fh.writelines(",".join(
                     (r[c] if isinstance(r[c], str) else f"{r[c]:.10e}")
-                    for c in header) + "\n")
+                    for c in header) + "\n" for r in rows)
         return path
 
     dump("scale_ladder_density.csv",
@@ -136,10 +156,8 @@ def write_outputs(density, temperature, gap, registry, out_dir):
     with open(os.path.join(out_dir, "scale_ladder_gaps.csv"), "w",
               encoding="utf-8", newline="") as fh:
         fh.write("anchor,nu_Hz\n")
-        for r in gap:
-            fh.write(f'"{r["anchor"]}",{r["nu_Hz"]:.10e}\n')
+        fh.writelines(f'"{r["anchor"]}",{r["nu_Hz"]:.10e}\n' for r in gap)
     with open(os.path.join(out_dir, "qhb_constants.csv"), "w",
               encoding="utf-8", newline="") as fh:
         fh.write("constant,formula,value,status\n")
-        for name, formula, value, status in registry:
-            fh.write(f'{name},"{formula}",{value:.17g},{status}\n')
+        fh.writelines(f'{name},"{formula}",{value:.17g},{status}\n' for name, formula, value, status in registry)

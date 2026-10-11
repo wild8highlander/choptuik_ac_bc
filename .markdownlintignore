@@ -1,0 +1,5 @@
+# Generated / vendored documentation trees — excluded from markdownlint
+# (pre-commit only lints staged files; these globs keep the all-files run quiet).
+QHB/legacy_v1.2.0/
+docs-site/site/
+node_modules/

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 validate.py — the 50-digit layer (mpmath), the honest backbone.
 
@@ -10,16 +9,28 @@ arithmetic, independently of the float values in constants.py.  Run:
 Committed status: 9/9 checks PASS (qhb v1.0.0).
 """
 import sys
-import math
-from mpmath import mp, mpf, pi, cos, sin, exp
+
+from mpmath import cos, mp, mpf, pi
 
 DPS = 50
 mp.dps = DPS
 
 import qhb
-from .constants import (G, c, hbar, k_B, T_CMB, T_QCD_K, b_Ch, gamma_Ch,
-                        BERRY_TRIO, BRAKING_TRIO, A_WU_ANCHOR, MeV_J,
-                        delta_A, delta_B, delta_C)
+
+from .constants import (
+    A_WU_ANCHOR,
+    BERRY_TRIO,
+    BRAKING_TRIO,
+    T_CMB,
+    T_QCD_K,
+    G,
+    MeV_J,
+    b_Ch,
+    c,
+    gamma_Ch,
+    hbar,
+    k_B,
+)
 
 
 def _f(x):

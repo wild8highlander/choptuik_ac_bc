@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """QHB v2.1.0 — фигуры исполнения роадмапа R1–R4 (RU + EN), глава 14.
 Стиль согласован с пакетом: светлый фон, без верхних/правых осей, пунктирная сетка."""
-import json, math, os
-import numpy as np
+import json
+import math
+import os
+
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.font_manager as fm
+
 fm.fontManager.addfont('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf')
 import matplotlib.pyplot as plt
 

@@ -1,4 +1,4 @@
-# interactive-viz
+# Interactive Viz
 
 Client-side interactive dashboard for exploring and verifying the framework
 in the browser. It is the fourth independent implementation of the
@@ -37,7 +37,7 @@ changes update charts and verification badges instantly.
 ## How to run
 
 ```bash
-cd interactive-viz
+cd "Interactive Viz"
 npm install          # or: bun install
 npm run dev          # dev server (port 3000; forwarded by .devcontainer)
 ```

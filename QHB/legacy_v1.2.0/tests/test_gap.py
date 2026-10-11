@@ -1,17 +1,12 @@
-# -*- coding: utf-8 -*-
-import json
-import math
-import subprocess
-import sys
 import os
+import sys
 
 import pytest
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 sys.path.insert(0, ROOT)
 
-from qhb.gap import static_gap, static_of_chain, floquet_gap, lemma_a_worst
-from qhb.gap import KAPPA, Q_PK
+from qhb.gap import KAPPA, Q_PK, floquet_gap, lemma_a_worst, static_of_chain
 
 
 class TestGap:

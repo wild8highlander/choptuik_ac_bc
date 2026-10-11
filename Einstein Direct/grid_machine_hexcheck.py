@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 HEXCHECK-КАМПАНИЯ: ПРОВЕРКА ПРЕДСКАЗАНИЙ ГЕКСЦИКЛА
@@ -62,9 +61,14 @@ for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
     os.environ.setdefault(_v, "1")
 
 import numpy as np
-
-from zoom_solver import (ZoomRunner, echo_peaks, echo_period_from_peaks,
-                         RESULTS, V_P, SIGMA)
+from zoom_solver import (
+    RESULTS,
+    SIGMA,
+    V_P,
+    ZoomRunner,
+    echo_peaks,
+    echo_period_from_peaks,
+)
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 A_STAR = 0.0805333
@@ -309,7 +313,7 @@ def fit_echo(rows, zkey="z_fine", model="A", win_echoes=Z_WIN_ECHOES,
         "Delta_fit": float(d_fit), "Delta_err": se_d,
         "lambda_fit": float(l_fit), "lambda_err": se_l,
         "wiggle_amp": float(np.hypot(sol[1], sol[2])),
-        "n_rows": int(len(z)),
+        "n_rows": len(z),
         "z_window": [float(z.min()), float(z.max())],
         "rss": rss,
     }
@@ -328,7 +332,7 @@ def w2_channels(rows, zkey="z_fine", win_echoes=Z_WIN_ECHOES):
     sel = [r for r, mm in zip(rows, m) if mm]
     if len(sel) < 5:
         return None
-    out = {"n_rows": int(len(sel)), "target": 4.0 / 3.0}
+    out = {"n_rows": len(sel), "target": 4.0 / 3.0}
     # ch1: сырой фит (до гейтов)
     v1 = np.array([r["W2_raw"] / r["t0"] ** 2 for r in sel
                    if abs(r["t0"]) > 1e-300])
@@ -491,7 +495,7 @@ def _summarize_run(r, d, eps, A, dt):
             {"zoom": c["zoom"], "lam": round(c["lam"], 3),
              "z": round(c["z"], 4), "c1_max": c["c1_max"]}
             for c in d.stage_constraints],
-        "Q_peaks_n": int(len(vp)),
+        "Q_peaks_n": len(vp),
         "n_rows": len(rows),
         "n_tau_fresh": int(sum(1 for x in rows
                                if np.isfinite(x.get("tau_fresh", float("nan"))))),

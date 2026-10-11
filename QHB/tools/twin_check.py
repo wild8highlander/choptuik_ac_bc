@@ -8,7 +8,6 @@ Sweep 3 (claims):  all 30 claim ids appear in RESULTS.ru.md and RESULTS.md.
 from __future__ import annotations
 
 import json
-import re
 import sys
 from pathlib import Path
 

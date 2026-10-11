@@ -1,8 +1,6 @@
 """Pinned constants (N1-N8) and derived model quantities."""
 import math
 
-import pytest
-
 from qhb import constants as C
 
 

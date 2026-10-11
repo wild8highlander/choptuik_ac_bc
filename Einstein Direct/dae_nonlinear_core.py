@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Ядро нелинейного марша DAE [сессия 19].
 
 Обобщение пролонгационного замыкания (сессия 18b) на КОНЕЧНУЮ амплитуду.
@@ -31,7 +30,6 @@ os.environ.setdefault("OMP_NUM_THREADS", "1")
 os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 os.environ.setdefault("MKL_NUM_THREADS", "1")
 
-import time
 import warnings
 
 import numpy as np

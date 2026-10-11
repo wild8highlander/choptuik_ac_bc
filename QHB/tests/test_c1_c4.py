@@ -2,8 +2,8 @@
 import math
 
 import pytest
-
-from qhb import constants as C, core
+from qhb import constants as C
+from qhb import core
 
 
 def test_c1_grid_all_open():

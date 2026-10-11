@@ -17,9 +17,8 @@ sys.path.insert(0, str(ROOT))
 
 import mpmath as mp
 import sympy as sp
-
-from qhb import competing, constants as C, core, phase_map, vortex
-from qhb.pins import C11_AREF_A0, C11_AREF_DELTA, C11_AREF_DT, C11_AREF_T
+from qhb import competing, core, phase_map, vortex
+from qhb import constants as C
 
 DATA = ROOT / "data"
 mp.mp.dps = 60

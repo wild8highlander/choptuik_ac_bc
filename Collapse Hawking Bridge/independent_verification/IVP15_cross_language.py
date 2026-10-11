@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-15 — cross-language / cross-implementation agreement.
 
@@ -20,7 +19,6 @@ INCONCLUSIVE with the exact reproduction command — never silently
 skipped.  (The audit machine had gcc, g++ and node; Julia/Rust/Go were
 absent.)
 """
-import math
 import os
 import re
 import shutil
@@ -33,7 +31,7 @@ import mpmath as mp
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(IVP_DIR)
 sys.path.insert(0, IVP_DIR)
-from ivp_common import save_result, log, worst_status  # noqa: E402
+from ivp_common import log, save_result, worst_status
 
 mp.mp.dps = 50
 

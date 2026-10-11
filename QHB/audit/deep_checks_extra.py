@@ -18,8 +18,7 @@ sys.path.insert(0, str(ROOT))
 
 import mpmath as mp
 import sympy as sp
-
-from qhb import competing, constants as C, core, vortex
+from qhb import core
 
 mp.mp.dps = 100
 

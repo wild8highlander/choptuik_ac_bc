@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Эксперимент 7: теоремы A/B/C — порог e >= 1 для частичных изометрий.
 
 ТЕОРЕМА A: для частичных изометрий X1, X2 в C^n
@@ -9,9 +8,11 @@
 ТЕОРЕМА C: для унитарных пар (и перестановок) F = 2n точно.
 """
 import numpy as np
-
-from exp7_e1_threshold import (leavitt_F, random_partial_isometry,
-                               random_projections_disjoint)
+from exp7_e1_threshold import (
+    leavitt_F,
+    random_partial_isometry,
+    random_projections_disjoint,
+)
 
 
 def _partial_isometry_pair(n, r1, r2, rng):

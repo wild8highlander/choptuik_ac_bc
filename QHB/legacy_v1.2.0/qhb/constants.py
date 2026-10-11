@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 constants.py — single source of truth for the Quark-Hawking Bridge.
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 claims.py — the Evidence Engine validator (v1.2.0).
 

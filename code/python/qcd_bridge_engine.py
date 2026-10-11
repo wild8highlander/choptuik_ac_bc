@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 qcd_bridge_engine.py — Core computational engine for the Choptuik–QCD bridge.
 
@@ -26,9 +25,8 @@ import json
 import logging
 import math
 import time
-from dataclasses import dataclass, field, asdict
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from dataclasses import asdict, dataclass, field
+from typing import Any
 
 import numpy as np
 
@@ -151,7 +149,7 @@ def poisson_spacing_pdf(s: np.ndarray) -> np.ndarray:
     return np.exp(-s)
 
 
-def bayes_factor_gue_poisson(eigs: np.ndarray, n_bins: int = 20) -> Tuple[float, Dict[str, float]]:
+def bayes_factor_gue_poisson(eigs: np.ndarray, n_bins: int = 20) -> tuple[float, dict[str, float]]:
     """Compute Bayes factor BF(GUE/Poisson) from folded spacing histogram."""
     s = folded_spacings(eigs)
     s = s[s > 1e-9]  # drop degenerate
@@ -185,7 +183,7 @@ def classify_BF(bf: float) -> str:
 # ─────────────────────────────────────────────────────────────────────────────
 # 4. kappa_T sweep
 # ─────────────────────────────────────────────────────────────────────────────
-def kappa_T_sweep(kappa_values: np.ndarray, seed: int = 42) -> List[Dict[str, Any]]:
+def kappa_T_sweep(kappa_values: np.ndarray, seed: int = 42) -> list[dict[str, Any]]:
     """For each kappa_T, build O_chi, diagonalize, compute BF(GUE/Poisson)."""
     results = []
     for k in kappa_values:
@@ -201,7 +199,7 @@ def kappa_T_sweep(kappa_values: np.ndarray, seed: int = 42) -> List[Dict[str, An
             "lambda_max": float(eigs.max()),
             "lambda_mean": float(eigs.mean()),
             "lambda_std": float(eigs.std()),
-            "n_eigs": int(len(eigs)),
+            "n_eigs": len(eigs),
             "elapsed_s": float(time.time() - t0),
             **stats,
         })
@@ -211,8 +209,8 @@ def kappa_T_sweep(kappa_values: np.ndarray, seed: int = 42) -> List[Dict[str, An
 # ─────────────────────────────────────────────────────────────────────────────
 # 5. N-scaling: <lambda> -> 0 as 1/sqrt(N)
 # ─────────────────────────────────────────────────────────────────────────────
-def N_scaling_test(N_values: List[int], kappa_T: float = KAPPA_T_BESTFIT,
-                   seed: int = 42) -> List[Dict[str, Any]]:
+def N_scaling_test(N_values: list[int], kappa_T: float = KAPPA_T_BESTFIT,
+                   seed: int = 42) -> list[dict[str, Any]]:
     """Verify that <lambda> -> 0 with N, scaling as 1/sqrt(N).
 
     For each N, build an N×N GUE matrix, compute |<lambda>|.
@@ -244,7 +242,7 @@ def N_scaling_test(N_values: List[int], kappa_T: float = KAPPA_T_BESTFIT,
 # ─────────────────────────────────────────────────────────────────────────────
 # 6. tau_relax dynamics
 # ─────────────────────────────────────────────────────────────────────────────
-def tau_relax_dynamics(theta_0: float = 1e-19) -> Dict[str, Any]:
+def tau_relax_dynamics(theta_0: float = 1e-19) -> dict[str, Any]:
     """Compute dynamic relaxation of theta -> 0.
 
     theta(t) = theta_0 * exp(-t / tau_relax)
@@ -271,7 +269,7 @@ def tau_relax_dynamics(theta_0: float = 1e-19) -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # 7. kappa_T physical estimate from lattice Dirac data
 # ─────────────────────────────────────────────────────────────────────────────
-def kappa_T_physical_estimate() -> Dict[str, Any]:
+def kappa_T_physical_estimate() -> dict[str, Any]:
     """Estimate kappa_T from lattice Dirac eigenmode data.
 
     Returns the 95% CL lower bound and best-fit value used by the framework.
@@ -292,7 +290,7 @@ def kappa_T_physical_estimate() -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # 8. Cabibbo angle coincidence
 # ─────────────────────────────────────────────────────────────────────────────
-def cabibbo_coincidence() -> Dict[str, Any]:
+def cabibbo_coincidence() -> dict[str, Any]:
     """Compute Cabibbo angle from framework c_theta parameter.
 
     c_theta = sin^2(2*theta_C) / 4
@@ -328,7 +326,7 @@ def cabibbo_coincidence() -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # 9. CP 8-step solution chain
 # ─────────────────────────────────────────────────────────────────────────────
-def cp_solution_chain() -> Dict[str, Any]:
+def cp_solution_chain() -> dict[str, Any]:
     """The 8-step solution chain that derives theta_bar = 0."""
     steps = [
         {"step": 1, "statement": "O_chi = Q_hat (structural role)",
@@ -373,7 +371,7 @@ def cp_solution_chain() -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # 10. Jet wake bridge (NR <-> QCD)
 # ─────────────────────────────────────────────────────────────────────────────
-def jet_wake_bridge() -> Dict[str, Any]:
+def jet_wake_bridge() -> dict[str, Any]:
     """Bridge between numerical relativity jet wakes and QCD topological sectors."""
     # Choptuik scaling: critical exponent delta_C = pi/7
     # QCD topological susceptibility: chi = <Q^2> / V
@@ -400,10 +398,10 @@ def jet_wake_bridge() -> Dict[str, Any]:
 class QCDBridgeConfig:
     """Configuration for a QCD bridge run."""
     mode: str = "verify_all"           # verify_all | verify_section | custom
-    sections: List[int] = field(default_factory=lambda: list(range(1, 10)))
-    kappa_values: List[float] = field(
+    sections: list[int] = field(default_factory=lambda: list(range(1, 10)))
+    kappa_values: list[float] = field(
         default_factory=lambda: [0.0, 0.3, 0.7, 1.0, 1.5, 2.0, 2.62, 3.0, 4.0, 5.0, 8.45, 12.0, 20.0])
-    N_values: List[int] = field(
+    N_values: list[int] = field(
         default_factory=lambda: [10, 28, 50, 100, 200, 500, 1000, 2000, 5000])
     kappa_T_custom: float = KAPPA_T_BESTFIT
     N_custom: int = N_HILBERT
@@ -411,11 +409,11 @@ class QCDBridgeConfig:
     seed: int = 42
     language: str = "en"               # en | ru
     output_dir: str = "reports"
-    report_formats: List[str] = field(
+    report_formats: list[str] = field(
         default_factory=lambda: ["txt", "csv", "md", "pdf", "html", "docx", "json"])
 
     @classmethod
-    def from_json(cls, path: str) -> "QCDBridgeConfig":
+    def from_json(cls, path: str) -> QCDBridgeConfig:
         with open(path) as f:
             data = json.load(f)
         return cls(**data)
@@ -424,10 +422,10 @@ class QCDBridgeConfig:
 @dataclass
 class QCDBridgeResult:
     """Complete results of a QCD bridge run."""
-    config: Dict[str, Any]
-    sections_run: List[int]
-    results: Dict[str, Any]
-    logs: List[str]
+    config: dict[str, Any]
+    sections_run: list[int]
+    results: dict[str, Any]
+    logs: list[str]
     timestamp: str
     elapsed_s: float
 
@@ -435,7 +433,7 @@ class QCDBridgeResult:
 def run_all(config: QCDBridgeConfig) -> QCDBridgeResult:
     """Execute the full QCD bridge pipeline per config."""
     t0 = time.time()
-    logs: List[str] = []
+    logs: list[str] = []
     def log(msg: str):
         ts = time.strftime("%Y-%m-%d %H:%M:%S")
         entry = f"[{ts}] {msg}"
@@ -447,7 +445,7 @@ def run_all(config: QCDBridgeConfig) -> QCDBridgeResult:
     log(f"Output dir: {config.output_dir}")
     log(f"Report formats: {config.report_formats}")
 
-    results: Dict[str, Any] = {}
+    results: dict[str, Any] = {}
 
     if 1 in config.sections:
         log("Section 1: O_chi operator construction")

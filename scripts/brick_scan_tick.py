@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Кампания [сессия 22 / v18a]: BRICK-LADDER-TICK — кампания с промежуточными
 кирпичами: зависимость препятствия тика от delta.
 
@@ -47,10 +46,10 @@ os.chdir(BASE)
 RESULTS = os.path.join(BASE, "results")
 T_START = time.time()
 
-import dae_nonlinear_core as dnc                       # noqa: E402
-import sympy_hexcycle as hx                            # noqa: E402
-from hexcycle_dae import chain_poles                   # noqa: E402
-from clock_closure_t1c import build_point, kernel_Mr   # noqa: E402
+import dae_nonlinear_core as dnc
+import sympy_hexcycle as hx
+from clock_closure_t1c import build_point, kernel_Mr
+from hexcycle_dae import chain_poles
 
 
 def log(msg):

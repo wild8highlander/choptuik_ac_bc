@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 rebuild_data.py — derive every table in data/bridge/ from committed verdicts.
 
@@ -26,7 +25,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
-from chbridge import bridge, page, ladder  # noqa: E402
+from chbridge import bridge, ladder, page
 
 OUT = os.path.join(ROOT, "data", "bridge")
 REF = os.path.join(ROOT, "campaigns", "reference")
@@ -90,7 +89,7 @@ def main():
     print("[1/5] bridge tables ...")
     summary = bridge.write_outputs(verdict, OUT)
     print(f"      born spectrum rows: {len(verdict['scan_rows_N400']) + len(verdict['scan_rows_N800'])}")
-    print(f"      master table rows : 15 (5 input scales x 3 ensemble members)")
+    print("      master table rows : 15 (5 input scales x 3 ensemble members)")
     print(f"      a* drift vs remediated reference (N=1600): "
           f"{summary['a_star_drift_N800_vs_reference']:.2e}")
 

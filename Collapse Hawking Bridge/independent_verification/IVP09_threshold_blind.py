@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-09 — blind remeasurement of the critical amplitude A*_N.
 
@@ -20,7 +19,6 @@ before its own measurement.  Protocol:
 
 Every run uses the IVP suite's independent Gaussian-pulse class.
 """
-import json
 import math
 import os
 import sys
@@ -28,8 +26,14 @@ import time
 
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, IVP_DIR)
-from ivp_common import (save_result, log, worst_status, classification,  # noqa: E402
-                        run_gaussian, read_committed_verdict)
+from ivp_common import (
+    classification,
+    log,
+    read_committed_verdict,
+    run_gaussian,
+    save_result,
+    worst_status,
+)
 
 TOL = 2e-6
 MAX_ITER = 40

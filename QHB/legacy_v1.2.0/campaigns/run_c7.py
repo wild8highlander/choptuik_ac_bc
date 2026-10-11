@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 campaign C7 — the anharmonic trio (v1.1.0, the roadmap's second entry).
 
@@ -42,9 +41,7 @@ import time
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import numpy as np
-
-from engine.solver import (make_ensemble, trio_run, lyapunov, N_TRIALS,
-                           DT, STEPS)
+from engine.solver import N_TRIALS, lyapunov, make_ensemble, trio_run
 from qhb.constants import __version__
 
 HERE = os.path.dirname(os.path.abspath(__file__))

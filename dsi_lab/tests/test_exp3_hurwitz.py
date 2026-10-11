@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Эксперимент 3 (Гурвиц): делимости Римана-Гурвица и находка D1.
 
 Проверяем:
@@ -10,8 +9,6 @@
 """
 import json
 import os
-
-import pytest
 
 from exp3_hurwitz import b_Ch
 

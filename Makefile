@@ -8,7 +8,7 @@
 PYTHON_DIR  = python
 JULIA_DIR   = julia
 JAVA_DIR    = java-webapp
-VIZ_DIR     = interactive-viz
+VIZ_DIR     = "Interactive Viz"
 DOCS_DIR    = docs-site
 OUTPUT_DIR  = output
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Campaign C2 — the two branches around the threshold.
 
@@ -45,7 +44,7 @@ import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "engine"))
 sys.path.insert(0, os.path.join(ROOT, "chbridge"))
-from solver import DoubleNullSolver, GaussianPulseData, SolverConfig  # noqa: E402
+from solver import DoubleNullSolver, GaussianPulseData, SolverConfig
 
 OUT = os.path.join(ROOT, "campaigns", "reference")
 
@@ -138,7 +137,7 @@ def scan_subcritical(a_star, n, eps_targets):
             "flipped": bool(diag.ah_found),          # formed AH -> not subcritical
             "q_max": q_max,
             "v_qmax": float(vs[i_max]),
-            "n_peaks": int(len(i_pk_all)),
+            "n_peaks": len(i_pk_all),
             "q_final_over_qmax": float(qs[-1] / q_max) if q_max > 0 else None,
             "stop": diag.stopped_reason,
         }
@@ -159,7 +158,7 @@ def fit_slowdown(rows):
                   and r["q_max"] < Q_SANE_MAX])
     b, a, r2, err = linfit(x, y)
     return {"slope_ln_eps": b, "intercept": a, "r2": r2, "slope_err": err,
-            "n_points": int(len(x)),
+            "n_points": len(x),
             "honest_note": ("fixed grid, 40 compactness samples per run; the "
                             "slowdown is the DSS logarithmic approach only in "
                             "the near-critical band")}
@@ -175,7 +174,7 @@ def fit_echo_rate(rows):
                   and r["q_max"] is not None and r["q_max"] < Q_SANE_MAX])
     b, a, r2, err = linfit(x, y)
     return {"echoes_per_efold": b, "intercept": a, "r2": r2, "err": err,
-            "n_points": int(len(x)),
+            "n_points": len(x),
             "honest_note": ("40 compactness samples per run bound the countable "
                             "echoes; 1/Delta ~ 0.29 is the anchor for "
                             "comparison, never a fit target")}

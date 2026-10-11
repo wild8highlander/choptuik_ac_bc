@@ -1,0 +1,47 @@
+{
+  // Markdownlint configuration for choptuik_ac_bc.
+  // GitHub-flavoured READMEs here rely on <picture>/KaTeX/alert syntax,
+  // wide tables and long provenance lines — the default rules that punish
+  // those idioms are relaxed below. Everything else stays strict.
+  "default": true,
+
+  // Prose lines and provenance tables are frequently >80 chars.
+  "MD013": false,
+
+  // Inline HTML is required for <picture> dark/light banners, <details>,
+  // <summary>, KaTeX-friendly tables and centred footers.
+  "MD033": {
+    "allowed_elements": [
+      "picture", "source", "img", "a", "b", "br", "code", "details", "summary",
+      "table", "thead", "tbody", "tr", "td", "th", "sub", "sup", "p", "div"
+    ]
+  },
+
+  // The banner <picture> block intentionally precedes the H1.
+  "MD041": false,
+
+  // GitHub alerts ([!NOTE] / [!TIP] / [!IMPORTANT] / [!WARNING]) may stack
+  // as separate blockquotes separated by a blank line.
+  "MD028": false,
+
+  // Tables use the compact GitHub pipe style; alignment padding is free-form.
+  "MD060": false,
+
+  // Collapsible sections and RU/EN package mirrors repeat headings;
+  // only true siblings under the same parent are flagged.
+  "MD024": {
+    "siblings_only": true
+  },
+
+  // Bold lead-ins inside lists/paragraphs are a deliberate style, not headings.
+  "MD036": false,
+
+  // Bare URLs (the online-demo link) are fine on GitHub.
+  "MD034": false,
+
+  // Heading fences: allow both ATX styles used across the repo.
+  "MD019": false,
+
+  // Duplicate sibling headings inside different languages (EN/RU mirrors).
+  "MD043": false
+}

@@ -56,18 +56,18 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: interactive-viz/package-lock.json
+          cache-dependency-path: "Interactive Viz/package-lock.json"
 
       - name: Install
-        working-directory: interactive-viz
+        working-directory: "Interactive Viz"
         run: npm ci
 
       - name: ESLint
-        working-directory: interactive-viz
+        working-directory: "Interactive Viz"
         run: npm run lint --if-present
 
       - name: Prettier check
-        working-directory: interactive-viz
+        working-directory: "Interactive Viz"
         run: npx prettier --check "src/**/*.{ts,tsx,css}" || true
 
   java-lint:

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Кампания O6+ [сессия 17]: ВТОРЫЕ ПОТОКИ КАК ПЕРЕМЕННЫЕ ПРЕДЕЛЬНОГО ЦИКЛА.
 
 Вопрос (автор, после гипотезы барионной асимметрии): порождает ли динамика
@@ -77,7 +76,7 @@ def load_patched(kc1, kc2, kth):
     exec(compile(src, mod.__file__, "exec"), mod.__dict__)  # noqa: S102
     sys.modules.pop("sympy_p4_einstein_hilbert", None)
     sys.modules["sympy_center_o6"] = mod
-    import sympy_p4_einstein_hilbert as p4  # noqa: E402
+    import sympy_p4_einstein_hilbert as p4
     return mod, p4
 
 
@@ -198,7 +197,7 @@ def qep_at_point(F, amps, flows, dds, subv, point, label):
             phantoms.append(rec)
     out = {
         "label": label,
-        "n_candidate_roots": int(len(lams)),
+        "n_candidate_roots": len(lams),
         "n_genuine": len(genuine),
         "genuine": genuine,
         "n_phantoms": len(phantoms),

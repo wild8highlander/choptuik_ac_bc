@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 campaign C8 — the Wu door with pair-consuming kinetics (v1.1.0,
 the roadmap's third entry).
@@ -55,9 +54,8 @@ import time
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import numpy as np
-
-from qhb.wu import residual as r_linear
 from qhb.constants import __version__
+from qhb.wu import residual as r_linear
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(HERE, "reference")

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 make_figures.py — regenerate every figure of the project.
 
@@ -25,13 +24,15 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-import matplotlib.pyplot as plt  # noqa: E402
-
-import figstyle as fs  # noqa: E402
-from chbridge.hawking import T_H, S_BH, k_B, t_evap, t_page  # noqa: E402
-from chbridge.hawking import PAGE_FRACTION  # noqa: E402
-from chbridge.constants import (T_CMB, M_sun, M_earth, m_P, l_P,  # noqa: E402
-                                gamma_Ch)
+import figstyle as fs
+import matplotlib.pyplot as plt
+from chbridge.constants import T_CMB, gamma_Ch
+from chbridge.hawking import (
+    PAGE_FRACTION,
+    S_BH,
+    T_H,
+    k_B,
+)
 
 REF = os.path.join(ROOT, "campaigns", "reference")
 DATA = os.path.join(ROOT, "data", "bridge")

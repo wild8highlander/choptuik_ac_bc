@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-04 — independent re-derivation of all physical constants.
 
@@ -24,7 +23,6 @@ COMPARISON PHASE (end): the same closed forms are evaluated from
 agreement tolerance is rel <= 1e-9 (float64 roundoff budget), and
 derived Planck units must agree to rel <= 1e-12.
 """
-import math
 import os
 import sys
 
@@ -34,7 +32,7 @@ IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(IVP_DIR)
 sys.path.insert(0, IVP_DIR)
 sys.path.insert(0, ROOT)
-from ivp_common import save_result, log, worst_status  # noqa: E402
+from ivp_common import log, save_result, worst_status
 
 mp.mp.dps = 50
 
@@ -129,8 +127,8 @@ def main():
     # [COMPARISON PHASE] chbridge float64 implementations vs this suite
     # ------------------------------------------------------------------
     log("\n[B] comparison phase — chbridge float64 vs verifier (50-digit)")
-    from chbridge import hawking as H  # noqa: E402  (comparison only)
-    from chbridge import constants as C  # noqa: E402  (comparison only)
+    from chbridge import constants as C
+    from chbridge import hawking as H
 
     rows = []
     for M in TEST_MASSES:

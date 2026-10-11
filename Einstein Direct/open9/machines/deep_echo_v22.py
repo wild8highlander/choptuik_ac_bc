@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 КАМПАНИЯ v22: V-БЮДЖЕТ И ЯКОРЕНИЕ ОКНА — ПРОРЫВ СТЕНЫ z ~ 7.2 (w = 3)
@@ -84,15 +83,24 @@ RESULTS = os.path.join(BASE, "results")
 OUT_PATH = os.path.join(RESULTS, "v22_v_budget.json")
 CKPT_PATH = os.path.join(RESULTS, "v22_checkpoints.json")
 
-from scipy.interpolate import RegularGridInterpolator  # noqa: E402
-
-from zoom_solver import ZoomRunner, FIELDS, echo_peaks, echo_period_from_peaks  # noqa: E402
-from grid_machine_annulus import A_STAR  # noqa: E402
-from depth_z30 import GAMMA, Z_TARGET, Z_WALL, SEED  # noqa: E402
-from amplitude_ladder import fit_exponent  # noqa: E402
-from deep_echo_v21 import (  # noqa: E402
-    EPS_MAIN, N_GRID, MAX_ZOOMS, DELTA_LIT, LADDER_EPS, LADDER_MIN_Z,
-    _stage_analysis, _gamma_estimate, _wiggle_gate, _new_wall, log)
+from amplitude_ladder import fit_exponent
+from deep_echo_v21 import (
+    DELTA_LIT,
+    EPS_MAIN,
+    LADDER_EPS,
+    LADDER_MIN_Z,
+    MAX_ZOOMS,
+    N_GRID,
+    _gamma_estimate,
+    _new_wall,
+    _stage_analysis,
+    _wiggle_gate,
+    log,
+)
+from depth_z30 import GAMMA, SEED, Z_TARGET, Z_WALL
+from grid_machine_annulus import A_STAR
+from scipy.interpolate import RegularGridInterpolator
+from zoom_solver import FIELDS, ZoomRunner
 
 T_START = time.time()
 

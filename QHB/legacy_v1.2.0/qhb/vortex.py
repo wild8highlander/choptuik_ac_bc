@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 vortex.py — the classical three-vortex layer of the trap physics.
 

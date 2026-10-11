@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Preregistration pins (v2.2.0, external audit points 10, 15 and 4).
 
 The preregistration document is the package's commitment device: the
@@ -65,7 +64,7 @@ def test_b_ch_lit_label_stays_removed():
     # no live constant definition (the honest removal comment may QUOTE
     # the former line — that is documentation, not a definition)
     import re as _re
-    assert not _re.search(r"^b_Ch_lit\s*=", constants_src, _re.M)
+    assert not _re.search(r"^b_Ch_lit\s*=", constants_src, _re.MULTILINE)
     assert not hasattr(K, "b_Ch_lit")
     # in bridge.py every occurrence of the former label must live inside
     # a comment (documentation of the removal), never in code

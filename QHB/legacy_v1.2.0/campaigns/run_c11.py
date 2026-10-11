@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 campaign C11 — the vortex anchor and the static barrier (v1.2.0).
 
@@ -69,13 +68,26 @@ import time
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import numpy as np
-
-from qhb.vortex import (lagrange_omega, equilateral_positions, aref_launch,
-                        invariants_of, kirchhoff_run, linearize_triangle_exact,
-                        triangle_shape_error, rotation_angle)
+from engine.solver import (
+    N_TRIALS,
+    R_ESC,
+    SOFT2,
+    WALL_R,
+    WALL_W,
+    make_ensemble,
+    total_energy,
+    trio_run,
+)
 from qhb.constants import __version__
-from engine.solver import (make_ensemble, trio_run, total_energy,
-                           SOFT2, R_ESC, WALL_R, WALL_W, N_TRIALS)
+from qhb.vortex import (
+    aref_launch,
+    equilateral_positions,
+    invariants_of,
+    kirchhoff_run,
+    linearize_triangle_exact,
+    rotation_angle,
+    triangle_shape_error,
+)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(HERE, "reference")

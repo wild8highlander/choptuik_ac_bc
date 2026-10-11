@@ -1,6 +1,7 @@
-# -*- coding: utf-8 -*-
 """IVP07 — convergence orders: the committed p_eff ladders behave."""
-import os, sys, json
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ivp_common import verdict, write_verdict
 

@@ -26,12 +26,15 @@ Outputs:
 """
 
 import json
-import numpy as np
+
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
+from pathlib import Path
+
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
-from pathlib import Path
 
 # ---- font setup (per skill rules) ----
 try:
@@ -44,11 +47,9 @@ except Exception:
 
 # ---- import the O_chi construction from the previous script ----
 import sys
+
 sys.path.insert(0, "/home/z/my-project/scripts")
-from ochi_explicit_construction import (
-    K3_intersection_form, flavor_mass_matrix,
-    T_breaking_block, construct_Ochi
-)
+from ochi_explicit_construction import construct_Ochi
 
 # =============================================================================
 # Constants
@@ -717,14 +718,14 @@ def main():
     # Print final summary
     k2 = sweep.get("kappa_2.00", {})
     k5 = sweep.get("kappa_5.00", {})
-    print(f"\nAt kappa_T = 2 (GUE regime, BF(GUE/Poi) = 47):")
+    print("\nAt kappa_T = 2 (GUE regime, BF(GUE/Poi) = 47):")
     print(f"  theta_min = {k2.get('theta_min', 'NA'):.3e}")
     print(f"  chi_top   = {k2.get('chi_top', 'NA'):.3e}")
     print(f"  finite-(M,N) floor = {k2.get('finite_N_residual', 'NA'):.3e}")
-    print(f"\nAt kappa_T = 5 (decisive GUE, BF = 321):")
+    print("\nAt kappa_T = 5 (decisive GUE, BF = 321):")
     print(f"  theta_min = {k5.get('theta_min', 'NA'):.3e}")
     print(f"  chi_top   = {k5.get('chi_top', 'NA'):.3e}")
-    print(f"\nRelaxation (QCD epoch):")
+    print("\nRelaxation (QCD epoch):")
     print(f"  exponent = {dynamics['relaxation_exponent']:.3e}")
     print(f"  factor   = {dynamics['relaxation_factor']:.3e}")
     print(f"  theta_final / bound = {dynamics['theta_final_predicted']/dynamics['experimental_bound']:.3e}")

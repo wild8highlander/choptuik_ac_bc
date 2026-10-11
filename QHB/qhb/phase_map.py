@@ -1,14 +1,11 @@
 """C9 - phase map over (beta, L) and the naive-window falsification."""
 from __future__ import annotations
 
-import math
-from typing import Dict, List
-
 from .constants import BETA_C_NAIVE, BETA_STAR, DELTA_F_MIN, DELTA_THRESH
-from .core import C_FV, D_FV, gap_finite_volume
+from .core import gap_finite_volume
 
 
-def phase_grid(betas: List[float], volumes: List[float]) -> Dict:
+def phase_grid(betas: list[float], volumes: list[float]) -> dict:
     """9 x 41 grid status map: OPEN if Delta_F > Delta_thresh, else CLOSED."""
     cells = []
     for L in volumes:
@@ -22,7 +19,7 @@ def phase_grid(betas: List[float], volumes: List[float]) -> Dict:
             "threshold": DELTA_THRESH}
 
 
-def valley_refine(betas: List[float]) -> Dict:
+def valley_refine(betas: list[float]) -> dict:
     """Grid argmin on the L=infinity row + parabolic refinement.
 
     The gap law is exactly quadratic in the valley, so the parabolic fit
@@ -45,7 +42,7 @@ def valley_refine(betas: List[float]) -> Dict:
             "curvature": 2 * A}
 
 
-def naive_falsifier() -> Dict:
+def naive_falsifier() -> dict:
     """Probe-point falsification of the naive window closure prediction.
 
     The naive narrow-window method of the exploratory build predicted gap

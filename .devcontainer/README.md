@@ -19,7 +19,7 @@ suites need, together with the recommended extensions.
 | Python | 3.12 + JupyterLab | `python/` verification suite, `notebooks/` |
 | Julia | 1.10 | `julia/` verification suite |
 | Java | 17 | `java-webapp/` Spring Boot stack |
-| Node | 20 | `interactive-viz/` dashboard |
+| Node | 20 | `Interactive Viz/` dashboard |
 
 | Port | Auto-forward | Label |
 |------|--------------|-------|
@@ -35,9 +35,9 @@ suites need, together with the recommended extensions.
    failure so one broken optional stack never blocks the others:
    - Python: `pip install -r python/requirements.txt`
    - Julia: `cd julia && julia --project=. -e 'using Pkg; Pkg.instantiate()'`
-   - Node: `cd interactive-viz && npm install`
+   - Node: `cd "Interactive Viz" && npm install`
 3. Forwarded ports open automatically:
-   - **3000** — `interactive-viz` Next.js dev server
+   - **3000** — `Interactive Viz` Next.js dev server
    - **8080** — `java-webapp` Spring Boot server
    - **8888** — Jupyter (for `notebooks/`)
 4. Because `PYTHONPATH` and `JULIA_PROJECT` are preset, verification works

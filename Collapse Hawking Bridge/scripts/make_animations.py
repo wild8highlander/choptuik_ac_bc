@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 make_animations.py — the four launch animations of the bridge.
 
@@ -32,12 +31,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+import figstyle as fs
+import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib.pyplot as plt  # noqa: E402
-from matplotlib.animation import FuncAnimation, FFMpegWriter, PillowWriter  # noqa: E402
-
-import figstyle as fs  # noqa: E402
-from chbridge.hawking import PAGE_FRACTION  # noqa: E402
+from chbridge.hawking import PAGE_FRACTION
+from matplotlib.animation import FFMpegWriter, FuncAnimation, PillowWriter
 
 REF = os.path.join(ROOT, "campaigns", "reference")
 DATA = os.path.join(ROOT, "data", "bridge")

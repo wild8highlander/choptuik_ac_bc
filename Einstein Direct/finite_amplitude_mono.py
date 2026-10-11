@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 OPEN9-Q2: ФАНТОМНЫЙ ОСТАТОК pi/30 — КОНЕЧНОАМПЛИТУДНЫЙ МЕХАНИЗМ (v19)
@@ -51,7 +50,6 @@ from __future__ import annotations
 
 import json
 import os
-import sys
 import time
 
 for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",

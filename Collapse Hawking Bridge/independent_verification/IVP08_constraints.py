@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-08 — independent constraint-propagation audit.
 
@@ -40,8 +39,14 @@ import numpy as np
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(IVP_DIR)
 sys.path.insert(0, IVP_DIR)
-from ivp_common import (save_result, log, worst_status, load_engine,  # noqa: E402
-                        make_independent_gaussian, GEO)
+from ivp_common import (
+    GEO,
+    load_engine,
+    log,
+    make_independent_gaussian,
+    save_result,
+    worst_status,
+)
 
 KAPPA = 2.0  # independently proved in IVP-06
 

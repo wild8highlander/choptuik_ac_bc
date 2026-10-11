@@ -1,10 +1,12 @@
-# -*- coding: utf-8 -*-
 """IVP05 — dimensions audit: every physical column carries the right SI size."""
-import os, sys
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ivp_common import ROOT, write_verdict
+
 sys.path.insert(0, ROOT)
-from qhb.bridge import equal_qcd_mass, equal_cmb_mass, T_H, r_s, S_BH, t_evap
+from qhb.bridge import S_BH, T_H, equal_cmb_mass, equal_qcd_mass, r_s, t_evap
 
 checks = {
     "M_QCD_in_[1e10,1e12]_kg": 1e10 < equal_qcd_mass() < 1e12,

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Верификация мод QEP второго потока: Ньютон-полировка + mpmath-вердикт.
 
 Вопрос: какие из кандидатов — ПОДЛИННЫЕ ранг-падения M(lam) (18x9), какие —
@@ -14,16 +13,16 @@ import os
 import sys
 import warnings
 
+import mpmath as mp
 import numpy as np
 import sympy as sp
-import mpmath as mp
 
 BASE = "/home/z/my-project/choptuik_ac_bc/einstein_direct"
 sys.path.insert(0, BASE)
 os.chdir(BASE)
 warnings.filterwarnings("ignore")
 
-import sympy_second_flows as sf  # noqa: E402
+import sympy_second_flows as sf
 
 mp.mp.dps = 40
 

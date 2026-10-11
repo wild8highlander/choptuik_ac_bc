@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 figstyle.py — the visual identity of the Quark-Hawking Bridge figures.
 
@@ -23,7 +22,7 @@ for _p in ("/usr/share/fonts/truetype/chinese/NotoSansSC-Regular.ttf",
     except Exception:
         pass
 
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
 
 plt.rcParams["font.sans-serif"] = ["DejaVu Sans", "Noto Sans SC"]
 plt.rcParams["axes.unicode_minus"] = False
@@ -43,7 +42,6 @@ TOKENS = {
 
 LANG = {
     "en": {
-        "map_title": "The Quark-Hawking Bridge",
         "gap_title": "The gap law of the three corrections",
         "gap_y": "Floquet gap  $\\Delta_F$  [code]",
         "gap_x": "trio drive amplitude  $\\beta$",
@@ -119,7 +117,6 @@ LANG = {
         "vor_meas": "measured max radius (0/300 escapes)",
     },
     "ru": {
-        "map_title": "Мост «Кварк–Хокинг»",
         "gap_title": "Закон зазора трёх поправок",
         "gap_y": "Флоке-зазор  $\\Delta_F$  [код]",
         "gap_x": "амплитуда трио-драйва  $\\beta$",

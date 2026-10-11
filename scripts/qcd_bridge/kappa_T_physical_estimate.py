@@ -33,8 +33,9 @@ import json
 import math
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.font_manager as fm
 
@@ -300,7 +301,7 @@ def make_figure(spacings, kappa_T_grid, lls, k_lb, k_best, bf_phys):
 
     ax1.plot(s_plot, p_goe, "g--", lw=1.5, label="GOE ($\\kappa_T=0$)")
     ax1.plot(s_plot, p_gue, "r-", lw=2.0,
-             label=f"GUE ($\\kappa_T\\to\\infty$)")
+             label="GUE ($\\kappa_T\\to\\infty$)")
     ax1.plot(s_plot, p_poi, "k:", lw=1.5, label="Poisson")
 
     # Best-fit Pandey-Mehta
@@ -421,17 +422,17 @@ def main():
     fw_bf = np.array([0.01, 0.5, 5.0, 18.0, 47.0, 130.0, 321.0, 510.0])
     fw_bf_at_lb = float(np.interp(k_lb_95, fw_kt, fw_bf))
     fw_bf_at_best = float(np.interp(k_best, fw_kt, fw_bf))
-    print(f"\n    [framework O_chi at N=28, interpolated from Table tab:ochi-sweep]")
+    print("\n    [framework O_chi at N=28, interpolated from Table tab:ochi-sweep]")
     print(f"    BF(GUE/Poi) at kappa_T={k_lb_95:.2f} (95% CL lower bound) = {fw_bf_at_lb:.0f}")
     print(f"    BF(GUE/Poi) at kappa_T={k_best:.2f} (best fit)           = {fw_bf_at_best:.0f}")
 
     # Step 4: interpret
     print("\n[4] Interpretation:")
-    print(f"    The lattice Dirac spectrum is consistent with chGUE,")
-    print(f"    which maps to GUE for O_chi via index(D) = Q_top.")
-    print(f"    The framework's crossover kappa_T -> GUE occurs at kappa_T ~ 1.5.")
+    print("    The lattice Dirac spectrum is consistent with chGUE,")
+    print("    which maps to GUE for O_chi via index(D) = Q_top.")
+    print("    The framework's crossover kappa_T -> GUE occurs at kappa_T ~ 1.5.")
     print(f"    Lattice lower bound: kappa_T > {k_lb_95:.1f} (95% CL)")
-    print(f"    -> QCD is DEEP in the GUE regime.")
+    print("    -> QCD is DEEP in the GUE regime.")
     # Use framework BF (more honest than lattice Gaussian BF)
     fw_bf_val = fw_bf_at_lb
     if fw_bf_val > 150:
@@ -457,7 +458,7 @@ def main():
         "description": "Physical estimate of kappa_T for real QCD from lattice Dirac spectrum",
         "method": "Pandey-Mehta GOE-GUE crossover fit to lattice Dirac spacings + framework BF interpolation",
         "lattice_spectrum": {
-            "n_spacings": int(len(spacings)),
+            "n_spacings": len(spacings),
             "mean_spacing": float(np.mean(spacings)),
             "std_spacing": float(np.std(spacings)),
             "source": "Representative of JLQCD/BMW N_f=2+1 overlap-Dirac at physical m_pi",

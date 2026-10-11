@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 generate_animations_4d.py — Dynamic 4D animations (frames) for all 9 sections.
 
@@ -18,16 +17,15 @@ Author: Ishak Khamzatovich Isaev (ORCID 0009-0003-7299-0701)
 from __future__ import annotations
 
 import json
-import math
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
-
-import numpy as np
+from typing import Any
 
 # Font setup
 import matplotlib.font_manager as fm
+import numpy as np
+
 for fp in [
     '/usr/share/fonts/truetype/chinese/NotoSansSC-Regular.ttf',
     '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
@@ -37,10 +35,9 @@ for fp in [
         fm.fontManager.addfont(fp)
 
 import matplotlib.pyplot as plt
-from matplotlib import cm as mpl_cm
+from matplotlib.animation import FFMpegWriter, FuncAnimation, PillowWriter
+from matplotlib.colors import LinearSegmentedColormap, Normalize
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
-from matplotlib.colors import Normalize, LinearSegmentedColormap
-from matplotlib.animation import FuncAnimation, PillowWriter, FFMpegWriter
 
 plt.rcParams['font.sans-serif'] = ['Noto Sans SC', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
@@ -51,11 +48,14 @@ plt.rcParams['figure.dpi'] = 100
 
 sys.path.insert(0, str(Path(__file__).parent))
 from qcd_bridge_engine import (
-    QCDBridgeConfig, run_all, build_Ochi, kappa_T_sweep, N_scaling_test,
-    tau_relax_dynamics, kappa_T_physical_estimate, cabibbo_coincidence,
-    cp_solution_chain, jet_wake_bridge, folded_spacings, gue_spacing_pdf,
-    poisson_spacing_pdf, bayes_factor_gue_poisson,
-    KAPPA_T_PHYSICAL_LOWER, KAPPA_T_BESTFIT, DELTA_C, N_HILBERT,
+    DELTA_C,
+    KAPPA_T_BESTFIT,
+    KAPPA_T_PHYSICAL_LOWER,
+    N_scaling_test,
+    build_Ochi,
+    cabibbo_coincidence,
+    cp_solution_chain,
+    kappa_T_sweep,
 )
 
 OUTPUT_DIR = Path("/home/z/my-project/choptuik_ac_bc/qcd_bridge/animations")
@@ -98,7 +98,7 @@ def _style_ax(ax, title: str, xlabel: str, ylabel: str, zlabel: str):
         pass
 
 
-def _save_anim(anim, name: str) -> Dict[str, str]:
+def _save_anim(anim, name: str) -> dict[str, str]:
     """Save animation as MP4 + GIF."""
     paths = {}
     mp4_path = OUTPUT_DIR / f"{name}.mp4"
@@ -122,7 +122,7 @@ def _save_anim(anim, name: str) -> Dict[str, str]:
 
 
 # ─── Section 1: O_chi eigvals — rotating 3D bar histogram ──────────────
-def anim_section1_ochi() -> Dict[str, Any]:
+def anim_section1_ochi() -> dict[str, Any]:
     """O_chi eigenvalue spectrum — 3D histogram bars colored by magnitude,
     camera rotates around z-axis (4th dim: viewing angle = time)."""
     M = build_Ochi(KAPPA_T_BESTFIT, seed=42)
@@ -155,7 +155,7 @@ def anim_section1_ochi() -> Dict[str, Any]:
 
 
 # ─── Section 2: RMT sweep — kappa_T-axis animation ────────────────────
-def anim_section2_rmt_sweep() -> Dict[str, Any]:
+def anim_section2_rmt_sweep() -> dict[str, Any]:
     """RMT sweep — 3D scatter of spacings s vs sweep index vs Bayes factor,
     with time = evolving subset of sweep points revealed progressively."""
     sweep = kappa_T_sweep(kappa_values=np.linspace(KAPPA_T_PHYSICAL_LOWER, 12.0, 30))
@@ -191,7 +191,7 @@ def anim_section2_rmt_sweep() -> Dict[str, Any]:
 
 
 # ─── Section 3: K3 staircase — staircase grows with N ─────────────────
-def anim_section3_staircase() -> Dict[str, Any]:
+def anim_section3_staircase() -> dict[str, Any]:
     """K3 spectral staircase N(t) = sum Theta(t - lambda_n) — reveals
     progressively more eigenvalues as N grows (time = N revealed)."""
     # Build a representative K3 intersection form (diagonal values)
@@ -236,7 +236,7 @@ def anim_section3_staircase() -> Dict[str, Any]:
 
 
 # ─── Section 4: N-scaling — log-log surface rotates and reveals ───────
-def anim_section4_N_scaling() -> Dict[str, Any]:
+def anim_section4_N_scaling() -> dict[str, Any]:
     """N-scaling: |<lambda>| vs N for several matrices — 3D line plot,
     color by |<lambda>|, time = rotation + progressive reveal."""
     Ns = np.unique(np.logspace(np.log10(20), np.log10(2000), 12).astype(int))
@@ -274,7 +274,7 @@ def anim_section4_N_scaling() -> Dict[str, Any]:
 
 
 # ─── Section 5: tau_relax dynamics — time evolution of order parameter ─
-def anim_section5_tau_relax() -> Dict[str, Any]:
+def anim_section5_tau_relax() -> dict[str, Any]:
     """tau_relax dynamics — 3D trajectory of order parameter <lambda>(t)
     spiraling toward 0 as t -> infinity. Time = parametric frame."""
     t_max = 6.0  # in units of tau_relax
@@ -318,7 +318,7 @@ def anim_section5_tau_relax() -> Dict[str, Any]:
 
 
 # ─── Section 6: kappa_T physical estimate — delta_C plane evolves ─────
-def anim_section6_kappa_T() -> Dict[str, Any]:
+def anim_section6_kappa_T() -> dict[str, Any]:
     """kappa_T physical estimate — 3D surface of kappa_T(delta_C, n_flavors)
     rotating, with time = rotation angle. Highlights delta_C = pi/7 plane."""
     delta_C_grid = np.linspace(0.2, 1.0, 30)
@@ -345,7 +345,7 @@ def anim_section6_kappa_T() -> Dict[str, Any]:
                 K_anim[:, idx], color=PALETTE["accent3"], linewidth=3,
                 label=f"delta_C = pi/7 (= {DELTA_C:.4f})")
         ax.legend(loc='upper right', fontsize=9)
-        _style_ax(ax, f"kappa_T(delta_C, n_f) — delta_C=pi/7 highlighted",
+        _style_ax(ax, "kappa_T(delta_C, n_f) — delta_C=pi/7 highlighted",
                   "delta_C", "n_flavors", "kappa_T")
         ax.view_init(elev=22, azim=30 + frame * (200 / N_FRAMES))
         return []
@@ -357,7 +357,7 @@ def anim_section6_kappa_T() -> Dict[str, Any]:
 
 
 # ─── Section 7: Cabibbo coincidence — rotating 3D scatter ─────────────
-def anim_section7_cabibbo() -> Dict[str, Any]:
+def anim_section7_cabibbo() -> dict[str, Any]:
     """Cabibbo coincidence — 3D scatter of measured angles (theta_C, theta_12, theta_23)
     vs theoretical prediction pi/7 family. Time = rotation."""
     res = cabibbo_coincidence()
@@ -401,7 +401,7 @@ def anim_section7_cabibbo() -> Dict[str, Any]:
 
 
 # ─── Section 8: CP 8-step chain — chain reveals step-by-step ──────────
-def anim_section8_cp_chain() -> Dict[str, Any]:
+def anim_section8_cp_chain() -> dict[str, Any]:
     """CP 8-step solution chain — 3D nodes connecting sequentially,
     time = step reveal. 4th dim = color of accumulated nodes."""
     res = cp_solution_chain()
@@ -445,7 +445,7 @@ def anim_section8_cp_chain() -> Dict[str, Any]:
 
 
 # ─── Section 9: Jet wake bridge — wake develops in time ───────────────
-def anim_section9_jet_wake() -> Dict[str, Any]:
+def anim_section9_jet_wake() -> dict[str, Any]:
     """Jet wake bridge — 3D wake profile (z, x, intensity) develops
     as time = downstream distance / characteristic length increases."""
     z_max = 4.0
@@ -493,7 +493,7 @@ SECTION_ANIMATORS = {
 }
 
 
-def generate_all(sections: Optional[List[int]] = None) -> Dict[str, Any]:
+def generate_all(sections: list[int] | None = None) -> dict[str, Any]:
     if sections is None:
         sections = list(SECTION_ANIMATORS.keys())
     summary = {"sections": [], "total_files": 0, "output_dir": str(OUTPUT_DIR)}

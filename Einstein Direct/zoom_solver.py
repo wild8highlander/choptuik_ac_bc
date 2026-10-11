@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 МНОГОСТАДИЙНЫЙ РЕГИДДИНГ (ZOOM) ДЛЯ ЗАДАЧИ ЧОПТЮКА (стабильная цепочка)
@@ -30,15 +29,13 @@ du_new = du_old/lam; поля интерполируются кубически 
 """
 from __future__ import annotations
 
-import json
 import os
 import time
 from dataclasses import dataclass, field
 
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
-
-from solver import (DoubleNullSolver, GaussianPulseData, SolverConfig, KAPPA)
+from solver import KAPPA, DoubleNullSolver, GaussianPulseData, SolverConfig
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 RESULTS = os.path.join(BASE, "results")
@@ -312,8 +309,7 @@ class ZoomRunner:
                             and r_ah > 0 and abs(tmr_ah - 1.0) < 0.5)
                     if sane:
                         self.m_ah_hist.append((v_now, m_ah))
-                        if m_ah > diag.m_ah_max:
-                            diag.m_ah_max = m_ah
+                        diag.m_ah_max = max(diag.m_ah_max, m_ah)
                         self._ah_rows += 1
                     else:
                         self._ah_rows = 0

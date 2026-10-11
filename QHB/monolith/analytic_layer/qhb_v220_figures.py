@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """QHB v2.2.0 — фигуры глав 15–17 (RU/EN): ветви+расщепление, космо-сценарий, лестницы."""
-import json, math
-import numpy as np
+import json
+import math
+
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.font_manager as fm
+
 for fp in ("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"):
     try:
@@ -13,6 +16,7 @@ for fp in ("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
     except Exception:
         pass
 import matplotlib.pyplot as plt
+
 plt.rcParams["font.sans-serif"] = ["DejaVu Sans"]
 plt.rcParams["axes.unicode_minus"] = False
 plt.rcParams["axes.edgecolor"] = "#666666"
@@ -23,6 +27,7 @@ plt.rcParams["ytick.color"] = "#444444"
 WORK = "/home/z/my-project/qhb_work"
 OUT = f"{WORK}/vfigs"
 import os
+
 os.makedirs(OUT, exist_ok=True)
 
 T19 = json.load(open(f"{WORK}/v220_t19.json"))
@@ -71,7 +76,7 @@ TXT = {
    LE_leg_ref=r"$\propto n^{-1/2}$", LE_leg_se=r"$1\sigma$ Пуассона",
    LE_ann=r"все $|z|\leq 1.2$",
    LS_y=r"порядок $p$", LS_ann=("L-A: ~1–2 (интерполяция пика)", "L-B: 4.096",
-        "L-C: точный 2-член", "L-D: $1/\ln N$", "L-E: 0.5"),
+        "L-C: точный 2-член", r"L-D: $1/\ln N$", "L-E: 0.5"),
  ),
  "en": dict(
    v1a_t="Branch laws: exact curves vs numerical spectrum",
@@ -112,7 +117,7 @@ TXT = {
    LE_leg_ref=r"$\propto n^{-1/2}$", LE_leg_se=r"$1\sigma$ Poisson",
    LE_ann=r"all $|z|\leq 1.2$",
    LS_y=r"order $p$", LS_ann=("L-A: ~1–2 (peak interpolation)", "L-B: 4.096",
-        "L-C: exact 2-term law", "L-D: $1/\ln N$", "L-E: 0.5"),
+        "L-C: exact 2-term law", r"L-D: $1/\ln N$", "L-E: 0.5"),
  ),
 }
 

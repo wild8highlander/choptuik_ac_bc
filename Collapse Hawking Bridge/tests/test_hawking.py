@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 """Closed-form Schwarzschild thermodynamics: book-level reference numbers."""
-import math
 
 from chbridge import hawking as H
-from chbridge.constants import T_CMB, M_sun, yr
+from chbridge.constants import T_CMB, M_sun
 
 
 def test_schwarzschild_radius_solar():

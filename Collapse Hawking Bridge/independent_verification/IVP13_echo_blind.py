@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-13 — blind echo detector (Delta measurement from raw signals).
 
@@ -38,8 +37,7 @@ import numpy as np
 
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, IVP_DIR)
-from ivp_common import (save_result, log, worst_status, load_engine,  # noqa: E402
-                        make_independent_gaussian, GEO)
+from ivp_common import GEO, load_engine, log, make_independent_gaussian, save_result
 
 EPS_ECHO_LIST = [1e-3, 3e-4, 1e-4]
 N_GRID = 1600
@@ -176,8 +174,8 @@ def main():
         log(f"    Delta_measured (mean over runs with >=3 peaks) = "
             f"{delta_eff:.3f}")
         log(f"    literature anchor: Delta = {LIT_DELTA} +- {LIT_DELTA_ERR}")
-        log(f"    fixed-grid effective-period band (project honest error): "
-            f"+- 0.446")
+        log("    fixed-grid effective-period band (project honest error): "
+            "+- 0.446")
         consistent = abs(delta_eff - LIT_DELTA) <= 0.5
         log(f"    consistency within +-0.5 of the anchor: {consistent}")
     else:

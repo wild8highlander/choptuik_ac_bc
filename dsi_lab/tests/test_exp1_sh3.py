@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Эксперимент 1 (Ш.3(iii)): мост следа — быстрые проверки.
 
 Проверяем:
@@ -10,8 +9,6 @@
 import math
 
 import numpy as np
-import pytest
-
 from exp1_sh3_bridge import G_of_PQ, leavitt_F, random_pair
 
 

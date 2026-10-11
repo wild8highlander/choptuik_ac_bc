@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 web_runner.py — stdin/stdout bridge between the Next.js API and the canonical
 qcd_bridge_engine. Designed to be invoked via subprocess from /api/run and
@@ -22,13 +21,13 @@ import sys
 import traceback
 from dataclasses import asdict
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 # Add this directory to sys.path so we can import the engine & report modules.
 sys.path.insert(0, str(Path(__file__).parent))
 
 from qcd_bridge_engine import QCDBridgeConfig, run_all  # type: ignore
-from report_engine import ReportEngine                    # type: ignore  # noqa: E402
+from report_engine import ReportEngine  # type: ignore
 
 
 def _to_serializable(obj: Any) -> Any:
@@ -53,7 +52,8 @@ def _to_serializable(obj: Any) -> Any:
     if isinstance(obj, (bool, int, float, str)) or obj is None:
         return obj
     try:
-        from dataclasses import is_dataclass, asdict as _asdict
+        from dataclasses import asdict as _asdict
+        from dataclasses import is_dataclass
         if is_dataclass(obj):
             return _to_serializable(_asdict(obj))
     except Exception:
@@ -61,7 +61,7 @@ def _to_serializable(obj: Any) -> Any:
     return str(obj)
 
 
-def _build_config(payload: Dict[str, Any]) -> QCDBridgeConfig:
+def _build_config(payload: dict[str, Any]) -> QCDBridgeConfig:
     """Map a JSON payload (from the web app) onto QCDBridgeConfig."""
     sections = payload.get("sections") or list(range(1, 10))
     cfg = QCDBridgeConfig(
@@ -81,7 +81,7 @@ def _build_config(payload: Dict[str, Any]) -> QCDBridgeConfig:
     return cfg
 
 
-def _read_payload() -> Dict[str, Any]:
+def _read_payload() -> dict[str, Any]:
     """Read a JSON payload from stdin (or empty dict if no stdin)."""
     raw = sys.stdin.read() if not sys.stdin.isatty() else ""
     if not raw.strip():

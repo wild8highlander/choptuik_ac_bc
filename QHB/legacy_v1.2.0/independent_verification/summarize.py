@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """summarize.py — the one-page IVP summary (results/SUMMARY.md)."""
 import json
 import os

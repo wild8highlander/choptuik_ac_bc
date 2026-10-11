@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 engine/solver.py — the numeric engine of the Quark-Hawking Bridge.
 
@@ -20,10 +19,10 @@ Units: code units G = m = 1.  Determinism: the ONLY randomness is
 numpy default_rng(SEED) with SEED committed in qhb/constants.py.
 """
 import math
-import numpy as np
 
+import numpy as np
 from qhb.constants import SEED
-from qhb.trio import WALL_R, WALL_W, WALL_P
+from qhb.trio import WALL_P, WALL_R, WALL_W
 
 # --- committed engine parameters ---------------------------------------------
 SOFT2 = 1e-2          # softening epsilon^2 (code units; honest toy-model choice,

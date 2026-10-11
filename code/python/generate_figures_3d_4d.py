@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 generate_figures_3d_4d.py — Generate all 9 sections' figures in 3D + 4D variants.
 
@@ -21,12 +20,12 @@ import math
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
-
-import numpy as np
+from typing import Any
 
 # Font setup — Noto Sans SC handles Latin + CJK; DejaVu Sans catches symbols
 import matplotlib.font_manager as fm
+import numpy as np
+
 for fp in [
     '/usr/share/fonts/truetype/chinese/NotoSansSC-Regular.ttf',
     '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
@@ -37,8 +36,8 @@ for fp in [
 
 import matplotlib.pyplot as plt
 from matplotlib import cm as mpl_cm
+from matplotlib.colors import Normalize
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 — registers 3D projection
-from matplotlib.colors import Normalize, LinearSegmentedColormap
 
 plt.rcParams['font.sans-serif'] = ['Noto Sans SC', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
@@ -53,11 +52,19 @@ plt.rcParams['figure.dpi'] = 100
 # Add parent dir for engine import
 sys.path.insert(0, str(Path(__file__).parent))
 from qcd_bridge_engine import (
-    QCDBridgeConfig, run_all, build_Ochi, kappa_T_sweep, N_scaling_test,
-    tau_relax_dynamics, kappa_T_physical_estimate, cabibbo_coincidence,
-    cp_solution_chain, jet_wake_bridge, folded_spacings, gue_spacing_pdf,
-    poisson_spacing_pdf, bayes_factor_gue_poisson,
-    KAPPA_T_PHYSICAL_LOWER, KAPPA_T_BESTFIT, DELTA_C, N_HILBERT,
+    DELTA_C,
+    KAPPA_T_BESTFIT,
+    KAPPA_T_PHYSICAL_LOWER,
+    build_Ochi,
+    cabibbo_coincidence,
+    cp_solution_chain,
+    folded_spacings,
+    gue_spacing_pdf,
+    jet_wake_bridge,
+    kappa_T_physical_estimate,
+    kappa_T_sweep,
+    poisson_spacing_pdf,
+    tau_relax_dynamics,
 )
 
 OUTPUT_DIR = Path("/home/z/my-project/choptuik_ac_bc/qcd_bridge/figures")
@@ -76,7 +83,7 @@ PALETTE = {
 }
 
 
-def save_3formats(fig, name: str) -> Dict[str, str]:
+def save_3formats(fig, name: str) -> dict[str, str]:
     """Save figure in 600 DPI PNG, PDF, SVG."""
     paths = {}
     for ext, dpi in [("png", 600), ("pdf", None), ("svg", None)]:
@@ -93,7 +100,7 @@ def save_3formats(fig, name: str) -> Dict[str, str]:
 # ─────────────────────────────────────────────────────────────────────────────
 # Section 1: O_chi operator construction — 3D eigenvalue bar + 4D heatmap
 # ─────────────────────────────────────────────────────────────────────────────
-def fig_section1_ochi_3d_4d() -> Dict[str, Any]:
+def fig_section1_ochi_3d_4d() -> dict[str, Any]:
     """3D: eigenvalues as bars on a 28-vertex ring; 4D: matrix heatmap with color."""
     O = build_Ochi(KAPPA_T_BESTFIT)
     eigs = np.linalg.eigvalsh(O)
@@ -127,7 +134,7 @@ def fig_section1_ochi_3d_4d() -> Dict[str, Any]:
     ax.set_xlabel('Column index $j$')
     ax.set_ylabel('Row index $i$')
     ax.set_zlabel('$O_{\\chi,\\,ij}$')
-    ax.set_title(f'4D visualization: $O_\\chi$ matrix surface (height + color = $O_{{ij}}$)')
+    ax.set_title('4D visualization: $O_\\chi$ matrix surface (height + color = $O_{ij}$)')
     fig.colorbar(surf, ax=ax, shrink=0.6, pad=0.1, label='$O_{\\chi,\\,ij}$')
     paths_4d = save_3formats(fig, "fig_s1_ochi_matrix_4d")
 
@@ -137,7 +144,7 @@ def fig_section1_ochi_3d_4d() -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # Section 2: RMT sweep — 3D BF surface + 4D (BF vs kappa vs color)
 # ─────────────────────────────────────────────────────────────────────────────
-def fig_section2_rmt_sweep_3d_4d() -> Dict[str, Any]:
+def fig_section2_rmt_sweep_3d_4d() -> dict[str, Any]:
     kappas = np.array([0.0, 0.3, 0.7, 1.0, 1.5, 2.0, 2.62, 3.0, 4.0, 5.0, 8.45, 12.0, 20.0])
     sweep = kappa_T_sweep(kappas)
     k = np.array([r["kappa_T"] for r in sweep])
@@ -196,7 +203,7 @@ def fig_section2_rmt_sweep_3d_4d() -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # Section 3: Spectral staircase vs Wigner — 3D staircase + 4D spacing histogram
 # ─────────────────────────────────────────────────────────────────────────────
-def fig_section3_staircase_3d_4d() -> Dict[str, Any]:
+def fig_section3_staircase_3d_4d() -> dict[str, Any]:
     O = build_Ochi(KAPPA_T_BESTFIT)
     eigs = np.sort(np.linalg.eigvalsh(O))
     s = folded_spacings(eigs)
@@ -256,7 +263,7 @@ def fig_section3_staircase_3d_4d() -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # Section 4: N-scaling — 3D |<lambda>| vs N vs realization + 4D std surface
 # ─────────────────────────────────────────────────────────────────────────────
-def fig_section4_N_scaling_3d_4d() -> Dict[str, Any]:
+def fig_section4_N_scaling_3d_4d() -> dict[str, Any]:
     N_values = [10, 28, 50, 100, 200, 500, 1000]  # capped at 1000 for tractability
     # Multiple realizations per N for spread
     n_realizations = 5
@@ -332,7 +339,7 @@ def fig_section4_N_scaling_3d_4d() -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # Section 5: tau_relax dynamics — 3D time evolution + 4D phase portrait
 # ─────────────────────────────────────────────────────────────────────────────
-def fig_section5_tau_relax_3d_4d() -> Dict[str, Any]:
+def fig_section5_tau_relax_3d_4d() -> dict[str, Any]:
     relax = tau_relax_dynamics(theta_0=1e-19)
     t = np.array(relax["t_values_s"])
     theta_t = np.array(relax["theta_t_values"])
@@ -381,7 +388,7 @@ def fig_section5_tau_relax_3d_4d() -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # Section 6: kappa_T physical estimate — 3D CI + 4D posterior
 # ─────────────────────────────────────────────────────────────────────────────
-def fig_section6_kappa_T_3d_4d() -> Dict[str, Any]:
+def fig_section6_kappa_T_3d_4d() -> dict[str, Any]:
     kpe = kappa_T_physical_estimate()
 
     # 3D: kappa_T vs BF vs kappa_lower bound, with vertical CI bars
@@ -433,7 +440,7 @@ def fig_section6_kappa_T_3d_4d() -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # Section 7: Cabibbo coincidence — 3D polar + 4D predicted vs measured
 # ─────────────────────────────────────────────────────────────────────────────
-def fig_section7_cabibbo_3d_4d() -> Dict[str, Any]:
+def fig_section7_cabibbo_3d_4d() -> dict[str, Any]:
     cab = cabibbo_coincidence()
 
     # 3D polar plot: theta_C predicted vs measured vs other mixing angles
@@ -491,7 +498,7 @@ def fig_section7_cabibbo_3d_4d() -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # Section 8: CP 8-step chain — 3D chain + 4D dependency graph
 # ─────────────────────────────────────────────────────────────────────────────
-def fig_section8_cp_chain_3d_4d() -> Dict[str, Any]:
+def fig_section8_cp_chain_3d_4d() -> dict[str, Any]:
     chain = cp_solution_chain()
     steps = chain["steps"]
 
@@ -559,7 +566,7 @@ def fig_section8_cp_chain_3d_4d() -> Dict[str, Any]:
 # ─────────────────────────────────────────────────────────────────────────────
 # Section 9: Jet wake bridge — 3D chi_eff + 4D jet wake vs topological
 # ─────────────────────────────────────────────────────────────────────────────
-def fig_section9_jet_wake_3d_4d() -> Dict[str, Any]:
+def fig_section9_jet_wake_3d_4d() -> dict[str, Any]:
     jwb = jet_wake_bridge()
 
     # 3D: jet wake amplitude vs delta_C vs Lambda_QCD
@@ -573,7 +580,7 @@ def fig_section9_jet_wake_3d_4d() -> Dict[str, Any]:
                             norm=Normalize(vmin=Chi.min(), vmax=Chi.max()))
     ax.scatter([DELTA_C], [0.2], [jwb["chi_eff_GeV4"]],
                 color='red', s=300, marker='*',
-                label=f'Framework $\\delta_C=\\pi/7$, $\\Lambda_{{QCD}}=0.2$ GeV', zorder=10)
+                label='Framework $\\delta_C=\\pi/7$, $\\Lambda_{QCD}=0.2$ GeV', zorder=10)
     ax.set_xlabel(r'$\delta_C$')
     ax.set_ylabel(r'$\Lambda_{\mathrm{QCD}}$ (GeV)')
     ax.set_zlabel(r'$\chi_{\mathrm{eff}}$ (GeV$^4$)')
@@ -629,11 +636,11 @@ SECTIONS = {
 }
 
 
-def generate_all(sections: Optional[List[int]] = None) -> Dict[str, Any]:
+def generate_all(sections: list[int] | None = None) -> dict[str, Any]:
     """Generate all figures for the requested sections."""
     if sections is None:
         sections = list(SECTIONS.keys())
-    manifest: Dict[str, Any] = {"generated": time.strftime("%Y-%m-%dT%H:%M:%S"),
+    manifest: dict[str, Any] = {"generated": time.strftime("%Y-%m-%dT%H:%M:%S"),
                                   "sections": {}, "output_dir": str(OUTPUT_DIR)}
     for sec_num in sections:
         if sec_num not in SECTIONS:

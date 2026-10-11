@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Campaign C6 — the resolution-drift law: why one formula gives different
 values when the scale is rescaled.
@@ -73,7 +72,6 @@ import csv
 import json
 import math
 import os
-import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "campaigns", "reference")

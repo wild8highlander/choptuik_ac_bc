@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Iron-QA: static gate for the Lean scaffolds.
 
 1. Closed-kernel registry: every kernel theorem must exist and contain no
@@ -8,7 +7,9 @@
 3. `import Mathlib` present in both scaffolds.
 4. QHB_AxiomAudit.lean must reference every registered kernel.
 """
-import re, sys, pathlib
+import pathlib
+import re
+import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FAIL = []
@@ -32,12 +33,12 @@ REGISTRY = {
 }
 
 def body_of(txt, name):
-    m = re.search(rf"^theorem {re.escape(name)}\b.*?^", txt, re.M | re.S)
+    m = re.search(rf"^theorem {re.escape(name)}\b.*?^", txt, re.MULTILINE | re.DOTALL)
     if not m:
         return None
     start = m.start()
     nxt = re.search(r"^(?:theorem|axiom|def|noncomputable def|structure|inductive|namespace|end) ",
-                    txt[m.end():], re.M)
+                    txt[m.end():], re.MULTILINE)
     return txt[start: m.end() + (nxt.start() if nxt else len(txt))]
 
 def check_file(path, kernels, need_import=True):
@@ -56,7 +57,7 @@ def check_file(path, kernels, need_import=True):
         else:
             print(f"  [OK] {path.name} :: {k}")
     # axiom with body
-    for m in re.finditer(r"^axiom\s+(\w+)\s*:.*?:=\s*\S", txt, re.M):
+    for m in re.finditer(r"^axiom\s+(\w+)\s*:.*?:=\s*\S", txt, re.MULTILINE):
         FAIL.append(f"{path.name}: axiom with body `{m.group(1)}` does not compile")
     n_sorry = len(re.findall(r"\bsorry\b", txt))
     print(f"  · {path.name}: {n_sorry} data-anchored `sorry` markers (declared pattern)")
@@ -74,7 +75,7 @@ check_file(CORE, REGISTRY["QHB_Theorems.lean"])
 check_file(MATHLIB, REGISTRY["QHB_T19_Mathlib.lean"])
 
 # audit file must not itself contain the `sorry` tactic (mentions in prose are OK)
-if AUDIT.exists() and re.search(r"^\s*sorry\s*$|^\s*sorry\s+--", AUDIT.read_text(encoding="utf-8"), re.M):
+if AUDIT.exists() and re.search(r"^\s*sorry\s*$|^\s*sorry\s+--", AUDIT.read_text(encoding="utf-8"), re.MULTILINE):
     FAIL.append("QHB_AxiomAudit.lean contains sorry")
 
 print(f"[check_lean_kernels] {len(FAIL)} failures")

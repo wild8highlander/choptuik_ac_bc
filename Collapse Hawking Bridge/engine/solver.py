@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 ЧИСЛЕННЫЙ СОЛВЕР: СФЕРИЧЕСКИЙ КОЛЛАПС БЕЗМАССОВОГО СКАЛЯРНОГО ПОЛЯ
@@ -39,9 +38,6 @@ NUMERICAL SOLVER: SPHERICAL COLLAPSE OF A MASSLESS SCALAR FIELD
 """
 from __future__ import annotations
 
-import json
-import math
-import os
 import time
 from dataclasses import dataclass, field
 
@@ -470,10 +466,7 @@ class DoubleNullSolver:
                     rel_res = float(np.max(np.abs(resid)) /
                                     max(float(np.max(np.abs(O))), 1e-30))
                     # (i) большие остатки -> кольцо не описывается a r + C/r
-                    if rel_res > 0.30:
-                        a = 0.0
-                    # (ii) 1/r-мода доминирует на краю зоны -> a ненадёжен
-                    elif abs(C) > abs(a) * R_zone**2:
+                    if rel_res > 0.30 or abs(C) > abs(a) * R_zone**2:
                         a = 0.0
         # --- (1)+(3) пересборка зоны с тейпером (векторно, k = 0..K) ------
         ks = np.arange(0, K + 1)

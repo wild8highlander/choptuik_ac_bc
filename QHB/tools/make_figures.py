@@ -12,8 +12,10 @@ import sys
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.font_manager as fm
+
 for _fp in ('/usr/share/fonts/truetype/chinese/NotoSansSC-Regular.ttf',
             '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'):
     try:
@@ -26,7 +28,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from qhb import constants as C  # noqa: E402
+from qhb import constants as C
 
 FIG = ROOT / "docs" / "figures"
 FIG.mkdir(parents=True, exist_ok=True)
@@ -159,7 +161,7 @@ def fig_bridge(p, t, lang):
 
 
 def fig_response(p, t, lang):
-    from qhb.core import response, E_MAX
+    from qhb.core import E_MAX, response
     fig, ax = plt.subplots(figsize=(7, 4.4), constrained_layout=True)
     es = np.linspace(0.02, 3.5, 240)
     ax.plot(es, [response(e, C.BETA_STAR) for e in es], color=p["gold"], lw=1.8)
@@ -170,7 +172,7 @@ def fig_response(p, t, lang):
 
 
 def fig_escape(p, t, lang):
-    from qhb.core import escape_threshold, SIGMA_V
+    from qhb.core import SIGMA_V
     d = load("c5_free_three_body.json")
     fig, ax = plt.subplots(figsize=(7, 4.4), constrained_layout=True)
     x = np.linspace(0.2, 2.4, 300)
@@ -263,7 +265,7 @@ def fig_vortex_spec(p, t, lang):
         ax.plot([x], [y], "o", ms=13, color=p["gold"])
     ax.axhline(0, color=p["grid"]); ax.axvline(0, color=p["grid"])
     ax.annotate("0 (×2)", (0.05, 0.01), fontsize=11, color=p["fg"])
-    ax.annotate(f"±iω (×2)\nω = 3/2π ≈ 0.47746", (0.05, w), fontsize=11, color=p["fg"])
+    ax.annotate("±iω (×2)\nω = 3/2π ≈ 0.47746", (0.05, w), fontsize=11, color=p["fg"])
     ax.set(xlim=(-0.35, 1.6), ylim=(-w - 0.18, w + 0.18),
            title=t["spec"], xlabel="Re λ", ylabel=t["lam"])
     return fig

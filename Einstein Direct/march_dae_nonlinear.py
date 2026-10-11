@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Кампания [сессия 19]: НЕЛИНЕЙНЫЙ МАРШ DAE — тест конечно-амплитудного остатка.
 
 Вопрос (вердикт v14): весь ЛИНЕЙНЫЙ мир (статика + де-адиабатизованные вторые
@@ -59,8 +58,11 @@ RESULTS = os.path.join(BASE, "results")
 T_START = time.time()
 
 import dae_nonlinear_core as dnc
-from dae_nonlinear_core import (NonlinearDAE, build_nonlinear_system,
-                                DELTA_SP, STEPS_ECHO, DT, log)
+from dae_nonlinear_core import (
+    NonlinearDAE,
+    build_nonlinear_system,
+    log,
+)
 
 
 def campaign_point(kv, label, N2_raw, B_raw):
@@ -163,7 +165,7 @@ def campaign_point(kv, label, N2_raw, B_raw):
     t2["coker_ratio_e2"] = ratios(e2)
     t2["coker_ratio_line"] = ratios(w_line)
     t2["coker_ratio_b2"] = ratios(b2)
-    log(f"  кокоядро-невязка |P_coker G|/|G| (h = 1e-2, 3e-3, 1e-3*scale):")
+    log("  кокоядро-невязка |P_coker G|/|G| (h = 1e-2, 3e-3, 1e-3*scale):")
     log(f"    e2 (M2):   {t2['coker_ratio_e2']}")
     log(f"    линия:     {t2['coker_ratio_line']}")
     log(f"    b2 (~t3):  {t2['coker_ratio_b2']}")

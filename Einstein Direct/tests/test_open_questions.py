@@ -176,8 +176,8 @@ def test_q6_pole_location_and_char2():
 def test_q6_linear_closure_finite_at_pole():
     """P3: линейное замыкание P4h_lin конечно в полюсе (полюс —
     артефакт цепочной параметризации)."""
-    import sympy as sp
     import puiseux_soft_pole as pp
+    import sympy as sp
     out = pp.p3_softness()
     v = sp.sympify(out["P4h_linear_at_pole"])
     assert v.is_finite is not False and v.is_number
@@ -240,7 +240,7 @@ def test_q9_interval_arithmetic_soundness():
 def test_q9_certifies_booked_clock_root():
     """K2: Кравчик сертифицирует ЕДИНСТВЕННЫЙ корень часов в коробке,
     содержащей забронированный T0h = 3*sqrt(3)/2."""
-    from krawczyk_census import IV, g_base, dg_base, krawczyk_1d, tighten_1d
+    from krawczyk_census import IV, dg_base, g_base, krawczyk_1d, tighten_1d
     booked = 3 * math.sqrt(3) / 2
     X = IV(booked - 1e-2, booked + 1e-2)
     K = krawczyk_1d(g_base, dg_base, X)

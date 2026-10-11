@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Графики для прямого решения задачи Чоптюка (RU + EN, стиль dsi_lab)."""
 import json
 import os

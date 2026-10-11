@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import math
 import os
 import sys
@@ -8,12 +7,16 @@ import pytest
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 sys.path.insert(0, ROOT)
 
-from qhb.trio import (gascheau_verdict, gascheau_nu, GASCHEAU_THRESHOLD,
-                      growth_rate_equal_masses, wall_U)
-from qhb.wu import residual, required_x_for_eta
-from qhb.bridge import equal_qcd_mass, equal_cmb_mass, master_table, T_H
-from qhb.constants import A_WU_ANCHOR, eta_baryon, T_QCD_K, T_CMB
+from qhb.bridge import T_H, equal_cmb_mass, equal_qcd_mass, master_table
+from qhb.constants import A_WU_ANCHOR, T_CMB, T_QCD_K
 from qhb.ladder import constants_registry
+from qhb.trio import (
+    GASCHEAU_THRESHOLD,
+    gascheau_verdict,
+    growth_rate_equal_masses,
+    wall_U,
+)
+from qhb.wu import required_x_for_eta, residual
 
 
 class TestTrio:

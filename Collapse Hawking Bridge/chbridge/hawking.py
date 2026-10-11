@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 hawking.py — closed-form thermodynamics of Schwarzschild black holes.
 
@@ -24,8 +23,7 @@ The contact point with cosmology is the CMB-equal mass:
 """
 import math
 
-from .constants import (G, c, hbar, k_B, M_sun, M_earth, M_moon, T_CMB,
-                        yr, Gyr, AU, lyr)
+from .constants import AU, T_CMB, G, Gyr, c, hbar, k_B, lyr, yr
 
 PAGE_FRACTION = 1.0 - 2.0 ** (-1.5)   # 0.6464466094067262...
 

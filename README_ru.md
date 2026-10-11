@@ -1,9 +1,9 @@
 <a id="top"></a>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/logo/choptyuk_banner_dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="assets/logo/choptyuk_banner_dark.png">
-  <img alt="Choptuik AC-BC — каскад критического коллапса: концентрические кольца, стягивающиеся к сияющему ядру; спинорные поправки b-C и a-C, проблема Хоптюка и прямая программа Эйнштейна — machine-verified" src="assets/logo/choptyuk_banner_dark.png" width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="assets_logo/choptyuk_logo_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="assets_logo/choptyuk_logo_light.png">
+  <img alt="Choptuik AC-BC — каскад критического коллапса: концентрические кольца, стягивающиеся к сияющему ядру; спинорные поправки b-C и a-C, проблема Хоптюка и прямая программа Эйнштейна — machine-verified" src="assets_logo/choptyuk_logo_dark.png" width="100%">
 </picture>
 
 # Спинорные поправки b-C и a-C, проблема Хоптюка и прямая программа Эйнштейна
@@ -16,26 +16,63 @@
 **Автор и мейнтейнер:** Исхак Хамзатович Исаев — GitHub [@wild8highlander](https://github.com/wild8highlander) ·
 ORCID [0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701) · Нальчик, КБР *(единственный автор всех материалов)*
 
+## Стена бейджей
+
+**Стек и рантайм**
+
 [![License: Isaev Proprietary](https://img.shields.io/badge/License-Isaev%20Proprietary-red.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg?logo=python&logoColor=white)](python/)
 [![Julia 1.9+](https://img.shields.io/badge/Julia-1.9+-955880.svg?logo=julia)](julia/)
 [![Java 17+](https://img.shields.io/badge/Java-17+-orange.svg?logo=openjdk)](java-webapp/)
 [![Next.js 15 · 16](https://img.shields.io/badge/Next.js-15%20·%2016-black.svg?logo=next.js)](Interactive%20Viz/)
 [![TypeScript 5](https://img.shields.io/badge/TypeScript-5-3178C6.svg?logo=typescript&logoColor=white)](code/web/)
+[![React 19](https://img.shields.io/badge/React-19-61DAFB.svg?logo=react&logoColor=white)](Interactive%20Viz/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3-6DB33F.svg?logo=spring&logoColor=white)](java-webapp/)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg?logo=docker&logoColor=white)](docker/)
 [![Lean 4 + Mathlib](https://img.shields.io/badge/Lean%204-Mathlib-6b2c8f.svg?logo=lean&logoColor=white)](QHB/monolith/lean/)
+[![SymPy](https://img.shields.io/badge/SymPy-symbolic-3B5526.svg?logo=python&logoColor=white)](Einstein%20Direct/)
+[![mpmath 100-digit](https://img.shields.io/badge/mpmath-100--digit-8A2BE2.svg)](QHB/)
+
+**Ворота качества**
+
 [![CI](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/ci.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/ci.yml)
-[![DOI](https://img.shields.io/badge/Zenodo-10.5281%2Fzenodo.15152720-blue.svg?logo=zenodo)](https://doi.org/10.5281/zenodo.15152720)
-[![ORCID](https://img.shields.io/badge/ORCID-0009--0003--7299--0701-a6ce39?logo=orcid&logoColor=white)](https://orcid.org/0009-0003-7299-0701)
-[![Security](https://img.shields.io/badge/Security-OpenSSF%20Scorecard-yellow.svg)](https://securityscorecards.dev/viewer/?uri=github.com/wild8highlander/choptuik_ac_bc)
+[![Lint](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/lint.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/lint.yml)
+[![Docs](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/pages.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/pages.yml)
+[![Periodic verify](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/periodic-verify.yml/badge.svg)](https://github.com/wild8highlander/choptuik_ac_bc/actions/workflows/periodic-verify.yml)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](.pre-commit-config.yaml)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](python/pyproject.toml)
+[![Black](https://img.shields.io/badge/code%20style-black-000000.svg?logo=python&logoColor=white)](python/pyproject.toml)
 [![Codecov](https://img.shields.io/badge/Coverage-Codecov-f39f37?logo=codecov)](https://codecov.io/gh/wild8highlander/choptuik_ac_bc)
-[![Tests: Einstein Direct](https://img.shields.io/badge/Tests%20ED-58%2F58%20%2B10-brightgreen.svg)](Einstein%20Direct/tests/)
+[![Security](https://img.shields.io/badge/Security-OpenSSF%20Scorecard-yellow.svg)](https://securityscorecards.dev/viewer/?uri=github.com/wild8highlander/choptuik_ac_bc)
+[![Link check](https://img.shields.io/badge/links-markdown--link--check-blueviolet)](.github/workflows/link-check.yml)
+
+**Статус верификации**
+
+[![Tests: ED](https://img.shields.io/badge/Tests%20ED-58%2F58%20%2B10-brightgreen.svg)](Einstein%20Direct/tests/)
 [![Tests: CHB](https://img.shields.io/badge/Tests%20CHB-63%2F63-brightgreen.svg)](Collapse%20Hawking%20Bridge/tests/)
 [![Tests: QHB](https://img.shields.io/badge/Tests%20QHB-154%20collected-brightgreen.svg)](QHB/tests/)
-[![Discussions](https://img.shields.io/badge/Discussions-open-181717?logo=github)](https://github.com/wild8highlander/choptuik_ac_bc/discussions)
+[![Tests: monograph](https://img.shields.io/badge/Tests%20monograph-78%2F78-brightgreen.svg)](python/tests/)
+[![Julia testsets](https://img.shields.io/badge/Julia-16%20testsets-955880.svg?logo=julia)](julia/test/runtests.jl)
+[![Lean kernels](https://img.shields.io/badge/Lean-18%20closed-6b2c8f.svg?logo=lean&logoColor=white)](QHB/monolith/lean/)
+[![JSON verdicts](https://img.shields.io/badge/JSON%20verdicts-94-4c8bf5.svg)](Einstein%20Direct/results/)
+[![Reproducibility](https://img.shields.io/badge/rebuild-byte%20identical-success.svg)](QHB/data/rebuild_hashes.json)
 
-> 🇷🇺 **Язык:** этот README — на русском. English edition: [`README.en.md`](README.en.md) ·
+**Идентичность и сообщество**
+
+[![DOI](https://img.shields.io/badge/Zenodo-10.5281%2Fzenodo.15152720-blue.svg?logo=zenodo)](https://doi.org/10.5281/zenodo.15152720)
+[![ORCID](https://img.shields.io/badge/ORCID-0009--0003--7299--0701-a6ce39?logo=orcid&logoColor=white)](https://orcid.org/0009-0003-7299-0701)
+[![GitHub release](https://img.shields.io/github/v/release/wild8highlander/choptuik_ac_bc?logo=github)](https://github.com/wild8highlander/choptuik_ac_bc/releases)
+[![Release workflow](https://img.shields.io/badge/Release-sigstore%20signed-3F51B5.svg?logo=sigstore&logoColor=white)](.github/workflows/release.yml)
+[![Discussions](https://img.shields.io/badge/Discussions-open-181717?logo=github)](https://github.com/wild8highlander/choptuik_ac_bc/discussions)
+[![Issues](https://img.shields.io/badge/Issues-templates%207-181717?logo=github)](.github/ISSUE_TEMPLATE/)
+[![Sponsor](https://img.shields.io/badge/Sponsors-GitHub%20%2B%20Zenodo-ea4aaa?logo=github)](.github/FUNDING.yml)
+[![Demo](https://img.shields.io/badge/demo-github.io-0969DA.svg?logo=githubpages&logoColor=white)](https://wild8highlander.github.io/choptuik_ac_bc/)
+[![Repo size](https://img.shields.io/github/repo-size/wild8highlander/choptuik_ac_bc?logo=github)](#репозиторий-в-числах)
+[![Languages](https://img.shields.io/github/languages/count/wild8highlander/choptuik_ac_bc?logo=github)](#карта-репозитория)
+
+---
+
+> 🇷🇺 **Язык:** этот README — на русском. English edition: [`README.md`](README.md) ·
 > Русские зеркала внутри пакетов: [`Collapse Hawking Bridge/README.ru.md`](Collapse%20Hawking%20Bridge/README.ru.md) · [`QHB/README.ru.md`](QHB/README.ru.md)
 
 > [!IMPORTANT]
@@ -54,6 +91,7 @@ ORCID [0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701) · Нальч
 ## Оглавление
 
 - [Репозиторий в числах](#репозиторий-в-числах)
+- [Карта репозитория](#карта-репозитория)
 - [Научная программа за 60 секунд](#научная-программа-за-60-секунд)
 - [Интеллект-карта репозитория](#интеллект-карта-репозитория)
 - [Хронология программы](#хронология-программы)
@@ -118,6 +156,38 @@ ORCID [0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701) · Нальч
 | [`dsi_lab/`](dsi_lab/) | 7 экспериментов | DSI-динамика инвариантов | 7 pytest-файлов | [README.md](dsi_lab/README.md) |
 | [`audit_transfer/`](audit_transfer/) | v1.0 (2026-09) | аудит монографии + замыкания | Python + Julia прогоны | [README.md](audit_transfer/README.md) |
 | [`docs-site/`](docs-site/) · [`verification/`](verification/) · [`notebooks/`](notebooks/) | — | документация и досье | — | [README.md](docs-site/README.md) |
+
+---
+
+<a id="карта-репозитория"></a>
+
+## Карта репозитория
+
+Все 21 каталогов верхнего уровня: роль, стек, точки входа и тесты:
+
+| Каталог | Роль | Стек | Точки входа / тесты |
+|---|---|---|---|
+| [`python/`](python/) | Программа I, каноническая реализация | Python 3.10+, NumPy/SciPy/mpmath | `python run.py` (CLI) · `pytest tests/` (78) |
+| [`julia/`](julia/) | Программа I, зеркало на Julia | Julia 1.9+ | `julia --project=. run.jl` · `Pkg.test()` (16 testset'ов) |
+| [`java-webapp/`](java-webapp/) | Программа I, веб-приложение | Java 17, Spring Boot, Thymeleaf | `mvn clean package` · `:8080` |
+| [`Interactive Viz/`](Interactive%20Viz/) | Программа I, real-time дашборд | Next.js 15, React 19, TS, Tailwind | `npm run dev` · `:3000` · 8 маршрутов |
+| [`Einstein Direct/`](Einstein%20Direct/) | Программа II, лаборатория прямого решения | Python + SymPy + NumPy | 60+ машин · `pytest tests/` (58+10) · 47 JSON-вердиктов |
+| [`theorems12/`](theorems12/) | Программа III, цикл теорем | публикации DOCX/PDF | 80 файлов · пинится ED-сьютом |
+| [`Collapse Hawking Bridge/`](Collapse%20Hawking%20Bridge/) | Программа IV | Python, NumPy-only движок | `make test validate data` · `pytest tests/` (63) |
+| [`QHB/`](QHB/) | Программа V | Python + Lean 4/Mathlib | `make all` · `pytest tests/` (154) · `lake build` (18 ядер) |
+| [`QCD Bridge/`](QCD%20Bridge/) | Программа VI, артефакты | PNG/PDF/SVG + GIF/MP4 | манифест фигур · конфиги · отчёты 7 форматов × 2 движка |
+| [`code/`](code/) | Программа VI, движки | Python · Julia · Java · Next.js | `code/python/run.py --config …` · кросс-сравнение в CI |
+| [`docs/qcd_bridge/`](docs/qcd_bridge/) | Программа VI, монография + JSON | PDF/TeX + JSON | `choptyuk_qcd_bridge.pdf` · honesty/lattice JSON |
+| [`dsi_lab/`](dsi_lab/) | Программа VII | Python (минимум зависимостей) | `make test && make run` · 7 JSON-вердиктов |
+| [`audit_transfer/`](audit_transfer/) | Программа VIII | Python + Julia | `python3 audit_transfer/python/run_all.py` |
+| [`docs/`](docs/) | монографии (80 МБ), архитектура, REST API | DOCX/PDF/MD | `docs/monograph/` · `ARCHITECTURE.md` |
+| [`monograph/`](monograph/) | двуязычная верификационная монография + QCD DOCX | PDF/DOCX | издания без метаданных |
+| [`docs-site/`](docs-site/) | сайт MkDocs Material | mkdocs + MathJax | `mkdocs serve` · деплой через `pages.yml` |
+| [`verification/`](verification/) | досье верификации | MD (915 строк) | индекс claim → команда → JSON |
+| [`notebooks/`](notebooks/) | Jupyter-верификация | .ipynb (18 ячеек) | самодостаточен |
+| [`scripts/`](scripts/) | репо-левел раннеры + QCD-хелперы | Python/Bash | `run_all.sh` · `run_verify.sh` · `run_viz.sh` |
+| [`docker/`](docker/) | контейнерный стек | Dockerfile + Compose | 3 сервиса: verify · viz · webapp |
+| [`assets/`](assets/) · [`assets_logo/`](assets_logo/) | корневое лого (light/dark, PNG+SVG) + README-графики | PNG/SVG | генератор `make_root_logo.py` |
 
 ---
 
@@ -1209,7 +1279,7 @@ cd audit_transfer/julia && julia audit_transfer.jl   # Julia (только stdli
 
 | Публикация | Языки | Форматы | Где |
 |---|---|---|---|
-| **«Спинорные поправки b-C и a-C и решение проблемы Хоптюка»** — исходная монография | RU · EN | DOCX + PDF + LaTeX | [`docs/monograph/`](docs/monograph/) (Choptyuk_Monograph_\*_Final, Braking_\*_Enhanced) |
+| **«Спинорные поправки b-C и a-C и решение проблемы Хоптюка»** — исходная монография | RU · EN | DOCX + PDF + LaTeX | [`docs/monograph/`](docs/monograph/) (`Choptyuk_Monograph_*_Final` · `Braking_*_Enhanced`) |
 | **Двуязычная верификационная монография** — «что было верифицировано, как и с каким вердиктом»: полный честный отчёт всей программы, публикуется **без метаданных документа** | RU/EN | PDF + DOCX | [`monograph/verification_monograph_bilingual.pdf`](monograph/verification_monograph_bilingual.pdf) |
 | **QCD-мост: сильная CP** — спутниковая монография (9 секций) | RU · EN | DOCX (+ PDF в docs) | [`monograph/choptyuk_qcd_bridge_*.docx`](monograph/) |
 | **Цикл из 20 теорем** — двадцать самодостаточных монографий-теорем | EN + RU | DOCX + PDF × 20 × 2 = **80 файлов** | [`theorems12/`](theorems12/) |
@@ -1301,6 +1371,7 @@ make docker-run   # полный прогон через Docker
 ### Дизайн-система фигур «Ink & Gold»
 
 Все графики репозитория следуют единому стилю (модуль [`scripts/figstyle.py`](Collapse%20Hawking%20Bridge/scripts/figstyle.py)):
+
 - **тёмная тема**: фон `#0d0b08`, тушь `#f2ead8`, золото `#d4af37`; **светлая**: фон `#faf6ec`, тушь `#1c1a15`, золото `#a8811c`;
 - каждая фигура строится в двух языках (RU/EN — словарь из 28 ключей меток) и двух темах — 4 варианта на сюжет;
 - 300 DPI для README (`figures/`) и 600 DPI для печати/монографий (`figures_hires/`, 4440×2880);
@@ -1492,7 +1563,7 @@ SHA-256 реестр, exit 2 при дрейфе).
 
 ```text
 choptuik_ac_bc/
-├── README.md                        # этот файл (RU) · README.en.md (EN-зеркало)
+├── README_ru.md                     # этот файл (RU-флагман) · README.md (EN-витрина)
 ├── LICENSE · CITATION.cff · CONTRIBUTING.md · CODE_OF_CONDUCT.md
 ├── SUPPORT.md · GOVERNANCE.md · SECURITY.md · Makefile
 ├── .github/                         # 11 workflows · 7 issue-шаблонов · 3 discussion-шаблона
@@ -1690,7 +1761,7 @@ PR проходят тот же CI и ревью CODEOWNERS.
 <summary><b>Q: Почему русский главный README, а не английский?</b></summary>
 
 **A:** Автор — русскоязычный, и главный README написан на его рабочем языке; английская
-компактная витрина — [`README.en.md`](README.en.md). Внутри пакетов конвенция обратная:
+компактная витрина — [`README.md`](README.md). Внутри пакетов конвенция обратная:
 [`README.md`](Collapse%20Hawking%20Bridge/README.md) — EN, [`README.ru.md`](Collapse%20Hawking%20Bridge/README.ru.md) — RU-зеркало;
 научные термины в обоих языках унифицированы глоссарием выше.
 </details>
@@ -1993,13 +2064,13 @@ cd "Interactive Viz" && npm install && npm run dev                     # :3000
 
 | Функция | Состояние | Где |
 |---|---|---|
-| **README-форматирование** | Mermaid (mindmap + flowchart), KaTeX ($$…$$), alerts `[!NOTE]/[!TIP]/[!IMPORTANT]/[!WARNING]`, `<details>`, `<picture>` dark/light, HTML-таблицы, якоря, task-бейджи | этот файл |
+| **README-форматирование** | Mermaid (mindmap + flowchart + timeline), KaTeX ($$…$$), alerts `[!NOTE]/[!TIP]/[!IMPORTANT]/[!WARNING]`, `<details>`, `<picture>` dark/light, HTML-таблицы, якоря, стена бейджей (40+) | этот файл |
 | **Actions (11 воркфлоу)** | CI-матрица 3 ОС × 3 Python, lint, Pages, Release (sigstore), Scorecard, periodic-verify, stale, greeting, labeler, link-check, verify-audit-transfer | [`.github/workflows/`](.github/workflows/) |
 | **Issue-шаблоны (7)** | Bug Report / Feature Request / Research Question (YAML) + New Surface / Verification Discrepancy (MD), blank issues отключены, contact links на Discussions | [`.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/) |
 | **Discussion-шаблоны (3)** | New Mathematical Result · Q&A · Verification Discrepancy Report | [`.github/DISCUSSION_TEMPLATE/`](.github/DISCUSSION_TEMPLATE/) |
 | **PR-шаблон** | чекбоксы типов изменений + блок «Verification Impact» (4 уровня влияния на верификацию + Changed Constants) | [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md) |
-| **Release notes config** | автокатегории релизов (breaking / theorems / campaigns / docs / infra) | [`.github/release.yml`](.github/release.yml) |
-| **CODEOWNERS** | единственный владелец всех путей | [`.github/CODEOWNERS`](.github/CODEOWNERS) |
+| **Release notes config** | автокатегории релизов (breaking / theorems / campaigns / docs / infra) — конфиг перенесён в `.github/release.yml`, где его читает GitHub | [`.github/release.yml`](.github/release.yml) |
+| **CODEOWNERS** | единственный владелец всех путей | [`CODEOWNERS`](CODEOWNERS) |
 | **SUPPORT / GOVERNANCE** | где получить помощь; модель единственного мейнтейнера | [`SUPPORT.md`](SUPPORT.md) · [`GOVERNANCE.md`](GOVERNANCE.md) |
 | **FUNDING** | GitHub Sponsors + Zenodo/DOI | [`.github/FUNDING.yml`](.github/FUNDING.yml) |
 | **CITATION.cff** | машиночитаемое цитирование (срабатывает кнопка «Cite this repository») | [`CITATION.cff`](CITATION.cff) |
@@ -2008,7 +2079,9 @@ cd "Interactive Viz" && npm install && npm run dev                     # :3000
 | **GitHub Pages** | сайт MkDocs Material + онлайн-демо | [wild8highlander.github.io/choptuik_ac_bc](https://wild8highlander.github.io/choptuik_ac_bc/) |
 | **Dependabot** | 5 экосистем: pip ×2, npm, maven, github-actions | [`.github/dependabot.yml`](.github/dependabot.yml) |
 | **Авто-лейблы** | path-based + title-based конфиги | [`.github/labeler/`](.github/labeler/) |
-| **Code quality** | pre-commit (15 хуков), Codecov (80%), editorconfig | [`.pre-commit-config.yaml`](.pre-commit-config.yaml) |
+| **Code quality** | pre-commit (15 хуков), markdownlint-конфиг (`.markdownlint.jsonc` + `.markdownlintignore`), Codecov (80%), editorconfig | [`.pre-commit-config.yaml`](.pre-commit-config.yaml) |
+| **Соц-превью и аватар** | баннер: `assets/logo/choptyuk_banner_dark.png` (Settings → Social preview); круглый аватар: `assets/logo/choptyuk_avatar_1024.png` | `assets/logo/` |
+| **Рекомендуемые topics** | `gravitation` · `numerical-relativity` · `critical-phenomena` · `qcd` · `lean4` · `julia` · `numpy` · `verification` | Settings → General → Topics |
 | **Контейнеры** | Dev Container (4 языка) + Docker Compose (3 сервиса) | [`.devcontainer/`](.devcontainer/) · [`docker/`](docker/) |
 | **.zenodo.json** | машиночитаемая метадата депозита | [`.zenodo.json`](.zenodo.json) |
 
@@ -2100,10 +2173,3 @@ cd "Interactive Viz" && npm install && npm run dev                     # :3000
 <p align="right">
   <a href="#top"><img alt="Наверх" src="https://img.shields.io/badge/↑_наверх-choptuik__ac__bc-181717?logo=github" /></a>
 </p>
-
-
-
-
-
-
-

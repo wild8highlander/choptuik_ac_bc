@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 ГЕКСАГОНАЛЬНЫЙ ПУАНКАРЕ-ЦИКЛ ТРАНСФОРМАЦИЙ — ДИНАМИКА ВМЕСТО УСЕЧЁННОЙ БАШНИ
@@ -312,7 +311,7 @@ def numeric_cycle(A: dict) -> dict:
     T_free = 2 * np.pi / omega0
     # запертая (V6 = 0.05, J = 1): RK4, честный сдвиг периода O(V6)
     J, V6v = 1.0, 0.05
-    acc = lambda th: -(V6v / J) * np.sin(6.0 * th)            # noqa: E731
+    acc = lambda th: -(V6v / J) * np.sin(6.0 * th)
 
     def rk4(state, dt):
         th, om = state

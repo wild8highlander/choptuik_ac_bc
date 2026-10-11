@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 gap.py — the confinement gap of the three spinor corrections.
 
@@ -33,9 +32,10 @@ Exact facts proven here (theorem T2):
   Hence the leading gap response is O(b^2, a^2) — no linear opening.
 """
 import math
+
 import numpy as np
 
-from .constants import (BERRY_TRIO, BRAKING_TRIO, delta_A, delta_B, delta_C)
+from .constants import BERRY_TRIO, BRAKING_TRIO, delta_A, delta_B, delta_C
 
 # --- committed drive configuration (G-model) --------------------------------
 OMEGA0 = 2.0                                # base Floquet frequency

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Campaign C3 — the Delta*gamma invariant check.
 
@@ -56,10 +55,8 @@ import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "engine"))
 sys.path.insert(0, os.path.join(ROOT, "chbridge"))
-from solver import DoubleNullSolver, GaussianPulseData, SolverConfig  # noqa: E402
-
-from constants import (gamma_Ch, echo_delta, b_Ch, DGAMMA_TARGET,
-                       DGAMMA_TOL, DGAMMA_LIT)
+from constants import DGAMMA_LIT, DGAMMA_TARGET, DGAMMA_TOL, b_Ch, echo_delta, gamma_Ch
+from solver import DoubleNullSolver, GaussianPulseData, SolverConfig
 
 OUT = os.path.join(ROOT, "campaigns", "reference")
 
@@ -182,7 +179,7 @@ def measure_delta(a_star, n, eps_echo_list):
             "eps_echo": eps, "n_snapshots": len(vs),
             "v_star_proxy": round(v_star, 6),
             "ah_found": bool(diag.ah_found),
-            "n_peaks": int(len(peaks)),
+            "n_peaks": len(peaks),
             "peak_v": [round(float(vs[i]), 5) for i in peaks],
             "ln_time_x": [round(x, 4) for x in xs],
             "delta_eff": delta,

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 campaign C6 — the physical mapping: three branches (v1.1.0).
 
@@ -47,9 +46,22 @@ import time
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from qhb.bridge import T_H, r_s, t_evap, rho_mean
-from qhb.constants import (G, c, hbar, h, k_B, M_sun, m_P, l_P, rho_P,
-                           LAMBDA_QCD_MeV, T_QCD_K, MeV_J, __version__)
+from qhb.bridge import T_H, r_s, rho_mean, t_evap
+from qhb.constants import (
+    T_QCD_K,
+    G,
+    LAMBDA_QCD_MeV,
+    M_sun,
+    MeV_J,
+    __version__,
+    c,
+    h,
+    hbar,
+    k_B,
+    l_P,
+    m_P,
+    rho_P,
+)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(HERE, "reference")

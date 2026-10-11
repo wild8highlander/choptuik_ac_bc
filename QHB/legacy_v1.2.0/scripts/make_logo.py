@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 make_logo.py — the package logo: a gold ring bearing the quark trio
 (three gold dots on the septinial 2*pi/7 lattice of the Klein quartic
@@ -14,11 +13,11 @@ ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, HERE)
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.patches import Circle, Wedge
-
-from figstyle import TOKENS, style
+from figstyle import style
+from matplotlib.patches import Circle
 
 OUT = os.path.join(ROOT, "figures", "logo")
 

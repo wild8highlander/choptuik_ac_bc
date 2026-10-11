@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-12 — resolution-scaling / numerical-floor test.
 
@@ -16,7 +15,6 @@ Pre-registered criterion: p in [0.7, 1.3] independently evidences a
 final comparison phase.
 """
 import json
-import math
 import os
 import sys
 
@@ -24,8 +22,12 @@ import numpy as np
 
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, IVP_DIR)
-from ivp_common import (save_result, log, worst_status, run_gaussian,  # noqa: E402
-                        read_committed_verdict)
+from ivp_common import (
+    log,
+    run_gaussian,
+    save_result,
+    worst_status,
+)
 
 PROBE_EPS = [1e-3, 3e-4]
 GRIDS = [400, 800, 1600, 3200]

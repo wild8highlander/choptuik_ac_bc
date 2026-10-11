@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Пробник канала j=19-20: построчная трассировка смерти стадии.
 
 Запуск: python3 probe_v6_channel.py [eps] [max_zooms]
@@ -17,8 +16,8 @@ for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from zoom_solver import ZoomRunner, RESULTS, V_P, SIGMA  # noqa: E402
-from grid_machine_annulus import A_STAR  # noqa: E402
+from grid_machine_annulus import A_STAR
+from zoom_solver import RESULTS, ZoomRunner
 
 eps = float(sys.argv[1]) if len(sys.argv) > 1 else 1e-3
 max_zooms = int(sys.argv[2]) if len(sys.argv) > 2 else 8

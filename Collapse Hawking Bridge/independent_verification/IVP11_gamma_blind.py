@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-11 — blind measurement of the mass-scaling exponent gamma.
 
@@ -28,7 +27,6 @@ PASS; the required outcome is a well-defined fit (R^2 >= 0.9 on the
 secondary band) and an honest statement of the gap.
 """
 import json
-import math
 import os
 import sys
 import time
@@ -37,8 +35,13 @@ import numpy as np
 
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, IVP_DIR)
-from ivp_common import (save_result, log, worst_status, run_gaussian,  # noqa: E402
-                        read_committed_verdict)  # comparison phase only
+from ivp_common import (
+    log,
+    read_committed_verdict,  # comparison phase only
+    run_gaussian,
+    save_result,
+    worst_status,
+)
 
 M_SANE_MAX = 0.1
 SCANS = {

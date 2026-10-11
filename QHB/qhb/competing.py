@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import math
-from typing import Dict, List
 
 WINDOW = (0.0, 10.0)
 W_TRUE = {"A": 0.9195, "B": 0.0800, "C": 0.00049}
@@ -34,7 +33,7 @@ def signal(t: float, in_window: bool = True) -> float:
     return y * ADDITIVITY_SCALE
 
 
-def fit_shares(step: float = 0.01) -> Dict:
+def fit_shares(step: float = 0.01) -> dict:
     """Non-negative least squares shares of A/B/C on the window grid.
 
     Deterministic coordinate-descent NNLS (no external deps).
@@ -84,7 +83,7 @@ def braking_estimator_control(step: float = 0.01) -> float:
     return acc * step
 
 
-def out_of_window_residual(step: float = 0.05) -> Dict:
+def out_of_window_residual(step: float = 0.05) -> dict:
     """Predict beyond the window with in-window shares; measure wing exponent.
 
     Honest negative: |residual| grows like (t - t1)^4.071 -> the fitted model

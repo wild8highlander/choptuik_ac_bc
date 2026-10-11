@@ -1,17 +1,19 @@
-# -*- coding: utf-8 -*-
 """IVP11 — the vortex layer: the exact characteristic polynomial of the
 corotating linearization derived symbolically (SymPy), the Aref
 invariants at 50 digits (mpmath) and the neutral-stability eigenvalue
 gate (numpy, own code path)."""
-import os, sys
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ivp_common import write_verdict, ROOT
+from ivp_common import ROOT, write_verdict
+
 sys.path.insert(0, ROOT)
 
 import math
-import numpy as np
-import sympy as sp
+
 import mpmath as mp
+import sympy as sp
 
 mp.mp.dps = 50
 
@@ -64,6 +66,7 @@ mp_ok = max_inv < mp.mpf("1e-40")
 
 # --- 3. numpy: the neutral-stability gate (own eigen path) ------------------
 from qhb.vortex import linearize_triangle_exact
+
 ev, om_num, _ = linearize_triangle_exact()
 re_gate = max(abs(e.real) for e in ev if abs(e.imag) > 1e-6)
 np_ok = re_gate < 1e-12 and abs(om_num - 3.0 / (2.0 * math.pi)) < 1e-15

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 OPEN9-Q3: ПРОЦЕНТНЫЙ (gamma, Delta) — ГЛОБАЛЬНЫЙ ФИТ С ПЕРЦЕНТИЛЯМИ (v19)
@@ -46,7 +45,6 @@ from __future__ import annotations
 
 import json
 import os
-import sys
 import time
 
 for _v in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",

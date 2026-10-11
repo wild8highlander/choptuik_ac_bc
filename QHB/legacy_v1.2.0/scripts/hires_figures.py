@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 """
 hires_figures.py — the 600-dpi edition: 17 architectures x RU/EN x
 light/dark.  The 7 committed 300-dpi architectures plus 10 extended
 views.  Reads data/qhb and the committed verdicts only.
 """
 import argparse
-import json
 import math
 import os
 import sys
@@ -15,13 +13,11 @@ ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, HERE)
 sys.path.insert(0, ROOT)
 
-import numpy as np
-import matplotlib.pyplot as plt
-
-from figstyle import TOKENS, LANG, style, new_fig, finish
 import make_figures as _mf
-from make_figures import BUILDERS, load, DATA
+import numpy as np
+from figstyle import LANG, finish, new_fig, style
 from figstyle import finish as _finish_orig
+from make_figures import BUILDERS, DATA, load
 
 FIGS = os.path.join(ROOT, "figures_hires")
 
@@ -118,8 +114,8 @@ def hq_wu_slices(lang, tok, L, path):
     shades = [tok["muted"], tok["muted"], tok["ink"], tok["ink"], tok["gold"],
               tok["gold_soft"]]
     for a, col in zip(alphas, shades):
-        pts = sorted(((float(ln.split(",")[1]), float(ln.split(",")[2]))
-                      for ln in lines if float(ln.split(",")[0]) == a))
+        pts = sorted((float(ln.split(",")[1]), float(ln.split(",")[2]))
+                      for ln in lines if float(ln.split(",")[0]) == a)
         x = [p[0] for p in pts]
         r = [p[1] for p in pts]
         ax.plot(x, r, "o-" if a == 0.9 else "o--", ms=5,
@@ -134,8 +130,8 @@ def hq_wu_slices(lang, tok, L, path):
 
 
 def hq_contacts_zoom(lang, tok, L, path):
-    from qhb.bridge import T_H, equal_qcd_mass, T_QCD_K
-    from qhb.constants import LAMBDA_QCD_MeV, MeV_J, k_B, h
+    from qhb.bridge import T_H, T_QCD_K, equal_qcd_mass
+    from qhb.constants import LAMBDA_QCD_MeV, MeV_J, h
     fig = new_fig()
     ax = fig.gca()
     M = np.logspace(9.5, 12.5, 300)
@@ -215,7 +211,7 @@ def hq_drift_residuals(lang, tok, L, path):
 
 
 def hq_lemma_a(lang, tok, L, path):
-    from qhb.gap import parabolic_profile, KAPPA, Q_PK
+    from qhb.gap import KAPPA, Q_PK, parabolic_profile
     fig = new_fig()
     ax = fig.gca()
     x, q, hstep, Lb = parabolic_profile(16, KAPPA, Q_PK)
@@ -239,7 +235,7 @@ def hq_lemma_a(lang, tok, L, path):
 
 
 def hq_kepler(lang, tok, L, path):
-    from engine.solver import kepler_period_check, DT
+    from engine.solver import kepler_period_check
     fig = new_fig()
     ax = fig.gca()
     dts = [2e-2, 1e-2, 5e-3, 2e-3, 1e-3]

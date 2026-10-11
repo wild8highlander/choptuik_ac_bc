@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 QHB Monolith — Дополнительные исследования (Глава 11 монографии).
 Кросс-версионная сверка v1.2.0 <-> v1.3.0 + независимая верификация точных констант
@@ -7,14 +6,18 @@ QHB Monolith — Дополнительные исследования (Глав
 
 Все результаты пишутся в: /home/z/my-project/qhb_work/extra_research_results.json
 """
-import json, math, os, sys
+import json
+import math
+import os
 
 V12 = "/home/z/my-project/upload/v120"
 V13 = "/home/z/my-project/upload/v130/Quark_Hawking_Bridge_v1.3.0"
 OUT_DIR = "/home/z/my-project/qhb_work"
 os.makedirs(OUT_DIR, exist_ok=True)
 
-from mpmath import mp, mpf, pi, exp, sqrt as msqrt, log10 as mlog10, power as mpow
+from mpmath import exp, mp, mpf, pi
+from mpmath import log10 as mlog10
+
 mp.dps = 100
 import sympy as sp
 
@@ -113,7 +116,7 @@ symb = {}
 
 # (a) T14: sup-потеря барьера = 2*eta для унитарных профилей |U|<=1
 u1, u2, eta_s, B0 = sp.symbols("u1 u2 eta B0", real=True)
-worst_drop = sp.simplify((u1 - u2)).subs({u1: 1, u2: -1})
+worst_drop = sp.simplify(u1 - u2).subs({u1: 1, u2: -1})
 symb["T14_worst_drop_unit_profiles"] = str(sp.simplify(worst_drop))  # = 2
 
 # (b) T13: d/ds [s^2 e^{2-2s}] = 2 s (1-s) e^{2-2s}; максимум при s=1
@@ -182,6 +185,7 @@ tests["drift_p_eff_recomputed"] = {
 
 # (T-B) Тонкий eta-скан барьера: barrier(eta) = B0 - 2*eta на 2001 точке
 import numpy as np
+
 etas = np.linspace(0, 2*float(eta_crit), 2001)
 barrier = float(Delta_min) - 2.0*etas
 idx = int(np.argmax(barrier <= 0))
@@ -194,6 +198,7 @@ tests["eta_scan_boundary"] = {"eta_boundary_grid": eta_boundary,
 
 # (T-C) Статистика C5: точный биномиальный тест 2433/10000 против p=0.2433
 from scipy import stats as sstats
+
 k_obs, n_mc, p0 = 2433, 10000, 0.2433
 se = math.sqrt(p0*(1-p0)/n_mc)
 z_obs = (k_obs/n_mc - p0)/se

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """S4-прогон фантомного теста для ОДНО-кирпичной схемы (барионная асимметрия башни).
 
 Гипотеза автора: 'всё ровно поднимается, отклонение в одном кирпичике, чтобы
@@ -13,13 +12,14 @@
 tau* = 27/(2*kappa) = 7.10792, сопоставление Im lambda фантомов с k*pi/30.
 """
 import json
-import sys
 import os
+import sys
 
 sys.path.insert(0, "/home/z/my-project/choptuik_ac_bc/einstein_direct")
 os.chdir("/home/z/my-project/choptuik_ac_bc/einstein_direct")
 
-import sympy_spinor_corrections as ssc  # noqa: E402
+import sympy_spinor_corrections as ssc
+
 
 def main() -> None:
     s0, corr = ssc.s0_corrections()

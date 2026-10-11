@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 СПИНОРНАЯ ЛЕСТНИЦА DSS: ПОКАЗАТЕЛИ pi/15 И pi/30, СКЭЛЛИНГ ПАРАМЕТРОВ (v5)
@@ -43,8 +42,7 @@ import os
 import time
 
 import numpy as np
-
-from zoom_solver import ZoomRunner, echo_peaks, RESULTS, V_P, SIGMA
+from zoom_solver import RESULTS, SIGMA, V_P, ZoomRunner, echo_peaks
 
 A_FIXED_GRID = 0.0805333
 GAMMA_LIT = 0.374
@@ -122,7 +120,7 @@ def mode_scaling(tay_hist):
     # v* = v_max + последний интервал (грубая оценка точки накопления)
     v_star = v[-1] + max(v[-1] - v[-2], 1e-12)
     zeta = -np.log(np.clip(v_star - v, 1e-300, None))
-    out = {"n_rows": int(len(v)), "v_star_est": float(v_star)}
+    out = {"n_rows": len(v), "v_star_est": float(v_star)}
     for name, y in (("t0", t0), ("P2", P2), ("d0", d0)):
         ok = np.isfinite(y) & (y > 0) & np.isfinite(zeta)
         if int(ok.sum()) < 10:
@@ -170,7 +168,7 @@ def echo_harmonics(v_peaks, q_peaks, delta=None, n_harm=2):
                     "harmonics": {f"k{k}": {"c": float(sol_[1 + 2 * k]),
                                             "s": float(sol_[2 + 2 * k])}
                                   for k in range(1, n_harm + 1)},
-                    "n_peaks": int(len(vp))}
+                    "n_peaks": len(vp)}
     return best
 
 
@@ -246,7 +244,7 @@ def main():
         rec["mode_scaling"] = mode_scaling(r.tay_hist_all)
         # 3. гармоники эхо
         vp, yp = echo_peaks(r.track, "Q")
-        rec["n_Q_peaks"] = int(len(vp))
+        rec["n_Q_peaks"] = len(vp)
         if len(vp) >= 6:
             rec["echo_harmonics"] = echo_harmonics(vp, yp)
         # 4. невязки фундаментальных ОДУ

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Local styling helpers for scripts/build_workbook.py (v2.0.1).
 
 Self-contained replacements for the out-of-tree style module used at
@@ -7,7 +6,6 @@ outside its own tree, and openpyxl must be declared as an optional
 dependency).  Same call signatures as the previous helpers.
 """
 from openpyxl.styles import Alignment, Font, PatternFill
-from openpyxl.utils import get_column_letter
 
 FONT_NAME = "Calibri"
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 campaign C2 — the three-body trap (theorems T4/T5/T6).
 
@@ -23,11 +22,9 @@ import time
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import numpy as np
-
-from engine.solver import (make_ensemble, trio_run, lyapunov, N_TRIALS,
-                           DT, STEPS)
-from qhb.trio import gascheau_verdict, growth_rate_equal_masses
+from engine.solver import N_TRIALS, lyapunov, make_ensemble, trio_run
 from qhb.constants import __version__
+from qhb.trio import gascheau_verdict, growth_rate_equal_masses
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(HERE, "reference")

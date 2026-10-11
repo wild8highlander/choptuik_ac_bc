@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-10 — threshold robustness / perturbation test (falsification).
 
@@ -24,8 +23,7 @@ import sys
 
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, IVP_DIR)
-from ivp_common import (save_result, log, worst_status, classification,  # noqa: E402
-                        run_gaussian)
+from ivp_common import classification, log, run_gaussian, save_result
 
 EPS_LIST = [1e-2, 1e-3, 1e-4, 1e-5]
 

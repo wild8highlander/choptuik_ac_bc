@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
  ЭКСПЕРИМЕНТ 6. АНАЛИТИЧЕСКАЯ АТАКА НА DSI-4: ПОЧЕМУ ЗНАМЕНАТЕЛЬ 224 = 4·56?
@@ -196,8 +195,7 @@ def girth_and_deg(adj):
                     q.append(v)
                 elif par[u] != v:
                     cyc = dist[u] + dist[v] + 1
-                    if cyc < best:
-                        best = cyc
+                    best = min(best, cyc)
     connected = all(d >= 0 for d in _bfs_all(adj, 0))
     return degs, best, connected
 
@@ -222,7 +220,7 @@ def part_A():
     G, orders, count_by_order = build_group()
     n = len(G)
     print(f"  |G| = {n}  (ожидается 168)")
-    print(f"  элементы по порядкам: " +
+    print("  элементы по порядкам: " +
           ", ".join(f"ord {k}: {count_by_order[k]}" for k in sorted(count_by_order)))
     H3s = cyclic_subgroups(G, orders, 3)
     H2s = cyclic_subgroups(G, orders, 2)
@@ -418,7 +416,7 @@ def part_C():
         k_m1, k_m2 = k, k_m1
     census_convs = [(h, k) for h, k in convs if k > 1 and is_census(k)]
     print(f"  цепная дробь: {cf[:8]}…")
-    print(f"  переписные подходящие дроби: " +
+    print("  переписные подходящие дроби: " +
           ", ".join(f"{h}/{k}" for h, k in census_convs))
     verdict = (len(uniq) == 1 and "9/224" in uniq
                and len(uniq001) == 1 and "9/224" in uniq001
@@ -577,7 +575,7 @@ def main():
     print("  2) 224 = 4V = 8·n3 = 8·28; 672 = 4|G| = F·n3 = 24·28 — оба")
     print("     знаменателя переписаны минимум 7 независимыми способами.")
     print("  3) Лемма единственности: 9/224 — ЕДИНСТВЕННАЯ переписная дробь")
-    print(f"     (v2≤6, v3≤1, v7≤1) в пределах 0.1% от измеренного c_K3.")
+    print("     (v2≤6, v3≤1, v7≤1) в пределах 0.1% от измеренного c_K3.")
     print("  4) РОДОВОЕ СЕМЕЙСТВО: ветви I и II совпадают ТОЛЬКО при g = 3;")
     print("     ветвь III (b_Ch(b₂)) отделяется с g = 7. Дискриминатор:")
     print("     (g−1)⁻¹ против (g−1)⁻² — одно измерение на g ≥ 7 решает.")

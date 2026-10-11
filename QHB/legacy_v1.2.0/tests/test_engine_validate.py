@@ -1,11 +1,7 @@
-# -*- coding: utf-8 -*-
 import json
-import math
 import os
 import subprocess
 import sys
-
-import pytest
 
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 sys.path.insert(0, ROOT)
@@ -32,14 +28,12 @@ class TestEngine:
         assert np.array_equal(p1, p2) and np.array_equal(v1, v2)
 
     def test_energy_drift_free(self):
-        import numpy as np
         from engine.solver import make_ensemble, trio_run
         pos, vel, _ = make_ensemble(60)
         r = trio_run(pos, vel, V0=0.0)
         assert r["E_drift_rel"] < 1e-3
 
     def test_trap_seals_single_cell(self):
-        import numpy as np
         from engine.solver import make_ensemble, trio_run
         pos, vel, _ = make_ensemble(60)
         r = trio_run(pos, vel, V0=8.0, Omega=2.0)

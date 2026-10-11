@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 make_animations.py — 3 launch animations x RU/EN (GIF + MP4).
 
@@ -20,13 +19,13 @@ ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, HERE)
 sys.path.insert(0, ROOT)
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation, PillowWriter, FFMpegWriter
-
-from figstyle import TOKENS, LANG, style
+from figstyle import LANG, style
+from matplotlib.animation import FFMpegWriter, FuncAnimation, PillowWriter
 
 DATA = os.path.join(ROOT, "data", "qhb")
 OUT = os.path.join(ROOT, "animations")

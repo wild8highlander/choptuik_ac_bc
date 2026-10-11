@@ -1,15 +1,17 @@
-# -*- coding: utf-8 -*-
 """IVP10 — the competing-model gates: a fresh interpreter re-derives the
 ablation extremes (the exact zero of the braking-only configuration and
 the spectator magnitude of the septinial C sector) at doubled Floquet
 resolution, plus the evenness of every transverse configuration."""
-import os, sys
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ivp_common import write_verdict, ROOT
+from ivp_common import ROOT, write_verdict
+
 sys.path.insert(0, ROOT)
 
-from qhb.gap import static_gap, floquet_gap, KAPPA
 from qhb.constants import BERRY_TRIO, BRAKING_TRIO
+from qhb.gap import KAPPA, floquet_gap, static_gap
 
 _, _, D0 = static_gap(64, KAPPA, 0.4)
 M = 3840                                # doubled resolution

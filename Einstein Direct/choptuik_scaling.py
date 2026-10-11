@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ЗАДАЧА ЧОПТЮКА: бисекция критической амплитуды A* и универсальный
 массовый скейлинг M_BH = C (A - A*)^gamma.
@@ -19,7 +18,6 @@ import os
 import time
 
 import numpy as np
-
 from solver import DoubleNullSolver, GaussianPulseData, SolverConfig
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -100,7 +98,7 @@ def mass_scaling(a_star, n=3000, decades=3.5, n_points=10, verbose=True):
         ss_res = float(resid @ resid)
         ss_tot = float(((M_a - M_a.mean()) ** 2).sum())
         r2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else float("nan")
-    except Exception as e:
+    except Exception:
         C_f, gamma_f, delta_f, perr, r2 = 0.0, float("nan"), 0.0, np.zeros(3), float("nan")
 
     return {
@@ -133,7 +131,7 @@ def main():
     print(f"\n2) Массовый скейлинг, N = {args.n_scale}, {args.decades} декады:")
     fit = mass_scaling(a_star, n=args.n_scale, decades=args.decades)
     print(f"\n   gamma = {fit['gamma']:.4f} +- {fit['gamma_err']:.4f}")
-    print(f"   (Чоптюк 1993: gamma = 0.374 +- 0.004)")
+    print("   (Чоптюк 1993: gamma = 0.374 +- 0.004)")
     print(f"   b_Ch = 1 - cos(2*pi/7) = {1 - np.cos(2*np.pi/7):.5f}")
 
     b_ch = 1 - np.cos(2 * np.pi / 7)

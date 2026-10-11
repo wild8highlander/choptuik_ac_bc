@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 postprocess_pagenum.py — footer instrText format switches (WPS compat).
 
@@ -9,12 +8,13 @@ MERGEFORMAT`, and strip empty <w:pgNumType/> from the cover section.
 
 Usage: python3 postprocess_pagenum.py file.docx
 """
+import os
 import re
 import shutil
 import sys
 import tempfile
 import zipfile
-import os
+
 
 def main(path):
     tmp = tempfile.mkdtemp()

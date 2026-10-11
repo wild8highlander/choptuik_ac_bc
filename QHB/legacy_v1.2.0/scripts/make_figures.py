@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 make_figures.py — the 7 committed figures x RU/EN x light/dark (300 dpi).
 
@@ -17,11 +16,9 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, ROOT)
 
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
-
-from figstyle import TOKENS, LANG, style, new_fig, finish
-from qhb.bridge import T_H, equal_cmb_mass, equal_qcd_mass, T_QCD_K
+from figstyle import LANG, finish, new_fig, style
+from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+from qhb.bridge import T_H, T_QCD_K, equal_cmb_mass, equal_qcd_mass
 from qhb.constants import T_CMB
 from qhb.wu import residual
 
@@ -312,8 +309,8 @@ def fig_phase(lang, tok, L, path):
     shades = [tok["gold_soft"], tok["gold"], tok["ink"], tok["muted"],
               tok["bad"]]
     for i, qp in enumerate(show):
-        rr = sorted(((float(r[1]), float(r[2])) for r in rows
-                     if abs(float(r[0]) - qp) < 1e-9))
+        rr = sorted((float(r[1]), float(r[2])) for r in rows
+                     if abs(float(r[0]) - qp) < 1e-9)
         b = np.array([x[0] for x in rr])
         g = np.array([x[1] for x in rr])
         ax.plot(b, g, "-", lw=1.6, color=shades[i % 5],

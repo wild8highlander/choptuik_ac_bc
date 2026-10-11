@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Master figure generator for the QCD-bridge monograph.
 
@@ -33,12 +32,12 @@ Outputs are written to docs/qcd_bridge/figures/ by default, both as PNG
 import argparse
 import json
 import math
-import os
 import sys
 from pathlib import Path
 
-import numpy as np
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.font_manager as fm
 
@@ -53,6 +52,7 @@ for fp in [
         pass
 
 import matplotlib.pyplot as plt
+
 plt.rcParams["font.sans-serif"] = ["Noto Sans SC", "DejaVu Sans"]
 plt.rcParams["axes.unicode_minus"] = False
 plt.rcParams["font.size"] = 10
@@ -63,12 +63,16 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 from ochi_explicit_construction import (
-    K3_intersection_form, flavor_mass_matrix, T_breaking_block,
-    construct_Ochi, folded_ratios, unfold,
-    sample_gue, sample_goe, sample_poisson,
+    construct_Ochi,
+    folded_ratios,
+    sample_goe,
+    sample_gue,
+    sample_poisson,
+    unfold,
 )
 from ochi_lattice_firstprinciples import (
-    construct_K3_Ochi, construct_lattice_Ochi,
+    construct_K3_Ochi,
+    construct_lattice_Ochi,
 )
 
 DPI = 600
@@ -628,7 +632,7 @@ def fig_scaling_N(outdir: Path):
     ax.axhline(-10, color="red", linestyle="--", linewidth=1.5,
                label="experimental bound 10^-10")
     ax.axhline(math.log10(9.04e-4), color="green", linestyle=":",
-               linewidth=1.5, label=f"N=3 actual: 9.0e-4")
+               linewidth=1.5, label="N=3 actual: 9.0e-4")
     for N, lt in zip(Ns, log_thetas):
         ax.annotate(f"{lt:.1f}", (N, lt),
                     textcoords="offset points", xytext=(8, 8), fontsize=8)

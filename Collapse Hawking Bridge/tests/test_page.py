@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
 """Page model: unitary entropy-flux curves and the Haar-averaging check."""
 import math
 
 import numpy as np
-
 from chbridge import page as P
-from chbridge.hawking import PAGE_FRACTION, S_BH, k_B
-from chbridge.constants import BRIDGE_SCALES
+from chbridge.hawking import PAGE_FRACTION
 
 
 def test_member_profile_values():

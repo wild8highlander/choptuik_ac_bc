@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 КАМПАНИЯ ЧОПТЮКА С ЗУМАМИ (честный прототип)
 =================================================
@@ -24,9 +23,13 @@ import os
 import time
 
 import numpy as np
-
-from zoom_solver import (ZoomRunner, echo_peaks, echo_period_from_peaks,
-                         RESULTS, V_P, SIGMA)
+from zoom_solver import (
+    RESULTS,
+    SIGMA,
+    V_P,
+    ZoomRunner,
+    echo_peaks,
+)
 
 A_FIXED_GRID = 0.0805333   # валидированная бисекция N=1600 (сессия 1)
 GAMMA_LIT = 0.374
@@ -93,7 +96,7 @@ def main():
         }
         # пики Q (для будущей дельты)
         vp, yp = echo_peaks(r.track, "Q")
-        rec["Q_peaks_n"] = int(len(vp))
+        rec["Q_peaks_n"] = len(vp)
         rec["Q_peaks_v"] = [round(float(x), 5) for x in vp[:10]]
         runs.append(rec)
         print(f"  eps={eps:.1e}: {cls}")

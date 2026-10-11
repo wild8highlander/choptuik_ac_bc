@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 make_c6_figures.py — report figures for campaign C6 (the resolution-drift law).
 
@@ -17,7 +16,6 @@ Deterministic: reads only committed artifacts (c6_drift_verdict.json).
 Run:  python3 scripts/make_c6_figures.py
 """
 import json
-import math
 import os
 import sys
 
@@ -26,8 +24,8 @@ import numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 
-import figstyle  # noqa: E402
-import matplotlib.pyplot as plt  # noqa: E402
+import figstyle
+import matplotlib.pyplot as plt
 
 OUT = os.path.join(ROOT, "results", "scaling_drift", "figures")
 REF = os.path.join(ROOT, "campaigns", "reference")

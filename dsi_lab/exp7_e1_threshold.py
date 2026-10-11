@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
  ЭКСПЕРИМЕНТ 7. ПОРОГ e >= 1: «ЛЕСТНИЦА» СТАНОВИТСЯ ТЕОРЕМОЙ
@@ -347,7 +346,7 @@ def make_figures(out, lang_dir, lang):
     ax.plot(ks, [2 * n for n in ns], ":", color="#7c3aed", lw=2,
             label=t["unit_line"])
     for k, n, F in zip(ks, ns, Fs):
-        ax.annotate(f"F=n+2", (k, F), textcoords="offset points",
+        ax.annotate("F=n+2", (k, F), textcoords="offset points",
                     xytext=(6, 6), fontsize=9, color="#1e6091")
     ax.set_xlabel(t["tree_line_xlabel"])
     ax.set_ylabel(t["tree_line_ylabel"])

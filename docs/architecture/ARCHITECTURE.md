@@ -133,7 +133,7 @@ Choptyuk Formula (Δ_Ch)
 | `service/` | `VerificationService`, `ReportService`, `SimulationService`, `PlotService` |
 | `config/` | `AppConfig` |
 
-### Next.js (`interactive-viz/src/`)
+### Next.js (`Interactive Viz/src/`)
 
 | Path | Purpose |
 |---|---|

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-03 — dependency & provenance audit (import graph, offline capability).
 
@@ -28,14 +27,13 @@ P6  no reads of files outside the release tree in runtime code;
 P7  no writes outside the release tree in runtime code.
 """
 import ast
-import json
 import os
 import sys
 
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(IVP_DIR)
 sys.path.insert(0, IVP_DIR)
-from ivp_common import save_result, log, worst_status  # noqa: E402
+from ivp_common import log, save_result, worst_status
 
 DECLARED_RUNTIME = {"numpy", "mpmath"}
 DECLARED_DEV = {"pytest", "matplotlib"}

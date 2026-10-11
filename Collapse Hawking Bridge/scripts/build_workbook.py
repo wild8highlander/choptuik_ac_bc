@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 build_workbook.py — the one-file Excel companion of the bridge.
 
@@ -20,13 +19,15 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # v2.0.1 (audit advisory IVP-03): styles are local to the tree; openpyxl
 # is an optional dependency (pyproject: [project.optional-dependencies].
 # workbook).
-from workbook_style import (  # noqa: E402
-    setup_sheet, style_header_row, style_data_row, style_total_row,
-    font_title, font_body, align_number, align_text, FONT_NAME,
+from openpyxl import Workbook
+from openpyxl.utils import get_column_letter
+from workbook_style import (
+    font_body,
+    font_title,
+    setup_sheet,
+    style_data_row,
+    style_header_row,
 )
-
-from openpyxl import Workbook  # noqa: E402
-from openpyxl.utils import get_column_letter  # noqa: E402
 
 DATA = os.path.join(ROOT, "data", "bridge")
 OUT = os.path.join(ROOT, "tables", "bridge_workbook.xlsx")

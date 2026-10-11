@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 validate.py — high-precision re-verification of every project constant.
 
@@ -22,17 +21,23 @@ Checks
     resolutions)
  8. Kretschmann at horizon: K(M) * M^4 = 3c^8/(4G^4)  (scale invariance)
 """
-import math
 
 import mpmath as mp
 
 mp.mp.dps = 50
 
-from .constants import (G, c, hbar, k_B, T_CMB, l_P, t_P, m_P, b_Ch,
-                        gamma_Ch, echo_delta, DGAMMA_TARGET, DGAMMA_LIT,
-                        qnm_rel_shift, kretschmann_horizon, __version__)
-from .hawking import (S_BH, T_H, t_evap, t_page, equal_CMB_mass,
-                      PAGE_FRACTION)
+from .constants import (
+    DGAMMA_TARGET,
+    __version__,
+    b_Ch,
+    echo_delta,
+    gamma_Ch,
+    kretschmann_horizon,
+    l_P,
+    m_P,
+    t_P,
+)
+from .hawking import PAGE_FRACTION, S_BH, T_H, equal_CMB_mass, t_evap
 
 # --- mpmath mirrors of Part A ------------------------------------------------
 _G = mp.mpf("6.67430e-11")

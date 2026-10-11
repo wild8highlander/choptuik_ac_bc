@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Кампания [сессия 21 / v17]: CLOCK-CLOSURE-T1C — замыкание часов через
 однокирпичную форму источников T1c (вместо несовместной наивной O6+).
 
@@ -61,12 +60,17 @@ os.chdir(BASE)
 RESULTS = os.path.join(BASE, "results")
 T_START = time.time()
 
-import dae_nonlinear_core as dnc                       # noqa: E402
-from dae_nonlinear_core import NonlinearDAE            # noqa: E402
-import sympy_second_flows as sf                        # noqa: E402
-import sympy_hexcycle as hx                            # noqa: E402
-from hexcycle_dae import (parse_chain, station_scales, make_state,   # noqa: E402
-                          static_landing, chain_poles)
+import dae_nonlinear_core as dnc
+import sympy_hexcycle as hx
+import sympy_second_flows as sf
+from dae_nonlinear_core import NonlinearDAE
+from hexcycle_dae import (
+    chain_poles,
+    make_state,
+    parse_chain,
+    static_landing,
+    station_scales,
+)
 
 NAMES = ["T0h", "P2h", "D0h", "R1h", "W2h", "R3h", "P4h", "R5h", "M5h"]
 

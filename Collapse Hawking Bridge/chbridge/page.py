@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 page.py — Page curves for the ensemble of critical-collapse-born holes.
 
@@ -24,7 +23,7 @@ import os
 import numpy as np
 
 from .constants import BRIDGE_SCALES, k_B
-from .hawking import S_BH, T_H, t_evap, t_page, PAGE_FRACTION
+from .hawking import PAGE_FRACTION, S_BH, T_H, t_evap, t_page
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 N_T = 240

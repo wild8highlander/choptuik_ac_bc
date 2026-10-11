@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 hires_figures.py — the ultra-high-resolution (600 dpi) figure suite.
 
@@ -46,13 +45,18 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+import figstyle as fs
+import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib.pyplot as plt  # noqa: E402
-
-import figstyle as fs  # noqa: E402
-from chbridge.hawking import T_H, S_BH, k_B, PAGE_FRACTION  # noqa: E402
-from chbridge.constants import (T_CMB, gamma_Ch, echo_delta,  # noqa: E402
-                                DGAMMA_TARGET, DGAMMA_TOL, DGAMMA_LIT)
+from chbridge.constants import (
+    DGAMMA_LIT,
+    DGAMMA_TARGET,
+    DGAMMA_TOL,
+    T_CMB,
+    echo_delta,
+    gamma_Ch,
+)
+from chbridge.hawking import PAGE_FRACTION
 
 REF = os.path.join(ROOT, "campaigns", "reference")
 DATA = os.path.join(ROOT, "data", "bridge")

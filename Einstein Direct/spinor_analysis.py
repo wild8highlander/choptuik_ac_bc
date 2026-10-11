@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 СПИНОР-АНАЛИЗ DSS: ПОКАЗАТЕЛИ pi/15 И pi/30, СКЭЛЛИНГ ПАРАМЕТРОВ
@@ -56,8 +55,7 @@ import os
 import time
 
 import numpy as np
-
-from zoom_solver import ZoomRunner, echo_peaks, RESULTS, V_P, SIGMA
+from zoom_solver import RESULTS, SIGMA, V_P, ZoomRunner, echo_peaks
 
 A_FIXED_GRID = 0.0805333
 GAMMA_LIT = 0.374
@@ -180,7 +178,7 @@ def fit_delta_geometric(v_peaks, v_star_scan=None):
     s2 = float((resid ** 2).sum()) / dof
     cov = s2 * np.linalg.inv(Amat.T @ Amat)
     best["Delta_err"] = float(np.sqrt(max(cov[0, 0], 0.0)))
-    best["n_peaks"] = int(len(vp))
+    best["n_peaks"] = len(vp)
     return best
 
 
@@ -202,7 +200,7 @@ def kappa_from_peaks(v_peaks, q_peaks, v_star):
     dof = max(len(zeta) - 2, 1)
     s2 = float((resid ** 2).sum()) / dof
     cov = s2 * np.linalg.inv(Amat.T @ Amat)
-    return float(sol[0]), float(np.sqrt(max(cov[0, 0], 0.0))), int(len(zeta))
+    return float(sol[0]), float(np.sqrt(max(cov[0, 0], 0.0))), len(zeta)
 
 
 # ------------------------------------------------------------------------------

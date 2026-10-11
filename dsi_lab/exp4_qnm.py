@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
  ЭКСПЕРИМЕНТ 4. QNM-КАТАЛОГ LIGO/VIRGO + ЛЕСТНИЦА ОБЕРТОНОВ
@@ -43,8 +42,6 @@ import json
 import math
 import os
 import sys
-
-import numpy as np
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE)
@@ -257,8 +254,8 @@ def main():
     snr_ce = [e["detect_ratios"]["Cosmic Explorer (0.01%)"] for e in
               out["predictions"]["events"]]
     print(f"  обнаружимость на CE: |Δf|/σ = {min(snr_ce):.2f}–{max(snr_ce):.2f} σ")
-    print(f"  (относительная прецизионность делает отношение константой;"
-          f" порог 1σ достигается при прецизионности 0.0084%)")
+    print("  (относительная прецизионность делает отношение константой;"
+          " порог 1σ достигается при прецизионности 0.0084%)")
     ot = out["overtones"]["overtones"]
     print(f"  обертоны GW150914: f_0..f_4 = "
           f"{', '.join(f'{o['f_n']:.0f}' for o in ot)} Гц;")

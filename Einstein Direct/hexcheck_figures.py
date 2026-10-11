@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Рисунки гексчек-кампании (RU/EN, 300 dpi): tau-книга + часы; W2-пол + live-башня."""
 import json
 import math
 import os
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np

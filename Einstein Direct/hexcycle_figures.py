@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Рисунки гексагонального Пуанкаре-цикла: колесо станций, динамика/книга,
 честное замыкание. Версии RU и EN, 300 dpi."""
 import json
@@ -7,6 +6,7 @@ import os
 import shutil
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """conftest: делаем корень dsi_lab импортируемым при любом способе запуска."""
 import os
 import sys

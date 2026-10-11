@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 """
 build_workbook.py — tables/qhb_workbook.xlsx: the offline book of the
 package (14 sheets), rebuilt byte-deterministically from data/qhb and
 the committed verdicts.  Ink & Gold header styling (workbook_style).
 """
 import json
-import math
 import os
 import sys
 
@@ -15,10 +13,9 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, ROOT)
 
 from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.styles import Alignment, Font
 from openpyxl.utils import get_column_letter
-
-from workbook_style import PAL, header_font, header_fill, zebra_fill, thin_border
+from workbook_style import PAL, header_fill, header_font, thin_border, zebra_fill
 
 DATA = os.path.join(ROOT, "data", "qhb")
 OUT = os.path.join(ROOT, "tables", "qhb_workbook.xlsx")

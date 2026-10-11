@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ivp_common.py — shared infrastructure of the IVP-15 independent
 verification suite (Collapse-Hawking Bridge release audit).
@@ -93,7 +92,7 @@ def load_engine():
     warnings.filterwarnings("ignore")  # engine masks NaN near singularity
     if ENGINE_DIR not in sys.path:
         sys.path.insert(0, ENGINE_DIR)
-    import solver  # noqa: E402  (engine/solver.py)
+    import solver
     return solver
 
 

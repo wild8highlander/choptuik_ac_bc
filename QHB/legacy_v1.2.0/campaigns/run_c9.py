@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 campaign C9 — the gap phase map: where the gap lives (v1.2.0).
 
@@ -49,14 +48,14 @@ import time
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from qhb.gap import static_gap, floquet_gap, KAPPA
 from qhb.constants import __version__
+from qhb.gap import KAPPA, floquet_gap, static_gap
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(HERE, "reference")
 
 QPK_GRID = (0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
-BETA_GRID = tuple(round(0.25 * k, 4) for k in range(0, 41))   # 0 .. 10.0
+BETA_GRID = tuple(round(0.25 * k, 4) for k in range(41))   # 0 .. 10.0
 N_MAP = 64
 OMEGA0_HALF = 1.0                    # the two-band validity ceiling
 REGIME_FLOOR = 0.2                   # honest validity boundary in q_pk
@@ -95,7 +94,6 @@ def main():
 
     # --- the committed static block and window law (for the counterexample) --
     _, _, D04 = static_gap(N_MAP, KAPPA, 0.4)
-    from qhb.constants import CAMPAIGN
     # the committed window coefficients are read from the C1 verdict
     with open(os.path.join(REF, "c1_verdict.json"), encoding="utf-8") as fh:
         c1 = json.load(fh)

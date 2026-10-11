@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-01 — cryptographic release identity & archive integrity.
 
@@ -42,7 +41,8 @@ import zipfile
 IVP_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(IVP_DIR)
 sys.path.insert(0, IVP_DIR)
-from ivp_common import REPO_ROOT as ROOT, save_result, log, worst_status, ensure_dirs  # noqa: E402
+from ivp_common import REPO_ROOT as ROOT
+from ivp_common import log, save_result, worst_status
 
 # v2.0.1 release-gate: the expected version is read from the tree's
 # own VERSION file (single source of truth) so the consistency check
@@ -109,7 +109,7 @@ def tree_version_consistency():
     findings["VERSION"] = open(vfile, encoding="utf-8").read().strip()
 
     pp = open(os.path.join(ROOT, "pyproject.toml"), encoding="utf-8").read()
-    m = re.search(r'^version\s*=\s*"([^"]+)"', pp, re.M)
+    m = re.search(r'^version\s*=\s*"([^"]+)"', pp, re.MULTILINE)
     findings["pyproject.toml"] = m.group(1) if m else None
 
     mk = open(os.path.join(ROOT, "Makefile"), encoding="utf-8").read()
@@ -118,7 +118,7 @@ def tree_version_consistency():
 
     cit = os.path.join(ROOT, "CITATION.cff")
     if os.path.exists(cit):
-        m = re.search(r"^version:\s*['\"]?([^'\"\n]+)", open(cit, encoding="utf-8").read(), re.M)
+        m = re.search(r"^version:\s*['\"]?([^'\"\n]+)", open(cit, encoding="utf-8").read(), re.MULTILINE)
         findings["CITATION.cff"] = m.group(1).strip() if m else None
 
     ch = os.path.join(ROOT, "CHANGELOG.md")

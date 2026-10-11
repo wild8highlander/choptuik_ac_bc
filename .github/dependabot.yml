@@ -33,7 +33,7 @@ updates:
 
   # ── npm (Next.js) ──────────────────────────────────────────
   - package-ecosystem: npm
-    directory: /interactive-viz
+    directory: "/Interactive Viz"
     schedule:
       interval: weekly
       day: tuesday

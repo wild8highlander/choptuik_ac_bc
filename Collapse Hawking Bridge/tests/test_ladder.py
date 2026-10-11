@@ -1,12 +1,20 @@
-# -*- coding: utf-8 -*-
 """Scale ladders and the validation layer."""
 import math
 
 from chbridge import ladder as L
-from chbridge.constants import (a0, H0, Mpc, c, gamma_Ch, b_Ch, M_sun,
-                                kretschmann_horizon, kretschmann_planck)
-from chbridge.hawking import equal_CMB_mass, surface_gravity
 from chbridge import validate as V
+from chbridge.constants import (
+    H0,
+    M_sun,
+    Mpc,
+    a0,
+    b_Ch,
+    c,
+    gamma_Ch,
+    kretschmann_horizon,
+    kretschmann_planck,
+)
+from chbridge.hawking import equal_CMB_mass, surface_gravity
 
 
 def test_a0_mond_coincidence():
@@ -37,7 +45,7 @@ def test_kretschmann_scale_law():
 
 def test_kretschmann_planck_value():
     """1/l_P^4 matches the direct formula c^6/(hbar^2 G^2) (rel. tol)."""
-    from chbridge.constants import hbar, G
+    from chbridge.constants import G, hbar
     rel = abs(kretschmann_planck() - c ** 6 / (hbar ** 2 * G ** 2)) / kretschmann_planck()
     assert rel < 1e-12
 

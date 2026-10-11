@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 r"""
 ================================================================================
   HONESTY AUDIT — supplementary calculations for the Choptuik-Strong CP monograph
@@ -42,11 +41,8 @@ from __future__ import annotations
 import json
 import math
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 import numpy as np
-from scipy import integrate, stats
-
 
 # =============================================================================
 # 0.  Foundational constants (match the main code)
@@ -98,7 +94,7 @@ def sample_poisson_n3(n_samples: int, rng: np.random.Generator) -> np.ndarray:
     return rng.uniform(0.0, 1.0, size=(n_samples, 3))
 
 
-def monte_carlo_r_tilde(n_samples: int = 100_000, seed: int = 42) -> Dict:
+def monte_carlo_r_tilde(n_samples: int = 100_000, seed: int = 42) -> dict:
     rng = np.random.Generator(np.random.PCG64(seed))
 
     gue_eigs = sample_gue_n3(n_samples, rng)
@@ -150,7 +146,7 @@ def monte_carlo_r_tilde(n_samples: int = 100_000, seed: int = 42) -> Dict:
 # The monograph says "Of the six hypotheses tested, H_2 is the closest".
 # We list all six explicitly and quantify the selection bias.
 
-def cabibbo_hypotheses(theta_C_rad: float) -> List[Tuple[str, float, str]]:
+def cabibbo_hypotheses(theta_C_rad: float) -> list[tuple[str, float, str]]:
     """Return (label, value, formula) for all six natural Cabibbo hypotheses."""
     s = math.sin(theta_C_rad)
     c = math.cos(theta_C_rad)
@@ -164,7 +160,7 @@ def cabibbo_hypotheses(theta_C_rad: float) -> List[Tuple[str, float, str]]:
     ]
 
 
-def cabibbo_audit() -> Dict:
+def cabibbo_audit() -> dict:
     # Use the theoretical prediction theta_C = arcsin(pi/14)
     theta_C = math.asin(math.pi / 14.0)
     hyps = cabibbo_hypotheses(theta_C)
@@ -223,7 +219,7 @@ def cabibbo_audit() -> Dict:
 # the Vandermonde!  This is a non-trivial structural fact that the
 # monograph does not currently state.
 
-def work_formula_sensitivity() -> Dict:
+def work_formula_sensitivity() -> dict:
     c1, c2, c3 = EIGENVALUES
     trace = c1 + c2 + c3
     vand = (c2 - c1) * (c3 - c1) * (c3 - c2)
@@ -297,7 +293,7 @@ def sample_gue_n(n: int, n_samples: int, rng: np.random.Generator) -> np.ndarray
     return np.linalg.eigvalsh(H)
 
 
-def scaling_S_GUE_with_N() -> Dict:
+def scaling_S_GUE_with_N() -> dict:
     r"""Scaling of theta_eff = delta_C * sqrt(|Vand|) with spectrum size N.
 
     KEY INSIGHT: since the trace cancels (see section C), the work formula
@@ -385,7 +381,7 @@ def scaling_S_GUE_with_N() -> Dict:
 # RANDOM angle in [0, pi/4] is ~ 0.6% per candidate.  With ~Q^2/4
 # candidates, the expected number of 99.4% matches is ~ Q^2/4 * 0.006.
 
-def coincidence_significance() -> Dict:
+def coincidence_significance() -> dict:
     # Cabibbo: sin(theta_C) = 0.2256, pi/14 = 0.2244, rel err = 0.55%
     sin_theta_C = 0.2256  # PDG
     pi_14 = math.pi / 14.0
@@ -462,7 +458,7 @@ def coincidence_significance() -> Dict:
 # where ln(1e12/100) ~ 25.6 and the divisor 1.6 is UNEXPLAINED.
 # We scan the divisor to make the arbitrariness explicit.
 
-def seesaw_divisor_scan() -> Dict:
+def seesaw_divisor_scan() -> dict:
     log_ratio = math.log(1e12 / 100.0)  # ~ 18.4
     c_theta = C_THETA
     cp = math.sin(-math.pi/4.0)**2  # delta_CP = -pi/2 -> sin^2(pi/4) = 0.5
@@ -549,7 +545,7 @@ def main() -> None:
     print("  HONESTY AUDIT — supplementary calculations")
     print("=" * 78)
 
-    results: Dict = {}
+    results: dict = {}
 
     print("\n(A) Monte Carlo GUE vs Poisson at N=3 ...")
     results["A_monte_carlo"] = monte_carlo_r_tilde()

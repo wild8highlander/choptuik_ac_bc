@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ЗУМ-КАМПАНИЯ: ЦЕНТРАЛЬНЫЙ ТЕЙЛОР-ПАТЧ (машино-выведенная иерархия центра)
 ==========================================================================
@@ -25,9 +24,14 @@ import os
 import time
 
 import numpy as np
-
-from zoom_solver import (ZoomRunner, echo_peaks, echo_period_from_peaks,
-                         RESULTS, V_P, SIGMA)
+from zoom_solver import (
+    RESULTS,
+    SIGMA,
+    V_P,
+    ZoomRunner,
+    echo_peaks,
+    echo_period_from_peaks,
+)
 
 A_FIXED_GRID = 0.0805333
 GAMMA_LIT = 0.374
@@ -95,7 +99,7 @@ def main():
         }
         # эхо: пики Q на всей пост-зумовой части
         vp, yp = echo_peaks(r.track, "Q")
-        rec["Q_peaks_n"] = int(len(vp))
+        rec["Q_peaks_n"] = len(vp)
         if len(vp) >= 4:
             D, Derr, npk = echo_period_from_peaks(vp)
             rec["Delta_ln_intervals"] = {"Delta": float(D), "err": float(Derr),

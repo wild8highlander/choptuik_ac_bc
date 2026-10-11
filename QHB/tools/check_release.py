@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Iron-QA: release consistency — VERSION / CHANGELOG / README / checksums / links."""
-import re, sys, hashlib, pathlib
+import hashlib
+import pathlib
+import re
+import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FAIL = []

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 rebuild_data.py — regenerate every derived table in data/qhb/ from the
 committed campaign verdicts (byte-deterministic, pinned by a test).
@@ -16,9 +15,14 @@ ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, ROOT)
 
 from qhb.bridge import master_table, write_outputs
-from qhb.ladder import (density_ladder, temperature_ladder, gap_ladder,
-                        constants_registry, write_outputs as write_ladders)
 from qhb.constants import __version__
+from qhb.ladder import (
+    constants_registry,
+    density_ladder,
+    gap_ladder,
+    temperature_ladder,
+)
+from qhb.ladder import write_outputs as write_ladders
 
 REF = os.path.join(ROOT, "campaigns", "reference")
 OUT = os.path.join(ROOT, "data", "qhb")
@@ -75,37 +79,33 @@ def main():
     with open(os.path.join(OUT, "trap_grid.csv"), "w",
               encoding="utf-8", newline="") as fh:
         fh.write("V0,Omega,P_esc,err,n_alive_end\n")
-        for g in sorted(c2["grid"], key=lambda r: (r["Omega"], r["V0"])):
-            fh.write(f'{g["V0"]:.4g},{g["Omega"]:.4g},{g["P_esc"]:.10e},'
-                     f'{g["err"]:.10e},{g["n_alive_end"]}\n')
+        fh.writelines(f'{g["V0"]:.4g},{g["Omega"]:.4g},{g["P_esc"]:.10e},'
+                     f'{g["err"]:.10e},{g["n_alive_end"]}\n' for g in sorted(c2["grid"], key=lambda r: (r["Omega"], r["V0"])))
     dump("trap_lyapunov.json", c2["lyapunov"])
     dump("gascheau.json", c2["gascheau"])
 
     with open(os.path.join(OUT, "wu_residual_grid.csv"), "w",
               encoding="utf-8", newline="") as fh:
         fh.write("alpha,x,r_exact,r_mc,dev\n")
-        for r in c3["rows"]:
-            fh.write(f'{r["alpha"]:.4g},{r["x"]:.4g},{r["r_exact"]:.10e},'
-                     f'{r["r_mc"]:.10e},{r["dev"]:.10e}\n')
+        fh.writelines(f'{r["alpha"]:.4g},{r["x"]:.4g},{r["r_exact"]:.10e},'
+                     f'{r["r_mc"]:.10e},{r["dev"]:.10e}\n' for r in c3["rows"])
     dump("wu_anchor.json", c3["anchor"])
     dump("wu_eta_comparison.json", c3["eta_comparison"])
 
     with open(os.path.join(OUT, "floor_ladder.csv"), "w",
               encoding="utf-8", newline="") as fh:
         fh.write("T_sim,N_samples,beats,resolution,gap_meas,err,resolved\n")
-        for r in c4["rows"]:
-            fh.write(f'{r["T_sim"]:.4g},{r["N_samples"]},'
+        fh.writelines(f'{r["T_sim"]:.4g},{r["N_samples"]},'
                      f'{r["beats_in_window"]:.6f},{r["resolution"]:.6e},'
                      f'{r["gap_meas"] if r["gap_meas"] is not None else ""},'
                      f'{r["err"] if r["err"] is not None else ""},'
-                     f'{int(r["resolved"])}\n')
+                     f'{int(r["resolved"])}\n' for r in c4["rows"])
     dump("floor_law.json", c4["floor_law"])
 
     with open(os.path.join(OUT, "drift_ladder.csv"), "w",
               encoding="utf-8", newline="") as fh:
         fh.write("N,h,Delta_N\n")
-        for r in c5["ladder"]:
-            fh.write(f'{r["N"]},{r["h"]:.10e},{r["Delta_N"]:.12e}\n')
+        fh.writelines(f'{r["N"]},{r["h"]:.10e},{r["Delta_N"]:.12e}\n' for r in c5["ladder"])
     dump("drift_law.json", {"p_eff": c5["p_eff"], "fit": c5["fit"],
                             "exact_channel": c5["exact_channel"]})
 
@@ -114,27 +114,24 @@ def main():
               encoding="utf-8", newline="") as fh:
         fh.write("branch,T_K,f_contact_Hz,M_contact_kg,f_gap_Hz,E_gap_MeV,"
                  "t_evap_s,rho_over_rhoP\n")
-        for r in c6["branches"]:
-            fh.write(f'{r["name"]},{r["T_K"]:.10e},{r["f_contact_Hz"]:.10e},'
+        fh.writelines(f'{r["name"]},{r["T_K"]:.10e},{r["f_contact_Hz"]:.10e},'
                      f'{r["M_contact_kg"]:.10e},{r["f_gap_Hz"]:.10e},'
                      f'{r["E_gap_MeV"]:.10e},{r["t_evap_s"]:.10e},'
-                     f'{r["rho_over_rhoP"]:.10e}\n')
+                     f'{r["rho_over_rhoP"]:.10e}\n' for r in c6["branches"])
 
     with open(os.path.join(OUT, "anharmonic_free.csv"), "w",
               encoding="utf-8", newline="") as fh:
         fh.write("sigma,P_esc,err,n_alive_end,E_drift_surv\n")
-        for r in c7["free_sigma_ladder"]:
-            fh.write(f'{r["sigma"]:.6g},{r["P_esc"]:.10e},{r["err"]:.10e},'
-                     f'{r["n_alive_end"]},{r["E_drift_surv"]:.10e}\n')
+        fh.writelines(f'{r["sigma"]:.6g},{r["P_esc"]:.10e},{r["err"]:.10e},'
+                     f'{r["n_alive_end"]},{r["E_drift_surv"]:.10e}\n' for r in c7["free_sigma_ladder"])
 
     with open(os.path.join(OUT, "anharmonic_grid.csv"), "w",
               encoding="utf-8", newline="") as fh:
         fh.write("sigma,V0,Omega,P_esc,err,n_alive_end\n")
-        for g in sorted(c7["grid"], key=lambda r: (r["Omega"], r["sigma"],
-                                                   r["V0"])):
-            fh.write(f'{g["sigma"]:.6g},{g["V0"]:.6g},{g["Omega"]:.6g},'
+        fh.writelines(f'{g["sigma"]:.6g},{g["V0"]:.6g},{g["Omega"]:.6g},'
                      f'{g["P_esc"]:.10e},{g["err"]:.10e},'
-                     f'{g["n_alive_end"]}\n')
+                     f'{g["n_alive_end"]}\n' for g in sorted(c7["grid"], key=lambda r: (r["Omega"], r["sigma"],
+                                                   r["V0"])))
     dump("anharmonic_boundary.json",
          {"L1": c7["L1_leakage_law"], "L2": c7["L2_boundary_collapse"],
           "L3": c7["L3_bound_chaos"],
@@ -143,10 +140,9 @@ def main():
     with open(os.path.join(OUT, "pairwise_residual.csv"), "w",
               encoding="utf-8", newline="") as fh:
         fh.write("alpha,lambda,r_pair,r_linear_at_x_lambda\n")
-        for r in c8["grid"]:
-            fh.write(f'{r["alpha"]:.6g},{r["lambda"]:.6g},'
+        fh.writelines(f'{r["alpha"]:.6g},{r["lambda"]:.6g},'
                      f'{r["r_pair"]:.10e},'
-                     f'{r["r_linear_at_x=lambda"]:.10e}\n')
+                     f'{r["r_linear_at_x=lambda"]:.10e}\n' for r in c8["grid"])
     dump("pairwise_checks.json",
          {"X1": c8["X1_no_door_exact"], "X2": c8["X2_monotone_imbalance"],
           "convergence": c8["convergence"], "mpmath": c8["mpmath_anchor"],
@@ -157,33 +153,29 @@ def main():
               encoding="utf-8", newline="") as fh:
         fh.write("q_pk,beta,Delta_F,phase\n")
         for row in c9["map"]["rows"]:
-            for cell in row["cells"]:
-                fh.write(f'{row["q_pk"]:.6g},{cell["beta"]:.6g},'
-                         f'{cell["Delta_F"]:.10e},{cell["phase"]}\n')
+            fh.writelines(f'{row["q_pk"]:.6g},{cell["beta"]:.6g},'
+                         f'{cell["Delta_F"]:.10e},{cell["phase"]}\n' for cell in row["cells"])
 
     with open(os.path.join(OUT, "phase_valley.csv"), "w",
               encoding="utf-8", newline="") as fh:
         fh.write("q_pk,beta_star,Delta_F_min,above_floor\n")
-        for v in c9["valley"]:
-            fh.write(f'{v["q_pk"]:.6g},{v["beta_star"]:.10e},'
-                     f'{v["Delta_F_min"]:.10e},{int(v["above_floor"])}\n')
+        fh.writelines(f'{v["q_pk"]:.6g},{v["beta_star"]:.10e},'
+                     f'{v["Delta_F_min"]:.10e},{int(v["above_floor"])}\n' for v in c9["valley"])
     dump("phase_counterexample.json", c9["counterexample"])
 
     with open(os.path.join(OUT, "ablation.csv"), "w",
               encoding="utf-8", newline="") as fh:
         fh.write("config,B2,max_abs_residual,b_flip_dev\n")
-        for r in c10["ablation"]:
-            fh.write(f'{r["config"]},{r["B2"]:.10e},'
+        fh.writelines(f'{r["config"]},{r["B2"]:.10e},'
                      f'{r["max_abs_residual"]:.10e},'
-                     f'{r["b_flip_dev"]:.10e}\n')
+                     f'{r["b_flip_dev"]:.10e}\n' for r in c10["ablation"])
 
     with open(os.path.join(OUT, "forecast.csv"), "w",
               encoding="utf-8", newline="") as fh:
         fh.write("beta,true_shift,quadratic_forecast,error,error_share\n")
-        for r in c10["forecast"]["rows"]:
-            fh.write(f'{r["beta"]:.6g},{r["true_shift"]:.10e},'
+        fh.writelines(f'{r["beta"]:.6g},{r["true_shift"]:.10e},'
                      f'{r["quadratic_forecast"]:.10e},{r["error"]:.10e},'
-                     f'{r["error_share"]:.10e}\n')
+                     f'{r["error_share"]:.10e}\n' for r in c10["forecast"]["rows"])
     dump("ablation_additivity.json", {"shares": c10["causal_shares"],
                                       "rows": c10["additivity"]})
 
@@ -191,12 +183,11 @@ def main():
               encoding="utf-8", newline="") as fh:
         fh.write("V0,Omega,P_esc,n_escaped,bound_violation_max,"
                  "bound_margin_min,exactly_impossible,E_drift_abs_max\n")
-        for c in c11["blocks"]["B4_T13_barrier"]["cells"]:
-            fh.write(f'{c["V0"]:.6g},{c["Omega"]:.6g},{c["P_esc"]:.10e},'
+        fh.writelines(f'{c["V0"]:.6g},{c["Omega"]:.6g},{c["P_esc"]:.10e},'
                      f'{c["n_escaped"]},{c["bound_violation_max"]:.10e},'
                      f'{c["bound_margin_min"]:.10e},'
                      f'{int(c["escape_exactly_impossible"])},'
-                     f'{c["E_drift_abs_max"]:.10e}\n')
+                     f'{c["E_drift_abs_max"]:.10e}\n' for c in c11["blocks"]["B4_T13_barrier"]["cells"])
     dump("vortex_anchor.json", {
         "T11_spectrum": c11["blocks"]["B1_T11_exact"],
         "T11_rotation": c11["blocks"]["B2_T11_rotation"],

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 QHB v2.1.0 — Исполнение роадмапа R1–R7 (дополнительный слой монолитного издания).
 
@@ -13,19 +12,34 @@ R7  мультиязычные двойники: исполняемая вери
 
 Все результаты: /home/z/my-project/qhb_work/roadmap_results.json
 """
-import json, math, os, subprocess, sys, tempfile
+import json
+import math
+import subprocess
+import sys
+import tempfile
 
 WORK = "/home/z/my-project/qhb_work"
 UNI = f"{WORK}/QHB_Unified_v2.0.0"
 sys.path.insert(0, UNI)
 
-import numpy as np
 import mpmath as mp
-
-from qhb.constants import (BETA_STAR, DELTA_F_MIN, DELTA_THRESH, BETA_C_NAIVE,
-                           K_GAP, E_MAX, SIGMA0, C1_SPIN, C2_SPIN,
-                           delta_F_of_beta)
-from qhb.core import gap_finite_volume, runs_test_z, spectrum, T0_TAIL, E0_TAIL, bridge_temperature
+import numpy as np
+from qhb.constants import (
+    BETA_C_NAIVE,
+    BETA_STAR,
+    DELTA_F_MIN,
+    DELTA_THRESH,
+    E_MAX,
+    K_GAP,
+    delta_F_of_beta,
+)
+from qhb.core import (
+    E0_TAIL,
+    T0_TAIL,
+    bridge_temperature,
+    gap_finite_volume,
+    runs_test_z,
+)
 
 mp.mp.dps = 50
 SEED_R = 777003  # новый зафиксированный seed слоя R (N8-стиль)
@@ -90,7 +104,7 @@ def r1_continuum():
                 if abs(float(v) - gap_finite_volume(b, L)) > 1e-12:
                     anchor_ok = False
                 anchor_n += 1
-    except Exception as e:
+    except Exception:
         anchor_ok = False; anchor_n = -1
 
     ladder_star = {r["L"]: r["delta_F"] for r in rows if r["beta"] == "beta_star"}
@@ -264,7 +278,6 @@ def r2_anisotropic():
                  for i in range(3) for j in range(i + 1, 3)) / (2 * math.pi)
         return Jp, H
     nonlin = []
-    import random
     for gam in (0.5, 0.8, 1.0, 1.2, 1.5, 2.0):
         g = [1.0, 1.0, gam]
         base = equi_circ(g)

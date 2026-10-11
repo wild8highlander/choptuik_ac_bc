@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 QHB v2.2.0 — Пять лестниц сходимости в бесконечность (глава 17).
 
@@ -16,14 +15,16 @@ L-E  выборка: n -> inf. Биномиальная лестница P_esc: 
 
 Результат: /home/z/my-project/qhb_work/v220_ladders.json
 """
-import json, math, sys
+import json
+import math
+import sys
 
 WORK = "/home/z/my-project/qhb_work"
 sys.path.insert(0, f"{WORK}/QHB_Unified_v2.1.0")
 
-import numpy as np
 import mpmath as mp
-from qhb.constants import DELTA_F_MIN, K_GAP, ETA_B
+import numpy as np
+from qhb.constants import DELTA_F_MIN, K_GAP
 
 mp.mp.dps = 50
 SEED_R = 777003

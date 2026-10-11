@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 campaign C3 — the Wu door (theorem T7).
 
@@ -22,8 +21,8 @@ import time
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from engine.solver import wu_mc
-from qhb.wu import residual, required_x_for_eta
-from qhb.constants import A_WU_ANCHOR, eta_baryon, __version__
+from qhb.constants import A_WU_ANCHOR, __version__, eta_baryon
+from qhb.wu import required_x_for_eta, residual
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REF = os.path.join(HERE, "reference")

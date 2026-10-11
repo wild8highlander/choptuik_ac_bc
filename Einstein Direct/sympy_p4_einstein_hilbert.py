@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 P4-ЗАМЫКАНИЕ (O6+): ДИНАМИЧЕСКИЙ ЦИКЛ ФОРМ В УРАВНЕНИЯХ ЭЙНШТЕЙНА И ГИЛЬБЕРТА
@@ -71,7 +70,7 @@ sys.path.insert(0, BASE)
 RESULTS = os.path.join(BASE, "results")
 os.makedirs(RESULTS, exist_ok=True)
 
-import sympy_center_o6 as o6  # noqa: E402
+import sympy_center_o6 as o6
 
 log = print
 ORDERS = {"SC": 5, "UV": 3, "C2": 3, "TH": 3, "C1": 3, "Mdef": 6}
@@ -750,7 +749,7 @@ def parity_level(A: dict) -> dict:
     om = W0f(y) + W2f(y) * xi**2 + W4f(y) * xi**4          # чётное omega
     c_e = sp.Rational(1, 2) * (sp.diff(om, y) - sp.diff(om, xi))  # d_u (chi=0)
     d_e = sp.Rational(1, 2) * (sp.diff(om, y) + sp.diff(om, xi))  # d_v
-    mir = lambda e_: e_.subs(xi, -xi)  # noqa: E731
+    mir = lambda e_: e_.subs(xi, -xi)
     chk = {
         "mirror_swaps_c_d": bool(sp.simplify(mir(c_e) - d_e) == 0),
         "d_minus_c_is_omega_xi": bool(
@@ -794,7 +793,7 @@ def parity_level(A: dict) -> dict:
             rows.append(rec)
     demo = {"n_rows": len(rows)}
     if rows:
-        med = lambda k: float(np.median([r_[k] for r_ in rows]))  # noqa: E731
+        med = lambda k: float(np.median([r_[k] for r_ in rows]))
         demo.update({
             "median_abs_even_part": med("even_part") if False else float(
                 np.median([abs(r_["even_part"]) for r_ in rows])),

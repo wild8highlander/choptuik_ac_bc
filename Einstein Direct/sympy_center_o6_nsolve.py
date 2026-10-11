@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 O6-ТОЧКА: ЧИСЛЕННЫЙ АНАЛИЗ (nsolve) — СВЯЗЫВАЕТ ЛИ РАСШИРЕННАЯ БАШНЯ tau?
@@ -36,7 +35,7 @@ import numpy as np
 import sympy as sp
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import sympy_center_o6 as o6  # noqa: E402
+import sympy_center_o6 as o6
 
 RESULTS = o6.RESULTS
 log = print
@@ -132,7 +131,7 @@ def nsolve_point(eq_list, unk, verbose=True):
             if r > 1e-7:
                 continue
             key = np.round(vec / max(abs(vec[3]), 1e-12), 6)
-            if any(np.allclose(key / max(abs(k[3]), 1e-12), k0, rtol=1e-4)
+            if any(np.allclose(key / max(abs(key[3]), 1e-12), k0, rtol=1e-4)
                    for k0 in seen):
                 continue
             seen.append(key)

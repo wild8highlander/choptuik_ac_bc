@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 ================================================================================
 РАСЧЁТ СХОДИМОСТИ И ОТТАЛКИВАНИЯ ИЗ ПЕРВЫХ ПРИНЦИПОВ — ЦЕНТРАЛЬНАЯ БАШНЯ
@@ -129,8 +128,7 @@ def part1_thorne():
 def part1_center_link():
     """Центральная связь M3 = 2 R1 t0^2 / (3 (1-chi)^2) + калибровка центра."""
     # анзац sympy_center (общий chi)
-    from sympy_center import (R1, R3, P0, P2, W0, M3, CHI, d_u, d_v, xi, y,
-                              series_coeffs)
+    from sympy_center import CHI, M3, P0, P2, R1, R3, W0, d_u, d_v, series_coeffs, xi, y
     r_e = R1 * xi + R3 * xi**3
     Phi_e = P0 + P2 * xi**2
     om_e = W0
@@ -216,7 +214,7 @@ def part2_z_tower():
 
     def purify(ze):
         """Общая степень s: (k, s-свободное выражение); k=None — не чисто."""
-        for k in range(0, 7):
+        for k in range(7):
             cand = sp.simplify(sp.expand(ze * S**k))
             if not cand.has(S):
                 return k, cand
@@ -458,7 +456,7 @@ def part4_empirics(cf_exprs):
             rr = np.array([x for a, x in ratios if a >= cut])
             rr = rr[np.isfinite(rr)]
             val[f"A={A_val}"] = {
-                "n_rows": int(len(rr)),
+                "n_rows": len(rr),
                 "flux_ratio_median": float(np.median(rr)) if len(rr) else None,
                 "flux_ratio_p10": float(np.percentile(rr, 10)) if len(rr) else None,
                 "flux_ratio_p90": float(np.percentile(rr, 90)) if len(rr) else None,
@@ -483,8 +481,8 @@ def part4_empirics(cf_exprs):
 
     # --- (b) Критическая цепочка v5: невязки O1/O3 + xi_AH + честный вердикт ---
     try:
-        from zoom_solver import ZoomRunner
         from spinor_ladder import ode_residuals
+        from zoom_solver import ZoomRunner
         A = A_STAR + EPS_RUN
         log(f"[IV] цепочка зумов: A = {A} (A* + {EPS_RUN}), n = 800...")
         runner = ZoomRunner(A=A, n=800, max_zooms=12, verbose=False)
@@ -500,7 +498,7 @@ def part4_empirics(cf_exprs):
                and np.isfinite(r_.get("M3", np.nan))]
         xah = np.array(xah) if xah else np.array([])
         out["xi_AH_hoop"] = {
-            "n": int(len(xah)),
+            "n": len(xah),
             "median": float(np.median(xah)) if len(xah) else None,
             "p10": float(np.percentile(xah, 10)) if len(xah) else None,
             "p90": float(np.percentile(xah, 90)) if len(xah) else None,
@@ -541,7 +539,7 @@ def part4_empirics(cf_exprs):
         fr_all = np.array([abs(r_["flux_ratio"] - 1.0) for r_ in recs
                            if r_.get("flux_ratio") is not None])
         out["flux_diagnostic_chain"] = {
-            "n": int(len(fr_all)),
+            "n": len(fr_all),
             "dev_median": float(np.median(fr_all)) if len(fr_all) else None,
             "dev_p90": float(np.percentile(fr_all, 90)) if len(fr_all) else None,
         }

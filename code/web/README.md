@@ -39,7 +39,7 @@ bun run build          # production build (standalone output)
 bun run start          # serve the standalone build via bun
 ```
 
-The dev server is also launched by the `interactive-viz` Compose pattern in
+The dev server is also launched by the `interactive-viz` Compose service (mounting `Interactive Viz/`) in
 `../../docker/docker-compose.yml`, and port 3000 is forwarded by the dev
 container configuration.
 

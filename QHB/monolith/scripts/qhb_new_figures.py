@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 QHB Monolith — новые фигуры для главы 11 (RU + EN версии).
 Стиль: согласован с пакетом (светлая тема, без верхних/правых осей, пунктирная сетка).
 """
-import json, math, os
-import numpy as np
+import json
+import os
+
 import matplotlib
+import numpy as np
+
 matplotlib.use("Agg")
 import matplotlib.font_manager as fm
+
 fm.fontManager.addfont('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf')
 import matplotlib.pyplot as plt
 
@@ -83,7 +86,7 @@ def build_all(lang):
     fig, ax = plt.subplots(figsize=(8.2, 4.8), constrained_layout=True)
     b = np.linspace(2.8, 4.55, 500)
     y = Dmin + K*(b - beta_star)**2
-    ax.plot(b, y, color=C_MAIN, lw=2.2, label=f"Δ_F(β) = Δ_F,min + 0.35·(β − β*)²")
+    ax.plot(b, y, color=C_MAIN, lw=2.2, label="Δ_F(β) = Δ_F,min + 0.35·(β − β*)²")
     thr = 0.03634845261904761
     ax.axhline(thr, color=C_NEG, lw=1.4, ls=":", label=f"{T['valley'][3]} = 0.0363485")
     bc = 2.9910

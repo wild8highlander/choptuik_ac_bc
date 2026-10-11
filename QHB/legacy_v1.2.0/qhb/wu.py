@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 wu.py — Hawking pairs and the Wu (1957) parity-violation door.
 

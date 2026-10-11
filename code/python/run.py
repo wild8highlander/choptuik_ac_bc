@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 run.py — CLI entry point for the Choptuik-QCD bridge verification suite.
 
@@ -23,9 +22,8 @@ import argparse
 import json
 import logging
 import sys
-import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 # Add this dir to path
 sys.path.insert(0, str(Path(__file__).parent))
@@ -90,17 +88,17 @@ I18N = {
 }
 
 
-def get_default_formats() -> List[str]:
+def get_default_formats() -> list[str]:
     return ["txt", "csv", "md", "pdf", "html", "docx", "json"]
 
 
-def parse_formats(s: str) -> List[str]:
+def parse_formats(s: str) -> list[str]:
     if not s.strip():
         return get_default_formats()
     return [f.strip().lower() for f in s.split(",") if f.strip()]
 
 
-def safe_input(prompt: str = "") -> Optional[str]:
+def safe_input(prompt: str = "") -> str | None:
     """input() that never crashes on closed stdin (EOF) or Ctrl+C.
 
     Returns the stripped string, or None when input is unavailable.
@@ -113,7 +111,7 @@ def safe_input(prompt: str = "") -> Optional[str]:
         return None
 
 
-def interactive_menu(lang: str = "en") -> Optional[Dict[str, Any]]:
+def interactive_menu(lang: str = "en") -> dict[str, Any] | None:
     """Show interactive menu and return chosen config."""
     tr = I18N[lang]
     print(f"\n{tr['welcome']}")
@@ -157,10 +155,10 @@ def interactive_menu(lang: str = "en") -> Optional[Dict[str, Any]]:
         print(tr["invalid"])
 
 
-def gather_custom_params(lang: str = "en") -> Dict[str, Any]:
+def gather_custom_params(lang: str = "en") -> dict[str, Any]:
     """Gather custom parameters from user."""
     tr = I18N[lang]
-    params: Dict[str, Any] = {"mode": "custom", "language": lang}
+    params: dict[str, Any] = {"mode": "custom", "language": lang}
     try:
         s = safe_input(tr["kappa_T"])
         params["kappa_T_custom"] = float(s) if s else 8.45
@@ -187,7 +185,7 @@ def gather_custom_params(lang: str = "en") -> Dict[str, Any]:
     return params
 
 
-def run_pipeline(params: Dict[str, Any], non_interactive: bool = False) -> int:
+def run_pipeline(params: dict[str, Any], non_interactive: bool = False) -> int:
     """Execute the pipeline per params dict."""
     lang = params.get("language", "en")
     tr = I18N[lang]
@@ -225,19 +223,19 @@ def run_pipeline(params: Dict[str, Any], non_interactive: bool = False) -> int:
     paths = engine.generate(result, formats=config.report_formats)
 
     print(f"\n{tr['done'].format(dir=str(output_dir))}")
-    print(f"\nReports generated:")
+    print("\nReports generated:")
     for fmt, p in paths.items():
         print(f"  {fmt.upper():6s} -> {p}")
     return 0
 
 
-def load_config_file(path: str) -> Dict[str, Any]:
+def load_config_file(path: str) -> dict[str, Any]:
     """Load custom config from JSON file."""
     with open(path) as f:
         return json.load(f)
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Choptuik-QCD Bridge Verification Suite",
         formatter_class=argparse.RawDescriptionHelpFormatter,

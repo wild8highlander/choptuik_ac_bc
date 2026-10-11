@@ -1,7 +1,10 @@
-# -*- coding: utf-8 -*-
 """IVP02 — canonical job: a fresh interpreter recomputes the canonical
 gap block from scratch and must match the committed verdict exactly."""
-import os, sys, subprocess, json
+import json
+import os
+import subprocess
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from ivp_common import ROOT, verdict, write_verdict
 

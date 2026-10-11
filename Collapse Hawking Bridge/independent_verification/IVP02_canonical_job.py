@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 IVP-02 canonical numeric job — printed with full precision so that
 different clean-room interpreters can be compared byte-wise.
@@ -21,10 +20,8 @@ ROOT = os.path.dirname(IVP_DIR)
 sys.path.insert(0, IVP_DIR)
 sys.path.insert(0, os.path.join(ROOT, "engine"))
 
-from ivp_common import (make_independent_roberts, make_independent_gaussian,  # noqa: E402
-                        GEO)
-
-import solver as S  # noqa: E402
+import solver as S
+from ivp_common import GEO, make_independent_gaussian, make_independent_roberts
 
 IndepRoberts = make_independent_roberts(S)
 IndepG = make_independent_gaussian(S)

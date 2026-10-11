@@ -56,7 +56,7 @@ repos:
       - id: prettier
         name: Prettier (TS/TSX/CSS)
         types_or: [javascript, tsx, css]
-        files: ^interactive-viz/
+        files: ^Interactive Viz/
 
   # ── Markdown lint ──────────────────────────────────────────
   - repo: https://github.com/igorshubovych/markdownlint-cli

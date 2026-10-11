@@ -13,7 +13,7 @@ services:
     image: node:20-slim
     working_dir: /app
     volumes:
-      - ../interactive-viz:/app
+      - "../Interactive Viz:/app"
       - viz-node-modules:/app/node_modules
     ports:
       - "3000:3000"
