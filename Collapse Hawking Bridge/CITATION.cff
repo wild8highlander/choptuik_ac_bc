@@ -8,8 +8,8 @@ authors:
   - family-names: Isaev
     given-names: Ishak Khamzatovich
     affiliation: Independent researcher, Nalchik, Kabardino-Balkarian Republic, Russian Federation
-version: 2.1.0
-released: 2026-10-09
+version: 2.2.0
+released: 2026-10-11
 keywords:
   - critical gravitational collapse
   - Choptuik scaling

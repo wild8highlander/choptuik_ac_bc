@@ -16,6 +16,10 @@ Checks
  5. CMB contact mass: T_H(M_CMB) = T_CMB (both directions)
  6. Planck units: l_P, t_P, m_P self-consistency  (m_P = hbar/(l_P c) ...)
  7. Delta*gamma anchor product = 3.44 * 0.374 = 1.28656 vs target 1.27
+    (ARITHMETIC CONSISTENCY of the project's own anchors — not a
+    physics measurement; the engine-level test is governed by
+    PREREGISTRATION.md and is honestly INCONCLUSIVE at committed
+    resolutions)
  8. Kretschmann at horizon: K(M) * M^4 = 3c^8/(4G^4)  (scale invariance)
 """
 import math
@@ -89,7 +93,16 @@ def check_planck_units():
 
 
 def check_dgamma():
-    """Anchor product Delta*gamma vs the C3 target 1.27."""
+    """Anchor product Delta*gamma vs the FROZEN C3 target 1.27.
+
+    v2.2.0 semantics (external audit, point 10): this check verifies the
+    ARITHMETIC CONSISTENCY of the project's own two anchors (3.44 x 0.374
+    = 1.28656) with the frozen target 1.27 +- 0.05 (PREREGISTRATION.md).
+    It is NOT a physics measurement: both factors are anchors.  The
+    engine-level product (both factors measured) is the physical test and
+    is honestly INCONCLUSIVE at every committed resolution (floor-
+    dominated gamma, fewer than three resolved echo peaks).
+    """
     prod = mp.mpf(echo_delta) * mp.mpf(gamma_Ch)
     dev = abs(prod - mp.mpf(DGAMMA_TARGET))
     return {"ok": bool(dev < mp.mpf("0.02")),
@@ -112,7 +125,7 @@ ALL_CHECKS = {
     "S~M^2, T~1/M, t~M^3": check_power_laws,
     "CMB contact": check_cmb_contact,
     "Planck units": check_planck_units,
-    "Delta*gamma anchor": check_dgamma,
+    "Delta*gamma anchor arithmetic (not a measurement)": check_dgamma,
     "Kretschmann scale law": check_kretschmann,
 }
 

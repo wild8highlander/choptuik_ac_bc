@@ -1,6 +1,6 @@
 # engine — the double-null characteristic engine
 
-![v2.1.0](https://img.shields.io/badge/version-2.1.0-8C6D1F) ![validation](https://img.shields.io/badge/Roberts--Oshiro-orders_2.03%2F2.09-brightgreen) ![units](https://img.shields.io/badge/units-4piG%3D1_(kappa%3D2)-blue)
+![v2.2.0](https://img.shields.io/badge/version-2.2.0-8C6D1F) ![validation](https://img.shields.io/badge/Roberts--Oshiro-orders_2.03%2F2.09-brightgreen) ![units](https://img.shields.io/badge/units-4piG%3D1_(kappa%3D2)-blue)
 
 **TL;DR**
 

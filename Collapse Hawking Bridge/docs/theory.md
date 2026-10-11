@@ -130,16 +130,21 @@ Delta * gamma  =?  1.27      (project target)
 ```
 
 Anchor arithmetic: `3.44 (Gundlach-Hodgson; engine data) x 0.374
-(literature) = 1.28656` — 1.3% from the target, inside the acceptance
-tolerance `0.05`.  Campaign C3 (see `docs/validation.md`, `results/`)
-tests this at three levels:
+(literature) = 1.28656` — 1.3% from the target, inside the frozen
+tolerance `0.05`.  v2.2.0 verdict semantics (external audit, point 10):
+both factors of P_anchor are anchors, so this comparison is
+**ANCHOR_ARITHMETIC** — a consistency statement about the project's own
+constants, NOT a measurement and NOT evidence for the hypothesis; the
+tolerance itself was chosen post hoc in v1.x and is frozen since v2.2.0
+by `PREREGISTRATION.md`.  Campaign C3 (see `docs/validation.md`,
+`results/`) tests this at three levels:
 
-| product | inputs | verdict at v1.1.0 |
+| product | inputs | verdict (v2.2.0 semantics) |
 |---|---|---|
-| `P_anchor` | literature/engine anchors | **PASS** (1.28656, 1.3%) |
-| `P_mixed` | measured `Delta_eff` x anchor `gamma_Ch` | not measurable (peaks < 3) |
-| `P_engine` | measured `Delta_eff` x measured `gamma_eff` | not measurable (grid floor) |
-| `P_engine_deep` (C3b, N=3200) | both re-measured at deep grids | still not measurable (negatives re-confirmed) |
+| `P_anchor` | literature/engine anchors | **ANCHOR_ARITHMETIC** (1.28656, within the frozen tolerance; not a measurement) |
+| `P_mixed` | measured `Delta_eff` x anchor `gamma_Ch` | **INCONCLUSIVE** (peaks < 3) |
+| `P_engine` | measured `Delta_eff` x measured `gamma_eff` | **INCONCLUSIVE** (grid floor) |
+| `P_engine_deep` (C3b, N=3200) | both re-measured at deep grids | **INCONCLUSIVE** (negatives re-confirmed) |
 
 The honest engine-level negative is a *result*: at fixed grid the mass
 floor dominates the smallest resolved masses, the scaling fit comes out
@@ -149,9 +154,11 @@ grids (N = 1600/3200) on the critical window: the floor sank as
 `floor_M ~ 12/N`, the gamma fit TIGHTENED (r² 0.816 -> 0.957) but
 stabilised near 0.12 — the asymptotic regime behind the floor stayed
 out of reach, and no run resolved >= 3 echo peaks at any depth.  The
-invariant therefore stands **confirmed at anchor level, unconfirmed at
-engine level after two concentrated attacks** — and beating the floor
-law is the explicit engine-upgrade target.
+honest summary is therefore: the anchor arithmetic is consistent with
+the frozen target, and **the hypothesis is UNTESTED at engine level
+after two concentrated attacks** (INCONCLUSIVE, not refuted) — beating
+the floor law is the explicit engine-upgrade target, judged against
+the criteria frozen in `PREREGISTRATION.md`.
 
 ### 5.1. What the two branches add (C2, v1.1.0)
 

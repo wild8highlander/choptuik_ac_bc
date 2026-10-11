@@ -1,7 +1,7 @@
 {
  "campaign": "chb_c3b",
  "engine": "engine/solver.py \u2014 double-null characteristic march (Goursat, RK2-Heun)",
- "project_version": "2.1.0",
+ "project_version": "2.2.0",
  "units": "4 pi G = 1 (kappa = 2), geometric engine units",
  "family": {
   "u0": -1.0,
@@ -22,13 +22,13 @@
   "N1600": {
    "a_star": 0.0777443361282349,
    "iters": 14,
-   "wall_s": 52.5,
+   "wall_s": 51.6,
    "drift_from_N800": -0.002790026664733866
   },
   "N3200": {
    "a_star": 0.07682177066802981,
    "iters": 14,
-   "wall_s": 183.6,
+   "wall_s": 183.3,
    "drift_from_N800": -0.0037125921249389626
   }
  },
@@ -228,12 +228,15 @@
  "delta_eff": null,
  "products": {
   "P_anchor": 1.28656,
-  "P_anchor_verdict": "PASS",
+  "P_anchor_class": "anchor arithmetic \u2014 both factors are literature/engine anchors; consistency with the target, NOT a measurement",
+  "P_anchor_verdict": "ANCHOR_ARITHMETIC",
+  "P_anchor_within_target": true,
   "P_engine_deep": null,
-  "P_engine_deep_verdict": null,
+  "P_engine_deep_verdict": "INCONCLUSIVE",
   "target": {
    "value": 1.27,
-   "tolerance": 0.05
+   "tolerance": 0.05,
+   "frozen_by": "PREREGISTRATION.md (v2.2.0)"
   }
  },
  "honest_notes": {
@@ -241,6 +244,6 @@
   "delta": "delta_eff is an EFFECTIVE period from 40 snapshots per run; the DSS verdict of C3 is not overwritten by this campaign, only supplemented",
   "anchors": "gamma_Ch and echo_delta remain comparison anchors, never fit targets"
  },
- "timestamp": "2026-10-09 08:04:50",
- "wall_total_s": 333.73571515083313
+ "timestamp": "2026-10-10 21:56:09",
+ "wall_total_s": 333.3242952823639
 }

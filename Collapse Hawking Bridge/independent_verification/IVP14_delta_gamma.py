@@ -14,7 +14,15 @@ conceptual distinction):
 
 Delta_measured comes from the verifier's own IVP-13; gamma_measured from
 the verifier's own IVP-11 fits.  The pre-registered target is the
-project hypothesis Delta*gamma = 1.27 +- 0.05.
+project hypothesis Delta*gamma = 1.27 +- 0.05 (FROZEN by
+PREREGISTRATION.md since v2.2.0).
+
+v2.2.0 verdict semantics (external audit, point 10): P_anchor is ANCHOR
+ARITHMETIC — both factors are literature constants, so its proximity to
+the target is a consistency statement about the project's own numbers,
+NOT a measurement and NOT evidence.  The verdict token for P_anchor is
+ANCHOR_ARITHMETIC (+ boolean within_target); only P_mixed / P_engine
+(measured factors) carry physics verdicts.
 
 If Delta or gamma is unmeasurable at the available resolution, the
 corresponding product is honestly reported INCONCLUSIVE (that is a
@@ -35,7 +43,7 @@ TARGET = 1.27
 TOL = 0.05
 
 
-def verdict(p):
+def measured_verdict(p):
     if p is None:
         return "INCONCLUSIVE"
     return "PASS" if abs(p - TARGET) < TOL else "OUT-OF-TOLERANCE"
@@ -71,16 +79,17 @@ def main():
                 for n, g in gammas.items()}
 
     log(f"\n[A] P_anchor  = Delta_lit * gamma_lit = {DELTA_LIT} * {GAMMA_LIT} "
-        f"= {P_anchor:.5f}  -> {verdict(P_anchor)}")
+        f"= {P_anchor:.5f}  -> ANCHOR_ARITHMETIC (within target: "
+        f"{abs(P_anchor - TARGET) < TOL})")
     if P_mixed is not None:
         log(f"    P_mixed   = Delta_measured * gamma_lit = {delta:.3f} * "
-            f"{GAMMA_LIT} = {P_mixed:.5f}  -> {verdict(P_mixed)}")
+            f"{GAMMA_LIT} = {P_mixed:.5f}  -> {measured_verdict(P_mixed)}")
     else:
         log("    P_mixed   = INCONCLUSIVE (Delta unmeasured at this resolution)")
     for n, p in P_engine.items():
         if p is not None:
             log(f"    P_engine(N={n}) = {delta:.3f} * {gammas[n]['gamma']:.4f} "
-                f"= {p:.5f}  -> {verdict(p)}")
+                f"= {p:.5f}  -> {measured_verdict(p)}")
         else:
             log(f"    P_engine(N={n}) = INCONCLUSIVE")
 
@@ -97,7 +106,7 @@ def main():
         log(f"    (committed C3 comparison skipped: {e})")
 
     checks = {
-        "anchor_product_within_target_tolerance": verdict(P_anchor) == "PASS",
+        "anchor_arithmetic_within_target": abs(P_anchor - TARGET) < TOL,
         "engine_products_reported_honestly": True,
     }
     status = worst_status(["PASS" if v else "FAIL" for v in checks.values()])
@@ -108,12 +117,19 @@ def main():
             "anchors": {"Delta_lit": DELTA_LIT, "gamma_lit": GAMMA_LIT,
                         "target": TARGET, "tolerance": TOL},
             "rule": "three products separated; unmeasurable factors -> "
-                    "INCONCLUSIVE, never silent",
+                    "INCONCLUSIVE, never silent; the anchor product is "
+                    "ANCHOR_ARITHMETIC, never a physics PASS",
         },
-        "P_anchor": P_anchor, "P_anchor_verdict": verdict(P_anchor),
-        "P_mixed": P_mixed, "P_mixed_verdict": verdict(P_mixed),
+        "P_anchor": P_anchor,
+        "P_anchor_class": ("anchor arithmetic — both factors are literature "
+                           "constants; consistency with the target, NOT a "
+                           "measurement (v2.2.0 reclassification)"),
+        "P_anchor_verdict": "ANCHOR_ARITHMETIC",
+        "P_anchor_within_target": bool(abs(P_anchor - TARGET) < TOL),
+        "P_mixed": P_mixed, "P_mixed_verdict": measured_verdict(P_mixed),
         "P_engine": P_engine,
-        "P_engine_verdict": {str(n): verdict(p) for n, p in P_engine.items()},
+        "P_engine_verdict": {str(n): measured_verdict(p)
+                             for n, p in P_engine.items()},
         "checks": checks,
     })
     return 0 if status == "PASS" else 1

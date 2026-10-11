@@ -1,16 +1,16 @@
 # results
 
 The ledger folder of the **Collapse-Hawking Bridge**: `RESULTS.md`, the
-one-page register of everything the project measured at v2.1.0 — every
+one-page register of everything the project measured at v2.2.0 — every
 line of it backed by a machine-readable verdict committed under
 `campaigns/reference/` — plus the report folder of the C6 drift-law
 campaign.
 
-![version](https://img.shields.io/badge/version-2.1.0-8C6D1F)
+![version](https://img.shields.io/badge/version-2.2.0-8C6D1F)
 ![ledger](https://img.shields.io/badge/ledger-RESULTS.md-8C6D1F)
 ![C1](https://img.shields.io/badge/C1-45_runs_48.4_s-blue)
 ![C2](https://img.shields.io/badge/C2-26_runs_23.7_s-blue)
-![C3](https://img.shields.io/badge/C3-P_anchor_1.28656_PASS-blue)
+![C3](https://img.shields.io/badge/C3-P_anchor_1.28656_ANCHOR_ARITHMETIC-blue)
 ![C3b](https://img.shields.io/badge/C3b-16_runs_333.7_s-blue)
 ![C6](https://img.shields.io/badge/C6-вdrift_law_T10-C9A84C)
 ![tests](https://img.shields.io/badge/pytest-63_passed-brightgreen)
@@ -21,13 +21,13 @@ campaign.
 - A "result" here is exactly two things: a committed verdict JSON in
   `campaigns/reference/` (the law) and a line in `RESULTS.md` (the
   prose). Both, or it is not a result.
-- The headline table holds **21 numbers** at v2.1.0; several of them
+- The headline table holds **21 numbers** at v2.2.0; several of them
   are honest negatives (γ and Δ unmeasurable at every committed depth,
   no claimable continuum threshold, the sub-dominant exact drift
   channel), stated with reasons, kept in the headline.
 - Five campaigns: C1 (validation, born spectrum; 45 runs, 48.4 s),
   C2 (two branches; 26 runs, 23.7 s), C3 (Δ·γ; 31 runs, 13.7 s,
-  P_anchor = 1.28656 → PASS), C3b (concentrated resolution with
+  P_anchor = 1.28656 → ANCHOR_ARITHMETIC), C3b (concentrated resolution with
   per-grid thresholds; 16 runs, 333.7 s, the floor law `(13 ± 1)/N`),
   C6 (the resolution-drift law of theorem T10; ~2 s, no engine march).
 - All four engine campaigns were re-run at v2.1.0 with **physics
@@ -155,7 +155,7 @@ Rules:
 | 1 | `make install` | `chbridge` installed editable | seconds |
 | 2 | `make c1` | rewrites `c1_verdict.json` + scan CSVs + profiles; ends with `DONE in ~48 s` | ~1 min |
 | 3 | `make c2` | rewrites `c2_verdict.json` + 2 CSVs; prints the slowdown fit, echo rate, `M_sat = 0.03519`, `eps_half = 4.860e-03` | ~30 s |
-| 4 | `make c3` | rewrites `c3_verdict.json`; prints `P_anchor = 1.28656 -> PASS` | ~15 s |
+| 4 | `make c3` | rewrites `c3_verdict.json`; prints `P_anchor = 1.28656 -> ANCHOR_ARITHMETIC` | ~15 s |
 | 5 | `make c3b` | rewrites `c3b_verdict.json` + ladder CSV; bisects per-grid A\*_N first; prints γ_eff 0.0410/0.0605, floors 8.6e-3/4.2e-3, `P_engine_deep = None` | ~6 min |
 | 6 | `make c6` | rewrites `c6_drift_verdict.json` + 2 CSVs; prints the ladder facts, the lemma precisions, the channel shares | ~2 s |
 | 7 | `make data` | 13 tables in `data/bridge/`, byte-identical to the committed ones | ~2 s |

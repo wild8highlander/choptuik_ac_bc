@@ -7,10 +7,12 @@
    "target": 1.27,
    "tolerance": 0.05
   },
-  "rule": "three products separated; unmeasurable factors -> INCONCLUSIVE, never silent"
+  "rule": "three products separated; unmeasurable factors -> INCONCLUSIVE, never silent; the anchor product is ANCHOR_ARITHMETIC, never a physics PASS"
  },
  "P_anchor": 1.28656,
- "P_anchor_verdict": "PASS",
+ "P_anchor_class": "anchor arithmetic \u2014 both factors are literature constants; consistency with the target, NOT a measurement (v2.2.0 reclassification)",
+ "P_anchor_verdict": "ANCHOR_ARITHMETIC",
+ "P_anchor_within_target": true,
  "P_mixed": null,
  "P_mixed_verdict": "INCONCLUSIVE",
  "P_engine": {
@@ -26,13 +28,13 @@
   "3200": "INCONCLUSIVE"
  },
  "checks": {
-  "anchor_product_within_target_tolerance": true,
+  "anchor_arithmetic_within_target": true,
   "engine_products_reported_honestly": true
  },
  "ivp": "IVP14",
- "timestamp": "2026-10-09 06:40:38",
+ "timestamp": "2026-10-10 21:57:05",
  "environment": {
-  "python": "3.12.14",
+  "python": "3.12.15",
   "platform": "Linux-5.10.134-013.15.kangaroo.al8.x86_64-x86_64-with-glibc2.41",
   "processor": "unknown"
  }

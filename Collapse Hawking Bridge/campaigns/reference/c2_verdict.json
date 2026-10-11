@@ -1,7 +1,7 @@
 {
  "campaign": "chb_c2",
  "engine": "engine/solver.py \u2014 double-null characteristic march (Goursat, RK2-Heun)",
- "project_version": "2.1.0",
+ "project_version": "2.2.0",
  "units": "4 pi G = 1 (kappa = 2), geometric engine units",
  "family": {
   "u0": -1.0,
@@ -293,6 +293,6 @@
   "flipped": "subcritical runs that formed an apparent horizon are kept verbatim with flipped=true (A*_800 is a fixed-grid quantity; the closest eps can cross it)",
   "junk": "supercritical rows with overflowing masses are kept with sane=false, never dropped"
  },
- "timestamp": "2026-10-09 07:58:56",
- "wall_total_s": 24.227858304977417
+ "timestamp": "2026-10-10 21:50:02",
+ "wall_total_s": 23.753033876419067
 }

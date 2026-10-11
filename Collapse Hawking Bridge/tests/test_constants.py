@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Constants of the project: exact identities and committed campaign values."""
 import math
+import os
 
 import chbridge.constants as K
 from chbridge.hawking import PAGE_FRACTION
@@ -34,10 +35,24 @@ def test_page_fraction():
 
 
 def test_dgamma_anchor_product():
-    """3.44 * 0.374 = 1.28656 — the anchor product of the C3 invariant."""
+    """3.44 * 0.374 = 1.28656 — the ANCHOR ARITHMETIC of the C3 invariant.
+
+    v2.2.0: this is arithmetic consistency between the project's own two
+    anchors and the frozen target — NOT a physics measurement (the
+    engine-level test is governed by PREREGISTRATION.md and is honestly
+    INCONCLUSIVE at committed resolutions).
+    """
     assert abs(K.DGAMMA_LIT - 3.44 * 0.374) < 1e-12
     assert abs(K.DGAMMA_LIT - 1.28656) < 1e-9
     assert abs(K.DGAMMA_LIT - K.DGAMMA_TARGET) < K.DGAMMA_TOL
+
+
+def test_package_version_pin():
+    """The package version is 2.2.0 everywhere it must be."""
+    assert K.__version__ == "2.2.0"
+    with open(os.path.join(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))), "VERSION")) as f:
+        assert f.read().strip() == "2.2.0"
 
 
 def test_qnm_relative_shift():

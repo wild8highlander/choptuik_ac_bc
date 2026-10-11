@@ -1,20 +1,22 @@
 # tests
 
-The pytest suite of the **Collapse-Hawking Bridge** — 60 tests in 7 files that
+The pytest suite of the **Collapse-Hawking Bridge** — 69 tests in 8 files that
 pin every committed number of the project to its defining formula, its campaign
 verdict, or its committed data table. Tests pin numbers, not types.
 
-![v1.1.0](https://img.shields.io/badge/version-1.1.0-gold)
-![tests](https://img.shields.io/badge/tests-60_passed-brightgreen)
+![v2.2.0](https://img.shields.io/badge/version-2.2.0-8C6D1F)
+![tests](https://img.shields.io/badge/tests-69_passed-brightgreen)
 ![runtime](https://img.shields.io/badge/wall_time-~1_s-gold)
 ![network](https://img.shields.io/badge/network-none-brightgreen)
 
 **TL;DR**
 
-- 60 tests in 7 files; the full suite passes in under a second (0.82 s measured).
-- `test_campaigns.py` (17 tests) pins the committed machine verdicts of
-  campaigns C2 and C3b: envelope, both C2 branches, the C3b floor ladder,
-  the anchor product, and the derived CSV tables.
+- 69 tests in 8 files; the full suite passes in a few seconds (the engine
+  regression dominates).
+- `test_campaigns.py` (18 tests) pins the committed machine verdicts of
+  campaigns C2, C3 and C3b: envelope, both C2 branches, the C3b floor
+  ladder, the v2.2.0 verdict semantics (ANCHOR_ARITHMETIC / INCONCLUSIVE),
+  and the derived CSV tables.
 - Constants, closed-form thermodynamics, the Page model, the bridge tables,
   the scale ladders — and the double-null engine itself — are all pinned.
 - `test_rebuild_determinism` asserts byte-identical CSV output across rebuilds;
@@ -61,17 +63,18 @@ contract in executable form:
 
 ## Inventory
 
-60 tests total. Per file:
+69 tests total. Per file:
 
 | File | Tests | Subject |
 |---|---:|---|
-| `test_constants.py` | 10 | exact identities and committed campaign values |
+| `test_constants.py` | 11 | exact identities, committed campaign values, package version pin |
 | `test_hawking.py` | 9 | closed-form Schwarzschild thermodynamics |
 | `test_page.py` | 7 | Page curves and the Haar-averaging check |
 | `test_bridge.py` | 8 | born spectrum, members, master table, determinism |
 | `test_ladder.py` | 7 | scale ladders plus the 50-digit validation layer |
 | `test_engine.py` | 2 | double-null engine regression against exact solution |
-| `test_campaigns.py` | 17 | the committed verdicts of campaigns C2 and C3b |
+| `test_campaigns.py` | 18 | the committed verdicts of campaigns C2, C3 and C3b |
+| `test_preregistration.py` | 4 | the frozen falsification criteria and token discipline (v2.2.0) |
 
 ### `test_constants.py`
 
@@ -82,10 +85,11 @@ contract in executable form:
 | `test_b_ch_framework_gap` | b_Ch sits 0.67% from the literature anchor γ_Ch = 0.374 |
 | `test_septinial_phase` | δ_C = π/7 exactly (to 1e-15) |
 | `test_page_fraction` | PAGE_FRACTION = 1 − 2^(−3/2) = 0.6464466094067262 |
-| `test_dgamma_anchor_product` | 3.44 × 0.374 = 1.28656, within tolerance of the 1.27 target |
+| `test_dgamma_anchor_product` | 3.44 × 0.374 = 1.28656 — anchor arithmetic within the FROZEN tolerance of the 1.27 target (not a measurement) |
+| `test_package_version_pin` | `__version__` and `VERSION` both read 2.2.0 |
 | `test_qnm_relative_shift` | qnm_rel_shift = 1/(1200π²) = 8.44343e-5 |
 | `test_clock_theorems_exact` | τ*(0) = 6.75; τ*(1 brick) = 1323/(196 − π²); berry_kappa = 2 − π²/98 |
-| `test_campaign_astar_ladder` | committed A* ladder decreases with N; N=800 matches the N=1600 reference to 1.1e-6 |
+| `test_campaign_astar_ladder` | committed A* ladder decreases with N; the honest 2.79e-3 drift vs the remediated N=1600 reference (the 1.06e-6 claim is retracted) |
 | `test_planck_units_cross` | m_P ≈ 2.176434e-8 kg, l_P ≈ 1.616255e-35 m, t_P = l_P/c |
 
 ### `test_hawking.py`
@@ -153,9 +157,9 @@ the verdict JSONs and the derived CSVs of [data/bridge](../data/README.md).
 
 | Test | Purpose |
 |---|---|
-| `test_c2_verdict_envelope` | C2 verdict: campaign id `chb_c2`, project_version 1.1.0, grid N=800, positive wall time, timestamp |
-| `test_c3b_verdict_envelope` | C3b verdict: campaign id `chb_c3b`, project_version 1.1.0, positive wall time |
-| `test_all_verdicts_carry_project_version` | all four verdict files (c1, c2, c3, c3b) carry project_version "1.1.0" |
+| `test_c2_verdict_envelope` | C2 verdict: campaign id `chb_c2`, project_version 2.2.0, grid N=800, positive wall time, timestamp |
+| `test_c3b_verdict_envelope` | C3b verdict: campaign id `chb_c3b`, project_version 2.2.0, positive wall time |
+| `test_all_verdicts_carry_project_version` | all five verdict files (c1, c2, c3, c3b, c6) carry project_version "2.2.0" |
 | `test_c2_subcritical_rows` | subcritical branch: 13 rows, 0 flipped, every q_max in (0, 2) |
 | `test_c2_compactness_approaches_threshold` | q_max strictly monotone as eps → 0 (approach to the horizon); still < 1 at the eps floor |
 | `test_c2_slowdown_fit` | 13 fit points; slowdown slope_ln_eps < 0; r² > 0.5 |
@@ -165,11 +169,24 @@ the verdict JSONs and the derived CSVs of [data/bridge](../data/README.md).
 | `test_c2_constants_mirror_verdict` | `constants.py` Part C (the CAMPAIGN dict) mirrors the C2 verdict exactly: eps_half, M_sat, slope, echo rate |
 | `test_c3b_floor_ladder_sinks` | the floor sinks: 0.0155 > 8.574765e-03 > 4.244867e-03 > 0, each floor pinned to 1e-12 (per-grid F-2 values) |
 | `test_c3b_gamma_fit_floor_biased` | gamma_eff < γ_Ch at both depths; per-grid F-2 values pinned (0.0410 / 0.0605, r² 0.33/0.41 — floor-dominated) |
-| `test_c3b_delta_honest_negative` | delta_eff and P_engine_deep are None; every delta-ladder run resolves < 3 peaks — C3's negative stands |
-| `test_c3b_anchor_product_passes` | P_anchor = 1.28656 with verdict PASS |
+| `test_c3b_delta_honest_negative` | delta_eff is None and P_engine_deep is None with verdict INCONCLUSIVE; every delta-ladder run resolves < 3 peaks — C3's negative stands |
+| `test_c3b_anchor_product_is_arithmetic` | P_anchor = 1.28656, verdict ANCHOR_ARITHMETIC (within the frozen target), tolerance frozen by PREREGISTRATION.md |
+| `test_c3_verdict_semantics` | the committed C3 verdict carries ANCHOR_ARITHMETIC for P_anchor and INCONCLUSIVE for the unmeasured P_engine/P_mixed — never silent |
 | `test_c3b_constants_mirror_verdict` | CAMPAIGN gamma_eff entries (N=1600, N=3200) mirror the C3b verdict |
 | `test_campaign_tables_exist_and_match` | derived CSVs: 13 + 13 + 12 rows; junk kept in the bifurcation CSV; N ∈ {1600, 3200} |
 | `test_c3b_gamma_ladder_csv_sane_counts` | 7 rows at N=1600 + 5 at N=3200; the `sane` column is strictly True/False |
+
+### `test_preregistration.py`
+
+Added at v2.2.0 (external audit, points 10/15/4). These pins make the
+preregistration commitment machine-checkable.
+
+| Test | Purpose |
+|---|---|
+| `test_preregistration_documents_exist_and_carry_frozen_target` | `PREREGISTRATION.md` + `PREREGISTRATION.ru.md` exist, carry the frozen 1.27 ± 0.05 target, the RETRO-LABEL protocol and the ANCHOR_ARITHMETIC token |
+| `test_frozen_constants_in_constants_module` | `DGAMMA_TARGET = 1.27`, `DGAMMA_TOL = 0.05`, `γ_Ch = 0.374`, `Δ_lit = 3.44`, `DGAMMA_LIT = 1.28656` — exactly the preregistered values |
+| `test_verdict_token_discipline_in_sources` | the campaign sources classify the anchor product (`ANCHOR_ARITHMETIC`) and state unmeasured products as INCONCLUSIVE; `validate.py` labels the check "not a measurement" |
+| `test_b_ch_lit_label_stays_removed` | the self-referential `b_Ch_lit` label stays removed: no live constant, no import/use/key anywhere (its quoted mention in the removal comment is documentation) |
 
 ## How to run
 
@@ -187,7 +204,7 @@ tally:
 ```console
 $ python3 -m pytest tests/
 ............................................................             [100%]
-63 passed in 0.8s
+69 passed in 1.1s
 ```
 
 Single file:
@@ -205,9 +222,9 @@ $ python3 -m pytest tests/ -k echo       # the C2 echo-rate pin
 .                                                                        [100%]
 1 passed, 59 deselected in 0.54s
 $ python3 -m pytest tests/ -k haar       # 5 Haar-check tests
-5 passed, 55 deselected in 0.63s
+5 passed, 64 deselected in 0.71s
 $ python3 -m pytest tests/ -k cmb        # 2 CMB-contact tests
-2 passed, 58 deselected in 0.63s
+2 passed, 67 deselected in 0.68s
 ```
 
 Verbose, with names (pytest 9 prints one progress line per file):
@@ -367,7 +384,7 @@ the two temptations the audit discipline exists to block.
 
 ## Краткое резюме (Russian)
 
-Тестовый набор проекта — 63 теста в семи файлах, все проходят примерно за
+Тестовый набор проекта — 69 тестов в восьми файлах, все проходят примерно за
 0,8 секунды. Философия проста: тесты закрепляют числа, а не типы. Каждая
 константа проверена дважды — точным тождеством и зафиксированным десятичным
 значением; термодинамика — по справочным значениям (r_s Солнца 2954 м,

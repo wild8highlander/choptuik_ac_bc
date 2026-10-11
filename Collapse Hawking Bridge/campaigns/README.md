@@ -1,6 +1,6 @@
 # campaigns — measurements, not simulations
 
-![v2.1.0](https://img.shields.io/badge/version-2.1.0-8C6D1F) ![C1](https://img.shields.io/badge/C1-45_runs%20%2F%2048_s-blue) ![C2](https://img.shields.io/badge/C2-26_runs%20%2F%2024_s-blue) ![C3](https://img.shields.io/badge/C3-31_runs%20%2F%2014_s-blue) ![C3b](https://img.shields.io/badge/C3b-16_runs%20%2F%20334_s-blue) ![C6](https://img.shields.io/badge/C6-drift_law_T10-C9A84C) ![invariant](https://img.shields.io/badge/Δ·γ_anchor-1.28656_PASS-brightgreen)
+![v2.2.0](https://img.shields.io/badge/version-2.2.0-8C6D1F) ![C1](https://img.shields.io/badge/C1-45_runs%20%2F%2048_s-blue) ![C2](https://img.shields.io/badge/C2-26_runs%20%2F%2024_s-blue) ![C3](https://img.shields.io/badge/C3-31_runs%20%2F%2014_s-blue) ![C3b](https://img.shields.io/badge/C3b-16_runs%20%2F%20334_s-blue) ![C6](https://img.shields.io/badge/C6-drift_law_T10-C9A84C) ![invariant](https://img.shields.io/badge/Δ·γ_anchor-1.28656_ANCHOR_ARITHMETIC-C9A84C)
 
 **TL;DR**
 
@@ -13,8 +13,10 @@
   (compactness approach, critical slowdown, echo counter) and the
   supercritical born bifurcation `f~(eps)` with `eps_half` (26 runs,
   ~24 s).
-- **C3** — the Delta*gamma ~ 1.27 invariant: anchor-level **PASS**
-  (1.28656, 1.3% from target), engine-level honest negative with full
+- **C3** — the Delta*gamma ~ 1.27 invariant: anchor product classified
+  **ANCHOR_ARITHMETIC** (1.28656, within the frozen tolerance; v2.2.0
+  reclassification — not a measurement), engine-level honest negative
+  (INCONCLUSIVE) with full
   diagnostics (31 runs, ~14 s).
 - **C3b** — concentrated resolution: deep grids (N = 1600/3200) on the
   critical window; the **floor ladder** `floor_M ~ (13 ± 1)/N` is the
@@ -123,8 +125,8 @@ Outputs: `c2_verdict.json`, `subcritical_scan.csv`,
 
 | product | inputs | v2.1.0 verdict |
 |---|---|---|
-| `P_anchor` | `Delta_lit = 3.44` x `gamma_Ch = 0.374` | **1.28656 -> PASS** (1.3% from target) |
-| `P_mixed` | measured `Delta_eff` x anchor `gamma_Ch` | not measurable (peaks < 3) |
+| `P_anchor` | `Delta_lit = 3.44` x `gamma_Ch = 0.374` | **1.28656 -> ANCHOR_ARITHMETIC** (within the frozen tolerance; not a measurement) |
+| `P_mixed` | measured `Delta_eff` x anchor `gamma_Ch` | **INCONCLUSIVE** (peaks < 3) |
 | `P_engine` | measured `Delta_eff` x measured `gamma_eff` | not measurable (grid floor) |
 
 The two measurements behind the engine products:
@@ -141,7 +143,7 @@ The two measurements behind the engine products:
   at `eps = 1e-3 / 3e-4 / 1e-4` — below the 3-peak minimum; per-run
   peak tables are in the verdict.
 
-**Standing conclusion:** the invariant is confirmed at anchor level and
+**Standing conclusion (v2.2.0 semantics):** the anchor arithmetic is consistent with the frozen target and the invariant is UNTESTED at engine level
 unconfirmed at engine level; C3b (below) is the concentrated-resolution
 retry — and the negatives survive it.
 
@@ -161,7 +163,7 @@ the 2.0.0 run reused A*_N800 as the deep-grid base, mislabeling eps by
 | gamma ladder | `gamma_eff = 0.0410 +- 0.0262` (N=1600, r^2=0.33) -> `0.0605 +- 0.0417` (N=3200, r^2=0.41) — floor-dominated, honestly weak; does NOT approach the anchor 0.374 |
 | delta ladder | 1-2 peaks per run at N=1600/3200 — **no run resolves >= 3 peaks at any depth**; `delta_eff` stays null |
 | `P_engine_deep` | **null** (honest negative kept with reason strings) |
-| `P_anchor` | **1.28656 -> PASS** (re-confirmed) |
+| `P_anchor` | **1.28656 -> ANCHOR_ARITHMETIC** (re-confirmed arithmetic) |
 
 Interpretation discipline: C3b does *not* overturn C3's negatives — it
 reinforces them with 27 deeper per-grid runs and keeps the floor ladder

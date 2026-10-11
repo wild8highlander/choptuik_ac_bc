@@ -22,7 +22,7 @@ Honesty discipline of the project:
 import math
 
 # --- package version (single source of truth; re-exported by __init__) -------
-__version__ = "2.1.0"
+__version__ = "2.2.0"
 
 # ============================================================================
 # PART A — physical constants (CODATA 2018) and cosmology
@@ -101,7 +101,12 @@ qnm_rel_shift = 1.0 / (1200.0 * math.pi**2)   # = 8.44343e-5
 
 # --- Literature anchors of critical collapse (comparisons, never fits) ---------
 gamma_Ch = 0.374            # mass-scaling exponent (Choptuik-family literature)
-b_Ch_lit = 0.37651          # b_Ch to 5 digits — the framework comparison anchor
+# v2.2.0 remediation (external audit, point 4): the former constant
+# `b_Ch_lit = 0.37651` is REMOVED.  It was b_Ch itself rounded to 5 digits,
+# i.e. the hypothesis compared with itself under a "literature" label —
+# a self-referential anchor.  The 0.67% comparison is and always was
+# |gamma_Ch - b_Ch| / b_Ch: the LITERATURE exponent gamma_Ch = 0.374 on one
+# side, the project's own exact constant b_Ch on the other.
 
 # --- Clock theorems (exact, septinial sector) -----------------------------------
 tau_star_baseline = 27.0 / 4.0                       # tau*(delta=0) = 6.75
@@ -113,9 +118,18 @@ echo_delta = 3.44                # Gundlach-Hodgson 3.44 +- 0.02; engine data 3.
 echo_delta_err = 0.446           # effective-period error at fixed grid (NOT-DSS verdict)
 
 # --- The Delta*gamma invariant (project hypothesis, tested in campaign C3) -------
-DGAMMA_TARGET = 1.27       # target value of the product Delta * gamma
-DGAMMA_TOL = 0.05          # acceptance tolerance (absolute) for the C3 verdict
-DGAMMA_LIT = echo_delta * gamma_Ch    # 3.44 * 0.374 = 1.28656 (anchor product)
+# v2.2.0 verdict semantics (external audit, point 10): the anchor product
+# DGAMMA_LIT = 3.44 * 0.374 = 1.28656 is ANCHOR ARITHMETIC — a consistency
+# statement about the project's own two anchors, NOT a measurement and NOT
+# a physics test.  The engine-level product P_engine (both factors measured)
+# is the only physical test; at every committed resolution it is honestly
+# INCONCLUSIVE (floor-dominated gamma, < 3 echo peaks).  The target and the
+# tolerance below are FROZEN by PREREGISTRATION.md (v2.2.0): they were
+# chosen post hoc in v1.x, they stay fixed from now on, and any change to
+# them is a CHANGELOG event with an explicit retro-label.
+DGAMMA_TARGET = 1.27       # target value of the product Delta * gamma (FROZEN, PREREGISTRATION.md)
+DGAMMA_TOL = 0.05          # acceptance tolerance (absolute; FROZEN, PREREGISTRATION.md)
+DGAMMA_LIT = echo_delta * gamma_Ch    # 3.44 * 0.374 = 1.28656 (anchor arithmetic)
 
 # --- Schwarzschild ringdown, l = 2 fundamental (standard BH perturbation) ---------
 # M*omega_R = 0.3737, M*omega_I = 0.0896 (Chandrasekhar-Detweiler values)

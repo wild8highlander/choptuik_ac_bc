@@ -20,7 +20,7 @@ The validation block each twin prints covers:
 | 1 | septinial phase | `delta_C = pi/7` | 0.448798950513 |
 | 2 | septinial constant | `b_Ch = 1 - cos(2*pi/7)` | 0.37651019814126640 |
 | 3 | Page fraction | `1 - 2^(-3/2)` | 0.6464466094067262 |
-| 4 | anchor product | `Delta*gamma = 3.44 * 0.374` | 1.28656 (target 1.27 ± 0.05, PASS) |
+| 4 | anchor product (arithmetic) | `Delta*gamma = 3.44 * 0.374` | 1.28656 (target 1.27 ± 0.05; ANCHOR_ARITHMETIC, not a measurement) |
 | 5 | CMB contact mass | `hbar*c^3/(8*pi*G*kB*T_CMB)` | 4.501595e+22 kg |
 | 6 | Hawking temperature | `T_H(1e12 kg)` | 1.226901e+11 K |
 | 7 | BH entropy | `S_BH(1e12)/kB` | 2.652887e+40 |

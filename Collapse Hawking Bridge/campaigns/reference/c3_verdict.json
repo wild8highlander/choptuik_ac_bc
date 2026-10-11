@@ -1,7 +1,7 @@
 {
  "campaign": "chb_c3",
  "engine": "engine/solver.py \u2014 double-null characteristic march (Goursat, RK2-Heun)",
- "project_version": "2.1.0",
+ "project_version": "2.2.0",
  "units": "4 pi G = 1 (kappa = 2), geometric engine units",
  "grid": {
   "N": 800
@@ -79,11 +79,15 @@
  },
  "products": {
   "P_anchor": 1.28656,
-  "P_anchor_verdict": "PASS",
+  "P_anchor_class": "anchor arithmetic \u2014 both factors are literature/engine anchors; consistency with the target, NOT a measurement",
+  "P_anchor_verdict": "ANCHOR_ARITHMETIC",
+  "P_anchor_within_target": true,
+  "P_anchor_deviation": 0.016559999999999908,
   "P_engine": null,
-  "P_engine_verdict": null,
+  "P_engine_verdict": "INCONCLUSIVE",
   "P_mixed": null,
-  "P_mixed_verdict": null
+  "P_mixed_verdict": "INCONCLUSIVE",
+  "verdict_semantics": "ANCHOR_ARITHMETIC = consistency of the project's own anchors with the frozen target (not evidence); PASS/OUT-OF-TOLERANCE = measured product inside/outside the frozen tolerance; INCONCLUSIVE = a factor is unmeasurable at this resolution (never silent).  Falsification criteria: PREREGISTRATION.md."
  },
  "scan_rows": [
   {
@@ -173,9 +177,10 @@
  ],
  "target": {
   "value": 1.27,
-  "tolerance": 0.05
+  "tolerance": 0.05,
+  "frozen_by": "PREREGISTRATION.md (v2.2.0)"
  },
  "b_Ch_crosscheck": 0.3765101981412664,
- "timestamp": "2026-10-09 07:59:10",
- "wall_total_s": 13.924142837524414
+ "timestamp": "2026-10-10 21:50:16",
+ "wall_total_s": 13.59622836112976
 }

@@ -8,10 +8,11 @@
 **A dimensionless mapping from critical gravitational collapse to
 black-hole thermodynamics.**
 
-[![version](https://img.shields.io/badge/version-2.1.0-8C6D1F)](CHANGELOG.md)
-[![pytest](https://img.shields.io/badge/pytest-63_passed-brightgreen)](tests/README.md)
+[![version](https://img.shields.io/badge/version-2.2.0-8C6D1F)](CHANGELOG.md)
+[![pytest](https://img.shields.io/badge/pytest-69_passed-brightgreen)](tests/README.md)
 [![validate](https://img.shields.io/badge/mpmath-7%2F7_PASS-blue)](#testing-and-validation)
 [![IVP-15](https://img.shields.io/badge/audit_IVP--15-remediated_%2B_aligned-8C6D1F)](independent_verification/RESULTS.md)
+[![prereg](https://img.shields.io/badge/PREREGISTRATION-frozen_v2.2.0-4A6B4A)](PREREGISTRATION.md)
 [![T10](https://img.shields.io/badge/theorem_T10-drift_law-C9A84C)](docs/scaling_law.md)
 [![hires](https://img.shields.io/badge/figures_hires-68%40600dpi-1A1A1A)](figures_hires/README.md)
 [![multilang](https://img.shields.io/badge/languages-7-1A1A1A)](multilang/README.md)
@@ -20,12 +21,14 @@ black-hole thermodynamics.**
 
 Author: **Ishak Khamzatovich Isaev** (Nalchik, Kabardino-Balkarian
 Republic, Russian Federation) · First public build: **2026-10-07** ·
-This build: **v2.1.0** — the *IVP-15 alignment edition*: every surface
-of the package (monographs, READMEs, twins, figures, ledger) is brought
-into exact agreement with the independent verification results, and the
-question raised by the audit — *why does one formula give different
-values at different scales?* — is answered by a new theorem ([T10]())
-with its own campaign ([C6]()).
+This build: **v2.2.0** — the *honest-verdict edition*: the Δ·γ anchor
+product is reclassified from "PASS" to **ANCHOR_ARITHMETIC** (it was
+arithmetic over the project's own anchors, never a measurement —
+external audit, point 10), the self-referential "literature anchor"
+`b_Ch_lit` is removed, and the falsification criteria for every open
+hypothesis are **preregistered** in [PREREGISTRATION.md](PREREGISTRATION.md)
+before the next engine run. Every surface claim now has an address in
+the [claim ledger](docs/claim_ledger.md).
 
 > [!TIP]
 > **Read this in Russian:** [README.ru.md](README.ru.md) — the full
@@ -86,7 +89,9 @@ The package also carries the project's two dimensionless hypotheses,
 clearly labeled as hypotheses: the septinial constant
 `b_Ch = 1 − cos(2π/7) = 0.37651019814126640` compared against the
 literature exponent `γ_Ch = 0.374` (0.67% gap — a comparison, never a
-fit), and the invariant `Δ·γ ≈ 1.27` tested by campaign C3.
+fit), and the invariant `Δ·γ ≈ 1.27` tested by campaign C3 — where the
+anchor product is classified as arithmetic and the engine-level test
+is, so far, honestly INCONCLUSIVE (see [PREREGISTRATION.md](PREREGISTRATION.md)).
 
 ## The one-sentence summary
 
@@ -130,7 +135,7 @@ or it did not happen*.
 | 9 | Page formula vs Haar MC | **max dev 0.0042 bits** | `page_haar_check.csv` |
 | 10 | Septinial constant `b_Ch` | **0.37651019814126640** | exact |
 | 11 | Framework gap `\|γ_Ch − b_Ch\|/b_Ch` | **0.67%** | comparison only |
-| 12 | `Δ·γ` anchor product vs target 1.27 | **1.28656 → PASS** (1.3%) | `c3_verdict.json` |
+| 12 | `Δ·γ` anchor product vs target 1.27 | **1.28656 — ANCHOR_ARITHMETIC** (within the frozen tolerance, 1.3%; NOT a measurement; engine level INCONCLUSIVE) | `c3_verdict.json` + [PREREGISTRATION.md](PREREGISTRATION.md) |
 | 13 | Subcritical compactness approach (C2) | **q_max: 0.0158 → 0.5845, monotone** | `c2_verdict.json` |
 | 14 | Critical slowdown (C2, subcritical) | **v_qmax = 0.510 − 0.0334·ln ε**, r² = 0.71 | `c2_verdict.json` |
 | 15 | Echo accumulation rate (C2) | **0.1909 peaks/e-fold** vs anchor 1/Δ = 0.2907 | `c2_verdict.json` |
@@ -255,7 +260,7 @@ Requirements: Python ≥ 3.9, `numpy`, `mpmath` (dev: `pytest`,
 ```bash
 # 1. install (editable) and verify
 pip install -e ".[dev]"
-make test          # 63 passed
+make test          # 69 passed
 make validate      # 7/7 mpmath checks PASS
 
 # 2. rebuild every table from the committed verdicts (~2 s)
@@ -304,10 +309,11 @@ anything.
 collapse-hawking-bridge/
 ├── README.md            this file
 ├── README.ru.md         Russian version
+├── PREREGISTRATION.md   frozen falsification criteria (v2.2.0; RU mirror: PREREGISTRATION.ru.md)
 ├── CITATION.cff         citation metadata
 ├── LICENSE              Isaev Proprietary
-├── VERSION              2.1.0
-├── CHANGELOG.md         1.0.0 → 2.1.0
+├── VERSION              2.2.0
+├── CHANGELOG.md         1.0.0 → 2.2.0
 ├── CONTRIBUTING.md      how to help
 ├── pyproject.toml / requirements.txt / Makefile
 │
@@ -321,8 +327,8 @@ collapse-hawking-bridge/
 ├── engine/solver.py     double-null engine (~2000 lines, NumPy)
 ├── campaigns/           run_c1/c2/c3/c3b/c6 + committed verdicts
 ├── data/bridge/         13 derived tables (byte-deterministic)
-├── tests/               63 pytest pins
-├── docs/                theory · methods · validation · scaling_law
+├── tests/               69 pytest pins
+├── docs/                theory · methods · validation · scaling_law · claim_ledger
 ├── figures/             28 PNG @ 300 dpi + logo/ (light/dark, PNG+SVG)
 ├── figures_hires/       68 PNG @ 600 dpi (17 architectures × RU/EN × themes)
 ├── animations/          8 launch animations (4 × RU/EN, MP4+GIF)
@@ -421,7 +427,7 @@ flowchart LR
     R -->|"rebuild_data.py"| D["data/bridge/<br/>13 tables, byte-deterministic"]
     D --> G["figures + animations<br/>+ workbook"]
     R --> L["results/RESULTS.md<br/>the ledger (prose)"]
-    R --> P["test pins (63)<br/>+ monograph T1–T10"]
+    R --> P["test pins (69)<br/>+ monograph T1–T10"]
 ```
 
 `scripts/rebuild_data.py` is byte-identical on re-run (pinned by a
@@ -429,21 +435,34 @@ test).
 
 ## The honesty discipline
 
-1. **Anchors, never fits.** `γ_Ch = 0.374`, `Δ = 3.44 ± 0.02`,
-   `b_Ch_lit = 0.37651` are comparison values; no code path optimizes
-   toward them.
+1. **Anchors, never fits.** `γ_Ch = 0.374` (literature) and
+   `Δ = 3.44 ± 0.02` (Gundlach–Hodgson) are comparison values; no code
+   path optimizes toward them. The project's own constant `b_Ch =
+   1 − cos(2π/7)` is a **hypothesis constant, not an anchor**: at v2.2.0
+   the former `b_Ch_lit = 0.37651` label (b_Ch rounded to 5 digits,
+   presented as a "literature anchor") is removed as self-referential —
+   the 0.67% gap is `|γ_Ch − b_Ch|/b_Ch`, literature on one side,
+   hypothesis on the other.
 2. **Machine-readable or it did not happen.** Every numerical claim
    traces to a committed JSON/CSV; console output is not an artifact.
+   Every *surface* claim additionally has an address in the
+   [claim ledger](docs/claim_ledger.md).
 3. **Honest negatives are results.** The mass floor and its measured
    law (`(13 ± 1)/N`), junk rows (committed verbatim), the flat scaling
    fit, the unresolved echoes at every committed depth, **and the
    non-claimable `A*_inf`** — all carried, flagged, and explained.
-4. **Hypotheses are labeled.** The septinial comparison, the Δ·γ
-   target, and the dominant drift channel are hypotheses; the label
-   travels with the number everywhere it appears.
+4. **Hypotheses are labeled — and their refutation criteria are
+   preregistered.** The septinial comparison, the Δ·γ target, and the
+   dominant drift channel are hypotheses; the label travels with the
+   number everywhere it appears. Since v2.2.0 the criteria that would
+   refute them are frozen in [PREREGISTRATION.md](PREREGISTRATION.md),
+   committed **before** the next engine run; the anchor product of Δ·γ
+   is classified `ANCHOR_ARITHMETIC` and can never again be reported as
+   a physics PASS.
 5. **Retractions are explicit.** The 2.0.0 claims that did not survive
    the audit (`1.06e-6` agreement; `γ_eff ~ 0.12`; `12/N ± 7%` wording)
-   are marked retracted at every place that once quoted them.
+   are marked retracted at every place that once quoted them; the
+   2.0.0-era "anchor-level PASS" of Δ·γ joined this list at v2.2.0.
 6. **Determinism.** Pure float arithmetic, seeded Monte-Carlo,
    byte-identical rebuilds — verified again at this release.
 
@@ -458,13 +477,15 @@ test).
 | [results/RESULTS.md](results/RESULTS.md) | the one-page ledger |
 | [results/scaling_drift/REPORT.md](results/scaling_drift/REPORT.md) | the C6 verification report with figures |
 | [independent_verification/RESULTS.md](independent_verification/RESULTS.md) | the IVP-15 audit report + 2.0.1/2.1.0 addenda |
+| [docs/claim_ledger.md](docs/claim_ledger.md) | every surface claim mapped to its artifact (EN; RU mirror `claim_ledger.ru.md`) |
+| [PREREGISTRATION.md](PREREGISTRATION.md) | the frozen falsification criteria (RU mirror: `PREREGISTRATION.ru.md`) |
 | [monograph/](monograph/README.md) | the two-volume bilingual monograph (DOCX+PDF, T1–T10) |
 | folder READMEs | `chbridge/`, `engine/`, `campaigns/`, `data/`, `tests/`, `figures/`, `scripts/`, `results/`, … |
 
 ## Testing and validation
 
 ```bash
-python3 -m pytest tests/ -q       # 63 passed
+python3 -m pytest tests/ -q       # 69 passed
 python3 -m chbridge.validate      # 7/7 checks PASS (mpmath, 50 digits)
 ```
 
@@ -486,7 +507,9 @@ purposes lives in [tests/README.md](tests/README.md).
   the drift's dominant channel (march-error amplification under
   near-critical lingering): true AMR near the accumulation point. The
   target is an engine-level `γ` compatible with 0.374 and ≥ 3 resolved
-  echo peaks — and, per T10, an AMR engine would collapse the drift
+  echo peaks — with the acceptance and refutation criteria
+  preregistered in [PREREGISTRATION.md](PREREGISTRATION.md) before the
+  first C7 run — and, per T10, an AMR engine would collapse the drift
   faster than any fixed-grid scaling.
 - **v1.2** — interactive offline app (the computation core is already
   pure functions).
@@ -499,7 +522,7 @@ purposes lives in [tests/README.md](tests/README.md).
   title        = {Collapse-Hawking Bridge: a dimensionless mapping from
                   critical gravitational collapse to black-hole thermodynamics},
   year         = {2026},
-  version      = {2.1.0},
+  version      = {2.2.0},
   month        = {10},
   publisher    = {the author},
 }

@@ -7,16 +7,27 @@ Target: the project hypothesis  Delta * gamma ~= 1.27, where
   Delta  — the echoing period of near-critical collapse (DSS scale),
   gamma  — the black-hole mass-scaling exponent  M ~ eps^gamma.
 
-Three products are computed and compared against the target:
+Three products are computed and reported with EXPLICIT semantics
+(v2.2.0 reclassification, external audit point 10):
 
   P_anchor  = Delta_lit * gamma_Ch  = 3.44 * 0.374 = 1.28656
-              (literature/engine anchors; reference product)
+              ANCHOR ARITHMETIC: both factors are literature/engine
+              anchors, so comparing P_anchor with the target 1.27 is a
+              consistency statement about the project's own constants,
+              NOT a measurement and NOT a physics test.  Verdict token:
+              ANCHOR_ARITHMETIC (+ boolean P_anchor_within_target).
   P_engine  = Delta_eff * gamma_eff (both measured by THIS engine in
               this run; floor-biased at fixed grid — honest caveat)
   P_mixed   = Delta_eff * gamma_Ch  (measured period, anchor exponent)
 
-Verdict: PASS if |P - 1.27| < DGAMMA_TOL (0.05) for the anchor product
-and the engine product is consistent within its honest error bars.
+  P_engine / P_mixed are the only physical tests.  When a factor is not
+  measurable at the committed resolution (gamma floor-dominated, fewer
+  than three resolved echo peaks), the product is reported INCONCLUSIVE
+  — never silent, never replaced by the anchor arithmetic.
+
+Acceptance: |P - 1.27| < DGAMMA_TOL (0.05).  The target and the tolerance
+are FROZEN by PREREGISTRATION.md since v2.2.0; they were chosen post hoc
+in v1.x and any future change is a CHANGELOG event with a retro-label.
 
 Measurements
 ------------
@@ -221,9 +232,16 @@ def main():
                 if (delta_eff and gamma_eff is not None) else None)
     P_mixed = (delta_eff * gamma_Ch if delta_eff else None)
 
-    def verdict(p):
-        return None if p is None else ("PASS" if abs(p - DGAMMA_TARGET) < DGAMMA_TOL
-                                       else "OUT-OF-TOLERANCE")
+    def measured_verdict(p):
+        """Verdict for a MEASURED product (both factors engine data)."""
+        if p is None:
+            return "INCONCLUSIVE"   # unmeasurable factor — stated, never silent
+        return ("PASS" if abs(p - DGAMMA_TARGET) < DGAMMA_TOL
+                else "OUT-OF-TOLERANCE")
+
+    # v2.2.0: the anchor product is arithmetic over the project's own two
+    # anchors.  It is classified, never counted as a physics PASS.
+    P_anchor_within_target = bool(abs(P_anchor - DGAMMA_TARGET) < DGAMMA_TOL)
 
     V = {
         "campaign": "chb_c3",
@@ -247,17 +265,34 @@ def main():
                             "self-similarity); delta_eff is an EFFECTIVE period"),
         },
         "products": {
-            "P_anchor": P_anchor, "P_anchor_verdict": verdict(P_anchor),
-            "P_engine": P_engine, "P_engine_verdict": verdict(P_engine),
-            "P_mixed": P_mixed, "P_mixed_verdict": verdict(P_mixed),
+            "P_anchor": P_anchor,
+            "P_anchor_class": ("anchor arithmetic — both factors are "
+                               "literature/engine anchors; consistency with "
+                               "the target, NOT a measurement"),
+            "P_anchor_verdict": "ANCHOR_ARITHMETIC",
+            "P_anchor_within_target": P_anchor_within_target,
+            "P_anchor_deviation": abs(P_anchor - DGAMMA_TARGET),
+            "P_engine": P_engine,
+            "P_engine_verdict": measured_verdict(P_engine),
+            "P_mixed": P_mixed,
+            "P_mixed_verdict": measured_verdict(P_mixed),
+            "verdict_semantics": (
+                "ANCHOR_ARITHMETIC = consistency of the project's own anchors "
+                "with the frozen target (not evidence); PASS/OUT-OF-TOLERANCE "
+                "= measured product inside/outside the frozen tolerance; "
+                "INCONCLUSIVE = a factor is unmeasurable at this resolution "
+                "(never silent).  Falsification criteria: PREREGISTRATION.md."),
         },
         "scan_rows": scan_rows,
-        "target": {"value": DGAMMA_TARGET, "tolerance": DGAMMA_TOL},
+        "target": {"value": DGAMMA_TARGET, "tolerance": DGAMMA_TOL,
+                   "frozen_by": "PREREGISTRATION.md (v2.2.0)"},
         "b_Ch_crosscheck": b_Ch,
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         "wall_total_s": None,
     }
-    print(f"      P_anchor = {P_anchor:.5f}  -> {V['products']['P_anchor_verdict']}")
+    print(f"      P_anchor = {P_anchor:.5f}  -> "
+          f"{V['products']['P_anchor_verdict']} "
+          f"(within target: {P_anchor_within_target})")
     print(f"      P_mixed  = "
           f"{P_mixed if P_mixed is None else round(P_mixed, 5)}  -> "
           f"{V['products']['P_mixed_verdict']}")

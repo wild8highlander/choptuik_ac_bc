@@ -1,6 +1,6 @@
 # tables/ — the workbook layer
 
-Version 2.1.0 · 1 XLSX · 14 sheets
+Version 2.2.0 · 1 XLSX · 14 sheets
 
 ---
 

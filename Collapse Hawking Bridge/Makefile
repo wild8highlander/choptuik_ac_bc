@@ -1,4 +1,4 @@
-# Collapse-Hawking Bridge — v2.1.0
+# Collapse-Hawking Bridge — v2.2.0
 # Makefile: every scientific operation of the repository as a target.
 
 PYTHON ?= python3
@@ -6,7 +6,7 @@ PYTHON ?= python3
 .PHONY: help install test validate data figures c1 c2 c3 c3b c6 all clean
 
 help:
-        @echo "Collapse-Hawking Bridge v2.1.0"
+        @echo "Collapse-Hawking Bridge v2.2.0"
         @echo "  make install   - install the chbridge package (editable)"
         @echo "  make test      - run the pytest suite (tests/)"
         @echo "  make validate  - 50-digit mpmath re-verification of all constants"

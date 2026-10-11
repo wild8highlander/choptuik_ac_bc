@@ -4,7 +4,7 @@ Committed figure set of the **Collapse-Hawking Bridge** — 28 PNG files:
 7 figures × 2 languages (`en`, `ru`) × 2 themes (`light`, `dark`), rendered at
 300 dpi through the shared "Ink & Gold" style module.
 
-![v2.1.0](https://img.shields.io/badge/version-2.1.0-8C6D1F)
+![v2.2.0](https://img.shields.io/badge/version-2.2.0-8C6D1F)
 ![figures](https://img.shields.io/badge/figures-28_PNG-gold)
 ![dpi](https://img.shields.io/badge/resolution-300_dpi-gold)
 ![style](https://img.shields.io/badge/style-Ink_%26_Gold-gold)

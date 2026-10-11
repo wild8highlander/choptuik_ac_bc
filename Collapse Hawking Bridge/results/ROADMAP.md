@@ -1,6 +1,6 @@
 # Roadmap — Collapse-Hawking Bridge
 
-Status line: **v2.1.0 — the IVP-15 alignment edition.** The four
+Status line: **v2.2.0 — the honest-verdict edition** (anchor product = ANCHOR_ARITHMETIC, criteria preregistered in PREREGISTRATION.md). The four
 engine campaigns (C1, C2, C3, C3b) plus the analytical drift campaign
 C6 are committed; the independent audit IVP-15 is fully absorbed (all
 three findings remediated and quoted correctly everywhere); the theorem
@@ -10,7 +10,7 @@ logo are shipped; the web companion is live.
 
 ---
 
-## Where the project stands (stage analysis, v2.1.0)
+## Where the project stands (stage analysis, v2.2.0)
 
 ### Stage 1 — Engine and its validation: COMPLETE
 
@@ -44,7 +44,7 @@ is the engine's own, at every resolution.
   0.1909/e-fold vs the critical anchor 0.2907; supercritical branch
   has a measured bifurcation curve f~(ε) with half-width
   ε½ = 4.86e-3.
-* **C3** (Δ·γ): anchor-level **PASS** (1.28656 vs 1.27 ± 0.05,
+* **C3** (Δ·γ): anchor product ANCHOR_ARITHMETIC (1.28656 vs frozen 1.27 ± 0.05,
   deviation 1.3%); engine-level honest negative committed with full
   diagnostics.
 * **C3b** (concentrated grids N=1600/3200): the floor law

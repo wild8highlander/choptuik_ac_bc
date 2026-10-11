@@ -57,7 +57,7 @@ HEADLINE = [
     ("Haar check max |S_formula - S_MC|", "0.0042 bits", "page_haar_check.csv"),
     ("Septinial constant b_Ch = 1 - cos(2pi/7)", "0.37651019814126640", "exact"),
     ("Framework gap |gamma_Ch - b_Ch|/b_Ch", "0.67%", "comparison"),
-    ("Delta*gamma anchor product", "1.28656 vs 1.27 (PASS, 1.3%)", "C3"),
+    ("Delta*gamma anchor product (arithmetic)", "1.28656 vs 1.27 (within frozen tolerance, 1.3%; ANCHOR_ARITHMETIC — not a measurement)", "C3"),
     ("Subcritical q_max", "0.0158 -> 0.5845 (monotone)", "C2"),
     ("Critical slowdown", "v = 0.510 - 0.0334 ln(eps), r2 = 0.71", "C2"),
     ("Echo accumulation rate", "0.1909 / e-fold (anchor 0.2907)", "C2"),

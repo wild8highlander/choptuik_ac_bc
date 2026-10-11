@@ -13,6 +13,12 @@ mislabeled by +2.8e-3 and are replaced by the remediated values.
 2.1.0 CHANGELOG event: campaign C6 added — the resolution-drift law
 (theorem T10, parabolic-tension mechanism); verdict c6_drift_verdict.json
 pinned (ladder facts, lemma precision, channel shares, honest negatives).
+
+2.2.0 CHANGELOG event (external audit, point 10): the anchor product of
+Δ·γ is reclassified ANCHOR_ARITHMETIC — never a physics PASS; unmeasured
+engine products are INCONCLUSIVE, never silent; target/tolerance frozen
+by PREREGISTRATION.md. The C3 verdict-semantics pins replaced the old
+"anchor PASS" pin.
 """
 import csv
 import json
@@ -49,7 +55,7 @@ def _c6():
 def test_c2_verdict_envelope():
     v = _c2()
     assert v["campaign"] == "chb_c2"
-    assert v["project_version"] == "2.1.0"
+    assert v["project_version"] == "2.2.0"
     assert v["grid"]["N"] == 800
     assert isinstance(v["wall_total_s"], float) and v["wall_total_s"] > 0
     assert v["timestamp"]
@@ -58,7 +64,7 @@ def test_c2_verdict_envelope():
 def test_c3b_verdict_envelope():
     v = _c3b()
     assert v["campaign"] == "chb_c3b"
-    assert v["project_version"] == "2.1.0"
+    assert v["project_version"] == "2.2.0"
     # F-2 remediation: per-grid thresholds committed with the verdict
     assert "a_star_per_grid" in v
     assert abs(v["a_star_per_grid"]["N1600"]["a_star"]
@@ -75,7 +81,7 @@ def test_all_verdicts_carry_project_version():
     for name in ("c1_verdict.json", "c2_verdict.json",
                  "c3_verdict.json", "c3b_verdict.json",
                  "c6_drift_verdict.json"):
-        assert _verdict(name)["project_version"] == "2.1.0", name
+        assert _verdict(name)["project_version"] == "2.2.0", name
 
 
 # ---------------------------------------------------------------------------
@@ -181,20 +187,45 @@ def test_c3b_gamma_fit_floor_biased():
 
 
 def test_c3b_delta_honest_negative():
-    """No run at any depth resolved >= 3 peaks: C3's negative stands."""
+    """No run at any depth resolved >= 3 peaks: C3's negative stands.
+
+    v2.2.0: the unmeasured deep product is INCONCLUSIVE — stated, never
+    silent (the 2.0.x form was a bare null verdict).
+    """
     v = _c3b()
     assert v["delta_eff"] is None
     assert v["products"]["P_engine_deep"] is None
-    assert v["products"]["P_engine_deep_verdict"] is None
+    assert v["products"]["P_engine_deep_verdict"] == "INCONCLUSIVE"
     for rows in v["delta_ladder"].values():
         for r in rows:
             assert r["n_peaks"] < 3
 
 
-def test_c3b_anchor_product_passes():
+def test_c3b_anchor_product_is_arithmetic():
+    """v2.2.0 (audit point 10): the anchor product is ANCHOR_ARITHMETIC."""
     p = _c3b()["products"]
     assert abs(p["P_anchor"] - 1.28656) < 1e-9
-    assert p["P_anchor_verdict"] == "PASS"
+    assert p["P_anchor_verdict"] == "ANCHOR_ARITHMETIC"
+    assert p["P_anchor_within_target"] is True
+    assert p["target"]["frozen_by"].endswith("PREREGISTRATION.md (v2.2.0)")
+
+
+def test_c3_verdict_semantics():
+    """The committed C3 verdict carries the v2.2.0 verdict semantics.
+
+    Audit point 10 remediated: the anchor product must never again be
+    reported as a physics PASS, and unmeasured products must be stated
+    as INCONCLUSIVE rather than silently null.
+    """
+    p = _verdict("c3_verdict.json")["products"]
+    assert abs(p["P_anchor"] - 1.28656) < 1e-9
+    assert p["P_anchor_verdict"] == "ANCHOR_ARITHMETIC"
+    assert p["P_anchor_within_target"] is True
+    assert "NOT a measurement" in p["P_anchor_class"]
+    assert p["P_engine"] is None and p["P_mixed"] is None
+    assert p["P_engine_verdict"] == "INCONCLUSIVE"
+    assert p["P_mixed_verdict"] == "INCONCLUSIVE"
+    assert "PREREGISTRATION.md" in p["verdict_semantics"]
 
 
 def test_c3b_constants_mirror_verdict():

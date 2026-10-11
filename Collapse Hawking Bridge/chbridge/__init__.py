@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-chbridge — Collapse-Hawking Bridge, v2.1.0.
+chbridge — Collapse-Hawking Bridge, v2.2.0.
 
 A dimensionless mapping between the two ends of semiclassical gravity:
 
@@ -29,7 +29,7 @@ page        unitary entropy-flux Page curves + Haar-averaging check
 ladder      scale ladders: lengths, accelerations, curvatures
 validate    high-precision (mpmath) re-verification of every constant
 
-Versioning: 2.1.0 (IVP-15 alignment release: the resolution-drift law T10/C6 added, every surface aligned to the independent verification results; see CHANGELOG).
+Versioning: 2.2.0 (honest-verdict release: the Δ·γ anchor product reclassified ANCHOR_ARITHMETIC, b_Ch_lit removed, falsification criteria preregistered in PREREGISTRATION.md; see CHANGELOG).
 See CHANGELOG.md.
 """
 

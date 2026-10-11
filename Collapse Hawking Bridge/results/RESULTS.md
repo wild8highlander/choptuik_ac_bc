@@ -1,19 +1,21 @@
 # Results — the living ledger
 
-The one-page ledger of everything the project measured, at **v2.1.0**
-(the IVP-15 alignment edition). Machine-readable sources:
+The one-page ledger of everything the project measured, at **v2.2.0**
+(the honest-verdict edition: verdict semantics fixed per the external
+audit — anchor arithmetic is not a measurement). Machine-readable sources:
 `campaigns/reference/*.json|csv`, `data/bridge/*.csv`. Update this file
 whenever a campaign verdict changes — the ledger is prose, the verdicts
 are law.
 
-[![version](https://img.shields.io/badge/version-2.1.0-8C6D1F)](../CHANGELOG.md)
-[![pytest](https://img.shields.io/badge/pytest-63_passed-brightgreen)](../tests/README.md)
+[![version](https://img.shields.io/badge/version-2.2.0-8C6D1F)](../CHANGELOG.md)
+[![pytest](https://img.shields.io/badge/pytest-69_passed-brightgreen)](../tests/README.md)
+[![prereg](https://img.shields.io/badge/PREREGISTRATION-frozen_v2.2.0-4A6B4A)](../PREREGISTRATION.md)
 [![C6](https://img.shields.io/badge/C6-drift_law_T10-C9A84C)](scaling_drift/REPORT.md)
 [![audit](https://img.shields.io/badge/IVP--15-remediated-8C6D1F)](../independent_verification/RESULTS.md)
 
 ---
 
-## Headline numbers (v2.1.0)
+## Headline numbers (v2.2.0)
 
 | # | quantity | value | source |
 |---|---|---|---|
@@ -28,7 +30,7 @@ are law.
 | 9 | Haar check, max \|S_formula − S_MC\| | **0.0042 bits** | page_haar_check.csv |
 | 10 | septinial constant `b_Ch = 1−cos(2π/7)` | **0.37651019814126640** | exact |
 | 11 | framework gap \|γ_Ch − b_Ch\|/b_Ch | **0.67%** | comparison, not a fit |
-| 12 | `Δ·γ` anchor product | **1.28656** vs target 1.27 | C3, PASS (1.3%) |
+| 12 | `Δ·γ` anchor product | **1.28656** vs target 1.27 — **ANCHOR_ARITHMETIC**: consistency of the project's own anchors within the frozen tolerance (1.3%), NOT a measurement; engine level INCONCLUSIVE | C3 + PREREGISTRATION.md |
 | 13 | subcritical compactness approach | **q_max: 0.0158 → 0.5845, monotone** | C2, c2_verdict.json |
 | 14 | critical slowdown (subcritical branch) | **v_qmax = 0.510 − 0.0334 ln(ε)**, r²=0.71 | C2 |
 | 15 | echo accumulation rate | **0.1909 peaks/e-fold** vs anchor 1/Δ = 0.2907 | C2 |
@@ -56,8 +58,11 @@ and the C6 drift verdict is deterministic over committed inputs.
 - **C2** (two branches): subcritical dispersal + born bifurcation,
   26 engine runs, ~24 s wall. Junk rows and flip-mechanism kept
   verbatim.
-- **C3** (Δ·γ): anchor-level **PASS**; engine-level honest negative
-  with full diagnostics committed. 31 engine runs, ~14 s wall.
+- **C3** (Δ·γ): anchor product classified **ANCHOR_ARITHMETIC** (v2.2.0
+  reclassification of the former "anchor-level PASS" — both factors are
+  anchors, so the comparison to 1.27 is arithmetic, not evidence);
+  engine-level honest negative with full diagnostics committed, products
+  reported INCONCLUSIVE, never silent. 31 engine runs, ~14 s wall.
 - **C3b** (concentrated resolution): per-grid thresholds bisected
   fresh (F-2); the floor ladder is the first-class result; both
   engine-level negatives re-confirmed at N=1600/3200. 16 engine runs,
@@ -85,6 +90,11 @@ and the C6 drift verdict is deterministic over committed inputs.
 8. The dominant drift channel (march-error amplification under
    near-critical lingering) is a labeled hypothesis — the exact
    parabolic-tension channel is measured and sub-dominant.
+9. Verdict semantics (v2.2.0): the anchor product of Δ·γ is
+   `ANCHOR_ARITHMETIC`, never a physics PASS; unmeasured products are
+   `INCONCLUSIVE`, never silent; target/tolerance frozen by
+   [PREREGISTRATION.md](../PREREGISTRATION.md) before the next engine
+   run.
 
 ## Roadmap (post-2.1)
 
@@ -96,14 +106,16 @@ See [ROADMAP.md](ROADMAP.md) for the staged plan; the short list:
 - Engine upgrade path: beat the floor law `(13 ± 1)/N` and the drift's
   dominant channel with true AMR near the accumulation point — the
   explicit target is an engine-level γ compatible with 0.374 and ≥ 3
-  resolved echo peaks.
+  resolved echo peaks, judged against the criteria frozen in
+  [PREREGISTRATION.md](../PREREGISTRATION.md).
 
 ## Краткое резюме (Russian)
 
-Реестр результатов v2.1.0. Двадцать одна заголовочная строка; каждая
-несёт адрес вердикта в `campaigns/reference/`. Новое в v2.1.0: строки
-3–4 (дрейф лестницы A* и растущие p_eff), 19–20 (точный канал теоремы
-T10 и честный отказ от `A*_∞`); строки 1–2, 17–18 приведены к
-исправленным значениям (ремедиация F-1/F-2 независимого аудита IVP-15).
-Все четыре движковых вердикта повторно прогнаны на v2.1.0 — физика
-байт-идентична. Регистр честности расширен до восьми пунктов.
+Реестр результатов v2.2.0. Двадцать одна заголовочная строка; каждая
+несёт адрес вердикта в `campaigns/reference/`. Новое в v2.2.0: строка 12
+переклассифицирована (якорное произведение Δ·γ — ANCHOR_ARITHMETIC, не
+измерение; движковый уровень INCONCLUSIVE); критерии опровержения
+предрегистрированы в PREREGISTRATION.md до следующего прогона движка;
+снят самоссылочный ярлык b_Ch_lit (пункт аудита №4). Все четыре
+движковых вердикта повторно прогнаны на v2.2.0 — физика байт-идентична.
+Регистр честности расширен до девяти пунктов.

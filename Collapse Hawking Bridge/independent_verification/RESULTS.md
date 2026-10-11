@@ -150,7 +150,7 @@ and logs) ships in `results/`.
 | IVP11 | Blind mass-scaling (gamma) measurement | **FAIL** |
 | IVP12 | Resolution-floor law | **PASS** |
 | IVP13 | Blind echo detector (Delta) | **PASS** |
-| IVP14 | Delta*gamma falsification | **PASS** |
+| IVP14 | Delta*gamma falsification (procedure; anchor product = ANCHOR_ARITHMETIC since v2.2.0) | **PASS** |
 | IVP15 | Cross-language agreement | **PART** |
 
 Summary: PASS 9 · PARTIAL 3 · FAIL 3 · INCONCLUSIVE 0.
@@ -409,14 +409,24 @@ project's own NOT-DSS verdict (committed detector resolved the same 2
 peaks with 40x fewer samples; the denser sampling shows no third peak
 exists to find at this prominence).
 
-### IVP-14 — Delta*gamma: PASS
+### IVP-14 — Delta·gamma falsification: PASS (procedure)
 
-Three products separated: P_anchor = 3.44 × 0.374 = 1.28656 → within
-the 1.27 ± 0.05 target (PASS).  P_mixed and P_engine honestly
-INCONCLUSIVE (Delta unmeasurable, F/IVP-13) — matching the committed
-C3 verdict's own honest `None` products.  The invariant
+Three products separated: P_anchor = 3.44 × 0.374 = 1.28656 — anchor
+arithmetic, within the 1.27 ± 0.05 target.  P_mixed and P_engine
+honestly INCONCLUSIVE (Delta unmeasurable, F/IVP-13) — matching the
+committed C3 verdict's own honest `None` products.  The invariant
 Delta·gamma ≈ 1.27 therefore remains an anchor-level statement, not an
 engine-measured one.
+
+**v2.2.0 re-scoping (external audit, point 10).** The PASS of this check
+is a PASS of the *procedure* (three products separated, unmeasurable
+factors reported INCONCLUSIVE, never silent) — not a physics PASS of the
+hypothesis.  The committed verdict token for P_anchor is now
+`ANCHOR_ARITHMETIC` (+ `P_anchor_within_target`), and the target 1.27 ±
+0.05 is frozen by `PREREGISTRATION.md`: it was chosen post hoc in v1.x
+and cannot be retuned without a RETRO-LABEL CHANGELOG event.  Only
+P_mixed / P_engine — products with measured factors — can carry
+physics verdicts.
 
 ### IVP-15 — cross-language agreement: PARTIAL
 

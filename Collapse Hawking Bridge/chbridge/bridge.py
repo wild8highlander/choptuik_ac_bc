@@ -34,7 +34,7 @@ import math
 import os
 
 from .constants import (CAMPAIGN, BRIDGE_SCALES, c, G, l_P, k_B, hbar,
-                        T_CMB, gamma_Ch, b_Ch, b_Ch_lit, qnm_rel_shift,
+                        T_CMB, gamma_Ch, b_Ch, qnm_rel_shift,
                         f_qnm_schwarzschild, kretschmann_horizon,
                         kretschmann_planck)
 from .hawking import (r_s, S_BH, T_H, P_H, t_evap, t_page, rho_mean,
@@ -162,7 +162,11 @@ def write_outputs(verdict, out_dir):
                           "N=800; C3b per-grid remediation concurs: 0.041 / "
                           "0.060 at N=1600/3200, floor-dominated)",
         "gamma_Ch_anchor": gamma_Ch,
-        "b_Ch": b_Ch, "b_Ch_lit": b_Ch_lit,
+        # v2.2.0: the former "b_Ch_lit" key (b_Ch rounded to 5 digits, once
+        # labeled a "literature anchor") is removed — a hypothesis constant
+        # must not travel under a literature label.  The 0.67% comparison is
+        # |gamma_Ch - b_Ch| / b_Ch and lives in the docs, not in this table.
+        "b_Ch": b_Ch,
         "junk_rows": verdict["honest_notes"]["junk_rows_total"],
         "M_CMB_kg": equal_CMB_mass(),
         "members": {k: {"eps": v["eps"], "f_tilde": v["f_tilde"],

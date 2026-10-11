@@ -20,7 +20,6 @@
  "gamma_campaign": "honestly unmeasurable: fixed-grid floor dominates (C3 floor-biased gamma_eff = 0.005 +- 0.035 at N=800; C3b per-grid remediation concurs: 0.041 / 0.060 at N=1600/3200, floor-dominated)",
  "gamma_Ch_anchor": 0.374,
  "b_Ch": 0.3765101981412664,
- "b_Ch_lit": 0.37651,
  "junk_rows": 6,
  "M_CMB_kg": 4.5015948405198975e+22,
  "members": {

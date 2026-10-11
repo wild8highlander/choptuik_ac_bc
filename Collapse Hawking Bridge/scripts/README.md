@@ -4,12 +4,12 @@ Deterministic tooling of the **Collapse-Hawking Bridge**: these scripts
 derive every data table from committed campaign verdicts and render every
 figure from them. They invent no physics.
 
-![version](https://img.shields.io/badge/version-2.1.0-8C6D1F)
+![version](https://img.shields.io/badge/version-2.2.0-8C6D1F)
 ![python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![tests](https://img.shields.io/badge/pytest-63_passed-brightgreen)
 ![validate](https://img.shields.io/badge/validate-7%2F7_PASS-brightgreen)
 ![figures](https://img.shields.io/badge/figures-28_PNG_+68_hires+logo-gold)
-![status](https://img.shields.io/badge/status-v2.1.0-blue)
+![status](https://img.shields.io/badge/status-v2.2.0-blue)
 
 ## TL;DR
 
@@ -155,7 +155,7 @@ same verdicts must be a no-op. Run: `python3 scripts/rebuild_data.py`
       C2: M_sat(N=800) = 0.03519, eps_half = 4.8598e-03
       C3b N1600: gamma_eff = 0.0410 (floor_M = 8.5748e-03)
       C3b N3200: gamma_eff = 0.0605 (floor_M = 4.2449e-03)
-      C3b: P_anchor = 1.28656 -> PASS, P_engine_deep = None (honest negative kept)
+      C3b: P_anchor = 1.28656 -> ANCHOR_ARITHMETIC, P_engine_deep = None -> INCONCLUSIVE (honest negative kept)
 
 all outputs -> <repo>/data/bridge
 ```
@@ -275,7 +275,7 @@ including the nine `branch_*` keys of `fig_branches`: `branch_sub_title`,
 ## Runbook (copy-paste)
 
 All commands below assume the repository root as the working directory.
-Expected outputs were captured live on the reference machine (updated at v2.1.0).
+Expected outputs were captured live on the reference machine (updated at v2.2.0).
 
 ```bash
 # 0. environment (editable install of chbridge)

@@ -1,6 +1,6 @@
 {
  "campaign": "chb_c6_drift",
- "project_version": "2.1.0",
+ "project_version": "2.2.0",
  "title": "the resolution-drift law (why one formula gives different values)",
  "inputs": {
   "ladder": "campaigns/reference/a_star_ladder.csv (committed F-1 remediation artifact, unchanged since 2.0.1)",

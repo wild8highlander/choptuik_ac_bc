@@ -180,7 +180,7 @@ PAGE_FRACTION              PASS    {'ref': 0.646447}
 S~M^2, T~1/M, t~M^3        PASS    {}
 CMB contact                PASS    {'M_CMB': 4.5015948405198975e+22}
 Planck units               PASS    {}
-Delta*gamma anchor         PASS    {'product': 1.28656, 'dev': 0.01656}
+Delta*gamma anchor arithmetic  PASS  {'product': 1.28656, 'dev': 0.01656}
 Kretschmann scale law      PASS    {}
 7/7 checks PASS (mpmath dps=50, chbridge v2.1.0)
 ```
@@ -197,9 +197,12 @@ arithmetic independently of the float values in `constants.py`;
 2. **Verdicts over prints.** Functions that produce numbers write
    machine-readable files; console output is a courtesy, never the
    artifact.
-3. **Anchors are data.** `gamma_Ch`, `echo_delta`, `b_Ch_lit` sit in
+3. **Anchors are data.** `gamma_Ch` and `echo_delta` sit in
    `constants.py` with the word *anchor* in their comments; no code
-   path optimizes toward them.
+   path optimizes toward them.  The project's own `b_Ch` is a
+   hypothesis constant, not an anchor: the former `b_Ch_lit` label
+   (b_Ch rounded to 5 digits, once presented as a "literature
+   anchor") was removed at v2.2.0 as self-referential.
 4. **Relative imports inside, absolute honesty outside.** The package
    never mutates its inputs; `write_outputs` only ever writes into the
    directory you hand it.

@@ -302,9 +302,16 @@ def main():
     if delta_eff and g3200["gamma_eff"] is not None:
         P_engine = delta_eff * g3200["gamma_eff"]
 
-    def verdict(p):
-        return None if p is None else ("PASS" if abs(p - DGAMMA_TARGET) < DGAMMA_TOL
-                                       else "OUT-OF-TOLERANCE")
+    def measured_verdict(p):
+        """Verdict for a MEASURED product; unmeasurable -> INCONCLUSIVE."""
+        if p is None:
+            return "INCONCLUSIVE"   # stated, never silent (v2.2.0)
+        return ("PASS" if abs(p - DGAMMA_TARGET) < DGAMMA_TOL
+                else "OUT-OF-TOLERANCE")
+
+    # v2.2.0: the anchor product is arithmetic over the project's own two
+    # anchors — classified, never counted as a physics PASS.
+    P_anchor_within_target = bool(abs(DGAMMA_LIT - DGAMMA_TARGET) < DGAMMA_TOL)
 
     V = {
         "campaign": "chb_c3b",
@@ -336,10 +343,15 @@ def main():
         "delta_eff": delta_eff,
         "products": {
             "P_anchor": DGAMMA_LIT,
-            "P_anchor_verdict": verdict(DGAMMA_LIT),
+            "P_anchor_class": ("anchor arithmetic — both factors are "
+                               "literature/engine anchors; consistency with "
+                               "the target, NOT a measurement"),
+            "P_anchor_verdict": "ANCHOR_ARITHMETIC",
+            "P_anchor_within_target": P_anchor_within_target,
             "P_engine_deep": P_engine,
-            "P_engine_deep_verdict": verdict(P_engine),
-            "target": {"value": DGAMMA_TARGET, "tolerance": DGAMMA_TOL},
+            "P_engine_deep_verdict": measured_verdict(P_engine),
+            "target": {"value": DGAMMA_TARGET, "tolerance": DGAMMA_TOL,
+                       "frozen_by": "PREREGISTRATION.md (v2.2.0)"},
         },
         "honest_notes": {
             "stop_criterion": ("deep-grid rows near threshold may stop with "

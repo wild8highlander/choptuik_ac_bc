@@ -62,7 +62,7 @@ Sources: `c1_verdict.json:a_star_grid`, `a_star_ladder.json`.
 | `S ~ M^2`, `T ~ 1/M`, `t ~ M^3` | PASS (rel 1e-9) |
 | CMB contact round-trip `T_H(M_CMB) = T_CMB` | PASS, `M_CMB = 4.5016e22 kg` |
 | Planck units cross-consistency | PASS (rel 1e-12) |
-| `Delta*gamma` anchor = 1.28656 vs target 1.27 | dev 0.01656 (< tol 0.05) |
+| `Delta*gamma` anchor arithmetic = 1.28656 vs target 1.27 | dev 0.01656 (< frozen tol 0.05) — arithmetic consistency, not a measurement |
 | Kretschmann scale law `K(M) M^4 = const` | PASS (rel 1e-9) |
 
 Source: `python3 -m chbridge.validate`; enforced by
@@ -80,7 +80,7 @@ Source: `python3 -m chbridge.validate`; enforced by
 
 | product | value | verdict |
 |---|---:|---|
-| `P_anchor = Delta_lit * gamma_Ch` | **1.28656** | **PASS** (1.3% from 1.27, tol 0.05) |
+| `P_anchor = Delta_lit * gamma_Ch` | **1.28656** | **ANCHOR_ARITHMETIC** — inside the frozen tolerance (1.3% from 1.27); not a measurement |
 | `P_mixed = Delta_eff * gamma_Ch` | — | not measurable (peaks < 3 per run) |
 | `P_engine = Delta_eff * gamma_eff` | — | not measurable (grid floor) |
 
@@ -93,8 +93,9 @@ Engine-level honest negatives (all committed in
   `eps = 1e-3 / 3e-4 / 1e-4` — below the 3-peak minimum for an
   estimate.
 
-**Standing conclusion at v1.1.0:** the invariant `Delta * gamma ~ 1.27`
-is confirmed at anchor level and unconfirmed at engine level — and the
+**Standing conclusion (re-scoped at v2.2.0):** the anchor arithmetic of
+`Delta * gamma` is consistent with the frozen target, and the invariant
+is UNTESTED at engine level (INCONCLUSIVE, not refuted) — and the
 engine level was attacked twice (C3 at N=800, C3b at N=1600/3200); the
 negatives survived both attacks.
 
@@ -129,7 +130,7 @@ no AMR rewrite — the definition is carried inside the verdict):
 | **floor ladder** | `0.0155 (N=800, C1) > 8.574765e-3 (N=1600) > 4.244867e-3 (N=3200)` |
 | gamma ladder | `0.0410 +- 0.0262` (r²=0.33, N=1600) -> `0.0605 +- 0.0417` (r²=0.41, N=3200): floor-dominated, honestly weak fits — does NOT approach the anchor 0.374 |
 | delta ladder | 1-2 peaks per run at both depths — `delta_eff` stays null |
-| products | `P_anchor = 1.28656 -> PASS` (re-confirmed); `P_engine_deep = null` (honest negative kept) |
+| products | `P_anchor = 1.28656 -> ANCHOR_ARITHMETIC` (re-confirmed arithmetic); `P_engine_deep = null -> INCONCLUSIVE` (honest negative kept) |
 
 v2.0.1 correction: the 2.0.0 gamma ladder (`0.1113 -> 0.1205`, r² 0.82/
 0.96) reused A*_N800 as the deep-grid base, mislabeling eps by +2.8e-3;

@@ -3,6 +3,83 @@
 All notable changes to this project are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.2.0] — 2026-10-11
+
+The **honest-verdict edition**, driven by a second, external audit of the
+package (the same audit that produced the fifteen-point research plan).
+The physics is unchanged — every engine verdict was re-run and is
+byte-identical to 2.1.0 — but three governance findings are fixed and
+one package-class change is made.
+
+### Changed — verdict semantics (audit point 10: "the PASS in Δ·γ is not a measurement")
+
+- The anchor product `P_anchor = 3.44 × 0.374 = 1.28656` is
+  **reclassified** from `PASS` to **`ANCHOR_ARITHMETIC`** in
+  `c3_verdict.json`, `c3b_verdict.json`, `chbridge.validate` and IVP-14:
+  both factors are literature/engine anchors, so its proximity to the
+  target 1.27 is a consistency statement about the project's own
+  constants, never evidence. The verdict now also carries
+  `P_anchor_within_target` and a `verdict_semantics` block.
+- Engine-level products (`P_engine`, `P_mixed`, `P_engine_deep`) are
+  reported **`INCONCLUSIVE`** instead of `null` — unmeasurable is stated,
+  never silent.
+- The acceptance tolerance `1.27 ± 0.05` is **frozen** with an honest
+  provenance note: it was chosen post hoc in v1.x; from v2.2.0 any change
+  is a RETRO-LABEL CHANGELOG event.
+- README row 12, `results/RESULTS.md` row 12, `docs/theory.md` §5,
+  `docs/validation.md` and the monograph T6 wording aligned to the new
+  semantics ("confirmed at anchor level" → "anchor arithmetic consistent;
+  engine level UNTESTED/INCONCLUSIVE").
+
+### Removed — the self-referential "literature anchor" (audit point 4)
+
+- `b_Ch_lit = 0.37651` is removed from `chbridge/constants.py`,
+  `bridge.write_outputs`, the data dictionary and both READMEs. It was
+  `b_Ch` itself rounded to five digits, traveling under a literature
+  label — the hypothesis compared with itself. The 0.67% comparison is
+  and always was `|γ_Ch − b_Ch|/b_Ch`: literature exponent on one side,
+  project hypothesis on the other.
+
+### Added — preregistration and the claim ledger (audit points 15 and 2)
+
+- **`PREREGISTRATION.md`** (+ Russian mirror `PREREGISTRATION.ru.md`):
+  falsification criteria for the engine-level γ, Δ, Δ·γ, the floor law
+  and the T10 pre-asymptotic narrative — committed **before** the next
+  engine run, with a no-post-hoc rule and a RETRO-LABEL protocol.
+- **`docs/claim_ledger.md`** (+ `claim_ledger.ru.md`): every surface
+  claim of the package mapped to its machine-readable artifact and
+  pinning test, including an explicit list of claims this package does
+  NOT make (no "solution to the Choptuik problem", no strong-CP
+  solution, no GW-event QNM predictions, no 1e-41 machine verification,
+  no "58/58" count — these belong, if anywhere, to other projects of the
+  parent repository).
+- `tests/test_preregistration.py` (4 pins): the preregistration file
+  exists and carries the frozen constants; the verdict token discipline
+  holds; `b_Ch_lit` is gone and stays gone.
+- `tests/test_campaigns.py::test_c3_verdict_semantics`: the committed C3
+  verdict carries `ANCHOR_ARITHMETIC` + `INCONCLUSIVE` engine products.
+
+### Fixed
+
+- README documentation map: added the preregistration and claim-ledger
+  rows; citation version bumped; all test-count badges updated to the
+  actual suite size (69).
+- Monograph sources (`monograph/src/*.js`) re-worded to the new verdict
+  semantics and all four DOCX volumes re-rendered to PDF (same Ink & Gold
+  pipeline).
+
+### Verification at this release
+
+- All five campaigns re-run from source on the release machine:
+  **physics byte-identical** to the 2.1.0 committed verdicts (only
+  timestamps, wall-time metadata and the reclassified verdict fields
+  differ).
+- `make data`: 13 tables rebuilt, byte-identical except the removed
+  `b_Ch_lit` key.
+- `make test`: 69 passed · `make validate`: 7/7 PASS (the Δ·γ check
+  renamed to "anchor arithmetic (not a measurement)").
+
+
 ## [2.1.0] — 2026-10-09
 
 The **IVP-15 alignment edition**: every surface of the package — the
