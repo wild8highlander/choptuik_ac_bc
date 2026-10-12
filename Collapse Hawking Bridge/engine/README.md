@@ -135,7 +135,7 @@ PY
 
 Subcritical/supercritical boundary for this family sits near
 `A* ~ 0.0805` at N=800 (see the grid-honesty ladder in
-[campaigns/README.md](../campaigns/README.md#2-the-grid-honesty-ladder)).
+[docs/methods.md §3](../docs/methods.md#3-critical-amplitude-bisection-and-the-grid-honesty-ladder)).
 
 ## Validation
 

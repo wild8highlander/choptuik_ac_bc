@@ -6,11 +6,11 @@
 
 **Конфайнмент уходом в ложный вакуум · вихревой якорь · пять лестниц сходимости · дисциплина честных фальсификаторов**
 
-[![CI (canon)](https://img.shields.io/badge/CI-канон%20%2B%20консистентность-3f93b0)](#-стек-верификации)
+[![CI (canon)](https://img.shields.io/badge/CI-канон%20%2B%20консистентность-3f93b0)](#стек-верификации)
 [![Lean 4 Mathlib](https://img.shields.io/badge/Lean%204-Mathlib%20порт-8c7225)](monolith/lean/)
 [![закрытые ядра](https://img.shields.io/badge/закрытых%20Lean--ядер-18-59c98a)](monolith/lean/QHB_Theorems.lean)
 [![версия](https://img.shields.io/badge/версия-2.3.0-c9a53d)](CHANGELOG.md)
-[![честность](https://img.shields.io/badge/честность--first-фальсификаторы%20заявлены-9c3b2e)](#-политика-сначала-фальсификатор)
+[![честность](https://img.shields.io/badge/честность--first-фальсификаторы%20заявлены-9c3b2e)](#политика-сначала-фальсификатор)
 [![лицензия](https://img.shields.io/badge/лицензия-двойная%20%28MIT%20%2F%20CC--BY%29-7a7871)](LICENSE)
 
 <img src=".github/images/verify_strip.svg" alt="стек верификации" width="100%"/>

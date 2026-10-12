@@ -36,7 +36,7 @@ C9–C11 + the Evidence Engine).
 1. [What this is](#what-this-is)
 2. [The one-sentence essence](#the-one-sentence-essence)
 3. [Headline results](#headline-results)
-4. [The independent audit (IVP-08)](#the-independent-audit-ivp-08)
+4. [The independent audit (IVP-11)](#the-independent-audit-ivp-11)
 5. [The gap-drift law (T10)](#the-gap-drift-law-t10)
 6. [Quick start](#quick-start)
 7. [Repository structure](#repository-structure)

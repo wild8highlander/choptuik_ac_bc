@@ -6,11 +6,11 @@
 
 | Вопрос | Где ответ |
 |---|---|
-| «Как воспроизвести число X?» | [README → Индекс воспроизведения](README.md#индекс-воспроизведения-каждое-число--команда--json) и [`verification/README.md`](verification/README.md) — у каждого числа есть команда и JSON |
-| «Как запустить пакет?» | [README → Быстрый старт](README.md#быстрый-старт) и `README.md` в соответствующей папке пакета |
+| «Как воспроизвести число X?» | [README → Индекс воспроизведения](README_ru.md#индекс-воспроизведения-каждое-число--команда--json) и [`verification/README.md`](verification/README.md) — у каждого числа есть команда и JSON |
+| «Как запустить пакет?» | [README → Быстрый старт](README_ru.md#быстрый-старт) и `README.md` в соответствующей папке пакета |
 | «Что верифицировано и с каким вердиктом?» | [`verification/README.md`](verification/README.md) (досье) · [`monograph/verification_monograph_bilingual.pdf`](monograph/verification_monograph_bilingual.pdf) (монография) |
 | «Что означает константа/термин?» | [`docs/`](docs/) · глоссарий в приложении CHB (`Collapse Hawking Bridge/monograph/`) |
-| «Как устроен репозиторий?» | [README → Интеллект-карта](README.md#интеллект-карта-репозитория) · [`docs/architecture/ARCHITECTURE.md`](docs/architecture/ARCHITECTURE.md) |
+| «Как устроен репозиторий?» | [README → Интеллект-карта](README_ru.md#интеллект-карта-репозитория) · [`docs/architecture/ARCHITECTURE.md`](docs/architecture/ARCHITECTURE.md) |
 | Ошибка сборки/зависимостей | [`.devcontainer/`](.devcontainer/) (всё предустановлено) · [`docker/`](docker/) · таблицы зависимостей в `pyproject.toml` / `requirements.txt` каждого пакета |
 
 ## 🐞 Нашли расхождение с машинным вердиктом?

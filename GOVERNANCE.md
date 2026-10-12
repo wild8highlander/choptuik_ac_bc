@@ -18,7 +18,7 @@
 | Роль | Кто | Что решает |
 |---|---|---|
 | Автор и мейнтейнер | [@wild8highlander](https://github.com/wild8highlander) | направление кампаний, статусы вердиктов (exact / measured / honest-negative / hypothesis), релизы и теги `v*`, приём PR, публичные отзывы (ERRATUM) |
-| Владелец кода (CODEOWNERS) | [@wild8highlander](https://github.com/wild8highlander) | автоматический ревью всех путей: [`.github/CODEOWNERS`](.github/CODEOWNERS) |
+| Владелец кода (CODEOWNERS) | [@wild8highlander](https://github.com/wild8highlander) | автоматический ревью всех путей: [`.github/CODEOWNERS`](CODEOWNERS) |
 
 ## Как принимаются изменения
 

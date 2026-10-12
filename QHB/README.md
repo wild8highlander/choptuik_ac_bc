@@ -6,11 +6,11 @@
 
 **Confinement by false-vacuum escape · vortex anchor · five convergence ladders · falsification-first discipline**
 
-[![CI (canon)](https://img.shields.io/badge/CI-canon%20%2B%20consistency-3f93b0)](#-verification-stack)
+[![CI (canon)](https://img.shields.io/badge/CI-canon%20%2B%20consistency-3f93b0)](#verification-stack)
 [![Lean 4 Mathlib](https://img.shields.io/badge/Lean%204-Mathlib%20port-8c7225)](monolith/lean/)
 [![closed kernels](https://img.shields.io/badge/closed%20Lean%20kernels-18-59c98a)](monolith/lean/QHB_Theorems.lean)
 [![version](https://img.shields.io/badge/version-2.3.0-c9a53d)](CHANGELOG.md)
-[![honesty](https://img.shields.io/badge/honesty--first-falsifiers%20declared-9c3b2e)](#-falsification-first-policy)
+[![honesty](https://img.shields.io/badge/honesty--first-falsifiers%20declared-9c3b2e)](#falsification-first-policy)
 [![license](https://img.shields.io/badge/license-dual%20%28code%20MIT%20%2F%20text%20CC--BY%29-7a7871)](LICENSE)
 
 <img src=".github/images/verify_strip.svg" alt="verification stack" width="100%"/>
