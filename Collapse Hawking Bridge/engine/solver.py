@@ -236,7 +236,7 @@ class DoubleNullSolver:
         # проекции (тянет t к O(1)): обе правки действуют только на t,
         # G/D-чётности выполняются точно, C/xi-мода марша заменяется.
         self.ann_cross = False
-        self._ann_hist = []             # диагностика кольца (cap 256)
+        self._ann_hist: list[dict[str, object]] = []  # кольцо (cap 256)
         self._init_fields()
 
     # ------------------------------------------------------------------ init
@@ -726,15 +726,15 @@ class DoubleNullSolver:
         W2_prev = tay.get("W2", 0.0)
         w_data = float(np.max(np.abs(yw))) if yw.size else 0.0
         W2_ok = np.isfinite(W2)
-        if W2_ok and w_data > 0:
-            if abs(W2) * float(np.max(np.abs(xo))) > 30.0 * w_data:
-                W2_ok = False
-                W2_gate = "boost"
-        if W2_ok and np.isfinite(W2_prev) and abs(W2_prev) > 0:
-            if abs(W2) >= 20.0 * max(
-                    abs(W2_prev), 1.0 / max(ring_lo, 1e-30) ** 2):
-                W2_ok = False
-                W2_gate = "jump"
+        if (W2_ok and w_data > 0
+                and abs(W2) * float(np.max(np.abs(xo))) > 30.0 * w_data):
+            W2_ok = False
+            W2_gate = "boost"
+        if (W2_ok and np.isfinite(W2_prev) and abs(W2_prev) > 0
+                and abs(W2) >= 20.0 * max(
+                    abs(W2_prev), 1.0 / max(ring_lo, 1e-30) ** 2)):
+            W2_ok = False
+            W2_gate = "jump"
         if not W2_ok:
             W2 = W2_prev if np.isfinite(W2_prev) else 0.0
             tay["W2_gated"] = tay.get("W2_gated", 0) + 1
@@ -1372,7 +1372,7 @@ class DoubleNullSolver:
         k_lo = K_zone + 4                       # зазор за краевым кольцом m3
         K_A = int(round(2.0 * self.ann_factor * ring_lo / du))
         K_A = min(K_A, i0 - 3, n - 4 - i0)
-        if K_A <= k_lo + 4:
+        if k_lo + 4 >= K_A:
             return
         ks = np.arange(k_lo, K_A + 1)
         ip = i0 - ks

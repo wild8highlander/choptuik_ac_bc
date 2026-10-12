@@ -1,0 +1,35 @@
+[project]
+name = "dsilab"
+version = "2.0.0"
+description = "DSI laboratory: dynamics of invariants for the b-C/a-C framework (7 deterministic experiments)"
+requires-python = ">=3.9"
+dependencies = ["numpy>=1.24", "scipy>=1.10", "matplotlib>=3.7"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.9"
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+
+[tool.ruff.lint]
+# dsi_lab keeps the repo-wide advisory discipline: the real-bug classes
+# stay on, the deliberate research-code patterns stay off.
+select = ["E4", "E7", "E9", "F", "I", "RUF059", "B023", "B008"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# The seven experiments import figlabels after sys.path surgery (E402)
+# and use single-letter physics notation I/O for identities (E741).
+"exp*.py" = ["E402", "E741"]
+"fig_choptuik.py" = ["E402"]
+"scripts/*.py" = ["E402"]
+
+[tool.black]
+line-length = 88
+target-version = ["py39"]
+extend-exclude = "reports|lean4|multilang"

@@ -108,7 +108,7 @@ def t2_classify(rows):
             flagged.append({"zoom": r_["zoom"], "j": r_["j"],
                             "M1": r_["M1"], "M3": r_["M3"],
                             "R2": r_["R2"],
-                            "why": "M3<=0/R2<0.95 — мусорное вторжение "
+                            "why": "M3<=0/R2<0.95 — мусорное вторжение " +
                                    "или вырожденная строка"})
     out["n_clean"] = len(clean)
     out["n_flagged"] = len(flagged)
@@ -150,8 +150,8 @@ def t2_classify(rows):
     elif lo <= 0 <= hi:
         out["mode"] = "junk floor (M1 плоский/незначимый в пределах шума)"
     else:
-        out["mode"] = "undetermined (промежуточный режим: slope %.2f, " \
-                      "CI [%.2f, %.2f])" % (slope, lo, hi)
+        out["mode"] = "undetermined (промежуточный режим: slope {:.2f}, " \
+                      "CI [{:.2f}, {:.2f}])".format(slope, lo, hi)
     return out
 
 
@@ -175,10 +175,10 @@ def t3_crosscheck():
 def t4_gate(mode):
     """[T4] слово вердикта для Q3."""
     if mode.startswith("growing"):
-        return ("gated: 1/r-мода растёт -> перцентильная гамма Q3 "
+        return ("gated: 1/r-мода растёт -> перцентильная гамма Q3 " +
                 "загрязнена сверху; требуется подавление моды")
     if mode.startswith("junk"):
-        return ("open-for-percentile: M1 на мусорном полу -> гамма Q3 "
+        return ("open-for-percentile: M1 на мусорном полу -> гамма Q3 " +
                 "лимитируется полом масс, не модой (в пределах z <= 9.35)")
     return "gated: режим M1 не определён на текущих данных"
 
@@ -189,13 +189,13 @@ def run():
     print("OPEN9-Q7: 1/r-мода — трекер M1 (m/xi^3 = M1/xi^2 + M3)")
     print("=" * 72, flush=True)
     out = {
-        "title": "OPEN9-Q7 (v19): трекер M1 — декомпозиция профилей, "
+        "title": "OPEN9-Q7 (v19): трекер M1 — декомпозиция профилей, " +
                  "классификация режима, ворота для Q3",
         "question": "растёт ли 1/r-мода (M1) с глубиной? (монография гл.7 №7)",
         "decomposition": "m/xi^3 = M1/xi^2 + M3 <=> m(xi) = M1*xi + M3*xi^3",
         "criterion": {
-            "growing": "slope log|M1| vs v > %.1f, CI не содержит 0, "
-                       "R2 >= %.2f" % (GROW_SLOPE_MIN, R2_MIN),
+            "growing": ("slope log|M1| vs v > {:.1f}, CI не содержит 0, " +
+                       "R2 >= {:.2f}").format(GROW_SLOPE_MIN, R2_MIN),
             "junk_floor": "|slope| < порога и/или CI содержит 0",
         },
     }
@@ -204,8 +204,8 @@ def run():
     out["T1_profiles"] = [
         {k: r_[k] for k in ("zoom", "j", "v", "M1", "M3", "R2", "n")}
         for r_ in rows]
-    print("    профилей: %d; M1 медиана: %.3g; M3 медиана: %.3g; R2 медиана: %.3f"
-          % (len(rows),
+    print("    профилей: {}; M1 медиана: {:.3g}; M3 медиана: {:.3g}; R2 медиана: {:.3f}"
+          .format (len(rows),
              float(np.median([abs(r_["M1"]) for r_ in rows])) if rows else float("nan"),
              float(np.median([abs(r_["M3"]) for r_ in rows])) if rows else float("nan"),
              float(np.median([r_["R2"] for r_ in rows])) if rows else float("nan")),
@@ -213,55 +213,56 @@ def run():
     print("  [T2] классификация режима...", flush=True)
     t2 = t2_classify(rows)
     out["T2_mode"] = t2
-    print("    чистых: %d, помеченных: %d; |M1| по зумам: %s"
-          % (t2["n_clean"], t2["n_flagged"],
-             [(m["zoom"], "%.2e" % m["absM1_median"])
+    print("    чистых: {}, помеченных: {}; |M1| по зумам: {}"
+          .format (t2["n_clean"], t2["n_flagged"],
+             [(m["zoom"], "{:.2e}".format(m["absM1_median"]))
               for m in t2["absM1_median_by_zoom"]]), flush=True)
-    print("    РЕЖИМ: %s" % t2["mode"], flush=True)
+    print("    РЕЖИМ: {}".format(t2["mode"]), flush=True)
     print("  [T3] перекрёстная сверка (annulus)...", flush=True)
     out["T3_crosscheck"] = t3_crosscheck()
     print("    annulus M1_median: %s" %
-          [(v["eps"], "%.3g" % v["M1_median"]) for v in
+          [(v["eps"], "{:.3g}".format(v["M1_median"])) for v in
            out["T3_crosscheck"]["annulus_M1"]], flush=True)
     print("  [T4] ворота для Q3...", flush=True)
     out["T4_gate_word"] = t4_gate(t2["mode"])
-    print("    %s" % out["T4_gate_word"], flush=True)
+    print("    {}".format(out["T4_gate_word"]), flush=True)
 
     out["verdict"] = {"mode": t2["mode"]}
     out["verdict_lines"] = [
-        "декомпозиция m = M1*xi + M3*xi^3 на внешнем окне устойчива "
-        "(R2 медиана %.3f на %d профилях, %d чистых / %d помеченных) — "
-        "двухпараметрическая форма достаточна на чистых строках"
-        % (float(np.median([r_["R2"] for r_ in rows])) if rows else float("nan"),
+        ("декомпозиция m = M1*xi + M3*xi^3 на внешнем окне устойчива " +
+        "(R2 медиана {:.3f} на {} профилях, {} чистых / {} помеченных) — " +
+        "двухпараметрическая форма достаточна на чистых строках")
+        .format (float(np.median([r_["R2"] for r_ in rows])) if rows else float("nan"),
            len(rows), t2.get("n_clean", 0), t2.get("n_flagged", 0)),
-        "РЕЖИМ M1: %s (slope log|M1| vs zoom = %.2f, CI95 [%.2f, %.2f]; "
-        "|M1| по зумам: %s; |M1|/|M3| медиана %.2e)"
-        % (t2["mode"], t2.get("slope_logM1_vs_zoom", float("nan")),
+        # (mypy: *unpacking of slope_ci95 confuses mypy positional match
+        ("РЕЖИМ M1: {} (slope log|M1| vs zoom = {:.2f}, CI95 [{:.2f}, {:.2f}]; " +
+        "|M1| по зумам: {}; |M1|/|M3| медиана {:.2e})").format(  # type: ignore[str-format]
+            t2["mode"], t2.get("slope_logM1_vs_zoom", float("nan")),
            *t2.get("slope_ci95", [float("nan"), float("nan")]),
-           ["%.1e" % m["absM1_median"] for m in
+           ["{:.1e}".format(m["absM1_median"]) for m in
             t2.get("absM1_median_by_zoom", [])],
            t2.get("M1_over_M3_abs_median", float("nan"))),
-        "мусорное вторжение локализовано: %d строк(и) с деградацией фита "
-        "(R2 < 0.95 или |M3| ~ 0): %s — грязные стадии выбрасываются, "
-        "но репортируются (протокол честности)"
-        % (t2.get("n_flagged", 0),
-           ["z%d/j%d" % (f["zoom"], f["j"]) for f in
+        ("мусорное вторжение локализовано: {} строк(и) с деградацией фита " +
+        "(R2 < 0.95 или |M3| ~ 0): {} — грязные стадии выбрасываются, " +
+        "но репортируются (протокол честности)")
+        .format (t2.get("n_flagged", 0),
+           ["z{}/j{}" .format (f["zoom"], f["j"]) for f in
             t2.get("flagged_rows", [])][:6]),
-        "ворота Q3: %s" % out["T4_gate_word"],
-        "статус вопроса: ОТКРЫТ — доступная глубина (z <= 9.35) НЕ "
-        "показывает растущей 1/r-моды (|M1| падает с зумом), но и не "
+        "ворота Q3: {}".format(out["T4_gate_word"]),
+        "статус вопроса: ОТКРЫТ — доступная глубина (z <= 9.35) НЕ " +
+        "показывает растущей 1/r-моды (|M1| падает с зумом), но и не " +
         "исключает её рост за стеной; решает лестница (eps, z >= 30)",
     ]
     out["honest_notes"] = [
-        "профили probe_channel — ОДНА амплитуда (eps = 1e-3): трек по v "
-        "это трек по стадиям марша, не по семейству данных; режим "
+        "профили probe_channel — ОДНА амплитуда (eps = 1e-3): трек по v " +
+        "это трек по стадиям марша, не по семейству данных; режим " +
         "классифицируется в пределах этой выборки",
-        "M1-фит чувствителен к выбору окна (outer_frac = 0.5): на "
-        "внутренности доминирует CSS-ядро, на экстреме — граничные "
+        "M1-фит чувствителен к выбору окна (outer_frac = 0.5): на " +
+        "внутренности доминирует CSS-ядро, на экстреме — граничные " +
         "эффекты; окно фиксировано и записано",
-        "annulus M1_median получен другой машиной (аннус-канал) — "
+        "annulus M1_median получен другой машиной (аннус-канал) — " +
         "сверка только по масштабу, не по идентичности определения",
-        "ворота Q3 односторонние: рост M1 загрязняет гамму сверху; "
+        "ворота Q3 односторонние: рост M1 загрязняет гамму сверху; " +
         "отсутствие роста не гарантирует процентной точности",
     ]
     out["runtime_s"] = time.time() - t0

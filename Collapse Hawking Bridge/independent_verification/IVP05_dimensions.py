@@ -137,7 +137,7 @@ def main():
     save_result("IVP05", {
         "status": status,
         "pre_registered": {
-            "method": "exact dimension algebra over {L, M, T, Theta}; engine "
+            "method": "exact dimension algebra over {L, M, T, Theta}; engine " +
                       "normalization checked arithmetically and by code inspection",
             "expected": {k: list(v) for k, v in EXPECTED.items()},
         },

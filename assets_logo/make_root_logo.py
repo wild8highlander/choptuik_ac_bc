@@ -18,10 +18,10 @@ OUT = "/home/z/my-project/repo_choptuik/assets/logo"
 os.makedirs(OUT, exist_ok=True)
 
 THEMES = {
-    "dark": dict(bg="#0d0b08", ink="#f2ead8", gold="#d4af37", gold2="#9a7b1e",
-                 grey="#8a8578", deep="#1a1712"),
-    "light": dict(bg="#faf6ec", ink="#1c1a15", gold="#a8811c", gold2="#6e5510",
-                  grey="#6e6a5e", deep="#e7dfc9"),
+    "dark": {"bg": "#0d0b08", "ink": "#f2ead8", "gold": "#d4af37", "gold2": "#9a7b1e",
+                 "grey": "#8a8578", "deep": "#1a1712"},
+    "light": {"bg": "#faf6ec", "ink": "#1c1a15", "gold": "#a8811c", "gold2": "#6e5510",
+                  "grey": "#6e6a5e", "deep": "#e7dfc9"},
 }
 
 PHASES = [("/2", np.pi / 2), ("/3", np.pi / 3), ("/7", np.pi / 7)]

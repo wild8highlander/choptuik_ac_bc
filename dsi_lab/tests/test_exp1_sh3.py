@@ -6,9 +6,11 @@
   3. Тождество leavitt_F(P, Q) = G_of_PQ(P, Q) для проекций.
   4. L-BFGS в малых размерностях не проваливается ниже 5/7.
 """
+
 import math
 
 import numpy as np
+
 from exp1_sh3_bridge import G_of_PQ, leavitt_F, random_pair
 
 
@@ -18,7 +20,7 @@ def test_lower_bound_random_pairs():
         for _ in range(25):
             X1, X2 = random_pair(n, rng)
             F = leavitt_F(X1, X2)
-            assert F >= 5.0 * n / 7.0 - 1e-9, (n, F)
+            assert 5.0 * n / 7.0 - 1e-9 <= F, (n, F)
 
 
 def test_scalar_minimum_exact():
@@ -40,7 +42,8 @@ def test_projection_identity_G_of_PQ():
             q = int(rng.integers(0, n + 1))
             P = U @ np.diag(np.r_[np.ones(p), np.zeros(n - p)]) @ U.conj().T
             V, _ = np.linalg.qr(
-                rng.standard_normal((n, n)) + 1j * rng.standard_normal((n, n)))
+                rng.standard_normal((n, n)) + 1j * rng.standard_normal((n, n))
+            )
             Q = V @ np.diag(np.r_[np.ones(q), np.zeros(n - q)]) @ V.conj().T
             F = leavitt_F(P, Q)
             G = G_of_PQ(P, Q).real
@@ -56,15 +59,19 @@ def test_lbfgs_stays_above_floor():
     floor = 5.0 * n / 7.0
 
     def obj(z):
-        X1 = z[: n * n].reshape(n, n) + 1j * z[n * n:].reshape(n, n)
-        X2 = -z[n * n:].reshape(n, n) + 1j * z[: n * n].reshape(n, n)
+        X1 = z[: n * n].reshape(n, n) + 1j * z[n * n :].reshape(n, n)
+        X2 = -z[n * n :].reshape(n, n) + 1j * z[: n * n].reshape(n, n)
         return leavitt_F(X1, X2).real
 
     best = math.inf
     for _ in range(3):
         z0 = rng.standard_normal(2 * n * n) * 0.3
-        r = minimize(obj, z0, method="L-BFGS-B",
-                     options={"maxiter": 300, "ftol": 1e-14, "gtol": 1e-12})
+        r = minimize(
+            obj,
+            z0,
+            method="L-BFGS-B",
+            options={"maxiter": 300, "ftol": 1e-14, "gtol": 1e-12},
+        )
         best = min(best, r.fun)
     assert best >= floor - 1e-6, best
     # и глобальный минимум 5n/7 действительно достигается скалярами

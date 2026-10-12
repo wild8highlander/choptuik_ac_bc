@@ -79,8 +79,7 @@ def p1_pole_anatomy():
         "numerator_at_pole_nonzero": bool(sp.simplify(num_at) != 0),
         "pole_order": 1,
         "laurent_series_head": sp.sstr(series),
-        "note": "простой полюс по tau; числитель в полюсе = %s != 0" %
-                sp.sstr(num_at),
+        "note": "простой полюс по tau; числитель в полюсе = {} != 0".format(sp.sstr(num_at)),
     }
 
 
@@ -113,7 +112,7 @@ def p2_char2_coincidence():
         "roots_match_claim": bool(all(same_roots)) and
                              len(roots_mine) == len(roots_target),
         "coincidence_with_chain_pole": True,
-        "note": "lambda^+ = 2 живёт в tau = 1/2 и tau = 45/8 — вторая "
+        "note": "lambda^+ = 2 живёт в tau = 1/2 и tau = 45/8 — вторая " +
                 "точка РОВНО полюс нелинейной цепочки P4h",
     }
 
@@ -136,12 +135,11 @@ def p3_softness():
         "difference_chain_minus_linear": sp.sstr(diff),
         "difference_denominator_factorized": sp.sstr(diff_den_fact),
         "verdict_short": (
-            "линейное замыкание P4h_lin = %s конечно в tau = 45/8 "
-            "(= %s); дивергенция целиком в нелинейной добавке "
-            "P4h_chain - P4h_lin (знаменатель %s) — полюс живёт в "
-            "ЦЕПОЧНОМ представлении, не в ярусе; согласуется с T1b "
-            "(ветвь проходит, F ~ 1e-15 со свободными амплитудами)"
-            % (sp.sstr(sp.nsimplify(P4_lin)), sp.sstr(lin_at),
+            ("линейное замыкание P4h_lin = {} конечно в tau = 45/8 " +
+            "(= {}); дивергенция целиком в нелинейной добавке " +
+            "P4h_chain - P4h_lin (знаменатель {}) — полюс живёт в " +
+            "ЦЕПОЧНОМ представлении, не в ярусе; согласуется с T1b " +
+            "(ветвь проходит, F ~ 1e-15 со свободными амплитудами)").format(sp.sstr(sp.nsimplify(P4_lin)), sp.sstr(lin_at),
                sp.sstr(diff_den_fact))),
     }
 
@@ -171,10 +169,10 @@ def p4_brick_shift():
                                       abs(base - 5.625) < 1e-9),
         "brick_sensitivity": bool(base and brick and
                                   abs(brick - base) > 0.1),
-        "pole_barrier_pass": "pole_barriers: min F ~ 8.9e-16, "
+        "pole_barrier_pass": "pole_barriers: min F ~ 8.9e-16, " +
                              "hard_barrier = false (записано в T1b)",
-        "note": "полюс цепочки кирчно-чувствителен (45/8 -> 5.9233 у "
-                "one-brick); char(2)-корень 45/8 — базлайн; соотношение "
+        "note": "полюс цепочки кирчно-чувствителен (45/8 -> 5.9233 у " +
+                "one-brick); char(2)-корень 45/8 — базлайн; соотношение " +
                 "полюс/char-корень при кирпиче открыто",
     }
 
@@ -185,59 +183,55 @@ def run():
     print("OPEN9-Q6: мягкий полюс 45/8 — анатомия ветви")
     print("=" * 72, flush=True)
     out = {
-        "title": "OPEN9-Q6 (v19): полюс tau = 45/8 — простой полюс "
+        "title": "OPEN9-Q6 (v19): полюс tau = 45/8 — простой полюс " +
                  "цепочки, совпадение с char(2), символьная мягкость",
-        "question": "природа мягкого полюса 45/8 и его связь с lambda^+ = 2 "
+        "question": "природа мягкого полюса 45/8 и его связь с lambda^+ = 2 " +
                     "(монография гл.7 №6)",
     }
     print("  [P1] анатомия полюса...", flush=True)
     out["P1_pole_anatomy"] = p1_pole_anatomy()
-    print("    %s" % out["P1_pole_anatomy"]["note"], flush=True)
+    print("    {}".format(out["P1_pole_anatomy"]["note"]), flush=True)
     print("  [P2] совпадение с char(2)...", flush=True)
     out["P2_char2"] = p2_char2_coincidence()
-    print("    roots_match_claim: %s; roots: %s" %
-          (out["P2_char2"]["roots_match_claim"],
+    print("    roots_match_claim: {}; roots: {}".format(out["P2_char2"]["roots_match_claim"],
            out["P2_char2"]["roots"]), flush=True)
     print("  [P3] символьная мягкость...", flush=True)
     out["P3_softness"] = p3_softness()
-    print("    %s" % out["P3_softness"]["verdict_short"], flush=True)
+    print("    {}".format(out["P3_softness"]["verdict_short"]), flush=True)
     print("  [P4] кирчный сдвиг...", flush=True)
     out["P4_brick_shift"] = p4_brick_shift()
-    print("    baseline: %s; one-brick: %s" %
-          (out["P4_brick_shift"]["baseline_pole_tau"],
+    print("    baseline: {}; one-brick: {}".format(out["P4_brick_shift"]["baseline_pole_tau"],
            out["P4_brick_shift"]["one_brick_pole_tau"]), flush=True)
 
     out["verdict_lines"] = [
-        "P4h_chain(t) = t^3(352t^2 - 540)/(135(8t^2 - 45)): ПРОСТОЙ полюс "
-        "по tau в 45/8 (числитель в полюсе %s != 0); главная часть "
-        "ряда Лорана выписана машинно"
-        % out["P1_pole_anatomy"]["numerator_at_pole"],
-        "СОВПАДЕНИЕ: char(lambda = 2, tau) = 8(2 tau - 1)(8 tau - 45)/27 — "
-        "растущая мода lambda^+ = 2 появляется в tau = 1/2 и tau = 45/8, "
-        "вторая точка РОВНО полюс цепочки: мода и полюс — одна точка "
+        ("P4h_chain(t) = t^3(352t^2 - 540)/(135(8t^2 - 45)): ПРОСТОЙ полюс " +
+        "по tau в 45/8 (числитель в полюсе {} != 0); главная часть " +
+        "ряда Лорана выписана машинно").format(out["P1_pole_anatomy"]["numerator_at_pole"]),
+        "СОВПАДЕНИЕ: char(lambda = 2, tau) = 8(2 tau - 1)(8 tau - 45)/27 — " +
+        "растущая мода lambda^+ = 2 появляется в tau = 1/2 и tau = 45/8, " +
+        "вторая точка РОВНО полюс цепочки: мода и полюс — одна точка " +
         "башни (проверено факторизацией char-полинома)",
-        "МЯГКОСТЬ (символьно): линейный ярус в полюсе КОНЕЧЕН "
-        "(P4h_lin = t(16t^2+27)/270 -> %s в tau = 45/8); дивергенция "
-        "целиком в нелинейной добавке — полюс = артефакт цепочной "
-        "параметризации v15, не книги: ветвь проходит (согласие с T1b)"
-        % out["P3_softness"]["P4h_linear_at_pole"],
-        "кирпичная чувствительность: полюс цепочки уезжает (45/8 -> "
-        "5.9233 у one-brick), char(2)-корень записан для базлайна — "
+        ("МЯГКОСТЬ (символьно): линейный ярус в полюсе КОНЕЧЕН " +
+        "(P4h_lin = t(16t^2+27)/270 -> {} в tau = 45/8); дивергенция " +
+        "целиком в нелинейной добавке — полюс = артефакт цепочной " +
+        "параметризации v15, не книги: ветвь проходит (согласие с T1b)").format(out["P3_softness"]["P4h_linear_at_pole"]),
+        "кирпичная чувствительность: полюс цепочки уезжает (45/8 -> " +
+        "5.9233 у one-brick), char(2)-корень записан для базлайна — " +
         "соотношение при кирпиче открыто",
-        "связь с v15: |Dr V| = (39.2 ± 0.2)*A — линейный по амплитуде "
-        "выход с ветви b2 — отдельный объект (не полюс): разные "
+        "связь с v15: |Dr V| = (39.2 ± 0.2)*A — линейный по амплитуде " +
+        "выход с ветви b2 — отдельный объект (не полюс): разные " +
         "механизмы, не смешивать",
     ]
     out["honest_notes"] = [
-        "ряд Лорана выписан в окрестности tau = 45/8 формально: цепочка "
-        "P4h — рациональная функция, «Пюизон» вырождается в Лорана "
-        "(целые степени); нецелые показатели искались бы в полной "
+        "ряд Лорана выписан в окрестности tau = 45/8 формально: цепочка " +
+        "P4h — рациональная функция, «Пюизон» вырождается в Лорана " +
+        "(целые степени); нецелые показатели искались бы в полной " +
         "нелинейной системе (вне области этой машины)",
-        "P3 — линейный ярус: полюс отсутствует на O5-уровне; на "
-        "O6+ свободная амплитуда P4h в полной книге не решалась "
-        "символьно (только численно T1b) — символьная версия T1b "
+        "P3 — линейный ярус: полюс отсутствует на O5-уровне; на " +
+        "O6+ свободная амплитуда P4h в полной книге не решалась " +
+        "символьно (только численно T1b) — символьная версия T1b " +
         "здесь частичная",
-        "значение one-brick-полюса 5.9233 прочитано из chain_poles "
+        "значение one-brick-полюса 5.9233 прочитано из chain_poles " +
         "hexcycle_dae.json (не пере-выведено из one-brick системы)",
     ]
     out["runtime_s"] = time.time() - t0

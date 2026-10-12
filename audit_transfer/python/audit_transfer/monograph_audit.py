@@ -33,7 +33,7 @@ import numpy as np
 
 PI = math.pi
 
-OUT = {}
+OUT: dict[str, object] = {}
 
 
 def hdr(s):
@@ -163,7 +163,7 @@ def part3_errors():
     sub("E2: член δ_C⁶/2 в Части IV.1 и табл. B.3.2/B.4.1")
     val_print, val_true = 0.00918, dC ** 6 / 2
     res["E2"] = {"printed": val_print, "true": val_true,
-                 "note": "0.00918 ≈ δ_C⁵/2 = %.5f — сдвиг показателя" % (dC ** 5 / 2)}
+                 "note": "0.00918 ≈ δ_C⁵/2 = {:.5f} — сдвиг показателя" .format ((dC ** 5 / 2))}
     print(f"  напечатано δ_C⁶/2 = {val_print};  верно δ_C⁶/2 = {val_true:.6f}")
     print(f"  напечатанная сумма 3.4379+0.00509+{val_print} = "
           f"{3.4379 + 0.00509 + val_print:.5f} ≠ 3.4470")

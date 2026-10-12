@@ -38,16 +38,15 @@ import numpy as np
 
 matplotlib.use("Agg")
 import matplotlib.font_manager as fm
+import contextlib
 
 # Try to register CJK + Latin fallback (consistent with other figures)
 for p in [
     "/usr/share/fonts/truetype/chinese/NotoSansSC-Regular.ttf",
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
 ]:
-    try:
+    with contextlib.suppress(Exception):
         fm.fontManager.addfont(p)
-    except Exception:
-        pass
 
 import matplotlib.pyplot as plt
 

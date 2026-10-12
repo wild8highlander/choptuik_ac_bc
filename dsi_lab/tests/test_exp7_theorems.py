@@ -7,7 +7,9 @@
            обрезка дерева Кунца даёт F = n + 2 (rank R = 1).
 ТЕОРЕМА C: для унитарных пар (и перестановок) F = 2n точно.
 """
+
 import numpy as np
+
 from exp7_e1_threshold import (
     leavitt_F,
     random_partial_isometry,
@@ -35,7 +37,7 @@ def test_theorem_A_identity_and_threshold():
             r = np.trace(P @ Q).real
             F = leavitt_F(X1, X2)
             assert abs(F - (3 * n - 2 * p - 2 * q + 3 * r)) < 1e-8 * max(1, F)
-            assert F >= n - 1e-9, (n, p, q, F)  # порог e >= 1
+            assert n - 1e-9 <= F, (n, p, q, F)  # порог e >= 1
 
 
 def test_theorem_A_equality_case():

@@ -5,7 +5,7 @@ from qhb import constants as C
 
 
 def test_omega_exact():
-    assert C.OMEGA == 3.0 / (2.0 * math.pi)
+    assert 3.0 / (2.0 * math.pi) == C.OMEGA
     assert abs(C.OMEGA - 0.47746482927568600731) < 1e-18
 
 

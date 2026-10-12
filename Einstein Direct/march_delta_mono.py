@@ -197,10 +197,10 @@ def march(kv, label):
         "phase_march_per_tau": pha,
         "delta_mono_bound_growth": float(max(abs(s) for s in sig)),
         "delta_mono_bound_phase": float(max(abs(p) for p in pha)),
-        "defective_floor_note": ("двойное дефектное собственное число 1 "
-                                 "расщепляется под roundoff eps как ~sqrt(eps)"
-                                 " — наблюдаемая фаза 2.7e-8 в пределах "
-                                 "численного пола ~1e-7; рост |eig|-1 ~ 1e-14"
+        "defective_floor_note": ("двойное дефектное собственное число 1 " +
+                                 "расщепляется под roundoff eps как ~sqrt(eps)" +
+                                 " — наблюдаемая фаза 2.7e-8 в пределах " +
+                                 "численного пола ~1e-7; рост |eig|-1 ~ 1e-14" +
                                  " — без пола"),
     }
     out["delta_mono_march_per_echo"] = {
@@ -229,14 +229,14 @@ def march(kv, label):
 
 def main() -> None:
     results = {
-        "title": "delta_mono measured by marching the closed linear DAE "
+        "title": "delta_mono measured by marching the closed linear DAE " +
                  "(session 18c)",
-        "question": ("measure delta_mono directly by marching (v10-generation "
+        "question": ("measure delta_mono directly by marching (v10-generation " +
                      "instrumentation) instead of deriving it from the pencil"),
-        "method": ("two independent marches: (m1) coordinate y' = B y on M2 "
-                   "(B exact from 18b), (m2) ambient x' = V(x) with the "
-                   "prolongation closure re-implemented from raw matrices "
-                   "(Uk-solve per RK4 stage + projection onto M2); "
+        "method": ("two independent marches: (m1) coordinate y' = B y on M2 " +
+                   "(B exact from 18b), (m2) ambient x' = V(x) with the " +
+                   "prolongation closure re-implemented from raw matrices " +
+                   "(Uk-solve per RK4 stage + projection onto M2); " +
                    "propagator over one echo Delta_sp = 0.7330382858376652"),
     }
     results["baseline_kappa2"] = march(sp.Integer(2), "baseline_kappa2")

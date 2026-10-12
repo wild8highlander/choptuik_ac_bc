@@ -249,24 +249,24 @@ def main():
     save_result("IVP08", {
         "status": status,
         "pre_registered": {
-            "P1": "C2/MD residuals < 1e-2 at N=800 and envelope improves "
-                  ">= 2x from N=400 (calibrated on the engine's own committed "
+            "P1": "C2/MD residuals < 1e-2 at N=800 and envelope improves " +
+                  ">= 2x from N=400 (calibrated on the engine's own committed " +
                   "Roberts-window envelope, 3.8x per doubling)",
             "P2": "max |c - omega_u| < 5e-2 (bounded)",
             "P3": "monitor_every in {1, 25, 100} -> bit-identical final physics",
             "P4": "C1 relative residual <= 0.05 on the smooth run (falsification)",
-            "note": "P4 formulated as a falsification test; outcome reported "
+            "note": "P4 formulated as a falsification test; outcome reported " +
                     "honestly either way",
         },
         "summary": summary,
         "checks": checks,
         "finding": {
-            "what": "C1 (uu-Einstein) identity violated at O(1) on Gaussian runs, "
+            "what": "C1 (uu-Einstein) identity violated at O(1) on Gaussian runs, " +
                     "non-converging with N; engine's own monitor agrees",
-            "localization": "pulse region (kink in p at fixed u); t-sandwich "
+            "localization": "pulse region (kink in p at fixed u); t-sandwich " +
                             "O(1) confined to the outer-edge cell",
-            "impact": "c is dormant (no feedback path into evolution slopes); "
-                      "dynamical sectors clean; r converges 2nd order (IVP-07); "
+            "impact": "c is dormant (no feedback path into evolution slopes); " +
+                      "dynamical sectors clean; r converges 2nd order (IVP-07); " +
                       "committed observables rest on the converging sectors",
         },
     })

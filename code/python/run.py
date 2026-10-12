@@ -125,7 +125,7 @@ def interactive_menu(lang: str = "en") -> dict[str, Any] | None:
         if choice is None:
             # stdin closed (EOF) or interrupted — exit gracefully, no traceback
             print("\n" + tr["goodbye"])
-            print("(stdin closed — run with --non-interactive or --mode verify_all "
+            print("(stdin closed — run with --non-interactive or --mode verify_all " +
                   "for unattended use)")
             return None
         if choice == "5":

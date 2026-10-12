@@ -1,0 +1,10 @@
+name = "DSILab"
+version = "1.0.0"
+defaultTargets = ["DSILab"]
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+
+[[lean_lib]]
+name = "DSILab"

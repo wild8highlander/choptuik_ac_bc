@@ -111,11 +111,12 @@ class ZoomRunner:
         self._s_rel = 1.0
         self.diag = ZoomDiag()
         self._z_acc = 0.0
-        self.tay_hist_all = []          # v5: тейлор-гистограммы ВСЕХ стадий
+        self.tay_hist_all: list[dict[str, object]] = []  # гистограммы
         # трекинг DSS
-        self.track = {"v": [], "mx": [], "Q": [], "L": [], "width": [],
+        self.track: dict[str, list] = {
+            "v": [], "mx": [], "Q": [], "L": [], "width": [],
                       "u_focus": [], "du": [], "z": [], "w_cells": []}
-        self.m_ah_hist = []             # (v, m_ah) — масса пересечения по строкам
+        self.m_ah_hist: list[tuple[float, float]] = []  # (v, m_ah)
         self._ah_rows = 0               # счётчик строк с устойчивым пересечением
         self._m_ah_frozen = 0.0
         self._new_stage(u_span=(U0, U1), v_span=(V0, V1))

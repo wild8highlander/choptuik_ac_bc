@@ -47,7 +47,7 @@ dev = abs(b_star - committed["beta_star"])
 ok_valley = dev < 0.01 and committed["above_floor"]
 
 ok = ok_cells and ok_valley
-write_verdict("IVP09.json", {"check": "phase map gate (fresh cells + own "
+write_verdict("IVP09.json", {"check": "phase map gate (fresh cells + own " +
                              "bisection)",
                              "verdict": "PASS" if ok else "FAIL",
                              "fresh_cells": len(cells),

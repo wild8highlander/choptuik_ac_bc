@@ -15,13 +15,12 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.font_manager as fm
+import contextlib
 
 for _fp in ('/usr/share/fonts/truetype/chinese/NotoSansSC-Regular.ttf',
             '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'):
-    try:
+    with contextlib.suppress(Exception):
         fm.fontManager.addfont(_fp)
-    except Exception:
-        pass
 import matplotlib.pyplot as plt
 import numpy as np
 

@@ -127,7 +127,7 @@ def write_outputs(out_dir):
          "value": 1.27, "source": "project invariant; anchors give 1.28656 (1.3%)"},
         {"bridge_quantity": "A* (N=800), fixed-grid observable",
          "value": 0.08053436279296877,
-         "source": ("ladder drift 2.79e-3 to N=1600 (F-1 remediation); "
+         "source": ("ladder drift 2.79e-3 to N=1600 (F-1 remediation); " +
                     "the stale 1.06e-6 agreement is RETRACTED")},
     ]
     with open(os.path.join(out_dir, "bridge_constants.csv"), "w", newline="") as f:

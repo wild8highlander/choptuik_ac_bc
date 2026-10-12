@@ -249,24 +249,24 @@ def main():
          "value": 1.0 / 27.0},
         {"negative": "T7 closed form does not extend to pairwise kinetics",
          "value": ""},
-        {"negative": "the pairwise door leaves the linear alpha-limit "
+        {"negative": "the pairwise door leaves the linear alpha-limit " +
                      "toward the FULL imbalance (toy)",
          "value": s["pair_full_imbalance"]},
-        {"negative": "the Lambda_QCD branch is a renormalisation scale, "
+        {"negative": "the Lambda_QCD branch is a renormalisation scale, " +
                      "not a temperature", "value": ""},
-        {"negative": "the electroweak branch is a VEV, not a bath "
+        {"negative": "the electroweak branch is a VEV, not a bath " +
                      "temperature (the least honest branch)", "value": ""},
-        {"negative": "no gap closure on the whole searched phase map "
+        {"negative": "no gap closure on the whole searched phase map " +
                      "(finite-range statement)",
          "value": s["phase_map_min_gap"]},
-        {"negative": "the naive quadratic window extrapolation is "
-                     "falsified at its own forecast closure point "
+        {"negative": "the naive quadratic window extrapolation is " +
+                     "falsified at its own forecast closure point " +
                      "(6.3x floor)",
          "value": s["phase_counterexample_ratio"]},
-        {"negative": "the out-of-window quadratic forecast fails; the "
+        {"negative": "the out-of-window quadratic forecast fails; the " +
                      "wing is quartic (residual power 4.07)",
          "value": s["compete_residual_power"]},
-        {"negative": "at Omega > 0 the wall pumps energy — the C2/C7 "
+        {"negative": "at Omega > 0 the wall pumps energy — the C2/C7 " +
                      "sealing is finite-time (the static seal is exact)",
          "value": s["barrier_median_wall_work"]},
     ]

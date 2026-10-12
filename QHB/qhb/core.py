@@ -2,11 +2,11 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Sequence
 
 import mpmath as mp
 
-from .constants import (
-    C1_SPIN,
+from .constants import (    C1_SPIN,
     C2_SPIN,
     DELTA_THRESH,
     E_MAX,
@@ -34,7 +34,7 @@ def gap_finite_volume(beta: float, L: float) -> float:
     return delta_F_of_beta(beta) * (1.0 - C_FV / L + D_FV / (L * L))
 
 
-def c1_gap_table(betas: list[float], volumes: list[float]) -> dict:
+def c1_gap_table(betas: Sequence[float], volumes: Sequence[float]) -> dict:
     rows = []
     gmin, argmin = None, None
     for L in volumes:
@@ -47,7 +47,7 @@ def c1_gap_table(betas: list[float], volumes: list[float]) -> dict:
         rows.append(row)
     all_open = all(g > DELTA_THRESH for row in rows for g in row)
     return {"rows_L": volumes, "cols_beta": betas, "grid": rows,
-            "grid_min": gmin, "grid_argmin": list(argmin),
+            "grid_min": gmin, "grid_argmin": list(argmin) if argmin else [],
             "all_open": bool(all_open), "threshold": DELTA_THRESH}
 
 
@@ -58,7 +58,7 @@ def wilson_loop(beta: float, R: float, T: float) -> float:
     return math.exp(-sigma_of_beta(beta) * R * T)
 
 
-def sigma_measure(beta: float, loops: list[tuple[float, float]]) -> float:
+def sigma_measure(beta: float, loops: Sequence[tuple[float, float]]) -> float:
     """Least-squares log-slope measurement of sigma from loops (noise-free)."""
     num = den = 0.0
     for R, T in loops:
@@ -253,7 +253,7 @@ def wkb_action(E: float, sigma: float = SIGMA_STAR) -> float:
     m_eff = 1/2, hence sqrt(2 m_eff (V - E)) = sqrt(V - E).
     """
     top = sigma * L_BOX
-    if E >= top:
+    if top <= E:
         return 0.0
     return (2.0 / (3.0 * sigma)) * (top - E) ** 1.5
 

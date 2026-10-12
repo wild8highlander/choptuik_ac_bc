@@ -144,7 +144,7 @@ def main():
         "N400": committed["a_star_grid"]["N400"]["a_star"],
         "N800": committed["a_star_grid"]["N800"]["a_star"],
     }
-    ref1600 = committed["CAMPAIGN_ref"] if "CAMPAIGN_ref" in committed else None
+    ref1600 = committed.get("CAMPAIGN_ref", None)
     # the N=1600 reference lives in chbridge constants; read it from the
     # committed verdict's honest_notes text is fragile — use the constants
     # module ONLY at comparison phase:
@@ -202,8 +202,8 @@ def main():
             "blindness": "no committed A* value read before measurement",
             "coarse_scan": "A in [0.02, 0.30] step 0.01 at N=200",
             "tolerance": TOL,
-            "criteria": "shallow grids (N=200/400/800) reproduce within 5e-6; "
-                        "deep-grid reference reproduces within 2e-6; ladder "
+            "criteria": "shallow grids (N=200/400/800) reproduce within 5e-6; " +
+                        "deep-grid reference reproduces within 2e-6; ladder " +
                         "converged N800->N1600 within 2e-6; monotone probes",
         },
         "scan": scan,

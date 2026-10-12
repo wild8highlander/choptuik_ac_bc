@@ -339,7 +339,7 @@ def run_chunk(eps_list, n=800, max_zooms=14, annulus=True, ann_factor=10.0,
             pass
 
     print("=" * 72)
-    print("ЗУМ-КАМПАНИЯ v6 (кольцевая чётность + эхо-фиты): A* = %.7f" % A_STAR)
+    print("ЗУМ-КАМПАНИЯ v6 (кольцевая чётность + эхо-фиты): A* = {:.7f}".format(A_STAR))
     print("=" * 72, flush=True)
 
     for eps in sorted(eps_list):
@@ -463,9 +463,9 @@ def analyze_and_save(out):
                 "gamma_tower": float(d_use / lam_tower),
                 "vs_b_Ch_dev": abs(d_use / lam_tower - B_CH) / B_CH,
                 "vs_gamma_lit_dev": abs(d_use / lam_tower - GAMMA_LIT) / GAMMA_LIT,
-                "note": ("lambda+(tau) — точный корень характеристического "
-                         "многочлена замкнутой башни (center_modes.py); "
-                         "вне codim-1 окна 0<tau<=27/80 формально "
+                "note": ("lambda+(tau) — точный корень характеристического " +
+                         "многочлена замкнутой башни (center_modes.py); " +
+                         "вне codim-1 окна 0<tau<=27/80 формально " +
                          "(усечение уровней 0-2), см. honest_notes"),
             }
     except Exception as e:  # noqa: BLE001

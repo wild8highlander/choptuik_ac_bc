@@ -123,7 +123,7 @@ def nugget_bound(log10_n: float = 30.0) -> dict:
     return {"T0": t0,
             "log10_prob_30quarks": log10_p_1kg,
             "log10_prob_macro_N1e30": log10_p_macro,
-            "statement": ("P(nugget of 1e30 quarks) < 10^(-1.2e31); "
+            "statement": ("P(nugget of 1e30 quarks) < 10^(-1.2e31); " +
                           "even 30 simultaneous tunneled quarks: 10^(-361)")}
 
 
@@ -133,6 +133,6 @@ def c12_summary() -> dict:
             "margin": ETA_CRIT / ETA_B,
             "barrier_zero_eta": DELTA_F_MIN,
             "tunneling": {"T_zero": tw["T_zero"], "window_E_max": tw["window_E_max"]},
-            "conclusion": ("complete matter-antimatter asymmetry keeps the gap open "
-                           "for every eta < 0.0908885 (= 1.49e8 x eta_B); free quarks "
+            "conclusion": ("complete matter-antimatter asymmetry keeps the gap open " +
+                           "for every eta < 0.0908885 (= 1.49e8 x eta_B); free quarks " +
                            "cannot exist as separate asymptotic states")}

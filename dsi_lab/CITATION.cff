@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use the DSI laboratory, please cite it as below."
+type: software
+title: "DSI Laboratory: Dynamics of Invariants for the b-C/a-C Framework"
+authors:
+  - family-names: "Isaev"
+    given-names: "Ishak Khamzatovich"
+    email: "aslan08_05@mail.ru"
+    orcid: "https://orcid.org/0009-0003-7299-0701"
+date-released: 2026-10-12
+version: "2.0.0"
+repository-code: "https://github.com/wild8highlander/choptuik_ac_bc"
+abstract: >
+  A self-contained package of seven deterministic experiments on the open
+  problems of the b-C/a-C spinor-correction framework: the sharp trace
+  theorem and the partial-isometry theorems A/B/C (Kunz defect), the
+  census attack on DSI-4 (9/224 via the {7,3} tiling of the Klein quartic),
+  the Hurwitz-tower audit with correction D1 (PSL(2,13)), the falsifiable
+  QNM overtone law, and the QCD-bridge centering correction E1. Includes
+  a Lean 4 formalization of the exact theorem stratum, a six-language
+  cross-verification core, bilingual monographs, animations, and a
+  committed claim ledger with honesty statuses.
+keywords:
+  - "Klein quartic"
+  - "PSL(2,7)"
+  - "Cuntz algebra"
+  - "partial isometries"
+  - "Choptuik"
+  - "continued fractions"
+  - "Hurwitz tower"
+  - "Lean 4"
+license-url: "https://github.com/wild8highlander/choptuik_ac_bc/blob/main/LICENSE"

@@ -1,4 +1,5 @@
 """Smoke-проверки пакета: импорты, двуязычные метки, результаты и фигуры."""
+
 import json
 import os
 
@@ -17,6 +18,7 @@ def test_all_experiment_modules_import():
 
 def test_figlabels_bilingual():
     from figlabels import L
+
     assert "ru" in L and "en" in L
     for key in ("ladder_title", "dsi_title"):
         for lang in ("ru", "en"):

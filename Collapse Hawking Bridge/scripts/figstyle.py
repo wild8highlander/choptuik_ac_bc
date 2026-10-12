@@ -13,13 +13,12 @@ Rules:
     Page time, anchor line), never decoration.
 """
 import matplotlib.font_manager as fm
+import contextlib
 
 for _p in ("/usr/share/fonts/truetype/chinese/NotoSansSC-Regular.ttf",
            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"):
-    try:
+    with contextlib.suppress(Exception):
         fm.fontManager.addfont(_p)
-    except Exception:
-        pass
 
 import matplotlib.pyplot as plt
 

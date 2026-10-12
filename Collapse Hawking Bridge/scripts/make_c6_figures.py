@@ -50,11 +50,11 @@ L = {
         "sag": "chord sag $= \\kappa h^2/8$",
         "arc_note": "chord chain is shorter than the arc:\nthe sampled structure is compressed",
         "peak_note": "sampled peak is lower by $\\kappa h^2/8$\n(worst alignment)",
-        "caption_ladder": ("Observed per-doubling drift of the committed remediation ladder "
-                           "against the T10 exact parabolic-tension channel (calibrated on "
+        "caption_ladder": ("Observed per-doubling drift of the committed remediation ladder " +
+                           "against the T10 exact parabolic-tension channel (calibrated on " +
                            "committed artifacts) and the rejected two-term power-law fit."),
-        "caption_para": ("Lemma A (chord flattening): the sampled peak sags by exactly kappa*h^2/8. "
-                         "Lemma B (tension): the chord chain through the samples is shorter than the "
+        "caption_para": ("Lemma A (chord flattening): the sampled peak sags by exactly kappa*h^2/8. " +
+                         "Lemma B (tension): the chord chain through the samples is shorter than the " +
                          "continuum arc — the structure compresses under its tension at fixed grid."),
     },
     "ru": {
@@ -76,11 +76,11 @@ L = {
         "sag": "провис хорды $= \\kappa h^2/8$",
         "arc_note": "ломаная короче дуги:\nдискретизованная структура сжата",
         "peak_note": "пик занижен на $\\kappa h^2/8$\n(худшее выравнивание)",
-        "caption_ladder": ("Наблюдаемый дрейф порога за удвоение разрешения против точного "
-                           "канала Т10 (параболическое натяжение, калибровка на зафиксированных "
+        "caption_ladder": ("Наблюдаемый дрейф порога за удвоение разрешения против точного " +
+                           "канала Т10 (параболическое натяжение, калибровка на зафиксированных " +
                            "артефактах) и отвергнутой двухчленной аппроксимации."),
-        "caption_para": ("Лемма А (сплющивание): пик при дискретизации занижен ровно на kappa*h^2/8. "
-                         "Лемма B (натяжение): ломаная по узлам короче непрерывной дуги — структура "
+        "caption_para": ("Лемма А (сплющивание): пик при дискретизации занижен ровно на kappa*h^2/8. " +
+                         "Лемма B (натяжение): ломаная по узлам короче непрерывной дуги — структура " +
                          "сжата под действием своего натяжения при фиксированной сетке."),
     },
 }
@@ -191,7 +191,7 @@ def draw_parabola(lang, theme):
     axi.plot(zn, 1.0 - kappa * zn**2 / 2.0, "-", color=t["ink"], lw=1.6,
              marker="o", ms=6, mfc=t["panel"], mec=t["ink"])
     axi.annotate("", xy=(0.0, 1.0), xytext=(0.0, chord_mid),
-                 arrowprops=dict(arrowstyle="<->", color=t["bad"], lw=2.0))
+                 arrowprops={"arrowstyle": "<->", "color": t["bad"], "lw": 2.0})
     axi.text(0.035, 1.0 - sag / 2.0, tr["sag"], fontsize=12, color=t["bad"],
              va="center")
     axi.set_xlim(-0.27, 0.40)

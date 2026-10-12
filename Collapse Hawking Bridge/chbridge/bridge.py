@@ -174,9 +174,9 @@ def write_outputs(verdict, out_dir):
         "M_code_sat": M_sat,
         "mass_floor_N800_code": sane800[0]["M_code"],
         "f_tilde_range_resolved": [sane800[0]["f_tilde"], 1.0],
-        "gamma_campaign": "honestly unmeasurable: fixed-grid floor dominates "
-                          "(C3 floor-biased gamma_eff = 0.005 +- 0.035 at "
-                          "N=800; C3b per-grid remediation concurs: 0.041 / "
+        "gamma_campaign": "honestly unmeasurable: fixed-grid floor dominates " +
+                          "(C3 floor-biased gamma_eff = 0.005 +- 0.035 at " +
+                          "N=800; C3b per-grid remediation concurs: 0.041 / " +
                           "0.060 at N=1600/3200, floor-dominated)",
         "gamma_Ch_anchor": gamma_Ch,
         # v2.2.0: the former "b_Ch_lit" key (b_Ch rounded to 5 digits, once

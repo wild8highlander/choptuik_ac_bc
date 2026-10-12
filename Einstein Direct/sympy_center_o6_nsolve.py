@@ -140,9 +140,9 @@ def nsolve_point(eq_list, unk, verbose=True):
                               for i, u in enumerate(unk)}}
             sols.append(rec)
             if verbose:
-                log("    [nsolve] T0=%.6f P2h=%.5f D0=%.1e R1h=%.5f "
-                    "W2h=%.5f R3h=%.6f P4h=%.6f R5h=%.3e M5h=%.3e "
-                    "M3h=%.5f  res=%.1e" % (
+                log("    [nsolve] T0={:.6f} P2h={:.5f} D0={:.1e} R1h={:.5f} "
+                    "W2h={:.5f} R3h={:.6f} P4h={:.6f} R5h={:.3e} M5h={:.3e} "
+                    "M3h={:.5f}  res={:.1e}".format(
                         vec[0], vec[1], vec[2], vec[3], vec[4], vec[5],
                         vec[6], vec[7], vec[8], vec[9], r))
             break
@@ -184,7 +184,7 @@ def main():
         out["solutions"] = sols
         if not sols:
             out["pinning"] = {"tau_pinned": None,
-                              "note": "решений не найдено (система, "
+                              "note": "решений не найдено (система, " +
                                       "возможно, переопределена несовместно)"}
             out["honest_notes"].append(
                 "nsolve не нашёл точку: сырая система может быть "
@@ -199,9 +199,9 @@ def main():
                 "tau_star": (t0s[0] * t0s[0]) if pinned else None,
                 "codim1_window_0_tau_27_80": bool(
                     pinned and 0.0 < t0s[0] * t0s[0] <= 27.0 / 80.0),
-                "note": ("единственная T0* при R1h*=1: башня СВЯЗЫВАЕТ "
+                "note": ("единственная T0* при R1h*=1: башня СВЯЗЫВАЕТ " +
                          "амплитуду из первых принципов" if pinned else
-                         "T0 не связана: семейство точек — амплитуда "
+                         "T0 не связана: семейство точек — амплитуда " +
                          "остаётся свободной на уровне O6+"),
             }
             log(f"    вердикт: {out['pinning']['note']} "
@@ -222,8 +222,8 @@ def main():
                     out["gamma_tower"] = {
                         "tau_star": tau_s,
                         "lambda_plus_tower": lam_p,
-                        "note": ("lambda+(tau) — точный корень "
-                                 "характеристического многочлена замкнутой "
+                        "note": ("lambda+(tau) — точный корень " +
+                                 "характеристического многочлена замкнутой " +
                                  "башни O1-O5 (center_modes.py)"),
                     }
                     log(f"    lambda+(tau*) = {lam_p:.5f}")

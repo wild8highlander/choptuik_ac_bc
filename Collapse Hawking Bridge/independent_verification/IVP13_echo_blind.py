@@ -192,7 +192,7 @@ def main():
         "status": status,
         "pre_registered": {
             "blindness": "no committed Delta value read before measurement",
-            "detector": "verifier-own peak detector (relative prominence "
+            "detector": "verifier-own peak detector (relative prominence " +
                         "5e-3, 3-point median smoothing, regression estimator)",
             "honesty_rule": "< 3 peaks resolved => PASS as a NEGATIVE check",
         },

@@ -208,10 +208,8 @@ class V22Runner(ZoomRunner):
         clamp_floor = float(self.buffer_v[0])
         anchor_floor = self._anchor_floor_now()
         v_lo_uncapped = v_now - k_back * (v_hi - v_now)
-        if anchor_floor:
-            v_lo = clamp_floor          # якорь: глубочайшая покрытая точка
-        else:
-            v_lo = max(v_lo_uncapped, clamp_floor)
+        # якорь: глубочайшая покрытая точка
+        v_lo = clamp_floor if anchor_floor else max(v_lo_uncapped, clamp_floor)
         clamp_active = bool(v_lo_uncapped < clamp_floor - 1e-15)
         W_v = v_hi - v_lo
         if W_v < 24.0 * du_old:
@@ -346,10 +344,10 @@ def run_chain(eps, tag, v_back=V_BACK_BASE, v_ahead=V_AHEAD_BASE,
     n_grid = n_grid or N_GRID
     max_zooms = max_zooms or MAX_ZOOMS
     A = A_STAR + eps
-    pol_txt = ("k_back=%.1f" % v_back if v_back_late is None else
-               "k_back: 0.5->%.1f с зума %d" % (v_back_late, switch_zoom))
+    pol_txt = ("k_back={:.1f}".format(v_back) if v_back_late is None else
+               "k_back: 0.5->{:.1f} с зума {}" .format (v_back_late, switch_zoom))
     if anchor_from_zoom is not None:
-        pol_txt += ", якорь на пол с зума %d" % anchor_from_zoom
+        pol_txt += ", якорь на пол с зума {}".format(anchor_from_zoom)
     log(f"\n=== цепочка {tag}: eps = {eps:.1e}, n = {n_grid}, "
         f"w = {W_FACTOR:.1f}, {pol_txt}, v_ahead = {v_ahead:.1f} ===")
     runner = V22Runner(A=A, n=n_grid, max_zooms=max_zooms, w_factor=W_FACTOR,
@@ -415,7 +413,7 @@ def phase_cert():
     f1 = {"n_zooms": len(zl_ok),
           "cap_active_count": sum(1 for zl in zl_ok if zl["cap_active"]),
           "ahead_over_slack_max": float(max(ratio)) if ratio else None,
-          "verdict": ("кап НЕ связан ни на одном зуме (активный бюджет — "
+          "verdict": ("кап НЕ связан ни на одном зуме (активный бюджет — " +
                       "собственный размах окна, не конверт)"
                       if all(not zl["cap_active"] for zl in zl_ok)
                       else "кап связан минимум на одном зуме")}
@@ -432,8 +430,8 @@ def phase_cert():
           "vacuum_row_share": vac_frac,
           "max_mx_final_stage": float(mx[a:b].max()),
           "w_cells_final_edge": float(wc[b - 1]),
-          "verdict": ("финальная стадия — вакуум (структура осталась позади "
-                      "окна): лестница триггеров спускается по v, окно "
+          "verdict": ("финальная стадия — вакуум (структура осталась позади " +
+                      "окна): лестница триггеров спускается по v, окно " +
                       "смотрит вперёд" if vac_frac > 0.9 else
                       "финальная стадия содержит структуру")}
 
@@ -442,13 +440,13 @@ def phase_cert():
     f3 = {"n_calls": len(el),
           "slack_all_zero": bool(el) and all(abs(e["slack"]) < 1e-15
                                              for e in el),
-          "structural_invariant": ("stage_v == (v[0], v[-1]) по построению "
-                                   "_new_stage; вызов при j >= n даёт "
-                                   "v_now = v[n-1] = stage_v[1]; запас = 0 "
-                                   "< 12*du всегда -> v_exhausted "
+          "structural_invariant": ("stage_v == (v[0], v[-1]) по построению " +
+                                   "_new_stage; вызов при j >= n даёт " +
+                                   "v_now = v[n-1] = stage_v[1]; запас = 0 " +
+                                   "< 12*du всегда -> v_exhausted " +
                                    "терминален по построению"),
-          "verdict": ("_try_extend мёртв: %d вызовов, запас 0.0 точно на "
-                      "всех" % len(el))
+          "verdict": (("_try_extend мёртв: {} вызовов, запас 0.0 точно на " +
+                      "всех") .format (len(el)))
           if el and all(abs(e["slack"]) < 1e-15 for e in el)
           else ("_try_extend жив (запас > 0) — пересмотреть [F3]")}
 
@@ -467,9 +465,9 @@ def phase_cert():
                       "w_cells_trigger": zl["w_cells_trigger"],
                       "lam": zl["lam"]})
     f4 = {"rows": starv,
-          "note": ("интервал лестницы ОТРИЦАТЕЛЕН по v (спуск к v*); "
-                   "покрытие: back_eff >= |интервал| означает, что следующее "
-                   "эхо было внутри окна; финальный зум покрытия не имеет — "
+          "note": ("интервал лестницы ОТРИЦАТЕЛЕН по v (спуск к v*); " +
+                   "покрытие: back_eff >= |интервал| означает, что следующее " +
+                   "эхо было внутри окна; финальный зум покрытия не имеет — " +
                    "свидетельство [F2]"),
           "verdict": ("голодание назад-размаха на стене подтверждено"
                       if any(r["clamp_active"] for r in starv) else
@@ -540,36 +538,34 @@ def build_verdict(cert, probe, probe2, probe3, deep, ladder):
     if cert:
         c = cert["control"]
         vl.append("контроль [C1]: вилка _zoom нейтральна — цепочка v21 "
-                  "probe(w=3) воспроизведена с расхождением %.1e "
-                  "(z = %.6f, %d зумов, %s)"
-                  % (cert["z_dev_vs_v21"], c["z_reached"], c["zooms"],
+                  "probe(w=3) воспроизведена с расхождением {:.1e} "
+                  "(z = {:.6f}, {} зумов, {})"
+                  .format (cert["z_dev_vs_v21"], c["z_reached"], c["zooms"],
                      c["stop"]))
         f1, f2, f3 = (cert["F1_cap_free"], cert["F2_final_vacuum"],
                       cert["F3_dead_extension"])
-        vl.append("[F1] телескопический кап не связан (%d/%d зумов свободны, "
-                  "max ahead/slack = %.3f) — стена не в конверте"
-                  % (f1["n_zooms"] - f1["cap_active_count"], f1["n_zooms"],
+        vl.append("[F1] телескопический кап не связан ({}/{} зумов свободны, "
+                  "max ahead/slack = {:.3f}) — стена не в конверте"
+                  .format (f1["n_zooms"] - f1["cap_active_count"], f1["n_zooms"],
                      f1["ahead_over_slack_max"] or float("nan")))
-        vl.append("[F2] финальная стадия — вакуум (доля пустых строк %.3f, "
-                  "mx_max = %.3f): лестница триггеров спускается по v "
-                  "(0.4781 -> 0.4072 -> 0.4035 -> 0.4015), окно смотрело вперёд"
-                  % (f2["vacuum_row_share"], f2["max_mx_final_stage"]))
-        vl.append("[F3] v-extension (_try_extend) мёртв по построению: %d "
+        vl.append("[F2] финальная стадия — вакуум (доля пустых строк {:.3f}, "
+                  "mx_max = {:.3f}): лестница триггеров спускается по v "
+                  "(0.4781 -> 0.4072 -> 0.4035 -> 0.4015), окно смотрело вперёд".format(f2["vacuum_row_share"], f2["max_mx_final_stage"]))
+        vl.append("[F3] v-extension (_try_extend) мёртв по построению: {} "
                   "вызовов с запасом 0.0 точно — v_exhausted терминален "
                   "всегда; правило «телескопический v-домен» + вызов при "
-                  "j >= n делают запас нулевым по построению" % f3["n_calls"])
+                  "j >= n делают запас нулевым по построению" .format (f3["n_calls"]))
     if probe and probe.get("status") == "executed":
         rows = probe["rows"]
-        vl.append("[C2] зонд политик (глобальный якорь): %s" % "; ".join(
-            "(k_back=%.1f, v_ahead=%.1f): z = %.2f, зумов %d, пиков %d, "
-            "стоп %s" % (r["k_back"], r["v_ahead"], r["z_reached"],
+        vl.append("[C2] зонд политик (глобальный якорь): {}".format("; ".join(
+            "(k_back={:.1f}, v_ahead={:.1f}): z = {:.2f}, зумов {}, пиков {}, "
+            "стоп {}" .format (r["k_back"], r["v_ahead"], r["z_reached"],
                          r["zooms"], r["n_Q_peaks_total"], r["stop"])
-            for r in rows))
-        vl.append("редирекция рычага: v_ahead вперёд %s; глобальный задний "
-                  "якорь %s — рестарт-строка попадает в область входящего "
+            for r in rows)))
+        vl.append("редирекция рычага: v_ahead вперёд {}; глобальный задний "
+                  "якорь {} — рестарт-строка попадает в область входящего "
                   "импульса (v_p = 0.5 +- 0.1) и ре-эволюция импульса на "
-                  "мелкой сетке ломает лестницу (зум 1, стоп %s)"
-                  % ("инертен (клэмп буфера перехватывает назад-расширение)"
+                  "мелкой сетке ломает лестницу (зум 1, стоп {})".format("инертен (клэмп буфера перехватывает назад-расширение)"
                      if probe["ahead_inert"] else "эффективен",
                      "РАЗРУШИТЕЛЕН" if all(r["z_reached"] < 2.5
                                            for r in rows)
@@ -577,47 +573,44 @@ def build_verdict(cert, probe, probe2, probe3, deep, ladder):
                      rows[0]["stop"] if rows else "?"))
     if probe2 and probe2.get("status") == "executed":
         rows2 = probe2["rows"]
-        vl.append("[C2b] зонд позднего якоря (зумы 1-2 — точный контроль): %s"
-                  % "; ".join(
-                      "(late=%.1f с зума %d): z = %.2f, зумов %d, пиков %d, "
-                      "стоп %s" % (r["k_back_late"], r["switch_zoom"],
+        vl.append("[C2b] зонд позднего якоря (зумы 1-2 — точный контроль): {}".format("; ".join(
+                      "(late={:.1f} с зума {}): z = {:.2f}, зумов {}, пиков {}, "
+                      "стоп {}" .format (r["k_back_late"], r["switch_zoom"],
                                    r["z_reached"], r["zooms"],
                                    r["n_Q_peaks_total"], r["stop"])
-                      for r in rows2))
-        vl.append("вывод [C2b]: поздний якорь %s — пол окна может только "
+                      for r in rows2)))
+        vl.append("вывод [C2b]: поздний якорь {} — пол окна может только "
                   "ПОДНИМАТЬСЯ (ratchet покрытием: v_lo ребёнка >= v_lo "
                   "родителя), поздние зумы перехватываются клэмпом "
-                  "(лучшая: late = %.1f, z = %.2f ~ контроль)"
-                  % ("стену не двигает (все поздние якоря зажаты полом "
+                  "(лучшая: late = {:.1f}, z = {:.2f} ~ контроль)".format("стену не двигает (все поздние якоря зажаты полом "
                      "0.40113)" if not probe2["back_unlocks_late"] else "двигает",
                      probe2["best_policy"]["k_back_late"],
                      probe2["best_policy"]["z"]))
     if probe3 and probe3.get("status") == "executed":
         rows3 = probe3["rows"]
         vl.append("[C2c] зонд корневого якоря + якоря на полу (k1 на зуме 1, "
-                  "с зума 2 v_lo = buffer_v[0]): %s" % "; ".join(
-                      "(k1=%.2f): z = %.2f, зумов %d, пиков %d (макс/стадия "
-                      "%d), стоп %s" % (r["k1"], r["z_reached"], r["zooms"],
+                  "с зума 2 v_lo = buffer_v[0]): {}".format("; ".join(
+                      "(k1={:.2f}): z = {:.2f}, зумов {}, пиков {} (макс/стадия "
+                      "{}), стоп {}" .format (r["k1"], r["z_reached"], r["zooms"],
                                         r["n_Q_peaks_total"],
                                         r["max_peaks_per_stage"], r["stop"])
-                      for r in rows3))
-        vl.append("вывод [C2c]: корневой якорь %s (лучший: k1 = %.2f, "
-                  "z = %.2f против контроля 7.20; пол замирает у корня, "
-                  "лестница спускается в покрытую область)"
-                  % ("двигает стену" if probe3["back_unlocks_root"]
+                      for r in rows3)))
+        vl.append("вывод [C2c]: корневой якорь {} (лучший: k1 = {:.2f}, "
+                  "z = {:.2f} против контроля 7.20; пол замирает у корня, "
+                  "лестница спускается в покрытую область)".format("двигает стену" if probe3["back_unlocks_root"]
                      else "стену не двигает", probe3["best_policy"]["k1"],
                      probe3["best_policy"]["z"]))
     if deep:
         pol = deep.get("policy", {})
-        pol_txt = "k_back = %s" % pol.get("k_back", pol.get("v_back", "?"))
+        pol_txt = "k_back = {}".format(pol.get("k_back", pol.get("v_back", "?")))
         if pol.get("k_back_late") is not None:
-            pol_txt += " -> %s с зума %s" % (pol["k_back_late"],
+            pol_txt += " -> {} с зума {}".format(pol["k_back_late"],
                                              pol.get("switch_zoom"))
         if pol.get("anchor_from_zoom") is not None:
-            pol_txt += ", якорь на пол с зума %s" % pol["anchor_from_zoom"]
-        vl.append("[C3] глубокий прогон (%s): z = %.2f, зумов %d, стоп = %s, "
-                  "пиков всего %d, макс пиков на стадии %d"
-                  % (pol_txt,
+            pol_txt += ", якорь на пол с зума {}".format(pol["anchor_from_zoom"])
+        vl.append("[C3] глубокий прогон ({}): z = {:.2f}, зумов {}, стоп = {}, "
+                  "пиков всего {}, макс пиков на стадии {}"
+                  .format (pol_txt,
                      deep.get("z_reached", float("nan")),
                      deep.get("zooms", -1), deep.get("stop", "?"),
                      deep.get("n_Q_peaks_total", -1),
@@ -627,13 +620,13 @@ def build_verdict(cert, probe, probe2, probe3, deep, ladder):
         if deb:
             d, e = deb["delta_eff"], deb["delta_err"]
             excl = (abs(DELTA_LIT - d) / e if e and e > 0 else float("inf"))
-            vl.append("4-й пик ДОСТИГНУТ: Delta_eff = %.4f +- %.4f на стадии "
-                      "z%d (%d пиков) — но период пиков НЕ DSS: лит. 3.44 "
-                      "исключена на %.1f sigma (оценка совместима с нулём); "
+            vl.append("4-й пик ДОСТИГНУТ: Delta_eff = {:.4f} +- {:.4f} на стадии "
+                      "z{} ({} пиков) — но период пиков НЕ DSS: лит. 3.44 "
+                      "исключена на {:.1f} sigma (оценка совместима с нулём); "
                       "четвёрка пиков — суб-эхо структура или загрязнение "
                       "лестницы у пола, DSS-периодичность на этой глубине "
                       "НЕ подтверждена (честный статус)"
-                      % (d, e, deb["zoom_index"], deb["n_peaks_seg"], excl))
+                      .format (d, e, deb["zoom_index"], deb["n_peaks_seg"], excl))
         else:
             vl.append("Delta_eff НЕ измерена: 4-го пика на одной стадии нет "
                       "(эхо-поезд не развился до поезда — честный статус)")
@@ -641,54 +634,53 @@ def build_verdict(cert, probe, probe2, probe3, deep, ladder):
         if ladder.get("status") == "executed":
             fp = ladder.get("fit_p_delta")
             vl.append("[C4] лестница амплитуд: %s"
-                      % ("p = %.3f по Delta_eff" % fp["p"] if fp else
-                         "исполнена, Delta_eff нет на >= 3 ступенях — p "
+                      % ("p = {:.3f} по Delta_eff".format(fp["p"]) if fp else
+                         "исполнена, Delta_eff нет на >= 3 ступенях — p " +
                          "не измерим (честно)"))
         else:
-            vl.append("[C4] лестница амплитуд: ПРОПУЩЕНА — %s"
-                      % ladder.get("reason", ""))
+            vl.append("[C4] лестница амплитуд: ПРОПУЩЕНА — {}".format(ladder.get("reason", "")))
     return vl
 
 
 HONEST_NOTES = [
-    "вилка _zoom в V22Runner копирует тело родителя бит-в-бит с ЕДИНСТВЕННЫМ "
-    "изменением (коэффициент 0.5 в v_lo -> k_back); нейтральность вилки "
-    "сертифицирована контролем [C1] на точное воспроизведение цепочки v21 "
-    "probe(w=3) (расхождение < 1e-9) — изменения физики нет, изменения "
+    "вилка _zoom в V22Runner копирует тело родителя бит-в-бит с ЕДИНСТВЕННЫМ " +
+    "изменением (коэффициент 0.5 в v_lo -> k_back); нейтральность вилки " +
+    "сертифицирована контролем [C1] на точное воспроизведение цепочки v21 " +
+    "probe(w=3) (расхождение < 1e-9) — изменения физики нет, изменения " +
     "размещения окна есть",
-    "гипотеза заказа (v_ahead_factor вперёд) проверена и ОТКЛОНЕНА данными: "
-    "вперёд от триггера — вакуум ([F2]), назад-расширение перехватывается "
-    "клэмпом буфера (v_lo >= buffer_v[0]); рабочий рычаг — задний якорь "
+    "гипотеза заказа (v_ahead_factor вперёд) проверена и ОТКЛОНЕНА данными: " +
+    "вперёд от триггера — вакуум ([F2]), назад-расширение перехватывается " +
+    "клэмпом буфера (v_lo >= buffer_v[0]); рабочий рычаг — задний якорь " +
     "k_back на ранних зумах (углубление пола родителя)",
-    "экстраполяция за покрытым буфером рассмотрена и ОТВЕРГНУТА: интерполяция "
-    "ребёнка с более грубых строк прародителя разрушает разрешение зума "
+    "экстраполяция за покрытым буфером рассмотрена и ОТВЕРГНУТА: интерполяция " +
+    "ребёнка с более грубых строк прародителя разрушает разрешение зума " +
     "(починка хуже болезни); клэмп буфера оставлен",
-    "интервал лестницы оценивается по соседним триггерам (шумно, 4 точки); "
-    "оценка следующего триггера 0.3995..0.4004 — основание выбора k_back "
+    "интервал лестницы оценивается по соседним триггерам (шумно, 4 точки); " +
+    "оценка следующего триггера 0.3995..0.4004 — основание выбора k_back " +
     ">= 1, не предсказание",
-    "глобальный задний якорь (k_back с первого зума) РАЗРУШИТЕЛЕН — зонд "
-    "[C2]: рестарт-строка опускается в область входящего импульса "
-    "(v_p = 0.5, sigma = 0.1) и его ре-эволюция на мелкой сетке останавливает "
-    "лестницу (1 зум, z ~ 1.5-1.9); механизм ре-эволюции — интерпретация по "
-    "геометрии окна, прямая трассировка полей не проводилась; хирургическая "
+    "глобальный задний якорь (k_back с первого зума) РАЗРУШИТЕЛЕН — зонд " +
+    "[C2]: рестарт-строка опускается в область входящего импульса " +
+    "(v_p = 0.5, sigma = 0.1) и его ре-эволюция на мелкой сетке останавливает " +
+    "лестницу (1 зум, z ~ 1.5-1.9); механизм ре-эволюции — интерпретация по " +
+    "геометрии окна, прямая трассировка полей не проводилась; хирургическая " +
     "альтернатива — поздний якорь [C2b] (зумы 1-2 бит-в-бит контроль)",
-    "цена якоря: W_v = (1+k_back)*ahead, du_new = W_v/n, лямбда падает "
-    "~1/(1+k_back) — z-бюджет на зум снижается; чистый эффект измеряет "
+    "цена якоря: W_v = (1+k_back)*ahead, du_new = W_v/n, лямбда падает " +
+    "~1/(1+k_back) — z-бюджет на зум снижается; чистый эффект измеряет " +
     "зонд [C2] (глубина против политики), а не выводится аналитически",
-    "Delta_eff требует >= 4 пиков на ОДНОЙ стадии (echo_period_from_peaks); "
-    "пики считаются по сегментам стадий (_stage_analysis v21), кросс-стадийные "
+    "Delta_eff требует >= 4 пиков на ОДНОЙ стадии (echo_period_from_peaks); " +
+    "пики считаются по сегментам стадий (_stage_analysis v21), кросс-стадийные " +
     "серии с ломаным v не интерпретируются",
-    "масштаб v22: пробы оконных политик идут на ЧИСТОЙ физике ZoomRunner "
-    "(обёртка джанк-гейтов [P2]/[P3] v21 не подключена; в v21 при w = 3 "
-    "инвазий не было); полный протокол [P1]-[P5] с гейтами и откатами — "
+    "масштаб v22: пробы оконных политик идут на ЧИСТОЙ физике ZoomRunner " +
+    "(обёртка джанк-гейтов [P2]/[P3] v21 не подключена; в v21 при w = 3 " +
+    "инвазий не было); полный протокол [P1]-[P5] с гейтами и откатами — " +
     "предмет следующей кампании на принятой политике",
-    "лямбда-профиль корневого якоря нерегулярен (k1 = 0.52: lam = [8.8, 5.3, "
-    "3.3, 5.2, 1.4]) — окно формируется и шириной фичи, и полом; качество "
-    "интерполяции рестарт-строк контролируется C1-связью (c1_max в журнале "
+    "лямбда-профиль корневого якоря нерегулярен (k1 = 0.52: lam = [8.8, 5.3, " +
+    "3.3, 5.2, 1.4]) — окно формируется и шириной фичи, и полом; качество " +
+    "интерполяции рестарт-строк контролируется C1-связью (c1_max в журнале " +
     "зумов), порогов отбраковки лямбды не вводилось",
-    "гамма считается правилом [D3] v21 (перцентиль/ОЛС-выжившие, бутстрап с "
-    "сидом %d) только при >= 6 пиках; чувствительность калибровки часов "
-    "(v*, стадия) — как в v21" % SEED,
+    ("гамма считается правилом [D3] v21 (перцентиль/ОЛС-выжившие, бутстрап с " +
+    "сидом {}) только при >= 6 пиках; чувствительность калибровки часов " +
+    "(v*, стадия) — как в v21").format(SEED),
 ]
 
 
@@ -779,7 +771,7 @@ def phase_probe3():
 # ==============================================================================
 def phase_deep(policy):
     rec, runner = run_chain(EPS_MAIN,
-                            "deep(%s)" % json.dumps(policy, ensure_ascii=False),
+                            "deep({})".format(json.dumps(policy, ensure_ascii=False)),
                             **policy)
     stages, peaks = _stage_analysis(runner)
     rec["peaks_rows"] = peaks
@@ -815,9 +807,8 @@ def phase_deep(policy):
 def phase_ladder(policy, deep_rec):
     if deep_rec["z_reached"] < LADDER_MIN_Z:
         return {"status": "skipped",
-                "reason": "глубокая цепочка z = %.2f < %.0f (порог v21): "
-                          "носителя лестницы нет"
-                          % (deep_rec["z_reached"], LADDER_MIN_Z)}
+                "reason": ("глубокая цепочка z = {:.2f} < {:.0f} (порог v21): " +
+                          "носителя лестницы нет").format(deep_rec["z_reached"], LADDER_MIN_Z)}
     rungs = [{"tag": deep_rec["tag"], "eps": deep_rec["eps"],
               "z_reached": deep_rec["z_reached"],
               "n_Q_peaks_total": deep_rec["n_Q_peaks_total"],
@@ -825,8 +816,8 @@ def phase_ladder(policy, deep_rec):
                             if deep_rec["delta_eff_best"] else None),
               "stop": deep_rec["stop"]}]
     for eps in LADDER_EPS:
-        rec, _ = run_chain(eps, "ladder(%s)" % json.dumps(policy,
-                                                          ensure_ascii=False),
+        rec, _ = run_chain(eps, "ladder({})".format(json.dumps(policy,
+                                                          ensure_ascii=False)),
                            **policy)
         rungs.append({"tag": rec["tag"], "eps": rec["eps"],
                       "z_reached": rec["z_reached"],
@@ -848,8 +839,8 @@ def phase_ladder(policy, deep_rec):
         out["fit_p_delta"] = fit
     else:
         out["fit_p_delta"] = None
-        out["note"] = ("валидных ступеней с Delta_eff: %d из %d — p не "
-                       "измерим (честно)" % (len(ok), len(rungs)))
+        out["note"] = (("валидных ступеней с Delta_eff: {} из {} — p не " +
+                       "измерим (честно)") .format (len(ok), len(rungs)))
     return out
 
 
@@ -873,10 +864,10 @@ def main():
     EPS_MAIN = args.eps
 
     out = {
-        "title": "КАМПАНИЯ v22: v-бюджет и якорение окна — прорыв стены "
+        "title": "КАМПАНИЯ v22: v-бюджет и якорение окна — прорыв стены " +
                  "z ~ 7.2 (w = 3)",
-        "question": ("двигает ли расширение v-бюджета (v_ahead_factor / "
-                     "телескоп / задний якорь) стену z ~ 7.2 при w = 3 и "
+        "question": ("двигает ли расширение v-бюджета (v_ahead_factor / " +
+                     "телескоп / задний якорь) стену z ~ 7.2 при w = 3 и " +
                      "открывает ли 4-й пик эха и Delta_eff?"),
         "config": {"A_star": float(A_STAR), "eps": EPS_MAIN,
                    "n_grid": N_GRID, "max_zooms": MAX_ZOOMS,
@@ -889,11 +880,11 @@ def main():
                    "z_target": Z_TARGET, "z_wall_v21": Z_WALL,
                    "gamma_anchor": GAMMA, "delta_lit": DELTA_LIT,
                    "v21_w3_control": {"z": V21_W3_Z, "zooms": V21_W3_ZOOMS},
-                   "determinism": "BLAS 1 thread; без RNG (бутстрап с "
-                                  "фиксированным сидом %d)" % SEED},
-        "protocol_reference": ("v21 [D-v21] проба оконной политики; диагноз "
-                               "v22 (трассировка цепочки w=3); заказ: "
-                               "v-бюджет (v_ahead_factor/телескоп) за 4-й "
+                   "determinism": ("BLAS 1 thread; без RNG (бутстрап с " +
+                                  "фиксированным сидом {})").format(SEED)},
+        "protocol_reference": ("v21 [D-v21] проба оконной политики; диагноз " +
+                               "v22 (трассировка цепочки w=3); заказ: " +
+                               "v-бюджет (v_ahead_factor/телескоп) за 4-й " +
                                "пик и Delta_eff"),
     }
     os.makedirs(RESULTS, exist_ok=True)
@@ -921,9 +912,8 @@ def main():
             probe3 = out.get("probe3")
             deep_rec = out.get("deep")
             ladder = out.get("second_pass")
-            log("(восстановлены фазы: %s из предыдущего прогона)"
-                % ", ".join(k for k in ("cert", "probe", "probe2", "probe3",
-                                        "deep", "second_pass") if k in prev))
+            log("(восстановлены фазы: {} из предыдущего прогона)".format(", ".join(k for k in ("cert", "probe", "probe2", "probe3",
+                                        "deep", "second_pass") if k in prev)))
         except (OSError, json.JSONDecodeError):
             pass
     if args.phase in ("cert", "all"):

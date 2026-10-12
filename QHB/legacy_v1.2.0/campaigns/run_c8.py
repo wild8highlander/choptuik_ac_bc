@@ -98,20 +98,20 @@ def main():
     t0 = time.time()
     verdict = {
         "campaign": "qhb_c8",
-        "engine": "deterministic RK4 of the committed pairwise system "
-                  "(numpy) + an mpmath 50-digit cross-check; no MC, no "
+        "engine": "deterministic RK4 of the committed pairwise system " +
+                  "(numpy) + an mpmath 50-digit cross-check; no MC, no " +
                   "seeds",
         "project_version": __version__,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "model": {
-            "system": "dn_+/dt = 1 - lambda(1-alpha) n_+ n_- ; "
+            "system": "dn_+/dt = 1 - lambda(1-alpha) n_+ n_- ; " +
                       "dn_-/dt = 1 - lambda(1+alpha) n_+ n_-",
-            "nondimensionalisation": "N_* = Gamma_b / H (the linear "
-                                     "steady state), tau = H t, "
+            "nondimensionalisation": "N_* = Gamma_b / H (the linear " +
+                                     "steady state), tau = H t, " +
                                      "lambda = k Gamma_b / H^2",
             "freezeout": "tau_f = 1 (t_f = 1/H, the committed convention)",
-            "honesty": "MARKED HYPOTHESIS — the trigger-asymmetry reading "
-                       "of the pair event is a toy of the Wu mechanism, "
+            "honesty": "MARKED HYPOTHESIS — the trigger-asymmetry reading " +
+                       "of the pair event is a toy of the Wu mechanism, " +
                        "not a weak-interaction calculation",
         },
     }
@@ -202,7 +202,7 @@ def main():
     shape_moves = lin_limit_dev > 0.05
     verdict["door_stays"] = {
         "ok": door_stays,
-        "statement": "r_pair > 0 for every alpha > 0 cell and grows with "
+        "statement": "r_pair > 0 for every alpha > 0 cell and grows with " +
                      "lambda — the door survives the kinetics change",
     }
     verdict["shape_moves"] = {
@@ -210,9 +210,9 @@ def main():
         "r_pair_at_lambda_100_alpha_09": a09[100.0]["r_pair"],
         "linear_limit_alpha": 0.9,
         "dev_from_linear_limit": lin_limit_dev,
-        "statement": "the pairwise door has NO alpha asymptote: with the "
-                     "linear death term gone, the imbalance accumulates "
-                     "toward the FULL residual (r -> 1) — the door stays, "
+        "statement": "the pairwise door has NO alpha asymptote: with the " +
+                     "linear death term gone, the imbalance accumulates " +
+                     "toward the FULL residual (r -> 1) — the door stays, " +
                      "the shape moves",
     }
     print(f"door stays: {'PASS' if door_stays else 'CHECK'}; shape moves: "
@@ -224,26 +224,26 @@ def main():
         "convergence_RK4": "PASS" if conv_ok else "CHECK",
         "mpmath_50d": "PASS" if mp_ok else "FAIL",
         "door_stays": "CONFIRMED" if door_stays else "CHECK",
-        "shape_moves": "CONFIRMED (r_pair -> full imbalance, the linear "
+        "shape_moves": "CONFIRMED (r_pair -> full imbalance, the linear " +
                        "alpha-limit is gone)" if shape_moves else "CHECK",
-        "T7_extension": "NEGATIVE (honest) — the closed form of T7 does "
-                        "NOT extend to pairwise kinetics; exactness is a "
+        "T7_extension": "NEGATIVE (honest) — the closed form of T7 does " +
+                        "NOT extend to pairwise kinetics; exactness is a " +
                         "property of the linear model",
     }
     verdict["honest_notes"] = [
-        "the closed-form exactness of T7 is LOST in the pairwise model; "
-        "the committed replacement is the convergence ladder + the "
+        "the closed-form exactness of T7 is LOST in the pairwise model; " +
+        "the committed replacement is the convergence ladder + the " +
         "50-digit cross-check, not a formula",
-        "matching lambda to the linear x is a comparison device; the two "
-        "models have different dimensionless structure and only the "
-        "shape-level statement (door survives, asymptote moves) is "
+        "matching lambda to the linear x is a comparison device; the two " +
+        "models have different dimensionless structure and only the " +
+        "shape-level statement (door survives, asymptote moves) is " +
         "claimed",
-        "the full-imbalance limit r -> 1 is a property of the toy (no "
-        "linear death term to stop the accumulation); cosmogenesis "
+        "the full-imbalance limit r -> 1 is a property of the toy (no " +
+        "linear death term to stop the accumulation); cosmogenesis " +
         "claims remain out of scope exactly as in C3",
-        "the pairwise asymmetry lives in the TRIGGER species (which "
-        "member initiates the weak step); an event still consumes a "
-        "pair — this is the committed reading of the Wu door, marked as "
+        "the pairwise asymmetry lives in the TRIGGER species (which " +
+        "member initiates the weak step); an event still consumes a " +
+        "pair — this is the committed reading of the Wu door, marked as " +
         "a hypothesis",
     ]
     verdict["wall_s"] = time.time() - t0

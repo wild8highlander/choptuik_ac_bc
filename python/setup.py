@@ -1,6 +1,13 @@
 """Setup for choptyuk-spinor Python package."""
 
-from setuptools import setup, find_packages
+import os
+
+from setuptools import find_packages, setup
+
+_readme_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                            "README.md")
+with open(_readme_path, encoding="utf-8") as _fh:
+    LONG_DESCRIPTION = _fh.read()
 
 setup(
     name="choptyuk-spinor",
@@ -10,7 +17,7 @@ setup(
     url="https://github.com/wild8highlander/choptuik_ac_bc",
     license="Isaev Proprietary License",
     description="Verification and simulation of spinor corrections b-C and a-C on the Klein quartic curve",
-    long_description=open("README.md").read() if __import__("os").path.exists("README.md") else "",
+    long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
@@ -23,6 +30,11 @@ setup(
     ],
     extras_require={
         "reports": ["python-docx>=0.8.11", "reportlab>=4.0", "jinja2>=3.1"],
-        "all": ["python-docx>=0.8.11", "reportlab>=4.0", "jinja2>=3.1", "markdown>=3.4"],
+        "all": [
+            "python-docx>=0.8.11",
+            "reportlab>=4.0",
+            "jinja2>=3.1",
+            "markdown>=3.4",
+        ],
     },
 )

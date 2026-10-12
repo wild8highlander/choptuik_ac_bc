@@ -100,7 +100,7 @@ for sig in range(4):
             if nu != mu:
                 Gamma[(sig, nu, mu)] = expr
 
-log("  Кристоффели: вычислено %d символов" % len(Gamma))
+log("  Кристоффели: вычислено {} символов" .format (len(Gamma)))
 
 # Тензор Риччи R_{mu nu} = d_rho Gamma^rho_{mu nu} - d_nu Gamma^rho_{mu rho}
 #                       + Gamma^rho_{mu nu} Gamma^sigma_{rho sigma}
@@ -126,7 +126,7 @@ for mu in range(4):
         R_scalar += g_inv[mu, nu] * Ric[(mu, nu)]
 R_scalar = sp.simplify(R_scalar)
 
-log("  R (скалярная кривизна) упрощена: %d символов в выражении" % len(str(R_scalar)))
+log("  R (скалярная кривизна) упрощена: {} символов в выражении" .format (len(str(R_scalar))))
 
 # Тензор Эйнштейна
 Einstein = {}
@@ -348,10 +348,10 @@ def roberts_fields(uu, vv, sigma):
     Phi_uv_val = mp.diff(lambda xx: Phi_v_f(xx, v_m), u_m)
     Phi_uu_val = mp.diff(lambda xx: Phi_u_f(xx, v_m), u_m)
     Phi_vv_val = mp.diff(lambda yy: Phi_v_f(u_m, yy), v_m)
-    return dict(r=rr, r_u=r_u, r_v=r_v, r_uu=r_uu, r_vv=r_vv, r_uv=r_uv,
-                Phi=Phi_f(u_m, v_m), Phi_u=Phi_u_f(u_m, v_m), Phi_v=Phi_v_f(u_m, v_m),
-                Phi_uu=Phi_uu_val, Phi_vv=Phi_vv_val, Phi_uv=Phi_uv_val,
-                omega=mp.mpf(0), omega_u=mp.mpf(0), omega_v=mp.mpf(0), omega_uv=mp.mpf(0))
+    return {"r": rr, "r_u": r_u, "r_v": r_v, "r_uu": r_uu, "r_vv": r_vv, "r_uv": r_uv,
+                "Phi": Phi_f(u_m, v_m), "Phi_u": Phi_u_f(u_m, v_m), "Phi_v": Phi_v_f(u_m, v_m),
+                "Phi_uu": Phi_uu_val, "Phi_vv": Phi_vv_val, "Phi_uv": Phi_uv_val,
+                "omega": mp.mpf(0), "omega_u": mp.mpf(0), "omega_v": mp.mpf(0), "omega_uv": mp.mpf(0)}
 
 
 def residuals_1p1(f):

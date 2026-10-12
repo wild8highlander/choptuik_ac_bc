@@ -6,7 +6,7 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-FAIL = []
+FAIL: list[str] = []
 
 def fail(msg):
     FAIL.append(msg)
@@ -52,7 +52,8 @@ if sums.exists():
         if not line.strip():
             continue
         h, rel = line.split(None, 1)
-        rel = rel.strip().lstrip("*").replace("QHB_Unified_" + version + "/", "")
+        rel = rel.strip().lstrip("*").replace(
+            "QHB_Unified_" + (version or "") + "/", "")
         p = ROOT / rel
         if not p.exists():
             fail(f"checksum target missing: {rel}")

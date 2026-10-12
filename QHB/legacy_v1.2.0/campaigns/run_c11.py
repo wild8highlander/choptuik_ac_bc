@@ -253,7 +253,7 @@ def main():
     wall_work = {"cell": list(OSC_CELL),
                  "median_abs_dE": float(np.median(dE)),
                  "max_abs_dE": float(dE.max()),
-                 "note": "the oscillating wall pumps energy — the C2/C7 "
+                 "note": "the oscillating wall pumps energy — the C2/C7 " +
                          "sealing is finite-time; the static seal is exact"}
     print(f"  oscillating complement {OSC_CELL}: median |dE| = "
           f"{wall_work['median_abs_dE']:.4f} (wall work > 0)", flush=True)
@@ -274,8 +274,8 @@ def main():
              "T12_manifold": b3_ok, "T13_static": static_ok}
     verdict = {
         "campaign": "qhb_c11",
-        "engine": "own RK4 Kirchhoff integrator (qhb.vortex) + the "
-                  "committed trio engine at Omega = 0 (engine.solver); "
+        "engine": "own RK4 Kirchhoff integrator (qhb.vortex) + the " +
+                  "committed trio engine at Omega = 0 (engine.solver); " +
                   "exact analytic corotating Jacobian",
         "project_version": __version__,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
@@ -286,24 +286,24 @@ def main():
                                       else "FAIL",
             "T12_invariant_wall": "PASS" if b3_ok else "FAIL",
             "T13_static_barrier": "PASS" if static_ok else "FAIL",
-            "T13_oscillating": "REPORTED (finite-time; the wall does "
+            "T13_oscillating": "REPORTED (finite-time; the wall does " +
                                "work — measured, honest complement)",
         },
         "honest_notes": [
-            "the vortex layer is implemented from the classical Kirchhoff "
-            "(1876) equations with the package's own code paths; the "
-            "invariants and the Aref (1979) manifold are classical "
+            "the vortex layer is implemented from the classical Kirchhoff " +
+            "(1876) equations with the package's own code paths; the " +
+            "invariants and the Aref (1979) manifold are classical " +
             "results re-derived and re-measured here, never imported",
-            "T11 is a statement about the committed toy models: the "
-            "Newtonian trio is unstable (T4), the vortex trio is "
-            "neutrally stable (T11) — the contrast is exact, its QCD "
+            "T11 is a statement about the committed toy models: the " +
+            "Newtonian trio is unstable (T4), the vortex trio is " +
+            "neutrally stable (T11) — the contrast is exact, its QCD " +
             "reading remains the marked hypothesis H4",
-            "T12 boundness is measured on the committed horizon t = 12 "
-            "on a measure-zero invariant manifold; the collapse "
+            "T12 boundness is measured on the committed horizon t = 12 " +
+            "on a measure-zero invariant manifold; the collapse " +
             "separatrix is classical (Aref 1979) and is NOT integrated",
-            "T13 is exact FOR THE COMMITTED SOFTENED ENGINE (the bound "
-            "uses the softened pair floor -3/sqrt(soft2)); at Omega > 0 "
-            "the wall does work, energy is not conserved, and the "
+            "T13 is exact FOR THE COMMITTED SOFTENED ENGINE (the bound " +
+            "uses the softened pair floor -3/sqrt(soft2)); at Omega > 0 " +
+            "the wall does work, energy is not conserved, and the " +
             "sealing stays the measured finite-time statement of C2/C7",
         ],
         "wall_s": time.time() - t0,

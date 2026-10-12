@@ -41,14 +41,14 @@ def main():
         "engine": "engine/solver.py — vectorised RK4 trio, early-escape freeze",
         "project_version": __version__,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
-        "units": "code units G = m = 1; softening eps^2 = 1e-2; dt = 2e-3; "
+        "units": "code units G = m = 1; softening eps^2 = 1e-2; dt = 2e-3; " +
                  "t_end = 12; R_esc = 12; wall R_b = 8, w = 1, p = 2",
         "ensemble": {"n_trials": N_TRIALS, "seed": 20261010,
                      "E_band": [-0.6, -0.05]},
         "gascheau": {**gascheau_verdict(),
                      "growth_rate_n": growth_rate_equal_masses(),
-                     "theorem": "T4 — equilateral solution unstable for "
-                                "equal masses (1/3 > 1/27); no static "
+                     "theorem": "T4 — equilateral solution unstable for " +
+                                "equal masses (1/3 > 1/27); no static " +
                                 "rigid triangle"},
     }
 
@@ -76,7 +76,7 @@ def main():
                       if g["V0"] == 0.0 and g["Omega"] == 0.0)
     verdict["T5_free_negative"] = {
         "P_esc_free": p_free, "E_drift_surv": drift_free,
-        "statement": "without the wall the Newtonian trio unbinds on the "
+        "statement": "without the wall the Newtonian trio unbinds on the " +
                      "committed ensemble — static gravity does not confine",
     }
 
@@ -98,9 +98,9 @@ def main():
     verdict["T6_trap"] = {
         "P_threshold": P_THRESHOLD,
         "V0_star_per_Omega": v0_star,
-        "honest_note": "P_esc drops from the free value to < 1/e already at "
-                       "the first nonzero V0 cell for every committed Omega; "
-                       "V0* is bounded above by the grid, not resolved inside "
+        "honest_note": "P_esc drops from the free value to < 1/e already at " +
+                       "the first nonzero V0 cell for every committed Omega; " +
+                       "V0* is bounded above by the grid, not resolved inside " +
                        "the first cell",
     }
 
@@ -113,8 +113,8 @@ def main():
                  "mean": float(lam_free.mean())},
         "trap_V08_Om2": {"median": float(np.median(lam_trap)),
                          "mean": float(lam_trap.mean())},
-        "statement": "the wall does not change the chaos (both exponents "
-                     "positive and comparable) — it changes the EXIT: "
+        "statement": "the wall does not change the chaos (both exponents " +
+                     "positive and comparable) — it changes the EXIT: " +
                      "bound chaos is the committed confinement picture",
     }
 
@@ -122,16 +122,16 @@ def main():
         "T4_gascheau": "UNSTABLE (exact)",
         "T5_free_escapes": "CONFIRMED (P_esc = "
                            f"{p_free:.4f})",
-        "T6_trap": "CONFIRMED (P_esc < 1e-4 at every committed V0 >= 0.4 "
+        "T6_trap": "CONFIRMED (P_esc < 1e-4 at every committed V0 >= 0.4 " +
                    "cell)" if all(g["P_esc"] < 1e-4 for g in grid
                                   if g["V0"] >= 0.4) else "CHECK",
     }
     verdict["honest_notes"] = [
-        "softening eps^2 = 1e-2 is a committed toy-model regularisation; "
+        "softening eps^2 = 1e-2 is a committed toy-model regularisation; " +
         "escape statistics, not micro-dynamics, are the observable",
-        "for V0 > 0 the wall does physical work: the energy-drift metric is "
+        "for V0 > 0 the wall does physical work: the energy-drift metric is " +
         "reported only on V0 = 0 runs",
-        "the toy model is NOT QCD; the confinement claim of the package is a "
+        "the toy model is NOT QCD; the confinement claim of the package is a " +
         "marked hypothesis about mechanism, not a derivation",
     ]
     verdict["wall_s"] = time.time() - t0

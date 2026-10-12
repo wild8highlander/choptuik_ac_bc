@@ -74,24 +74,24 @@ def main():
     t0 = time.time()
     verdict = {
         "campaign": "qhb_c7",
-        "engine": "engine/solver.py v1.1.0 — the same RK4 trio with the "
-                  "Cornell-like confining core U_conf = sigma * r_soft "
-                  "(backward compatible; sigma = 0 is byte-identical to "
+        "engine": "engine/solver.py v1.1.0 — the same RK4 trio with the " +
+                  "Cornell-like confining core U_conf = sigma * r_soft " +
+                  "(backward compatible; sigma = 0 is byte-identical to " +
                   "the committed v1.0.0 path)",
         "project_version": __version__,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
-        "units": "code units G = m = 1; softening eps^2 = 1e-2; dt = 2e-3; "
-                 "t_end = 12; R_esc = 12; wall R_b = 8, w = 1, p = 2; "
+        "units": "code units G = m = 1; softening eps^2 = 1e-2; dt = 2e-3; " +
+                 "t_end = 12; R_esc = 12; wall R_b = 8, w = 1, p = 2; " +
                  "sigma in units of the pair potential per code length",
-        "hypothesis_status": "MARKED HYPOTHESIS (engine-level) — the "
-                             "linear core is a Cornell-flux-tube TOY, not "
-                             "QCD; the Kepler anchor validates the engine "
+        "hypothesis_status": "MARKED HYPOTHESIS (engine-level) — the " +
+                             "linear core is a Cornell-flux-tube TOY, not " +
+                             "QCD; the Kepler anchor validates the engine " +
                              "only at sigma = 0",
         "ensemble": {"n_trials": N_TRIALS, "seed": 20261010,
                      "E_band": [-0.6, -0.05],
-                     "note": "the band is defined on the NEWTONIAN energy "
-                             "(sigma = 0); with sigma > 0 the total energy "
-                             "carries the sigma*r_soft shift — honest "
+                     "note": "the band is defined on the NEWTONIAN energy " +
+                             "(sigma = 0); with sigma > 0 the total energy " +
+                             "carries the sigma*r_soft shift — honest " +
                              "bookkeeping, the band is the selection rule"},
     }
 
@@ -111,7 +111,7 @@ def main():
     verdict["regression_gate"] = {
         "P_esc_sigma0": p_free, "P_esc_committed_c2": p_free_committed,
         "dev": regression_dev, "ok": regression_ok,
-        "statement": "the anchor is never re-fitted: the sigma extension "
+        "statement": "the anchor is never re-fitted: the sigma extension " +
                      "reproduces the C2 free-trio count exactly",
     }
 
@@ -178,13 +178,13 @@ def main():
         "P_threshold": P_SEAL,
         "V0_star_per_Omega_per_sigma": v0_star,
         "shrink_factors_Om0_to_Om2": shrink_factors,
-        "statement": "the wall boundary moves DOWN with the confining "
+        "statement": ("the wall boundary moves DOWN with the confining " +
                      "core: V0* shrinks by a factor "
-                     + ", ".join(f"{f:.1f} (Omega = {Om})"
+                     + ", ").join(f"{f:.1f} (Omega = {Om})"
                                  for Om, f in shrink_factors.items())
-                     + " as sigma goes 0 -> 0.02; beyond the grid core "
-                       "(sigma >= 0.05) the free trio is already sealed "
-                       "and NO wall is needed at all — the anharmonic "
+                     + " as sigma goes 0 -> 0.02; beyond the grid core " +
+                       "(sigma >= 0.05) the free trio is already sealed " +
+                       "and NO wall is needed at all — the anharmonic " +
                        "core replaces the oscillating wall of T6",
     }
 
@@ -194,8 +194,8 @@ def main():
         "n_trials": 100, "sigma": 0.02, "V0": 0.0, "Omega": 0.0,
         "median": float(np.median(lam_conf)), "mean": float(lam_conf.mean()),
         "share_positive": float((lam_conf > 0).mean()),
-        "statement": "with the flux tube sealing the trap and NO wall, the "
-                     "largest Lyapunov exponent stays positive — the "
+        "statement": "with the flux tube sealing the trap and NO wall, the " +
+                     "largest Lyapunov exponent stays positive — the " +
                      "anharmonic mirror of T6: confinement without order",
     }
     print(f"L3: lambda(sigma=0.02, V0=0) median = "
@@ -207,8 +207,8 @@ def main():
         "regression": "PASS" if regression_ok else "FAIL",
         "L1_leakage": "CONFIRMED (monotone, sigma* = "
                       f"{sigma_star})" if l1_monotone else "CHECK",
-        "L2_boundary_collapse": "CONFIRMED (V0* shrinks "
-                                + ", ".join(f"x{f:.1f}" for f in
+        "L2_boundary_collapse": ("CONFIRMED (V0* shrinks "
+                                + ", ").join(f"x{f:.1f}" for f in
                                             shrink_factors.values())
                                 + "; free trio sealed at sigma >= 0.05)"
                                 if boundary_ok else "CHECK",
@@ -217,18 +217,18 @@ def main():
                           if float(np.median(lam_conf)) > 0.1 else "CHECK",
     }
     verdict["honest_notes"] = [
-        "the linear core is a Cornell-like TOY of the flux tube, not QCD; "
+        "the linear core is a Cornell-like TOY of the flux tube, not QCD; " +
         "no claim is made about actual quark kinetics",
-        "with sigma > 0 the two-body Kepler anchor no longer applies (it "
-        "is a Newton-law anchor); the anharmonic runs carry an "
-        "ENGINE-LEVEL hypothesis mark, the only validation left is the "
+        "with sigma > 0 the two-body Kepler anchor no longer applies (it " +
+        "is a Newton-law anchor); the anharmonic runs carry an " +
+        "ENGINE-LEVEL hypothesis mark, the only validation left is the " +
         "sigma = 0 regression gate and the energy-drift report",
-        "the ensemble band is selected on the Newtonian energy; with "
-        "sigma > 0 the total energy is shifted by the sigma*r_soft term — "
+        "the ensemble band is selected on the Newtonian energy; with " +
+        "sigma > 0 the total energy is shifted by the sigma*r_soft term — " +
         "the selection rule is carried, the shift is not hidden",
-        "escape statistics at sigma > 0 measure FINITE-TIME leakage "
-        "(t_end = 12); with a linear term true asymptotic escape requires "
-        "infinite time — the toy confines in the t_end sense, honestly "
+        "escape statistics at sigma > 0 measure FINITE-TIME leakage " +
+        "(t_end = 12); with a linear term true asymptotic escape requires " +
+        "infinite time — the toy confines in the t_end sense, honestly " +
         "worded",
     ]
     verdict["wall_s"] = time.time() - t0

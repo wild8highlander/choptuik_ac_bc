@@ -44,7 +44,7 @@ for name, bm in (("A", (0,)), ("B", (1,)), ("C", (2,)), ("ABC", (0, 1, 2))):
 ok_even = all(v < 1e-12 for v in even_devs.values())
 
 ok = ok_none and ok_C and ok_even
-write_verdict("IVP10.json", {"check": "competing-model gates (doubled "
+write_verdict("IVP10.json", {"check": "competing-model gates (doubled " +
                              "resolution)",
                              "verdict": "PASS" if ok else "FAIL",
                              "B2_none_at_M3840": b2_none,

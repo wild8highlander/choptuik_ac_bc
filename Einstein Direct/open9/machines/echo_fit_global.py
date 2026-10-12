@@ -78,7 +78,7 @@ def gamma_percentile(dA, M, p_mass=50, n_boot=400, seed=SEED):
     """Перцентильный фит: только массы >= p_mass-перцентиля (пол-додж),
     ОЛС по ним; бутстрап-CI (детерминированный сид)."""
     thr = np.percentile(M, p_mass)
-    sel = M >= thr
+    sel = thr <= M
     ld, lm = np.log(dA[sel]), np.log(M[sel])
     g0 = gamma_ols(ld, lm)
     rng = np.random.default_rng(seed)
@@ -107,11 +107,11 @@ def selftest():
          (abs(g_pct["gamma"] - A_gamma_true) < 0.2 * A_gamma_true)
     return {
         "gamma_true": A_gamma_true,
-        "floor_share_clamped": float(np.mean(M <= floor * 1.001)),
+        "floor_share_clamped": float(np.mean(floor * 1.001 >= M)),
         "gamma_ols_polluted": g_ols,
         "gamma_percentile": g_pct,
         "method_ok": bool(ok),
-        "note": "пол связывает ~35% нижних масс: ОЛС тянет гамму вниз; "
+        "note": "пол связывает ~35% нижних масс: ОЛС тянет гамму вниз; " +
                 "перцентильный фит dodжает пол и восстанавливает гамму",
     }
 
@@ -148,7 +148,7 @@ def g2_repo_data():
     out["gamma_ols_all"] = gamma_ols(np.log(dA), np.log(M))
     # диагностика пола: нижняя половина масс должна быть ПЛОСКОЙ по dA
     med = np.median(M)
-    low = M < med
+    low = med > M
     out["gamma_low_mass_subset"] = gamma_ols(np.log(dA[low]),
                                              np.log(M[low])) \
         if low.sum() >= 3 else None
@@ -166,10 +166,10 @@ def g2_repo_data():
     p70 = out["gamma_percentile_p70"]
     ciw = p70["ci95"][1] - p70["ci95"][0]
     out["verdict_short"] = (
-        "ОЛС по всем: %.3f; нижняя половина масс ПЛОСКАЯ (slope %.3f, "
-        "медианы low/high = %.3f) — пол доминирует; перцентиль p70: "
-        "%.2f с CI шириной %.1f (n=%d) — гамма НЕ отделяется"
-        % (out["gamma_ols_all"], out["gamma_low_mass_subset"] or float("nan"),
+        ("ОЛС по всем: {:.3f}; нижняя половина масс ПЛОСКАЯ (slope {:.3f}, " +
+        "медианы low/high = {:.3f}) — пол доминирует; перцентиль p70: " +
+        "{:.2f} с CI шириной {:.1f} (n={}) — гамма НЕ отделяется")
+        .format (out["gamma_ols_all"], out["gamma_low_mass_subset"] or float("nan"),
            out["floor_dominance"]["ratio_low_over_high"],
            p70["gamma"], ciw, p70["n_used"]))
     return out
@@ -184,10 +184,10 @@ def g3_delta():
         "Delta_lit": DELTA_LIT,
         "Delta_cyc_6ln_16_9": float(DELTA_CYC),
         "deviation_pct": dev_pct,
-        "status": "НЕ переизмеряется: tau-rows сохранённых кампаний пусты "
+        "status": "НЕ переизмеряется: tau-rows сохранённых кампаний пусты " +
                   "(v5-стена); требуется z >= 30 (honest notes annulus)",
-        "verdict_short": "Delta_lit = 3.44 vs Delta_cyc = 3.4522: расхождение "
-                         "0.35% — на процентном уровне согласованы; "
+        "verdict_short": "Delta_lit = 3.44 vs Delta_cyc = 3.4522: расхождение " +
+                         "0.35% — на процентном уровне согласованы; " +
                          "переизмерение заблокировано стеной глубины",
     }
 
@@ -204,23 +204,22 @@ def g4_gate():
         except Exception as e:  # noqa: BLE001
             return {"available": False, "error": str(e),
                     "gated": True,
-                    "text": "q7 JSON не читается: %s" % e}
+                    "text": "q7 JSON не читается: {}".format(e)}
         growing = mode.startswith("growing")
         return {
             "available": True,
             "q7_mode": mode,
             "gated": growing,
-            "text": ("Q7: 1/r-мода РАСТЁТ (%s) -> перцентильная гамма "
-                     "ЗАГРЯЗНЕНА сверху: процентная гамма требует "
-                     "подавления моды (gauge/вычитание), не только пола"
-                     % mode if growing else
-                     "Q7: M1 на мусорном полу (%s) -> перцентильная гамма "
-                     "легальна в пределах глубины z <= 9.35 (пол масс, "
-                     "не мода, лимитирует снизу)" % mode),
+            "text": (("Q7: 1/r-мода РАСТЁТ ({}) -> перцентильная гамма " +
+                     "ЗАГРЯЗНЕНА сверху: процентная гамма требует " +
+                     "подавления моды (gauge/вычитание), не только пола").format(mode) if growing else
+                     ("Q7: M1 на мусорном полу ({}) -> перцентильная гамма " +
+                     "легальна в пределах глубины z <= 9.35 (пол масс, " +
+                     "не мода, лимитирует снизу)").format(mode)),
         }
     return {"available": False, "gated": True,
-            "text": "q7_m1_tracker.json отсутствует — ворота ЗАКРЫТЫ: "
-                    "оценки G2 считать ПРОБНЫМИ; перезапустить Q3 после Q7 "
+            "text": "q7_m1_tracker.json отсутствует — ворота ЗАКРЫТЫ: " +
+                    "оценки G2 считать ПРОБНЫМИ; перезапустить Q3 после Q7 " +
                     "(dependency graph: #3 зависит от #7)"}
 
 
@@ -233,49 +232,47 @@ def run():
     print("OPEN9-Q3: процентный (gamma, Delta) — глобальный фит")
     print("=" * 72, flush=True)
     out = {
-        "title": "OPEN9-Q3 (v19): процентный gamma/Delta — перцентильные "
+        "title": "OPEN9-Q3 (v19): процентный gamma/Delta — перцентильные " +
                  "оценщики + ворота Q7",
         "question": "достижим ли процентный gamma/Delta? (монография гл.7 №3)",
         "predictions": {
-            "G1": "на синтетике с полом ОЛС занижает гамму, перцентиль "
+            "G1": "на синтетике с полом ОЛС занижает гамму, перцентиль " +
                   "восстанавливает",
-            "G2": "воспроизвести gamma ~ 0.11±0.11 ОЛС-диагноз пола и дать "
+            "G2": "воспроизвести gamma ~ 0.11±0.11 ОЛС-диагноз пола и дать " +
                   "перцентильную альтернативу",
             "G4": "вердикт подчинён воротам Q7 (1/r-мода)",
         },
     }
     print("  [G1] самотест метода...", flush=True)
     out["G1_selftest"] = selftest()
-    print("    method_ok = %s (OLS %.3f vs pct %.3f)" %
-          (out["G1_selftest"]["method_ok"],
+    print("    method_ok = {} (OLS {:.3f} vs pct {:.3f})".format(out["G1_selftest"]["method_ok"],
            out["G1_selftest"]["gamma_ols_polluted"],
            out["G1_selftest"]["gamma_percentile"]["gamma"]), flush=True)
     print("  [G2] данные репозитория...", flush=True)
     out["G2_repo"] = g2_repo_data()
-    print("    %s" % out["G2_repo"]["verdict_short"], flush=True)
+    print("    {}".format(out["G2_repo"]["verdict_short"]), flush=True)
     print("  [G3] Delta...", flush=True)
     out["G3_delta"] = g3_delta()
-    print("    %s" % out["G3_delta"]["verdict_short"], flush=True)
+    print("    {}".format(out["G3_delta"]["verdict_short"]), flush=True)
     print("  [G4] ворота Q7...", flush=True)
     out["G4_gate"] = g4_gate()
-    print("    %s" % out["G4_gate"]["text"], flush=True)
+    print("    {}".format(out["G4_gate"]["text"]), flush=True)
 
     gate = out["G4_gate"]
     st = out["G1_selftest"]
     out["verdict_lines"] = [
-        "метод (самотест): %s — на синтетике с полом ОЛС даёт %.3f против "
-        "истинной 0.374, перцентильный фит %.3f (CI %s) — проценты "
-        "работают там, где средние лгут"
-        % ("ПРОЙДЕН" if st["method_ok"] else "ПРОВАЛЕН",
+        ("метод (самотест): {} — на синтетике с полом ОЛС даёт {:.3f} против " +
+        "истинной 0.374, перцентильный фит {:.3f} (CI {}) — проценты " +
+        "работают там, где средние лгут").format("ПРОЙДЕН" if st["method_ok"] else "ПРОВАЛЕН",
            st["gamma_ols_polluted"],
            st["gamma_percentile"]["gamma"],
-           "[%0.3f, %0.3f]" % tuple(st["gamma_percentile"]["ci95"])),
-        "данные репо: ОЛС-гамма %.3f на n=%d (после фильтра %d нефизичных "
-        "захватов); нижняя половина масс ПЛОСКАЯ (slope %.3f) и медианы "
-        "low/high различаются в %.2f — пол доминирует над всей выборкой; "
-        "перцентиль p70: %.2f, CI ширины %.1f (n=%d) — гамма НЕ отделяется "
-        "на этих данных"
-        % (out["G2_repo"]["gamma_ols_all"],
+           "[{:0.3f}, {:0.3f}]".format(*tuple(st["gamma_percentile"]["ci95"]))),
+        ("данные репо: ОЛС-гамма {:.3f} на n={} (после фильтра {} нефизичных " +
+        "захватов); нижняя половина масс ПЛОСКАЯ (slope {:.3f}) и медианы " +
+        "low/high различаются в {:.2f} — пол доминирует над всей выборкой; " +
+        "перцентиль p70: {:.2f}, CI ширины {:.1f} (n={}) — гамма НЕ отделяется " +
+        "на этих данных")
+        .format (out["G2_repo"]["gamma_ols_all"],
            out["G2_repo"]["n_supercritical_used"],
            out["G2_repo"]["n_outliers_filtered"],
            out["G2_repo"]["gamma_low_mass_subset"],
@@ -284,26 +281,26 @@ def run():
            out["G2_repo"]["gamma_percentile_p70"]["ci95"][1] -
            out["G2_repo"]["gamma_percentile_p70"]["ci95"][0],
            out["G2_repo"]["gamma_percentile_p70"]["n_used"]),
-        "Delta: %s" % out["G3_delta"]["verdict_short"],
-        "ворота Q7: %s" % gate["text"],
-        "ИТОГ: статус вопроса — ОТКРЫТ; перцентильные оценщики ДОСТАВЛЕНЫ "
-        "и самотестированы; численная гамма остаётся ПОЛ-ограниченной "
-        "(%s) до новых данных (z >= 30, подавление 1/r-моды)"
+        "Delta: {}".format(out["G3_delta"]["verdict_short"]),
+        "ворота Q7: {}".format(gate["text"]),
+        ("ИТОГ: статус вопроса — ОТКРЫТ; перцентильные оценщики ДОСТАВЛЕНЫ " +
+        "и самотестированы; численная гамма остаётся ПОЛ-ограниченной " +
+        "(%s) до новых данных (z >= 30, подавление 1/r-моды)")
         % ("загрязнение модой возможно" if gate.get("gated") else
            "пол масс, не мода"),
     ]
     out["honest_notes"] = [
-        "выборка bisect_history мала (n=%d после фильтров) и А-значения "
-        "кластеризуются у A* (бисекция): CI бутстрапа отражает разброс "
-        "фита, не систематику семейства" %
-        out["G2_repo"]["n_supercritical_used"],
-        "пол M ~ 4*du здесь не измерен напрямую (n сетки не записан в "
-        "JSON): диагноз пола — по плоской нижней половине масс "
+        ("выборка bisect_history мала (n={} после фильтров) и А-значения " +
+        "кластеризуются у A* (бисекция): CI бутстрапа отражает разброс " +
+        "фита, не систематику семейства") .format
+        (out["G2_repo"]["n_supercritical_used"]),
+        "пол M ~ 4*du здесь не измерен напрямую (n сетки не записан в " +
+        "JSON): диагноз пола — по плоской нижней половине масс " +
         "(gamma_low_mass_subset)",
-        "массы M_AH — горизонта-замороженные: их связь с M* финальной "
-        "чёрной дыры опосредована (см. M_AH_frozen = 0 в annulus runs) — "
+        "массы M_AH — горизонта-замороженные: их связь с M* финальной " +
+        "чёрной дыры опосредована (см. M_AH_frozen = 0 в annulus runs) — " +
         "оценки читать как нижний уровень доказательности",
-        "ворота Q7 односторонние: рост M1 ЗАГРЯЗНЯЕТ гамму сверху; "
+        "ворота Q7 односторонние: рост M1 ЗАГРЯЗНЯЕТ гамму сверху; " +
         "отсутствие роста не гарантирует процентной точности (стена z)",
     ]
     out["runtime_s"] = time.time() - t0

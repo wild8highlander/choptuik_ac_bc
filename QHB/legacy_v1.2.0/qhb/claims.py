@@ -89,7 +89,7 @@ def main():
     for st in STATUSES:
         print(f"  {st:17s} {counts.get(st, 0)}")
     if ok:
-        print("validation: PASS (schema, statuses, verdict addresses, "
+        print("validation: PASS (schema, statuses, verdict addresses, " +
               "uncertainty budgets, falsification criteria)")
         return 0
     print("validation: FAIL")

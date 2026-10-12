@@ -59,7 +59,7 @@ SEED = 2207  # 22 = b₂(K3), 7 = порядок в PSL(2,7)
 C_K3_MEASURED = 0.04018
 C_K3_EXTENDED = 0.04017757639214903
 
-OUT = {}
+OUT: dict[str, object] = {}
 
 
 def hdr(s):
@@ -311,7 +311,7 @@ def main():
 
     OUT.update({"lattice": lattice, "dsi1": dsi1, "dsi2": dsi2, "dsi3": dsi3,
                 "measured": {"monograph": C_K3_MEASURED, "extended": C_K3_EXTENDED},
-                "verdict": "c_K3 = b_Ch(λ_DSI)(1+O(γ)+O(window)); "
+                "verdict": "c_K3 = b_Ch(λ_DSI)(1+O(γ)+O(window)); " +
                            "последний эмпирический вход замкнут на ведущем порядке"})
 
     out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),

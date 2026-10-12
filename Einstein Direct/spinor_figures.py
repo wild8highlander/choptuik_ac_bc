@@ -34,7 +34,7 @@ pq_reg = mp["regular_v3"]["inner_ring"]["pq_even"]
 
 L = {
     "ru": {
-        "title1": "Спинорный сектор центра: чётная добавка (p+q)\n"
+        "title1": "Спинорный сектор центра: чётная добавка (p+q)\n" +
                   "внутреннее кольцо, v = 0.55, A = 0.075",
         "x1": ["клэмп v2\n(t=s, спинорный\nсектор убит)",
                "regular v3\n(связка наклонов\ns$_1$−t$_1$ = −2a)"],
@@ -49,7 +49,7 @@ L = {
         "file": "fig_spinor.png",
     },
     "en": {
-        "title1": "Spinor sector of the center: even part of (p+q)\n"
+        "title1": "Spinor sector of the center: even part of (p+q)\n" +
                   "inner ring, v = 0.55, A = 0.075",
         "x1": ["clamp v2\n(t=s, spinor\nsector killed)",
                "regular v3\n(slope link\ns$_1$−t$_1$ = −2a)"],
@@ -97,7 +97,7 @@ for lang, T in L.items():
     ax2.grid(axis="y", alpha=0.3)
     ax2.text(0.98, 0.95, T["ann"], transform=ax2.transAxes, ha="right",
              va="top", fontsize=9.5,
-             bbox=dict(boxstyle="round", fc="#f2f2f2", ec="grey"))
+             bbox={"boxstyle": "round", "fc": "#f2f2f2", "ec": "grey"})
     out = FIG_RU if lang == "ru" else FIG_EN
     fig.savefig(os.path.join(out, T["file"]), dpi=300)
     plt.close(fig)

@@ -126,8 +126,8 @@ def fig_dsi_closure():
     ax.axhline(ratio_meas, color=C_WARM, lw=1.6, ls="--")
     ax.text(9.9, ratio_meas - 0.55, f"измерено/голая = {ratio_meas:.2f}%",
             color=C_WARM, fontsize=9, fontweight="bold",
-            bbox=dict(facecolor="white", edgecolor=C_WARM, alpha=0.9,
-                      boxstyle="round,pad=0.25"))
+            bbox={"facecolor": "white", "edgecolor": C_WARM, "alpha": 0.9,
+                      "boxstyle": "round,pad=0.25"})
     ax.set_xlabel("длина окна измерения, N_res (циклов DSI)")
     ax.set_ylabel("восстановленная / голая амплитуда, %")
     ax.set_title("(c) Систематика окна измерения", color=C_MAIN)
@@ -152,7 +152,7 @@ def fig_stability_lemma():
 
     # --- (a) F_min/n против n -------------------------------------------------
     ax = axes[0]
-    ns = sorted(int(k) for k in num.keys())
+    ns = sorted(int(k) for k in num)
     fmin_n = [num[str(n)]["per_dim"] for n in ns]
     ax.plot(ns, fmin_n, "o", color=C_MAIN, ms=7, label="численный минимум F_min/n")
     ax.axhline(5 / 7, color=C_ACC, lw=1.8,
@@ -168,7 +168,7 @@ def fig_stability_lemma():
 
     # --- (b) софический профиль F₂ --------------------------------------------
     ax = axes[1]
-    Ns = sorted(int(k) for k in sofic.keys())
+    Ns = sorted(int(k) for k in sofic)
     mins = [100 * sofic[str(N)]["min_hamming"] for N in Ns]
     ax.plot(Ns, mins, "s-", color=C_ACC, lw=1.8, ms=7,
             label="min Hamming(w)/N, слова ≤ 6")
@@ -394,7 +394,7 @@ def fig_transfer_map():
             f.write(_HTML)
         print("[SKIP] fig_transfer_map.png — модуль playwright не установлен;")
         print("       HTML-заготовка сохранена:", html_path)
-        print("       Чтобы собрать PNG: pip install playwright"
+        print("       Чтобы собрать PNG: pip install playwright" +
               " && playwright install chromium")
         return
     with sync_playwright() as p:

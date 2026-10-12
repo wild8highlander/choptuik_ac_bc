@@ -159,8 +159,8 @@ def fit_slowdown(rows):
     b, a, r2, err = linfit(x, y)
     return {"slope_ln_eps": b, "intercept": a, "r2": r2, "slope_err": err,
             "n_points": len(x),
-            "honest_note": ("fixed grid, 40 compactness samples per run; the "
-                            "slowdown is the DSS logarithmic approach only in "
+            "honest_note": ("fixed grid, 40 compactness samples per run; the " +
+                            "slowdown is the DSS logarithmic approach only in " +
                             "the near-critical band")}
 
 
@@ -175,8 +175,8 @@ def fit_echo_rate(rows):
     b, a, r2, err = linfit(x, y)
     return {"echoes_per_efold": b, "intercept": a, "r2": r2, "err": err,
             "n_points": len(x),
-            "honest_note": ("40 compactness samples per run bound the countable "
-                            "echoes; 1/Delta ~ 0.29 is the anchor for "
+            "honest_note": ("40 compactness samples per run bound the countable " +
+                            "echoes; 1/Delta ~ 0.29 is the anchor for " +
                             "comparison, never a fit target")}
 
 
@@ -229,7 +229,7 @@ def bifurcation_summary(rows):
         "M_sat_reference_N400": 0.0794,   # C1 committed cross-check, not an input
         "eps_half": eps_half,
         "f_tilde_min_below_1e2": f_min,
-        "honest_note": ("the exponent fit is C3's committed measurement; C2 "
+        "honest_note": ("the exponent fit is C3's committed measurement; C2 " +
                         "commits the SHAPE (f~ table, eps_half) only"),
     }
 
@@ -306,14 +306,14 @@ def main():
             "summary": bif,
         },
         "honest_notes": {
-            "sampling": ("q(v) is sampled by 40 engine snapshots per run; "
+            "sampling": ("q(v) is sampled by 40 engine snapshots per run; " +
                          "peak counts and v_qmax carry that sampling step"),
-            "gamma": ("the mass-scaling exponent is deliberately NOT re-fit "
+            "gamma": ("the mass-scaling exponent is deliberately NOT re-fit " +
                       "here — C3 owns that committed measurement"),
-            "flipped": ("subcritical runs that formed an apparent horizon are "
-                        "kept verbatim with flipped=true (A*_800 is a fixed-"
+            "flipped": ("subcritical runs that formed an apparent horizon are " +
+                        "kept verbatim with flipped=true (A*_800 is a fixed-" +
                         "grid quantity; the closest eps can cross it)"),
-            "junk": ("supercritical rows with overflowing masses are kept "
+            "junk": ("supercritical rows with overflowing masses are kept " +
                      "with sane=false, never dropped"),
         },
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),

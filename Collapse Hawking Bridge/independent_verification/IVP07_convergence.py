@@ -81,10 +81,7 @@ def main():
 
     log("\n[B] verifier-determined convergence order")
     for a, b in zip(rows[:-1], rows[1:]):
-        if b["err_r"] > 0:
-            p = math.log2(a["err_r"] / b["err_r"])
-        else:
-            p = float("inf")
+        p = math.log2(a["err_r"] / b["err_r"]) if b["err_r"] > 0 else float("inf")
         b["p_r"] = p
         log(f"    N {a['n']:>4} -> {b['n']:<4} p_r = {p:.3f}")
 
@@ -111,7 +108,7 @@ def main():
                 "n": c["n"],
                 "committed_err_r": c["err_r"], "ivp_err_r": mine["err_r"],
                 "committed_p": c.get("convergence_order_r"),
-                "note": "windows differ (verifier sigma/window are own choice); "
+                "note": "windows differ (verifier sigma/window are own choice); " +
                         "comparison is order-and-magnitude only",
             })
             log(f"    N={c['n']}: committed err_r = {c['err_r']:.3e}, "

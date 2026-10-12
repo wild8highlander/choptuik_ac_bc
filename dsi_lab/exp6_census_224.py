@@ -220,8 +220,8 @@ def part_A():
     G, orders, count_by_order = build_group()
     n = len(G)
     print(f"  |G| = {n}  (ожидается 168)")
-    print("  элементы по порядкам: " +
-          ", ".join(f"ord {k}: {count_by_order[k]}" for k in sorted(count_by_order)))
+    print(("  элементы по порядкам: " +
+          ", ").join(f"ord {k}: {count_by_order[k]}" for k in sorted(count_by_order)))
     H3s = cyclic_subgroups(G, orders, 3)
     H2s = cyclic_subgroups(G, orders, 2)
     H7s = cyclic_subgroups(G, orders, 7)
@@ -416,8 +416,8 @@ def part_C():
         k_m1, k_m2 = k, k_m1
     census_convs = [(h, k) for h, k in convs if k > 1 and is_census(k)]
     print(f"  цепная дробь: {cf[:8]}…")
-    print("  переписные подходящие дроби: " +
-          ", ".join(f"{h}/{k}" for h, k in census_convs))
+    print(("  переписные подходящие дроби: " +
+          ", ").join(f"{h}/{k}" for h, k in census_convs))
     verdict = (len(uniq) == 1 and "9/224" in uniq
                and len(uniq001) == 1 and "9/224" in uniq001
                and set((h, k) for h, k in census_convs) == {(1, 24), (9, 224)})
@@ -443,7 +443,7 @@ def part_D():
     for t in TOWER:
         g = t["g"]
         G = t["aut"]
-        assert G == 84 * (g - 1)
+        assert 84 * (g - 1) == G
         V = 28 * (g - 1)
         F = 12 * (g - 1)
         N = 14 * (g - 1)

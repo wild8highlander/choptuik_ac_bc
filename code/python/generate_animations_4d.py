@@ -57,6 +57,7 @@ from qcd_bridge_engine import (
     cp_solution_chain,
     kappa_T_sweep,
 )
+import contextlib
 
 OUTPUT_DIR = Path("/home/z/my-project/choptuik_ac_bc/qcd_bridge/animations")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -92,10 +93,8 @@ def _style_ax(ax, title: str, xlabel: str, ylabel: str, zlabel: str):
     ax.yaxis.label.set_color(PALETTE["secondary"])
     ax.zaxis.label.set_color(PALETTE["secondary"])
     ax.tick_params(colors=PALETTE["secondary"])
-    try:
+    with contextlib.suppress(Exception):
         ax.set_facecolor(PALETTE["bg"])
-    except Exception:
-        pass
 
 
 def _save_anim(anim, name: str) -> dict[str, str]:

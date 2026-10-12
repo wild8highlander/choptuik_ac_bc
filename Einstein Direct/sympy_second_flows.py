@@ -373,14 +373,14 @@ def campaign_point(kv, label):
 def main() -> None:
     results = {
         "title": "Second flows as limit-cycle variables (O6+ campaign, session 17)",
-        "question": ("does the de-adiabatized source dynamics produce a true "
-                     "oscillatory mode and a monodromy residue delta_mono != 0 "
-                     "(the tower's 'B-violation')? is it the same residue as "
+        "question": ("does the de-adiabatized source dynamics produce a true " +
+                     "oscillatory mode and a monodromy residue delta_mono != 0 " +
+                     "(the tower's 'B-violation')? is it the same residue as " +
                      "the phantom Im lambda gap ~2.9% to pi/30?"),
-        "method": ("de-adiabatized tables W2''/R3''/P4'' with dd-slots "
-                   "(coefficient 1, ddQ precedent); true quadratic pencil "
-                   "M(lam) = Ja + lam Jv P + lam^2 J2 P2 (18x9); candidates "
-                   "from det(M^T M) deg 36 companion; sigma_min filter "
+        "method": ("de-adiabatized tables W2''/R3''/P4'' with dd-slots " +
+                   "(coefficient 1, ddQ precedent); true quadratic pencil " +
+                   "M(lam) = Ja + lam Jv P + lam^2 J2 P2 (18x9); candidates " +
+                   "from det(M^T M) deg 36 companion; sigma_min filter " +
                    "rel < 1e-8 (session-14 protocol); delta_mono = sigma*Delta"),
     }
     pts = []

@@ -219,8 +219,8 @@ def main():
         VERDICT["scaling_fit"] = {
             "gamma": float(gamma), "gamma_err": gamma_err, "C": float(C),
             "r2": r2, "n_points": len(fit_rows), "grid": "N=800",
-            "comment": ("fixed-grid floor pollutes the smallest eps; the fit is an "
-                        "HONEST measurement at campaign resolution, compared with "
+            "comment": ("fixed-grid floor pollutes the smallest eps; the fit is an " +
+                        "HONEST measurement at campaign resolution, compared with " +
                         "gamma_Ch = 0.374 and b_Ch = 0.37651 as anchors, not targets"),
         }
         print(f"      fit: gamma = {gamma:.3f} +- {gamma_err:.3f}  (r2 = {r2:.3f}, "
@@ -232,19 +232,19 @@ def main():
         "saturated_runs_N400": len(sat),
         "junk_rows_total": len(junk),
         "junk_examples": [{"A": r["A"], "M_raw": r["M_code"]} for r in junk[:4]],
-        "mass_floor": ("the fixed grid produces a resolution mass floor; "
-                       "smallest resolved masses are floor-dominated and the "
-                       "fixed-grid gamma is NOT percent-measurable — "
+        "mass_floor": ("the fixed grid produces a resolution mass floor; " +
+                       "smallest resolved masses are floor-dominated and the " +
+                       "fixed-grid gamma is NOT percent-measurable — " +
                        "reproduced here at N=400/800 (see campaign C3)"),
-        "a_star_convergence": ("A*_N ladder committed as the grid-honesty "
-                               "table; the threshold DRIFTS with resolution "
-                               "(not converged at N=800): the remediated "
-                               "high-precision reference ladder is committed "
-                               "in a_star_ladder.{json,csv} (N=200..3200); "
-                               "in particular A*_N1600 = 0.0777437258, i.e. "
-                               "the N800-vs-N1600 drift is 2.79e-3 — the "
-                               "stale 2.0.0 claim of a 1.06e-6 agreement with "
-                               "a 0.0805333 reference was WRONG (audit "
+        "a_star_convergence": ("A*_N ladder committed as the grid-honesty " +
+                               "table; the threshold DRIFTS with resolution " +
+                               "(not converged at N=800): the remediated " +
+                               "high-precision reference ladder is committed " +
+                               "in a_star_ladder.{json,csv} (N=200..3200); " +
+                               "in particular A*_N1600 = 0.0777437258, i.e. " +
+                               "the N800-vs-N1600 drift is 2.79e-3 — the " +
+                               "stale 2.0.0 claim of a 1.06e-6 agreement with " +
+                               "a 0.0805333 reference was WRONG (audit " +
                                "finding F-1 / IVP-09) and is retracted"),
     }
 

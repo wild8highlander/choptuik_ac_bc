@@ -141,7 +141,7 @@ def main():
     save_result("IVP12", {
         "status": status,
         "pre_registered": {
-            "method": "floor_M(N) from verifier-own scans + direct probes; "
+            "method": "floor_M(N) from verifier-own scans + direct probes; " +
                       "two fits (C/N and C/N^p)",
             "criterion": "measured exponent p in [0.7, 1.3]",
         },

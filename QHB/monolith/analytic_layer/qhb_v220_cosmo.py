@@ -118,7 +118,7 @@ res["P_C2_survival_integral"] = {
         "hot_fraction": float(LAM_hot_half / LAM_TC),
         "density_peak_T_star": float(T_star),
         "T_star_over_Tc": float(T_star / TC),
-        "note": "плотность T^{-3} e^{-B/T} монотонно растет до T*=B/3 и падает после; "
+        "note": "плотность T^{-3} e^{-B/T} монотонно растет до T*=B/3 и падает после; " +
                 "вклад диапазона [T_c/2, T_c] доминирует, вклад у T_death ~ e^{-L} пренебрежим",
     },
     "falsifier": "измеренный бюджет активации, доминируемый холодным концом остывания",
@@ -146,7 +146,7 @@ res["P_C3_dynamic_deadline"] = {
     "t_lim_at_Tc": mp.nstr(t_lim(TC), 8),
     "N_independent": True,
     "rows": tlim_rows,
-    "note": "холодный член в скобках ~ e^{-L_N} — дедлайн определяется горячим концом; "
+    "note": "холодный член в скобках ~ e^{-L_N} — дедлайн определяется горячим концом; " +
             "t_lim не зависит от бюджета N: бюджет набирается временем, а не числом попыток",
     "falsifier": "выживание сектора при отцеплении с термализацией t_dec >> t_lim",
 }
@@ -165,7 +165,7 @@ for mlt in (1, 1.2, 1.5, 2, 4, 10, float(TC / TD12)):
 res["P_C4_stall_cliff"] = {
     "formula": "tau_max(T_floor) = eps_H e^{B0/T_floor} / nu",
     "rows": cliff_rows,
-    "note": "остановка у T_death безопасна ~1e24 единиц; остановка у T_c гибельна за 5.9e-11 — "
+    "note": "остановка у T_death безопасна ~1e24 единиц; остановка у T_c гибельна за 5.9e-11 — " +
             "опасность сосредоточена у горячего конца (согласуется с P-C2)",
     "N_death_inverse": {"formula": "N_death(T) = (eps_H/nu) e^{B0/T}",
                         "at_Tc": mp.nstr(EPS_H * mp.e ** (B0 / TC) / NU, 6),

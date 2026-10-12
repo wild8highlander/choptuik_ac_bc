@@ -10,19 +10,18 @@ Usage:
 
 import argparse
 import json
-import sys
-import os
-from pathlib import Path
 import logging
+import sys
+from pathlib import Path
 
 # Ensure src is importable
 sys.path.insert(0, str(Path(__file__).parent))
 
-from src.verification.verify_all import VerificationSuite
-from src.simulation.simulator import Simulator
-from src.visualization.plots import PlotGenerator
 from src.reporting.report_writer import ReportWriter
+from src.simulation.simulator import Simulator
 from src.ui.interactive_menu import InteractiveMenu
+from src.verification.verify_all import VerificationSuite
+from src.visualization.plots import PlotGenerator
 
 
 def setup_logging(output_dir: str, level: str = "INFO"):
@@ -46,18 +45,16 @@ def run_non_interactive(args):
     setup_logging(output_dir)
 
     # Load config if provided
-    config = {}
     if args.config:
         with open(args.config) as f:
-            config = json.load(f)
+            json.load(f)
 
     # Load preset if provided
-    preset = {}
     if args.preset:
         preset_file = Path(__file__).parent / "presets" / f"{args.preset}.json"
         if preset_file.exists():
             with open(preset_file) as f:
-                preset = json.load(f)
+                json.load(f)
 
     # Create output directory
     out = Path(output_dir)
@@ -83,7 +80,7 @@ def run_non_interactive(args):
     report_paths = writer.generate_all(results, logs)
 
     # Save raw results
-    with open(out / "results.json", 'w', encoding='utf-8') as f:
+    with open(out / "results.json", "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2, default=str)
 
     logging.info(f"Output saved to: {out}")
@@ -95,18 +92,25 @@ def main():
     parser = argparse.ArgumentParser(
         description="Choptyuk Spinor Corrections - Verification & Simulation"
     )
-    parser.add_argument("--mode", choices=["verify", "simulate", "interactive"],
-                        default="interactive", help="Run mode")
-    parser.add_argument("--non-interactive", action="store_true",
-                        help="Run without interactive prompts")
-    parser.add_argument("--output-dir", default="output",
-                        help="Output directory")
-    parser.add_argument("--config", default=None,
-                        help="Path to configuration JSON")
-    parser.add_argument("--preset", default=None,
-                        help="Preset name (standard, high_precision, ligo_analysis)")
-    parser.add_argument("--log-level", default="INFO",
-                        choices=["DEBUG", "INFO", "WARNING", "ERROR"])
+    parser.add_argument(
+        "--mode",
+        choices=["verify", "simulate", "interactive"],
+        default="interactive",
+        help="Run mode",
+    )
+    parser.add_argument(
+        "--non-interactive", action="store_true", help="Run without interactive prompts"
+    )
+    parser.add_argument("--output-dir", default="output", help="Output directory")
+    parser.add_argument("--config", default=None, help="Path to configuration JSON")
+    parser.add_argument(
+        "--preset",
+        default=None,
+        help="Preset name (standard, high_precision, ligo_analysis)",
+    )
+    parser.add_argument(
+        "--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR"]
+    )
 
     args = parser.parse_args()
 
@@ -118,7 +122,9 @@ def main():
             stdin_is_tty = False
         if not stdin_is_tty:
             args.non_interactive = True
-            print("(stdin is not a terminal — switching to non-interactive verify mode)")
+            print(
+                "(stdin is not a terminal — switching to non-interactive verify mode)"
+            )
 
     if args.non_interactive or args.mode != "interactive":
         run_non_interactive(args)

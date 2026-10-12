@@ -225,7 +225,7 @@ def main():
         "status": status,
         "pre_registered": {
             "cross_twin_tol": 1e-11,
-            "verifier_ref_tol": "5e-7 for 6-7-digit printed fields (printf "
+            "verifier_ref_tol": "5e-7 for 6-7-digit printed fields (printf " +
                                 "budget), 1e-11 for 12+-digit fields",
             "note": "toolchain-absent twins are INCONCLUSIVE, never skipped",
         },

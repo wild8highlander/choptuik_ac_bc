@@ -177,7 +177,7 @@ def main():
 
     verdict = {
         "campaign": "qhb_c10",
-        "engine": "the committed G-model with per-sector amplitude masks "
+        "engine": "the committed G-model with per-sector amplitude masks " +
                   "(no new parameters; the masks ARE the competing models)",
         "project_version": __version__,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
@@ -193,33 +193,33 @@ def main():
             "Q2_braking_only_invisible": {"B2_none": B2_none, "ok": q2_ok},
             "Q3_additivity": {"rows": add, "max_cross_share": max_cross,
                               "ok": q3_ok},
-            "Q4_forecast": {"status": "REPORTED — the out-of-window "
+            "Q4_forecast": {"status": "REPORTED — the out-of-window " +
                                        "failure is the committed result"},
         },
         "verdicts": {
             "factorial_causal_map": "PASS" if (q1_ok and q3_ok) else "FAIL",
             "braking_invisible": "PASS" if q2_ok else "FAIL",
-            "out_of_window_forecast": "REPORTED (quadratic fails; error "
-                                      "share grows 0.3% -> 2.3% over the "
+            "out_of_window_forecast": "REPORTED (quadratic fails; error " +
+                                      "share grows 0.3% -> 2.3% over the " +
                                       "forecast range — carried as data)",
-            "sector_C_role": "REPORTED (0.05% of the response — "
-                             "structurally present, causally a spectator "
+            "sector_C_role": "REPORTED (0.05% of the response — " +
+                             "structurally present, causally a spectator " +
                              "in magnitude)",
         },
         "honest_notes": [
-            "the ablation masks are the competing models: within the "
-            "committed two-band toy, no simpler transverse drive "
-            "reproduces the full response — A alone reaches 92%, and the "
+            "the ablation masks are the competing models: within the " +
+            "committed two-band toy, no simpler transverse drive " +
+            "reproduces the full response — A alone reaches 92%, and the " +
             "hierarchy 1865 : 1 is the committed sector structure",
-            "the septinial C sector is causally nearly invisible in "
-            "MAGNITUDE (0.05%) — its role is the structural completeness "
-            "of the family, not the size of the shift; carried, not "
+            "the septinial C sector is causally nearly invisible in " +
+            "MAGNITUDE (0.05%) — its role is the structural completeness " +
+            "of the family, not the size of the shift; carried, not " +
             "hidden",
-            "the out-of-window forecast failure does not touch T3 (a "
-            "window law); it quantifies how FAST the naive extrapolation "
+            "the out-of-window forecast failure does not touch T3 (a " +
+            "window law); it quantifies how FAST the naive extrapolation " +
             "fails — the honest scope marker every window law must carry",
-            "this campaign compares STRUCTURAL variants of one toy "
-            "model; it does not compare QHB against external QCD data "
+            "this campaign compares STRUCTURAL variants of one toy " +
+            "model; it does not compare QHB against external QCD data " +
             "(no such comparison is claimed anywhere in the package)",
         ],
         "wall_s": time.time() - t0,

@@ -206,8 +206,8 @@ def main():
         "pre_registered": {
             "threshold": "verifier-own blind A*_N from IVP-09",
             "sanity": "0 < M_code < 0.1",
-            "criteria": "well-defined fit (R^2 >= 0.9 on the secondary band "
-                        "of the deep grids); honest statement whether the "
+            "criteria": "well-defined fit (R^2 >= 0.9 on the secondary band " +
+                        "of the deep grids); honest statement whether the " +
                         "0.374 anchor is reached",
         },
         "scans": {k: {kk: vv for kk, vv in v.items() if kk != "rows"}

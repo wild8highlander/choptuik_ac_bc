@@ -87,7 +87,7 @@ def fig_page(t, L, ax):
     ax.axvline(PAGE_FRACTION, color=t["gold"], lw=1.4, ls="--")
     ax.annotate(L["page_time"], (PAGE_FRACTION, 0.72), xytext=(PAGE_FRACTION - 0.34, 0.72),
                 color=t["gold"], fontsize=10,
-                arrowprops=dict(arrowstyle="->", color=t["gold"]))
+                arrowprops={"arrowstyle": "->", "color": t["gold"]})
     ax.set_xlabel(L["page_x"]); ax.set_ylabel(L["page_y"])
     ax.set_title(L["page_title"])
     ax.legend(frameon=False)
@@ -185,7 +185,7 @@ def fig_map(t, L, ax):
         t["panel"])
 
     ax.annotate("", xy=(0.57, 0.55), xytext=(0.43, 0.55),
-                arrowprops=dict(arrowstyle="-|>", lw=2.2, color=t["gold"]))
+                arrowprops={"arrowstyle": "-|>", "lw": 2.2, "color": t["gold"]})
     ax.text(0.5, 0.60, "$M_{BH} = M_{in}\\cdot\\tilde f(\\varepsilon)$",
             ha="center", fontsize=11, color=t["gold"])
     ax.text(0.5, 0.47, "single input scale", ha="center", fontsize=9,
@@ -222,7 +222,7 @@ def fig_branches(t, L, ax_s, ax_x):
     ax_x.axvline(eps_half, color=t["gold"], lw=1.4, ls="--")
     ax_x.annotate(L["branch_eps_half"], (eps_half, 0.30),
                   xytext=(eps_half * 3.5, 0.26), color=t["gold"], fontsize=10,
-                  arrowprops=dict(arrowstyle="->", color=t["gold"]))
+                  arrowprops={"arrowstyle": "->", "color": t["gold"]})
     ax_x.set_xscale("log"); ax_x.set_yscale("log")
     ax_x.set_xlabel(L["branch_bif_x"])
     ax_x.set_ylabel(L["branch_bif_y"])

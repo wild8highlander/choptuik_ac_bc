@@ -63,4 +63,4 @@ def test_ystring_shapes_positive(i):
     s = shapes[i]
     assert s["E_Y"] > 0 and s["arm_total"] > 0
     # vertex inside the triangle bounding box
-    assert 0.0 <= s["vertex"][0] and 0.0 <= s["vertex"][1]
+    assert s["vertex"][0] >= 0.0 and s["vertex"][1] >= 0.0

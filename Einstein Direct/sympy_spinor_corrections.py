@@ -106,7 +106,7 @@ def s0_corrections():
         log(f"    кросс-чек монографии: {out['repo_crosscheck']['status']} "
             f"(bC = π²/98 = {float(sp.N(bC, 12)):.9f}, aC = {float(sp.N(aC, 12)):.9f}, "
             f"aB = {float(sp.N(aB, 12)):.9f})")
-    return out, dict(bC=bC, aC=aC, bB=bB, aB=aB, bA=bA, aA=aA)
+    return out, {"bC": bC, "aC": aC, "bB": bB, "aB": aB, "bA": bA, "aA": aA}
 
 
 # ------------------------------------------------------------------------------
@@ -417,8 +417,8 @@ def s2_schemes(payload, corr):
     viol["tau_Mdef"] = float(sp.N(t0sq_md.subs(subv), 15))
     viol["branch_split"] = float(abs(sp.N(t0sq_uv.subs(subv), 20)
                                      - sp.N(t0sq_md.subs(subv), 20)))
-    viol["verdict"] = ("асимметричное встраивание (a-B только в C1): C1-невязка "
-                       "ненулевая, ветви расходятся — точка умирает; "
+    viol["verdict"] = ("асимметричное встраивание (a-B только в C1): C1-невязка " +
+                       "ненулевая, ветви расходятся — точка умирает; " +
                        "поправка обязана быть равномерной по трём каналам")
     out["violation_demo"] = viol
     log(f"    {viol['scheme']}: C1-невязка = {viol['C1_xi1_residual_at_uncorrected_point']:.4f}, "
@@ -468,12 +468,11 @@ def s3_closure(schemes_out, corr):
                         "dev_gamma_lit_pct": d1, "dev_b_Ch_pct": d2})
     scan.sort(key=lambda r_: min(abs(r_["dev_gamma_lit_pct"]), abs(r_["dev_b_Ch_pct"])))
     out["family_scan_book_vs_anchors"] = {
-        "note": ("СКАЧ знаковых комбинаций поправок в равномерной связи "
-                 "kappa = 2(1+x) (multiple testing!): не доказательство, "
-                 "а таблица расстояний; база без поправок: dev %.2f%% / %.2f%%; "
-                 "принципиальные схемы (H_mono: +bC-aC, H_screen: -bC+aC, "
-                 "H_brakes: -aC-aB) см. S2"
-                 % (float(sp.N(100 * (base_book - kap_glit) / kap_glit, 8)),
+        "note": (("СКАЧ знаковых комбинаций поправок в равномерной связи " +
+                 "kappa = 2(1+x) (multiple testing!): не доказательство, " +
+                 "а таблица расстояний; база без поправок: dev {:.2f}% / {:.2f}%; " +
+                 "принципиальные схемы (H_mono: +bC-aC, H_screen: -bC+aC, " +
+                 "H_brakes: -aC-aB) см. S2").format(float(sp.N(100 * (base_book - kap_glit) / kap_glit, 8)),
                     float(sp.N(100 * (base_book - kap_bch) / kap_bch, 8)))),
         "top6": scan[:6]}
 
@@ -507,8 +506,8 @@ def s3_closure(schemes_out, corr):
     out["ladder_k_pi_over_30"] = ladder
     # (d) монодромия за эхо в исправленных точках (где есть lambda+ из S4 —
     #     см. verdict; здесь только структура mu = exp(lambda_plus * Delta))
-    out["monodromy_note"] = ("монодромия за эхо mu = e^{lambda+ * Delta}; "
-                             "Delta = 7*pi/30 (спинорная лестница) vs "
+    out["monodromy_note"] = ("монодромия за эхо mu = e^{lambda+ * Delta}; " +
+                             "Delta = 7*pi/30 (спинорная лестница) vs " +
                              "Delta_lit = 0.737637 (GHS 1993), разрыв 0.63%")
     return out
 
@@ -633,8 +632,8 @@ def s4_pencil(payload, scheme_name, kappa_vals, tau_star):
         "n_phantoms": len(phantoms),
         "phantoms": phantoms,
         "phantom_Im_vs_ladder_top": hits[:8],
-        "note": ("QEP-корни с rel sigma_min >= 1e-8 — фантомы (протокол "
-                 "сеанса 14); сопоставление Im lambda с k*pi/30 — тест "
+        "note": ("QEP-корни с rel sigma_min >= 1e-8 — фантомы (протокол " +
+                 "сеанса 14); сопоставление Im lambda с k*pi/30 — тест " +
                  "связки фантомов со спинорной лестницей"),
         "runtime_s": time.time() - t0,
     }
@@ -648,8 +647,8 @@ def s4_pencil(payload, scheme_name, kappa_vals, tau_star):
 # ------------------------------------------------------------------------------
 def main() -> None:
     results = {"title": "Three spinor corrections (bC, aC, aB) in the towers",
-               "question": ("does embedding the repo corrections as natural "
-                            "coupling renormalizations correct the towers and "
+               "question": ("does embedding the repo corrections as natural " +
+                            "coupling renormalizations correct the towers and " +
                             "close on pi/30?")}
     s0, corr = s0_corrections()
     results["S0_corrections"] = s0

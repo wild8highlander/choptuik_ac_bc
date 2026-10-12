@@ -271,7 +271,7 @@ def main():
             "P1": "runtime third-party imports ⊆ {numpy, mpmath}",
             "P2": "tests third-party imports ⊆ {numpy, mpmath, pytest}",
             "P3a": "scripts/rebuild_data.py third-party imports ⊆ {numpy, mpmath}",
-            "P3b_advisory": "no undeclared imports anywhere in scripts/ "
+            "P3b_advisory": "no undeclared imports anywhere in scripts/ " +
                             "(advisory — outside runtime/test/data path)",
             "P4": "no network-capable imports anywhere",
             "P5": "no subprocess invocation in runtime code",

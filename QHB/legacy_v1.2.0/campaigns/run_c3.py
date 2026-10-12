@@ -54,47 +54,47 @@ def main():
         "engine": "engine/solver.py wu_mc — Poisson births, thinned survival",
         "project_version": __version__,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
-        "model": "linear two-rate W-model (qhb/wu.py): Gamma_+/- = "
+        "model": "linear two-rate W-model (qhb/wu.py): Gamma_+/- = " +
                  "Gamma(1 -/+ alpha); freeze-out t_f = 1/H; x = Gamma/H",
-        "closed_form": "r(alpha, x) = [f(1-alpha) - f(1+alpha)] / "
+        "closed_form": "r(alpha, x) = [f(1-alpha) - f(1+alpha)] / " +
                        "[f(1-alpha) + f(1+alpha)], f(u) = (1-e^(-x u))/u",
         "grid": {"alpha": list(ALPHA_GRID), "x": list(X_GRID),
                  "n_real_per_cell": N_REAL, "seed": 20261010},
         "rows": rows,
         "max_dev_formula_vs_mc": max_dev,
         "anchor": {"alpha_Wu": A_WU_ANCHOR,
-                   "alpha_status": "approximate literature anchor (the 1957 "
-                                   "experiment demonstrated parity violation "
-                                   "qualitatively; 0.9 is a rounded "
+                   "alpha_status": "approximate literature anchor (the 1957 " +
+                                   "experiment demonstrated parity violation " +
+                                   "qualitatively; 0.9 is a rounded " +
                                    "literature-scale value, not a reanalysis)",
                    "x_committed": 100.0,
                    "r_at_anchor": r_anchor},
         "eta_comparison": {
             "eta_baryon_anchor": eta_baryon,
             "x_required_for_eta": x_needed,
-            "honest_note": "the door OPENS (r -> alpha at large x) but the "
-                           "committed toy does not reproduce cosmogenesis: "
-                           "leaving only eta = 6.1e-10 requires "
-                           "x = 1.36e-9 (freeze-out almost immediately "
-                           "after the door opens) - the model realizes the "
-                           "Sakharov ingredients qualitatively, not "
+            "honest_note": "the door OPENS (r -> alpha at large x) but the " +
+                           "committed toy does not reproduce cosmogenesis: " +
+                           "leaving only eta = 6.1e-10 requires " +
+                           "x = 1.36e-9 (freeze-out almost immediately " +
+                           "after the door opens) - the model realizes the " +
+                           "Sakharov ingredients qualitatively, not " +
                            "quantitatively",
         },
         "sakharov_bookkeeping": {
             "CP_violation": "realized (alpha channel, Wu 1957 anchor)",
             "out_of_equilibrium": "realized (Hawking flux births, freeze-out)",
-            "B_violation": "NOT realized (the toy conserves baryon number; "
+            "B_violation": "NOT realized (the toy conserves baryon number; " +
                            "the imbalance is a door, not baryogenesis)",
         },
         "verdicts": {
             "T7_closed_form": "PASS" if max_dev < 2e-3 else "FAIL",
-            "T7_limits": "PASS (r(0,x)=0, r(alpha,inf)=alpha, r(alpha,0)=0; "
+            "T7_limits": "PASS (r(0,x)=0, r(alpha,inf)=alpha, r(alpha,0)=0; " +
                          "50-digit layer)",
         },
         "honest_notes": [
-            "the W-model is linear mean field; pair-consuming kinetics would "
+            "the W-model is linear mean field; pair-consuming kinetics would " +
             "change the shape, not the door (honest scope)",
-            "'full asymmetry' of the hypothesis is carried as r -> alpha: the "
+            "'full asymmetry' of the hypothesis is carried as r -> alpha: the " +
             "door opens fully only for alpha = 1 and fast freeze-out",
         ],
         "wall_s": time.time() - t0,

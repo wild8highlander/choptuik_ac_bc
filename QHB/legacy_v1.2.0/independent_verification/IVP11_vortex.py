@@ -72,7 +72,7 @@ re_gate = max(abs(e.real) for e in ev if abs(e.imag) > 1e-6)
 np_ok = re_gate < 1e-12 and abs(om_num - 3.0 / (2.0 * math.pi)) < 1e-15
 
 ok = sym_ok and mp_ok and np_ok
-write_verdict("IVP11.json", {"check": "vortex layer (SymPy charpoly + "
+write_verdict("IVP11.json", {"check": "vortex layer (SymPy charpoly + " +
                              "mpmath Aref invariants + eigen gate)",
                              "verdict": "PASS" if ok else "FAIL",
                              "charpoly_symbolic": sp.srepr(expected)[:120],

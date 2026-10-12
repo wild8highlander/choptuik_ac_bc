@@ -22,7 +22,7 @@ def test_c11_rigid_rotation_dev():
 
 
 def test_c11_omega_value():
-    assert C.OMEGA == pytest.approx(0.477464829275686, rel=1e-14)
+    assert pytest.approx(0.477464829275686, rel=1e-14) == C.OMEGA
 
 
 def test_c11_aref_run_pinned():

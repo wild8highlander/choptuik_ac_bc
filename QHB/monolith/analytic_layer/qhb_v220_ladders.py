@@ -159,9 +159,9 @@ res["L_A_time_ladder"] = {
     "gamma": GAM_A, "nu_tr_exact": NU_TR_EXACT, "nu_int_exact": NU_INT_EXACT,
     "splitting_exact": SPLIT, "T_needed_to_resolve": 1.0 / SPLIT,
     "dt": dtA, "rows": ladder_A,
-    "protocol": "линеаризованный поток x' = C0 x (точный якобиан), RK4, dt = P/64, "
+    "protocol": "линеаризованный поток x' = C0 x (точный якобиан), RK4, dt = P/64, " +
                 "сигнал y3(t), DFT с Ханном + параболическая интерполяция пика",
-    "note": "при T < 1/splitting ~ 865 периодов ветви неразрешимы (ошибка ~ splitting); "
+    "note": "при T < 1/splitting ~ 865 периодов ветви неразрешимы (ошибка ~ splitting); " +
             "далее ошибка затухает ~1/T до плато смещения шага RK4 (снимается L-B)",
 }
 print("L-A:", [(r["T_rot"], f"{r['err_int']:.2e}", f"{r['err_tr']:.2e}") for r in ladder_A])
@@ -200,7 +200,7 @@ for gam_v, omega_exact in ((1.0, 3.0 / (2 * math.pi)), (0.8, (2.0 + 0.8) / (2 * 
                      "richardson_dev": abs(om_rich - omega_exact)})
 res["L_B_step_ladder"] = {
     "rows": ladder_B, "protocol": "T = 8 периодов, точное жёсткое вращение, накопленный угол",
-    "note": "порядок 4 воспроизводится; экстраполяция Ричардсона двух тончайших уровней "
+    "note": "порядок 4 воспроизводится; экстраполяция Ричардсона двух тончайших уровней " +
             "воспроизводит замкнутый закон ветви с dev ~ 1e-15",
 }
 print("L-B:", [(r["gamma"], round(r["order_fit"], 4), f"{r['richardson_dev']:.2e}") for r in ladder_B])
@@ -233,7 +233,7 @@ res["L_C_volume_ladder"] = {
         {"L": 1e7, "delta_F": DELTA_INF_TRUE * (1 - 0.35 / 1e7 + 0.03 / 1e12)},
         {"L": 1e9, "delta_F": DELTA_INF_TRUE * (1 - 0.35 / 1e9 + 0.03 / 1e18)},
     ],
-    "note": "трёхточечная Ричардсон-экстраполяция воспроизводит Delta_F,min = 0.181777 "
+    "note": "трёхточечная Ричардсон-экстраполяция воспроизводит Delta_F,min = 0.181777 " +
             "уже с первых трёх ступеней (отклонение ~1e-12 — шум измеренных значений)",
 }
 print("L-C:", [(r["rungs"], f"{r['dev_from_true']:.2e}") for r in rich_rows])
@@ -285,8 +285,8 @@ for r in rowsE:
 res["L_E_sample_ladder"] = {
     "p_esc": P_ESC, "rows": rowsE, "slope_fit": slopeE,
     "z_max": max(r["z_score"] for r in rowsE),
-    "note": "сей ошибки ~ n^{-1/2} — самый медленный измерительный закон пакета; "
-            "SE при n = 1e4 = 2.19e-3 => 1.96*SE = 4.3e-3 — воспроизводит канонический "
+    "note": "сей ошибки ~ n^{-1/2} — самый медленный измерительный закон пакета; " +
+            "SE при n = 1e4 = 2.19e-3 => 1.96*SE = 4.3e-3 — воспроизводит канонический " +
             "бюджет P_esc = 0.2433 +- 0.0043 (C5)",
     "limit": "p_hat(n->inf) = 0.2433 (закреплено аналитически, T6)",
     "z_scores": None,  # заполняется ниже

@@ -148,7 +148,7 @@ def tree_version_consistency():
 
     mismatch = {k: v for k, v in findings.items() if v != EXPECTED_VERSION}
     mismatch = {k: v for k, v in mismatch.items()
-                if not (k == "CHANGELOG.md (latest heading)")}
+                if k != "CHANGELOG.md (latest heading)"}
     # CHANGELOG may legitimately lead with an older heading; report but do not fail
     changelog_ok = findings.get("CHANGELOG.md (latest heading)") is not None
     all_verd_ok = all(v == EXPECTED_VERSION for v in verd.values()) if verd else True
@@ -216,7 +216,7 @@ def main():
         log(f"    debris    : {zip_res['debris_entries'] or 'none'}")
     else:
         zip_res = {"zip_path": None,
-                   "note": "no release archive found next to the repo; "
+                   "note": "no release archive found next to the repo; " +
                            "archive-level block INCONCLUSIVE"}
         log("\n[A] archive: NOT FOUND — archive-level checks INCONCLUSIVE")
 
@@ -241,8 +241,8 @@ def main():
         "status": status,
         "pre_registered": {
             "expected_version": EXPECTED_VERSION,
-            "criteria": "CRC clean; no traversal/symlinks/duplicates/debris; "
-                        "version == 2.0.0 in VERSION, pyproject, Makefile, "
+            "criteria": "CRC clean; no traversal/symlinks/duplicates/debris; " +
+                        "version == 2.0.0 in VERSION, pyproject, Makefile, " +
                         "CITATION, README; verdicts declare project_version 2.0.0",
         },
         "archive": zip_res,

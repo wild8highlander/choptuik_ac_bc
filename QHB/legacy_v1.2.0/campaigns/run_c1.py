@@ -127,7 +127,7 @@ def main():
                    "B2": B2, "r2": r2, "max_residual": maxres},
         "wing": {"betas": [r["beta"] for r in rows_wing],
                  "shifts": [r["shift"] for r in rows_wing],
-                 "honest_note": "pre-asymptotic wing carried, NOT fitted; "
+                 "honest_note": "pre-asymptotic wing carried, NOT fitted; " +
                                 "quartic response visible"},
         "per_sector": {"B2_A_pi2": B2_sector[0], "B2_B_pi3": B2_sector[1],
                        "B2_C_pi7": B2_sector[2]},
@@ -137,31 +137,31 @@ def main():
                        "both_flip_dev": checks[2],
                        "a_only_all_order_dev": a_only_dev,
                        "b0_identity_dev": b0_id,
-                       "statement": "EXACT: gap even under the global b-flip "
-                                    "(sigma_z conjugation) — dev = 0; a-only "
-                                    "drive all-order zero (integer-tone "
-                                    "cancellation) — dev = 0. NOT exact: the "
-                                    "a-flip alone deviates by ~7.3e-7 at "
-                                    "beta=0.4 — the genuine odd-in-a response "
-                                    "through second-order a*b cross terms "
-                                    "(Magnus [w sigma_z, v sigma_x]); carried "
+                       "statement": "EXACT: gap even under the global b-flip " +
+                                    "(sigma_z conjugation) — dev = 0; a-only " +
+                                    "drive all-order zero (integer-tone " +
+                                    "cancellation) — dev = 0. NOT exact: the " +
+                                    "a-flip alone deviates by ~7.3e-7 at " +
+                                    "beta=0.4 — the genuine odd-in-a response " +
+                                    "through second-order a*b cross terms " +
+                                    "(Magnus [w sigma_z, v sigma_x]); carried " +
                                     "as data, not smoothed away."},
         "M_convergence": {"rows": m_rows, "p_eff": p_eff_M},
         "gap_shift_beta05": rows_wing[0]["shift"] if rows_wing else None,
         "verdicts": {
             "T2_b_flip_exact": "PASS" if checks[0] < 1e-12 else "FAIL",
             "T2_a_only": "PASS" if a_only_dev < 1e-12 else "FAIL",
-            "T2_a_flip_residual": "REPORTED (genuine odd-in-a response, "
+            "T2_a_flip_residual": "REPORTED (genuine odd-in-a response, " +
                                   "carried as data)",
             "T3_quadratic_window": "PASS" if r2 > 0.999 and maxres < 5e-5
                                    else "FAIL",
         },
         "honest_notes": [
-            "B2 is a committed machine law on window [0, 0.2]; outside it the "
+            "B2 is a committed machine law on window [0, 0.2]; outside it the " +
             "response is quartic-dominated (wing rows carried unfitted).",
-            "The a-channel acts only jointly with the b-channel; alone it is "
+            "The a-channel acts only jointly with the b-channel; alone it is " +
             "invisible to all orders on integer tones (measured exactly 0).",
-            "The G-model is a toy: no claim that this Delta_F is the Yang-Mills "
+            "The G-model is a toy: no claim that this Delta_F is the Yang-Mills " +
             "mass gap; the mapping to physical scales is a marked hypothesis.",
         ],
         "wall_s": time.time() - t0,

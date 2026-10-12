@@ -254,11 +254,11 @@ def main():
     snr_ce = [e["detect_ratios"]["Cosmic Explorer (0.01%)"] for e in
               out["predictions"]["events"]]
     print(f"  обнаружимость на CE: |Δf|/σ = {min(snr_ce):.2f}–{max(snr_ce):.2f} σ")
-    print("  (относительная прецизионность делает отношение константой;"
+    print("  (относительная прецизионность делает отношение константой;" +
           " порог 1σ достигается при прецизионности 0.0084%)")
     ot = out["overtones"]["overtones"]
-    print(f"  обертоны GW150914: f_0..f_4 = "
-          f"{', '.join(f'{o['f_n']:.0f}' for o in ot)} Гц;")
+    f_list = ", ".join("{:.0f}".format(o["f_n"]) for o in ot)
+    print(f"  обертоны GW150914: f_0..f_4 = {f_list} Гц;")
     print(f"  Δf_n/f_n = const = {out['predictions']['shift']:.4e} при всех n")
 
     for lang, lang_dir in (("ru", os.path.join(BASE, "fig_ru")),

@@ -115,13 +115,13 @@ def main():
         "pre_registered": {
             "anchors": {"Delta_lit": DELTA_LIT, "gamma_lit": GAMMA_LIT,
                         "target": TARGET, "tolerance": TOL},
-            "rule": "three products separated; unmeasurable factors -> "
-                    "INCONCLUSIVE, never silent; the anchor product is "
+            "rule": "three products separated; unmeasurable factors -> " +
+                    "INCONCLUSIVE, never silent; the anchor product is " +
                     "ANCHOR_ARITHMETIC, never a physics PASS",
         },
         "P_anchor": P_anchor,
-        "P_anchor_class": ("anchor arithmetic — both factors are literature "
-                           "constants; consistency with the target, NOT a "
+        "P_anchor_class": ("anchor arithmetic — both factors are literature " +
+                           "constants; consistency with the target, NOT a " +
                            "measurement (v2.2.0 reclassification)"),
         "P_anchor_verdict": "ANCHOR_ARITHMETIC",
         "P_anchor_within_target": bool(abs(P_anchor - TARGET) < TOL),

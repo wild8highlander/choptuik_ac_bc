@@ -178,7 +178,7 @@ def fig_r3(lang):
     ax.plot([6.1e-10], [6.1e-10], "o", ms=6, color=C_NEG)
     ax.annotate(t["r3"][6], xy=(2e-4, 6.1e-10), fontsize=9, color=C_NEG,
                 xytext=(1.3e-4, 6e-3),
-                arrowprops=dict(arrowstyle="->", color=C_NEG, lw=1.0))
+                arrowprops={"arrowstyle": "->", "color": C_NEG, "lw": 1.0})
     ax.axvline(r3["Tc_bridge"], color="k", ls="--", lw=1.4)
     ax.annotate(t["r3"][7], xy=(r3["Tc_bridge"], 0.09),
                 fontsize=9, rotation=90, va="top", ha="right")

@@ -109,17 +109,17 @@ def main():
         "ladder": rows,
         "p_eff": p_eff,
         "fit": {"Delta_cont_fit": Delta_cont_fit,
-                "Delta_cont_status": "NOT CLAIMED — two-term extrapolation of "
-                                     "a pre-asymptotic ladder (honest "
+                "Delta_cont_status": "NOT CLAIMED — two-term extrapolation of " +
+                                     "a pre-asymptotic ladder (honest " +
                                      "negative, mirrors CHB A*_inf)",
                 "C_measured": C_measured,
                 "max_abs_residual": float(np.abs(resid).max())},
         "exact_channel": {"C_exact_s_kappa_over_8": C_exact,
                           "s": s, "kappa": KAPPA,
                           "share_of_measured": share,
-                          "honest_note": "the Lemma-A channel is a committed "
-                                         "fraction of the observed drift; the "
-                                         "rest is kinetic-term dispersion "
+                          "honest_note": "the Lemma-A channel is a committed " +
+                                         "fraction of the observed drift; the " +
+                                         "rest is kinetic-term dispersion " +
                                          "(also O(h^2)) — marked hypothesis"},
         "lemma_A_machine_check": {"rows": lemma_rows, "ok": lemma_ok},
         "verdicts": {
@@ -128,10 +128,10 @@ def main():
             "T10_share": "REPORTED (honest window, no dominance claim)",
         },
         "honest_notes": [
-            "the drift here approaches the continuum gap from BELOW "
-            "(flattened peak -> smaller gap), the sign mirror of the CHB "
+            "the drift here approaches the continuum gap from BELOW " +
+            "(flattened peak -> smaller gap), the sign mirror of the CHB " +
             "threshold ladder — the sign is carried, not hidden",
-            "Delta_cont is not claimed; only the h^2 law and its exact-"
+            "Delta_cont is not claimed; only the h^2 law and its exact-" +
             "channel share are committed",
         ],
         "wall_s": time.time() - t0,

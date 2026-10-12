@@ -124,7 +124,7 @@ ORCID [0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701) · Nalchik, K
 |---|---|---|
 | Tracked files | **1 793** (~369 MB) | `git ls-files` — 7 programming languages |
 | Source code | **274** Python · **19** Julia · **21** Java · 82 TSX + 25 TS · C/C++/Rust/Go/JS twins | cross-language verification by design |
-| Automated tests | **360+** pytest (58+10 Einstein Direct · 63 CHB · 154 QHB · 78 `python/` · dsi_lab 7 files) + **16** Julia testsets + **18** closed Lean kernels | every test pins numbers from JSON verdicts |
+| Automated tests | **400+** pytest (58+10 Einstein Direct · 69 CHB · 154 QHB · 78 `python/` · **dsi_lab 51**) + **16** Julia testsets + **18** closed Lean kernels + **13** dsi_lab verdict checks | every test pins numbers from JSON verdicts |
 | JSON campaign verdicts | **94** (47 Einstein Direct · 16+13 CHB · 31 QHB) | each with the full run configuration |
 | Monographs & publications | **71** DOCX · **110** PDF (incl. the **80**-file cycle of 20 theorems) | full registry below |
 | Figures | **513** PNG (300–600 DPI, RU/EN × light/dark) | "Ink & Gold" style, generated from committed JSON |
@@ -146,7 +146,7 @@ ORCID [0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701) · Nalchik, K
 | [`Collapse Hawking Bridge/`](Collapse%20Hawking%20Bridge/) | 2.1.0 (2026-10-09) | collapse → black-hole thermodynamics | 63 | [README.md](Collapse%20Hawking%20Bridge/README.md) · [README.ru.md](Collapse%20Hawking%20Bridge/README.ru.md) |
 | [`QHB/`](QHB/) | 2.3.0 (2026-10-10) | confinement → Hawking | 154 collected | [README.md](QHB/README.md) · [README.ru.md](QHB/README.ru.md) |
 | [`QCD Bridge/`](QCD%20Bridge/) + [`code/`](code/) | v3.1 (2026-08-10) | strong CP | cross-comparison in CI | [README.md](QCD%20Bridge/README.md) |
-| [`dsi_lab/`](dsi_lab/) | 7 experiments | DSI dynamics of invariants | 7 pytest files | [README.md](dsi_lab/README.md) |
+| [`dsi_lab/`](dsi_lab/) | v2.0.0 (2026-10-12) | DSI dynamics of invariants | 51 pytest · Lean 4 · 6 languages · animations · monograph EN/RU | [README.md](dsi_lab/README.md) · [README.ru.md](dsi_lab/README.ru.md) |
 | [`audit_transfer/`](audit_transfer/) | v1.0 (2026-09) | monograph audit + closures | Python + Julia runs | [README.md](audit_transfer/README.md) |
 | [`docs-site/`](docs-site/) · [`verification/`](verification/) · [`notebooks/`](notebooks/) | — | documentation & dossier | — | [README.md](docs-site/README.md) |
 
@@ -367,7 +367,7 @@ the common theorem cycle.
 | IV | **Collapse Hawking Bridge** v2.1.0 | [`Collapse Hawking Bridge/`](Collapse%20Hawking%20Bridge/) | $M_{BH}=M_{in}\cdot\tilde f(\varepsilon)$; campaigns C1–C3b+C6; audit **IVP-15** (3 FAILs found → remediated); Page curve; CMB contact 4.5016e22 kg; **63 tests**, 7-language twins (7.08e-13), 68 hi-res figures, 14-sheet workbook |
 | V | **QHB — Quark–Hawking Bridge** v2.3.0 | [`QHB/`](QHB/) | confinement = false-vacuum escape; campaigns C1–C12; registry of **30 claims** with falsifiers; **Lean 4 / Mathlib: 18 closed kernels**, CI fails on `sorryAx`; external bounds X1–X13; Iron-QA gates; **154 collected tests** |
 | VI | **QCD Bridge Suite** (Strong CP) | [`docs/qcd_bridge/`](docs/qcd_bridge/) · [`code/`](code/) · [`QCD Bridge/`](QCD%20Bridge/) | $\bar\theta_{eff}=\delta_C\,N\langle\lambda\rangle\,\mathcal S_{GUE}=0$ (BF ≥ 99 at κ_T > 2.62); 9 sections; **55 figures + 19 4D animations**; 7-format reports × 2 engines |
-| VII | **DSI laboratory** | [`dsi_lab/`](dsi_lab/) | 7 deterministic experiments; findings D1 (Hurwitz tower) and E1 (GUE centering) |
+| VII | **DSI laboratory** v2.0.0 | [`dsi_lab/`](dsi_lab/) | 7 deterministic experiments + engine package `dsilab/`, **Lean 4 layer**, 6-language core, claim ledger, monograph EN/RU; findings D1 (Hurwitz tower) and E1 (GUE centering) |
 | VIII | **Audit & Transfer appendix** | [`audit_transfer/`](audit_transfer/) | monograph audit (typos E1–E7); closure $c_{K3}=1-\cos(2\pi/22)$; stability lemma Sh.3 (F ≥ n/2, sharpness 5n/7) |
 
 > [!WARNING]
@@ -1110,7 +1110,11 @@ reproducibility ~1e-13) around the dynamics of spectral invariants:
 | exp7 | the e ≥ 1 threshold | theorems A/B/C proven (identity 5.9e-16 on 24 000 pairs) |
 
 Artifacts: 7 JSON verdicts, 15 figures × RU/EN, 8 reports (PDF+DOCX × EN/RU),
-7 pytest files.
+**51 pytest checks**, the engine package [`dsilab/`](dsi_lab/dsilab/README.md),
+the Lean 4 layer [`lean4/`](dsi_lab/lean4/README.md), the six-language core
+[`multilang/`](dsi_lab/multilang/README.md), the logo/avatars and the launch
+animations, the claim ledger [`docs/claim_ledger.md`](dsi_lab/docs/claim_ledger.md)
+and the EN/RU monographs [`monograph/`](dsi_lab/monograph/README.md).
 
 ### VIII. Audit & Transfer Appendix (v1.0)
 
@@ -1227,7 +1231,7 @@ All 21 top-level directories, their roles, stacks and entry points:
 | [`QCD Bridge/`](QCD%20Bridge/) | Programme VI artifacts | PNG/PDF/SVG + GIF/MP4 | figures manifest · configs · 7-format reports × 2 engines |
 | [`code/`](code/) | Programme VI engines | Python · Julia · Java · Next.js | `code/python/run.py --config …` · CI cross-comparison |
 | [`docs/qcd_bridge/`](docs/qcd_bridge/) | Programme VI monograph + JSON | PDF/TeX + JSON | `choptyuk_qcd_bridge.pdf` · honesty/lattice JSON |
-| [`dsi_lab/`](dsi_lab/) | Programme VII | Python (stdlib-minimal) | `make test && make run` · 7 JSON verdicts |
+| [`dsi_lab/`](dsi_lab/) | Programme VII | Python + Lean 4 + C/C++/JS/Rust/Go/Julia | `make verify` (test + validate + run) · 7 JSON verdicts · `dsilab.validate` 13/13 |
 | [`audit_transfer/`](audit_transfer/) | Programme VIII | Python + Julia | `python3 audit_transfer/python/run_all.py` |
 | [`docs/`](docs/) | monographs (80 MB), architecture, REST API | DOCX/PDF/MD | `docs/monograph/` · `ARCHITECTURE.md` |
 | [`monograph/`](monograph/) | bilingual verification monograph + QCD DOCX | PDF/DOCX | metadata-free editions |

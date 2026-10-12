@@ -87,9 +87,9 @@ def main():
         "status": status,
         "pre_registered": {
             "source_of_A_star": "verifier-own blind IVP-09 measurement",
-            "criterion": "A*(1-eps) subcritical AND A*(1+eps) supercritical "
+            "criterion": "A*(1-eps) subcritical AND A*(1+eps) supercritical " +
                          "for every pre-registered epsilon",
-            "caveat": "fixed-grid A*: coarser grids may legitimately flip "
+            "caveat": "fixed-grid A*: coarser grids may legitimately flip " +
                       "the closest perturbations",
         },
         "rows": rows,

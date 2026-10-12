@@ -79,7 +79,7 @@ import os
 
 import numpy as np
 
-OUT = {}
+OUT: dict[str, object] = {}
 
 
 def hdr(s):
@@ -136,7 +136,7 @@ def part_1_trace_theorem():
         Gh = (2 * np.trace(Ph @ Ph).real + 2 * np.trace(Qh @ Qh).real
               + 3 * np.trace(Ph @ Qh).real - 4 * n * (np.trace(P).real + np.trace(Q).real) / n
               + 3 * n)
-        if G < Gh - 1e-9:
+        if Gh - 1e-9 > G:
             haar_ok = False
     print(f"\n  Машинная проверка шагов (1)+(4): max|F−G| = {ident_max:.2e} "
           f"(300 пар), Хаар: {'OK' if haar_ok else 'FAIL'}")

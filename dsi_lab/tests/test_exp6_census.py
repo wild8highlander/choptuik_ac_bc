@@ -8,7 +8,9 @@
   граневая смежность: 24 вершины, степень 7.
 Плюс провенанс: 224 = 4V = 8*n3, 672 = 4|G| = 3*224.
 """
+
 import pytest
+
 from exp6_census_224 import part_A
 
 
@@ -51,10 +53,9 @@ def test_face_adjacency(census):
 
 
 def test_provenance_224_672(census):
-    V, F, n3, G = census["V"], census["F"], census["sylow"]["n3"], \
-        census["group_order"]
-    assert 4 * V == 224           # 4 * вершины
-    assert 8 * n3 == 224          # 8 * силовские 3-подгруппы
-    assert 4 * G == 672           # 4 * |PSL(2,7)|
+    V, F, n3, G = census["V"], census["F"], census["sylow"]["n3"], census["group_order"]
+    assert 4 * V == 224  # 4 * вершины
+    assert 8 * n3 == 224  # 8 * силовские 3-подгруппы
+    assert 4 * G == 672  # 4 * |PSL(2,7)|
     assert 3 * 224 == 672
-    assert F * 28 == 672          # 24 * 28 (грани * n3)
+    assert F * 28 == 672  # 24 * 28 (грани * n3)

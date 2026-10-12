@@ -202,7 +202,7 @@ def cabibbo_audit() -> dict:
             f"However, this is a POST-HOC selection from {len(rows)} candidates. "
             f"The selection margin over the second-best is only "
             f"{100*selection_margin:.1f}% of c_K3, which is well within "
-            "the expected spread of 6 random hypotheses. "
+            "the expected spread of 6 random hypotheses. " +
             "H_2 is therefore NOT a derivation; it is the best fit."
         ),
     }
@@ -259,11 +259,11 @@ def work_formula_sensitivity() -> dict:
         "theta_eff_simplified": theta_eff_simplified,
         "trace_cancellation_verified": abs(theta_eff - theta_eff_simplified) < 1e-15,
         "structural_fact": (
-            "theta_eff = delta_C * tr(O_chi) * S_GUE "
-            "= delta_C * tr(O_chi) * sqrt(|Vand|)/tr(O_chi) "
-            "= delta_C * sqrt(|Vand|).  "
-            "The trace CANCELS.  The suppression depends ONLY on the "
-            "Vandermonde (the level-repulsion product), not on the "
+            "theta_eff = delta_C * tr(O_chi) * S_GUE " +
+            "= delta_C * tr(O_chi) * sqrt(|Vand|)/tr(O_chi) " +
+            "= delta_C * sqrt(|Vand|).  " +
+            "The trace CANCELS.  The suppression depends ONLY on the " +
+            "Vandermonde (the level-repulsion product), not on the " +
             "absolute scale of the eigenvalues."
         ),
         "perturbations": perturbations,
@@ -272,7 +272,7 @@ def work_formula_sensitivity() -> dict:
             f"Largest sensitivity: perturbing {max_sens['perturbed']} by "
             f"{max_sens['pct']:+d}% changes theta_eff by "
             f"{100*max_sens['rel_change_theta']:+.2f}%.  "
-            "The result is MOST sensitive to the smallest eigenvalue c_AB, "
+            "The result is MOST sensitive to the smallest eigenvalue c_AB, " +
             "because the Vandermonde is dominated by the smallest spacing."
         ),
     }
@@ -360,10 +360,10 @@ def scaling_S_GUE_with_N() -> dict:
             f"N=6 -> theta ~ 10^-11 < 1e-10. "
             f"Analytically, N ~ {N_needed:.1f} eigenvalues of the same order "
             f"would reach the experimental bound.  "
-            "CAVEAT: this is a scaling argument only.  It assumes additional "
-            "eigenvalues of the same order (~0.01-0.05), which is NOT "
-            "guaranteed by any known physics.  The operator O_chi is defined "
-            "by exactly three corrections; postulating more would require "
+            "CAVEAT: this is a scaling argument only.  It assumes additional " +
+            "eigenvalues of the same order (~0.01-0.05), which is NOT " +
+            "guaranteed by any known physics.  The operator O_chi is defined " +
+            "by exactly three corrections; postulating more would require " +
             "new physical input."
         ),
     }
@@ -440,11 +440,11 @@ def coincidence_significance() -> dict:
             f"The expected number of {100*cabibbo_rel_err:.2f}%-accuracy matches "
             f"by chance is {expected_matches:.2f}. "
             f"P(at least one such match by chance) = {100*p_at_least_one:.1f}%. "
-            "The Cabibbo coincidence is therefore NOT statistically significant "
-            "as a standalone fact; it acquires significance only if the SAME "
-            "rational structure (q=14, q=7) recurs in INDEPENDENT observables. "
-            "The 3*theta_13 ~ delta_C coincidence is a second such occurrence, "
-            "but with the SAME denominator family (7, 14), so it is not "
+            "The Cabibbo coincidence is therefore NOT statistically significant " +
+            "as a standalone fact; it acquires significance only if the SAME " +
+            "rational structure (q=14, q=7) recurs in INDEPENDENT observables. " +
+            "The 3*theta_13 ~ delta_C coincidence is a second such occurrence, " +
+            "but with the SAME denominator family (7, 14), so it is not " +
             "fully independent."
         ),
     }

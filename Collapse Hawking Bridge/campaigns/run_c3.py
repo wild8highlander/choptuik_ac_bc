@@ -250,21 +250,21 @@ def main():
         "gamma": {
             "gamma_eff": gamma_eff, "gamma_err": gamma_err, "r2": r2,
             "gamma_Ch_anchor": gamma_Ch,
-            "honest_note": ("fixed-grid mass floor dominates the smallest eps; "
-                            "gamma_eff is a floor-biased honest measurement, "
+            "honest_note": ("fixed-grid mass floor dominates the smallest eps; " +
+                            "gamma_eff is a floor-biased honest measurement, " +
                             "NOT a precision determination"),
         },
         "delta": {
             "delta_eff": delta_eff, "delta_eff_std": delta_std,
             "delta_lit": echo_delta, "delta_lit_err": 0.02,
             "per_eps_rows": delta_rows,
-            "honest_note": ("fixed-grid verdict is NOT-DSS (no exact discrete "
+            "honest_note": ("fixed-grid verdict is NOT-DSS (no exact discrete " +
                             "self-similarity); delta_eff is an EFFECTIVE period"),
         },
         "products": {
             "P_anchor": P_anchor,
-            "P_anchor_class": ("anchor arithmetic — both factors are "
-                               "literature/engine anchors; consistency with "
+            "P_anchor_class": ("anchor arithmetic — both factors are " +
+                               "literature/engine anchors; consistency with " +
                                "the target, NOT a measurement"),
             "P_anchor_verdict": "ANCHOR_ARITHMETIC",
             "P_anchor_within_target": P_anchor_within_target,
@@ -274,10 +274,10 @@ def main():
             "P_mixed": P_mixed,
             "P_mixed_verdict": measured_verdict(P_mixed),
             "verdict_semantics": (
-                "ANCHOR_ARITHMETIC = consistency of the project's own anchors "
-                "with the frozen target (not evidence); PASS/OUT-OF-TOLERANCE "
-                "= measured product inside/outside the frozen tolerance; "
-                "INCONCLUSIVE = a factor is unmeasurable at this resolution "
+                "ANCHOR_ARITHMETIC = consistency of the project's own anchors " +
+                "with the frozen target (not evidence); PASS/OUT-OF-TOLERANCE " +
+                "= measured product inside/outside the frozen tolerance; " +
+                "INCONCLUSIVE = a factor is unmeasurable at this resolution " +
                 "(never silent).  Falsification criteria: PREREGISTRATION.md."),
         },
         "scan_rows": scan_rows,

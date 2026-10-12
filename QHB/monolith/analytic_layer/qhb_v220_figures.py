@@ -8,13 +8,12 @@ import numpy as np
 
 matplotlib.use("Agg")
 import matplotlib.font_manager as fm
+import contextlib
 
 for fp in ("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"):
-    try:
+    with contextlib.suppress(Exception):
         fm.fontManager.addfont(fp)
-    except Exception:
-        pass
 import matplotlib.pyplot as plt
 
 plt.rcParams["font.sans-serif"] = ["DejaVu Sans"]
@@ -37,88 +36,88 @@ LAD = json.load(open(f"{WORK}/v220_ladders.json"))
 C1, C2, C3, CMUT = "#8c7225", "#3f93b0", "#9c3b2e", "#7a7871"
 
 TXT = {
- "ru": dict(
-   v1a_t="Законы ветвей: точные кривые и численный спектр",
-   v1a_x=r"$\gamma$ (циркуляция $\Gamma_3$)", v1a_y=r"$\nu$ (рад/ед. времени)",
-   leg_tr=r"$\nu_{tr}=(2+\gamma)/2\pi$ (точно)", leg_int=r"$\nu_{int}=\sqrt{3(1+2\gamma)}/2\pi$ (точно)",
-   leg_meas="измеренные пары (решатель)", leg_star="вырождение $T11$: $\\gamma=1$",
-   v1b_t="Тождество расщепления и порог Синге",
-   v1b_y=r"$\nu^2$ (рад$^2$/ед.$^2$)",
-   leg_split=r"$(\nu_{tr}^2-\nu_{int}^2)\cdot 4\pi^2 = (\gamma-1)^2$ — тождество",
-   leg_synge_pos=r"$\nu_{int}^2 \cdot 4\pi^2/3 = 1+2\gamma$ (одноимённые)",
-   leg_synge_neg=r"$= 1-2\gamma$ (встречные: неустойчивость при $\gamma>0.5$)",
-   leg_meas2="измеренный квадрат расщепления",
-   v2a_t="Гонка остывания: сектор против дедлайна",
-   v2a_x=r"$t/t_c$", v2a_y=r"$T_{gap}/T_c$",
-   leg_a12=r"$\alpha=1/2$ (радиационное остывание)", leg_a1=r"$\alpha=1$",
-   leg_tdeath=r"$T_{death}(10^{12})=T_c/25.9$", leg_tc=r"$T_c$",
-   ann_deadline=r"дедлайн $t_{death}/t_c = 25.9^{1/\alpha}$",
-   v2b_t="Скала остановки и горячее доминирование бюджета",
-   v2b_x=r"$T_{floor}/T_{death}$", v2b_y=r"$\tau_{max}$ (ед. времени)",
-   leg_tau=r"$\tau_{max}=\varepsilon_H e^{B/T}/\nu$",
-   leg_dens=r"плотность бюджета $\propto T^{-3}e^{-B/T}$ (норм.)",
-   ann_star=r"пик $T^*=B/3$",
-   v3_t="Пять лестниц сходимости в бесконечность",
-   p_t=("L-A время", "L-B шаг RK4", "L-C объём (Ричардсон)", "L-D бюджет попыток",
+ "ru": {
+   "v1a_t": "Законы ветвей: точные кривые и численный спектр",
+   "v1a_x": r"$\gamma$ (циркуляция $\Gamma_3$)", "v1a_y": r"$\nu$ (рад/ед. времени)",
+   "leg_tr": r"$\nu_{tr}=(2+\gamma)/2\pi$ (точно)", "leg_int": r"$\nu_{int}=\sqrt{3(1+2\gamma)}/2\pi$ (точно)",
+   "leg_meas": "измеренные пары (решатель)", "leg_star": "вырождение $T11$: $\\gamma=1$",
+   "v1b_t": "Тождество расщепления и порог Синге",
+   "v1b_y": r"$\nu^2$ (рад$^2$/ед.$^2$)",
+   "leg_split": r"$(\nu_{tr}^2-\nu_{int}^2)\cdot 4\pi^2 = (\gamma-1)^2$ — тождество",
+   "leg_synge_pos": r"$\nu_{int}^2 \cdot 4\pi^2/3 = 1+2\gamma$ (одноимённые)",
+   "leg_synge_neg": r"$= 1-2\gamma$ (встречные: неустойчивость при $\gamma>0.5$)",
+   "leg_meas2": "измеренный квадрат расщепления",
+   "v2a_t": "Гонка остывания: сектор против дедлайна",
+   "v2a_x": r"$t/t_c$", "v2a_y": r"$T_{gap}/T_c$",
+   "leg_a12": r"$\alpha=1/2$ (радиационное остывание)", "leg_a1": r"$\alpha=1$",
+   "leg_tdeath": r"$T_{death}(10^{12})=T_c/25.9$", "leg_tc": r"$T_c$",
+   "ann_deadline": r"дедлайн $t_{death}/t_c = 25.9^{1/\alpha}$",
+   "v2b_t": "Скала остановки и горячее доминирование бюджета",
+   "v2b_x": r"$T_{floor}/T_{death}$", "v2b_y": r"$\tau_{max}$ (ед. времени)",
+   "leg_tau": r"$\tau_{max}=\varepsilon_H e^{B/T}/\nu$",
+   "leg_dens": r"плотность бюджета $\propto T^{-3}e^{-B/T}$ (норм.)",
+   "ann_star": r"пик $T^*=B/3$",
+   "v3_t": "Пять лестниц сходимости в бесконечность",
+   "p_t": ("L-A время", "L-B шаг RK4", "L-C объём (Ричардсон)", "L-D бюджет попыток",
         "L-E выборка (бином)", "измеренные порядки"),
-   LA_x=r"$T_{int}$ (периодов вращения)", LA_y=r"$|\hat\nu-\nu_{exact}|$",
-   LA_leg_i=r"ветвь $\nu_{int}$", LA_leg_tr=r"ветвь $\nu_{tr}$",
-   LA_leg_res=r"разрешение $1/T$", LA_ann=r"ветви разрешимы при $T>1/\Delta\nu\approx 865$",
-   LB_x=r"$h/P_{rot}$", LB_y=r"$|\hat\omega-\omega_{exact}|$",
-   LB_leg1=r"$\gamma=1$", LB_leg2=r"$\gamma=0.8$", LB_leg_ref=r"наклон 4",
-   LB_ann=r"Ричардсон: dev $\approx 2.5\times10^{-11}$",
-   LC_x=r"ступени $(L_1,L_2,L_3)$", LC_y=r"$|\Delta_\infty^{extrap}-\Delta_{F,min}|$",
-   LC_ann=r"континуум уже в первых трёх ступенях",
-   LD_x=r"$\log_{10} N$", LD_y=r"$T_{death}(N)$",
-   LD_leg=r"$B_0/\ln(N\nu/\varepsilon_H)$", LD_leg_ref=r"$\propto 1/\ln N$",
-   LD_ann=r"$T_{death}(\infty)=0$",
-   LE_x=r"$n$ (выборка)", LE_y=r"$|\hat p-p|$",
-   LE_leg_ref=r"$\propto n^{-1/2}$", LE_leg_se=r"$1\sigma$ Пуассона",
-   LE_ann=r"все $|z|\leq 1.2$",
-   LS_y=r"порядок $p$", LS_ann=("L-A: ~1–2 (интерполяция пика)", "L-B: 4.096",
+   "LA_x": r"$T_{int}$ (периодов вращения)", "LA_y": r"$|\hat\nu-\nu_{exact}|$",
+   "LA_leg_i": r"ветвь $\nu_{int}$", "LA_leg_tr": r"ветвь $\nu_{tr}$",
+   "LA_leg_res": r"разрешение $1/T$", "LA_ann": r"ветви разрешимы при $T>1/\Delta\nu\approx 865$",
+   "LB_x": r"$h/P_{rot}$", "LB_y": r"$|\hat\omega-\omega_{exact}|$",
+   "LB_leg1": r"$\gamma=1$", "LB_leg2": r"$\gamma=0.8$", "LB_leg_ref": r"наклон 4",
+   "LB_ann": r"Ричардсон: dev $\approx 2.5\times10^{-11}$",
+   "LC_x": r"ступени $(L_1,L_2,L_3)$", "LC_y": r"$|\Delta_\infty^{extrap}-\Delta_{F,min}|$",
+   "LC_ann": r"континуум уже в первых трёх ступенях",
+   "LD_x": r"$\log_{10} N$", "LD_y": r"$T_{death}(N)$",
+   "LD_leg": r"$B_0/\ln(N\nu/\varepsilon_H)$", "LD_leg_ref": r"$\propto 1/\ln N$",
+   "LD_ann": r"$T_{death}(\infty)=0$",
+   "LE_x": r"$n$ (выборка)", "LE_y": r"$|\hat p-p|$",
+   "LE_leg_ref": r"$\propto n^{-1/2}$", "LE_leg_se": r"$1\sigma$ Пуассона",
+   "LE_ann": r"все $|z|\leq 1.2$",
+   "LS_y": r"порядок $p$", "LS_ann": ("L-A: ~1–2 (интерполяция пика)", "L-B: 4.096",
         "L-C: точный 2-член", r"L-D: $1/\ln N$", "L-E: 0.5"),
- ),
- "en": dict(
-   v1a_t="Branch laws: exact curves vs numerical spectrum",
-   v1a_x=r"$\gamma$ (circulation $\Gamma_3$)", v1a_y=r"$\nu$ (rad/time unit)",
-   leg_tr=r"$\nu_{tr}=(2+\gamma)/2\pi$ (exact)", leg_int=r"$\nu_{int}=\sqrt{3(1+2\gamma)}/2\pi$ (exact)",
-   leg_meas="measured pairs (solver)", leg_star="$T11$ degeneracy: $\\gamma=1$",
-   v1b_t="Splitting identity and the Synge threshold",
-   v1b_y=r"$\nu^2$ (rad$^2$/unit$^2$)",
-   leg_split=r"$(\nu_{tr}^2-\nu_{int}^2)\cdot 4\pi^2 = (\gamma-1)^2$ — identity",
-   leg_synge_pos=r"$\nu_{int}^2 \cdot 4\pi^2/3 = 1+2\gamma$ (same-sign)",
-   leg_synge_neg=r"$= 1-2\gamma$ (opposite: unstable for $\gamma>0.5$)",
-   leg_meas2="measured squared splitting",
-   v2a_t="The cooling race: sector vs the deadline",
-   v2a_x=r"$t/t_c$", v2a_y=r"$T_{gap}/T_c$",
-   leg_a12=r"$\alpha=1/2$ (radiation-like cooling)", leg_a1=r"$\alpha=1$",
-   leg_tdeath=r"$T_{death}(10^{12})=T_c/25.9$", leg_tc=r"$T_c$",
-   ann_deadline=r"deadline $t_{death}/t_c = 25.9^{1/\alpha}$",
-   v2b_t="Stall cliff and the hot dominance of the budget",
-   v2b_x=r"$T_{floor}/T_{death}$", v2b_y=r"$\tau_{max}$ (time units)",
-   leg_tau=r"$\tau_{max}=\varepsilon_H e^{B/T}/\nu$",
-   leg_dens=r"budget density $\propto T^{-3}e^{-B/T}$ (norm.)",
-   ann_star=r"peak $T^*=B/3$",
-   v3_t="Five convergence ladders to infinity",
-   p_t=("L-A time", "L-B RK4 step", "L-C volume (Richardson)", "L-D attempt budget",
+ },
+ "en": {
+   "v1a_t": "Branch laws: exact curves vs numerical spectrum",
+   "v1a_x": r"$\gamma$ (circulation $\Gamma_3$)", "v1a_y": r"$\nu$ (rad/time unit)",
+   "leg_tr": r"$\nu_{tr}=(2+\gamma)/2\pi$ (exact)", "leg_int": r"$\nu_{int}=\sqrt{3(1+2\gamma)}/2\pi$ (exact)",
+   "leg_meas": "measured pairs (solver)", "leg_star": "$T11$ degeneracy: $\\gamma=1$",
+   "v1b_t": "Splitting identity and the Synge threshold",
+   "v1b_y": r"$\nu^2$ (rad$^2$/unit$^2$)",
+   "leg_split": r"$(\nu_{tr}^2-\nu_{int}^2)\cdot 4\pi^2 = (\gamma-1)^2$ — identity",
+   "leg_synge_pos": r"$\nu_{int}^2 \cdot 4\pi^2/3 = 1+2\gamma$ (same-sign)",
+   "leg_synge_neg": r"$= 1-2\gamma$ (opposite: unstable for $\gamma>0.5$)",
+   "leg_meas2": "measured squared splitting",
+   "v2a_t": "The cooling race: sector vs the deadline",
+   "v2a_x": r"$t/t_c$", "v2a_y": r"$T_{gap}/T_c$",
+   "leg_a12": r"$\alpha=1/2$ (radiation-like cooling)", "leg_a1": r"$\alpha=1$",
+   "leg_tdeath": r"$T_{death}(10^{12})=T_c/25.9$", "leg_tc": r"$T_c$",
+   "ann_deadline": r"deadline $t_{death}/t_c = 25.9^{1/\alpha}$",
+   "v2b_t": "Stall cliff and the hot dominance of the budget",
+   "v2b_x": r"$T_{floor}/T_{death}$", "v2b_y": r"$\tau_{max}$ (time units)",
+   "leg_tau": r"$\tau_{max}=\varepsilon_H e^{B/T}/\nu$",
+   "leg_dens": r"budget density $\propto T^{-3}e^{-B/T}$ (norm.)",
+   "ann_star": r"peak $T^*=B/3$",
+   "v3_t": "Five convergence ladders to infinity",
+   "p_t": ("L-A time", "L-B RK4 step", "L-C volume (Richardson)", "L-D attempt budget",
         "L-E sample (binomial)", "measured orders"),
-   LA_x=r"$T_{int}$ (rotation periods)", LA_y=r"$|\hat\nu-\nu_{exact}|$",
-   LA_leg_i=r"branch $\nu_{int}$", LA_leg_tr=r"branch $\nu_{tr}$",
-   LA_leg_res=r"resolution $1/T$", LA_ann=r"branches resolved for $T>1/\Delta\nu\approx 865$",
-   LB_x=r"$h/P_{rot}$", LB_y=r"$|\hat\omega-\omega_{exact}|$",
-   LB_leg1=r"$\gamma=1$", LB_leg2=r"$\gamma=0.8$", LB_leg_ref=r"slope 4",
-   LB_ann=r"Richardson: dev $\approx 2.5\times10^{-11}$",
-   LC_x=r"rungs $(L_1,L_2,L_3)$", LC_y=r"$|\Delta_\infty^{extrap}-\Delta_{F,min}|$",
-   LC_ann=r"the continuum is already in the first three rungs",
-   LD_x=r"$\log_{10} N$", LD_y=r"$T_{death}(N)$",
-   LD_leg=r"$B_0/\ln(N\nu/\varepsilon_H)$", LD_leg_ref=r"$\propto 1/\ln N$",
-   LD_ann=r"$T_{death}(\infty)=0$",
-   LE_x=r"$n$ (sample)", LE_y=r"$|\hat p-p|$",
-   LE_leg_ref=r"$\propto n^{-1/2}$", LE_leg_se=r"$1\sigma$ Poisson",
-   LE_ann=r"all $|z|\leq 1.2$",
-   LS_y=r"order $p$", LS_ann=("L-A: ~1–2 (peak interpolation)", "L-B: 4.096",
+   "LA_x": r"$T_{int}$ (rotation periods)", "LA_y": r"$|\hat\nu-\nu_{exact}|$",
+   "LA_leg_i": r"branch $\nu_{int}$", "LA_leg_tr": r"branch $\nu_{tr}$",
+   "LA_leg_res": r"resolution $1/T$", "LA_ann": r"branches resolved for $T>1/\Delta\nu\approx 865$",
+   "LB_x": r"$h/P_{rot}$", "LB_y": r"$|\hat\omega-\omega_{exact}|$",
+   "LB_leg1": r"$\gamma=1$", "LB_leg2": r"$\gamma=0.8$", "LB_leg_ref": r"slope 4",
+   "LB_ann": r"Richardson: dev $\approx 2.5\times10^{-11}$",
+   "LC_x": r"rungs $(L_1,L_2,L_3)$", "LC_y": r"$|\Delta_\infty^{extrap}-\Delta_{F,min}|$",
+   "LC_ann": r"the continuum is already in the first three rungs",
+   "LD_x": r"$\log_{10} N$", "LD_y": r"$T_{death}(N)$",
+   "LD_leg": r"$B_0/\ln(N\nu/\varepsilon_H)$", "LD_leg_ref": r"$\propto 1/\ln N$",
+   "LD_ann": r"$T_{death}(\infty)=0$",
+   "LE_x": r"$n$ (sample)", "LE_y": r"$|\hat p-p|$",
+   "LE_leg_ref": r"$\propto n^{-1/2}$", "LE_leg_se": r"$1\sigma$ Poisson",
+   "LE_ann": r"all $|z|\leq 1.2$",
+   "LS_y": r"order $p$", "LS_ann": ("L-A: ~1–2 (peak interpolation)", "L-B: 4.096",
         "L-C: exact 2-term law", r"L-D: $1/\ln N$", "L-E: 0.5"),
- ),
+ },
 }
 
 # ============================ Фигура V1: ветви ==============================
@@ -183,7 +182,7 @@ def fig_v2(L):
     ax1.axvline(TD, color=C2, lw=1.0, ls=":")
     ax1.annotate(TXT[L]["ann_deadline"] + "\n" + r"$\alpha$=1/2: 673",
                  xy=(TD ** 2, TD), xytext=(3, 0.028), fontsize=8.8, color=C3,
-                 arrowprops=dict(arrowstyle="->", color=C3, lw=1.0))
+                 arrowprops={"arrowstyle": "->", "color": C3, "lw": 1.0})
     ax1.axvspan(1.0, TD ** 2, color=C1, alpha=0.07)
     ax1.set_xscale("log"); ax1.set_yscale("log")
     ax1.set_xlabel(TXT[L]["v2a_x"]); ax1.set_ylabel(TXT[L]["v2a_y"])
@@ -215,7 +214,7 @@ def fig_v2(L):
     ax2b.axvline((B0 / 3) / 0.003414, color=C2, lw=0.9, ls=":")
     ax2b.annotate(TXT[L]["ann_star"], xy=((B0 / 3) / 0.003414, 1.0),
                   xytext=(11, 0.55), fontsize=8.8, color=C2,
-                  arrowprops=dict(arrowstyle="->", color=C2, lw=0.9))
+                  arrowprops={"arrowstyle": "->", "color": C2, "lw": 0.9})
     lines1, labs1 = ax2.get_legend_handles_labels()
     lines2, labs2 = ax2b.get_legend_handles_labels()
     ax2.legend(lines1 + lines2, labs1 + labs2, fontsize=8.4, frameon=False, loc="lower left")

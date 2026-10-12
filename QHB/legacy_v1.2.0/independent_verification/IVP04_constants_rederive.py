@@ -27,7 +27,7 @@ checks["b_Ch"] = float(1 - cos(2*pi/7))
 checks["gascheau_growth"] = float((mpf(3)/2)**(mpf(1)/2))
 write_verdict("IVP04.json", {"check": "50-digit rederivation",
                              "verdict": "PASS", "values": checks,
-                             "note": "float projections of 50-digit values; "
-                                     "the qhb.validate layer pins them to "
+                             "note": "float projections of 50-digit values; " +
+                                     "the qhb.validate layer pins them to " +
                                      "5e-16"})
 print("IVP04: PASS")

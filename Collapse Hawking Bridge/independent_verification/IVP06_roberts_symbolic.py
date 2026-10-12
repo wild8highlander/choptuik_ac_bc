@@ -174,10 +174,10 @@ def main():
     save_result("IVP06", {
         "status": status,
         "pre_registered": {
-            "method": "SymPy differentiation from scratch of the published "
-                      "Roberts-Oshiro form; residuals reduced sqrt-free; "
+            "method": "SymPy differentiation from scratch of the published " +
+                      "Roberts-Oshiro form; residuals reduced sqrt-free; " +
                       "must simplify to exactly 0; kappa free-symbol proof",
-            "note": "stronger than numeric regression: residuals vanish "
+            "note": "stronger than numeric regression: residuals vanish " +
                     "IDENTICALLY, not approximately",
         },
         "residuals": rows,

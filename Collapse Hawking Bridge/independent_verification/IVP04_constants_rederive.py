@@ -178,10 +178,10 @@ def main():
         "project_input_M_sun": float(M_SUN_NOMINAL),
         "iau2015_GM_over_G": float(iau_solar),
         "rel_diff": float(abs(M_SUN_NOMINAL - iau_solar) / iau_solar),
-        "verdict": "INPUT-PROVENANCE note: chbridge uses M_sun = 1.98892e30 kg; "
-                   "the IAU 2015 nominal solar mass parameter gives 1.98841e30 kg "
-                   "(rel diff ~2.6e-4). This is a declared input constant, not a "
-                   "derived value; every closed form above was compared at the "
+        "verdict": "INPUT-PROVENANCE note: chbridge uses M_sun = 1.98892e30 kg; " +
+                   "the IAU 2015 nominal solar mass parameter gives 1.98841e30 kg " +
+                   "(rel diff ~2.6e-4). This is a declared input constant, not a " +
+                   "derived value; every closed form above was compared at the " +
                    "project's own input mass, so no check depends on this choice.",
     }
     log(f"\n[C] provenance note (input constants): M_sun input = "
@@ -196,7 +196,7 @@ def main():
     save_result("IVP04", {
         "status": status,
         "pre_registered": {
-            "method": "re-derive all closed forms in mpmath dps=50 from CODATA-2018 "
+            "method": "re-derive all closed forms in mpmath dps=50 from CODATA-2018 " +
                       "exact definitions; import chbridge only in comparison phase",
             "tolerances": {"float64 closed forms": 1e-9, "Planck units": 1e-12},
         },

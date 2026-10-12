@@ -363,8 +363,8 @@ def part3_linearization(state, sources, Fs, M3_expr, A0):
                            "R3_over_R1": "2 tau/9",
                            "P4": "(3+16*tau/9)*P2/10",
                            "verified": bool(fp_ok),
-                           "note": ("без торновской связки у точки два свободных "
-                                    "модуля; связка потока массы замыкает до "
+                           "note": ("без торновской связки у точки два свободных " +
+                                    "модуля; связка потока массы замыкает до " +
                                     "одного (амплитуда tau)"), },
         "tau0_factorization": sp.sstr(char0),
         "fundamental_spectrum_exact": [sp.sstr(x) for x in
@@ -384,9 +384,9 @@ def part3_linearization(state, sources, Fs, M3_expr, A0):
                                        kappa_obs_glit - lp_tau2),
             "tau_formal_bCh": tau_bch,
             "tau_formal_gamma_lit": tau_glit,
-            "note": ("kappa_obs = Delta_sp/gamma > lambda+(27/80): "
-                     "наблюдаемое отталкивание сильнее, чем даёт замкнутая "
-                     "башня уровней 0-2 в codim-1 окне — дефицит есть мера "
+            "note": ("kappa_obs = Delta_sp/gamma > lambda+(27/80): " +
+                     "наблюдаемое отталкивание сильнее, чем даёт замкнутая " +
+                     "башня уровней 0-2 в codim-1 окне — дефицит есть мера " +
                      "вклада глубоких уровней (O6+)"),
         },
         "spinor_ladder": {
@@ -400,14 +400,14 @@ def part3_linearization(state, sources, Fs, M3_expr, A0):
                 "lam_-2": float(np.exp(-2 * DELTA_SP)),
                 "lam_-3": float(np.exp(-3 * DELTA_SP)),
             },
-            "note": ("стабильные моды башни за эхо затухают как e^{lam*Delta} "
-                     "< 1 (сходимость); спинорные фазы pi/15, pi/30 дают "
+            "note": ("стабильные моды башни за эхо затухают как e^{lam*Delta} " +
+                     "< 1 (сходимость); спинорные фазы pi/15, pi/30 дают " +
                      "вращение на эхо (лестница монографии)"),
         },
         "honest_notes": [
-            "tau — единственный свободный модуль замкнутой башни (уровни 0-2); "
+            "tau — единственный свободный модуль замкнутой башни (уровни 0-2); " +
             "полная башня (O6+) должна фиксировать его — не сделано (честно).",
-            "Замороженные источники (W2*, R3*, P4*, dR3*=0) — стандартная "
+            "Замороженные источники (W2*, R3*, P4*, dR3*=0) — стандартная " +
             "линеаризация замкнутой башни; их динамика — уровни O6+.",
             "z-башня выведена при chi=0; chi-поправки — в center_hierarchy.json.",
         ],
@@ -468,11 +468,11 @@ def part4_empirics(cf_exprs):
                 f"{val[f'A={A_val}']['flux_ratio_p90']}]")
         out["thorne_link_validation"] = val
         out["thorne_link_validation"]["note"] = (
-            "идентичность M3 = 2R1t0^2/(3(1-chi)^2) символически точна "
-            "(невязка 0); на сетке n=800 (regular) ratio > 1 с дрейфом — "
-            "это мера xi-junk в m (m/xi^3 = M1/xi^2 + M3: 1/r-мода завышает "
-            "M3_fit на кольце) + систематика фитов. Строгая метрика качества "
-            "центра; сжатие до процентов — цель v6 (та же стена, что и "
+            "идентичность M3 = 2R1t0^2/(3(1-chi)^2) символически точна " +
+            "(невязка 0); на сетке n=800 (regular) ratio > 1 с дрейфом — " +
+            "это мера xi-junk в m (m/xi^3 = M1/xi^2 + M3: 1/r-мода завышает " +
+            "M3_fit на кольце) + систематика фитов. Строгая метрика качества " +
+            "центра; сжатие до процентов — цель v6 (та же стена, что и " +
             "процентная gamma).")
         out["available"] = True
     except Exception as exc:  # noqa: BLE001
@@ -502,7 +502,7 @@ def part4_empirics(cf_exprs):
             "median": float(np.median(xah)) if len(xah) else None,
             "p10": float(np.percentile(xah, 10)) if len(xah) else None,
             "p90": float(np.percentile(xah, 90)) if len(xah) else None,
-            "note": ("2m/r = 2(M3/R1)xi^2 = 1 при xi = sqrt(R1/(2M3)); "
+            "note": ("2m/r = 2(M3/R1)xi^2 = 1 при xi = sqrt(R1/(2M3)); " +
                      "в CSS xi_AH = sqrt(3/(4 tau)) — O(1) в xi-единицах"),
         }
         log(f"[IV] xi_AH (Хуп): median = {out['xi_AH_hoop']['median']}")
@@ -546,21 +546,21 @@ def part4_empirics(cf_exprs):
         out["ode_residuals"] = ode_residuals(rows)
         out["available"] = True
         out["honest_notes"] = [
-            "Торновская связь M3 = 2R1t0^2/(3(1-chi)^2) валидирована на "
-            "ЧИСТЫХ регулярных забегах (thorne_link_validation); на строках "
-            "критической ЦЕПОЧКИ после зум-рестартов t0 тейлор-патча — "
-            "транзиент внутреннего ГУ, мгновенная identity нарушается "
-            "(flux_diagnostic_chain) — это мера незарелаксированности патча, "
+            "Торновская связь M3 = 2R1t0^2/(3(1-chi)^2) валидирована на " +
+            "ЧИСТЫХ регулярных забегах (thorne_link_validation); на строках " +
+            "критической ЦЕПОЧКИ после зум-рестартов t0 тейлор-патча — " +
+            "транзиент внутреннего ГУ, мгновенная identity нарушается " +
+            "(flux_diagnostic_chain) — это мера незарелаксированности патча, " +
             "а не опровержение связи (связь точна для решений системы).",
-            "tau_row значим только на консистентных строках (flux_ratio в "
-            "[0.2, 5]); на цепочке v5 их мало — CSS-амплитуда на z~4.5 не "
+            "tau_row значим только на консистентных строках (flux_ratio в " +
+            "[0.2, 5]); на цепочке v5 их мало — CSS-амплитуда на z~4.5 не " +
             "измеряется, нужен z>=30 (v6).",
-            "xi_AH (Хуп) — s-свободная величина, O(1) в xi-единицах, как и "
+            "xi_AH (Хуп) — s-свободная величина, O(1) в xi-единицах, как и " +
             "предсказывает CSS: sqrt(3/(4 tau)).",
         ]
     except Exception as exc:  # noqa: BLE001 — честная деградация
         out["error"] = repr(exc)
-        out["honest_notes"] = ["цепочка зумов недоступна в этой среде — "
+        out["honest_notes"] = ["цепочка зумов недоступна в этой среде — " +
                                "эмпирическая часть пропущена (честно)."]
         log(f"[IV] НЕ ДОСТУПНО: {exc!r}")
     return out
@@ -643,8 +643,8 @@ def main():
                    "delta_spinor": DELTA_SP, "b_Ch": B_CH,
                    "gamma_lit": GAMMA_LIT, "delta_lit": DELTA_LIT,
                    "phi15": PHI15, "phi30": PHI30},
-        "route": ("Hilbert -> double-null (sympy_derivation) -> center hierarchy "
-                  "O1-O5 (sympy_center) -> [I] Thorne/MTW mass bookkeeping -> "
+        "route": ("Hilbert -> double-null (sympy_derivation) -> center hierarchy " +
+                  "O1-O5 (sympy_center) -> [I] Thorne/MTW mass bookkeeping -> " +
                   "[II] log-time tower -> [III] linear spectrum -> [IV] empirics"),
         "honest_notes": [],
     }

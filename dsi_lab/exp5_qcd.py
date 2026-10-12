@@ -155,7 +155,7 @@ def part_A(N_folds=(1, 2, 4, 8, 16), M_per_N=48):
     измеряем скейлинг |<lambda>_центр|.
     """
     print("=" * 78)
-    print("A. N-SCALING НА БАШНЕ O_ЧИ: N = 28k, k = 1..%d" % max(N_folds))
+    print("A. N-SCALING НА БАШНЕ O_ЧИ: N = 28k, k = 1..{}" .format (max(N_folds)))
     print("=" * 78)
     out = []
     kappa = 2.62  # решёточный физический порог

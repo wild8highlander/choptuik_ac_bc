@@ -1,0 +1,12 @@
+[01] b_Ch(7)               = 0.3765101981412664                   expected 0.3765101981412664             PASS
+[02] CF [0;24,1,8]         = 1/24 1/25 9/224                      expected 1/24 1/25 9/224                PASS
+[03] c_K3 = 9/224          = 0.0401785714285714                   expected 0.0401785714285714             PASS
+[04] {7,3} census + chi    = V=56 E=84 F=24 id=T                  expected V=56 E=84 F=24 id=T            PASS
+[05] theorem C: F(perm, n=7)= 14                                   expected 14                             PASS
+[06] theorem A: F(compl, n=8)= 8                                    expected 8                              PASS
+[07] theorem B: tree k=2   = n=7 F=9                              expected n=7 F=9                        PASS
+[08] weighted tree c^2=4/7 = 11.20408163265306                    expected 11.20408163265306              PASS
+[09] ladder 5/7 and 1+2/7  = 0.71428571428571 / 1.28571428571429  expected 0.71428571428571 / 1.28571428571429 PASS
+[10] min 7t^2-8t+3 at t=4/7= 0.71428571428571                     expected 0.71428571428571               PASS
+
+ALL CHECKS PASSED (10/10)

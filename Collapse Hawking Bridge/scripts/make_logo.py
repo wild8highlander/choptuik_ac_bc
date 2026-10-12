@@ -25,13 +25,12 @@ import numpy as np
 
 matplotlib.use("Agg")
 import matplotlib.font_manager as fm
+import contextlib
 
 for _p in ("/usr/share/fonts/truetype/chinese/NotoSansSC-Regular.ttf",
            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"):
-    try:
+    with contextlib.suppress(Exception):
         fm.fontManager.addfont(_p)
-    except Exception:
-        pass
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, FancyArrowPatch
@@ -80,11 +79,11 @@ def draw(theme):
     ax.plot([cx0], [tip_y], marker="o", ms=8, color=t["gold"], zorder=6)
     # distance-to-threshold arrows (eps -> 0, the ladder drift)
     ax.annotate("", xy=(cx0 + 14, tip_y + 6), xytext=(cx0 + 86, rim + 16),
-                arrowprops=dict(arrowstyle="-|>", color=t["muted"], lw=1.4,
-                                alpha=0.9, connectionstyle="arc3,rad=-0.25"))
+                arrowprops={"arrowstyle": "-|>", "color": t["muted"], "lw": 1.4,
+                                "alpha": 0.9, "connectionstyle": "arc3,rad=-0.25"})
     ax.annotate("", xy=(cx0 + 8, tip_y - 2), xytext=(cx0 + 116, rim + 30),
-                arrowprops=dict(arrowstyle="-|>", color=t["muted"], lw=1.2,
-                                alpha=0.65, connectionstyle="arc3,rad=-0.22"))
+                arrowprops={"arrowstyle": "-|>", "color": t["muted"], "lw": 1.2,
+                                "alpha": 0.65, "connectionstyle": "arc3,rad=-0.22"})
     ax.text(cx0 + 96, rim + 52, "$\\varepsilon = A - A^*$",
             fontsize=11, color=t["muted"], ha="center")
 

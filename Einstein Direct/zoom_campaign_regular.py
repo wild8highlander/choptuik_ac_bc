@@ -67,20 +67,20 @@ def main():
     out = {
         "config": {"n": 800, "max_zooms": 4, "family": "gaussian",
                    "v_p": V_P, "sigma": SIGMA,
-                   "center_closure": "regular (s1-t1 link, m~r^3, "
+                   "center_closure": "regular (s1-t1 link, m~r^3, " +
                                      "pq/cd parity projection, taper)"},
         "a_star_source": "fixed-grid N=1600 bisection (validated, session 1)",
         "a_star": A_FIXED_GRID,
         "gamma_lit": GAMMA_LIT, "delta_lit": DELTA_LIT, "b_Ch": B_CH,
         "delta_spinor": 7 * np.pi / 30,
-        "status": ("PROTOCOL: center junk suppressed (mass junk "
-                   "3.56 -> 6.6e-5), depth wall persists (z ~ 3.6-5.9); "
-                   "gamma/delta at percent level NOT achieved; spinor "
+        "status": ("PROTOCOL: center junk suppressed (mass junk " +
+                   "3.56 -> 6.6e-5), depth wall persists (z ~ 3.6-5.9); " +
+                   "gamma/delta at percent level NOT achieved; spinor " +
                    "diagnostics recorded (see README sec. 13-14)"),
     }
 
     print("=" * 72)
-    print("ЗУМ-КАМПАНИЯ (регулярное замыкание): A*_fg = %.7f" % A_FIXED_GRID)
+    print("ЗУМ-КАМПАНИЯ (регулярное замыкание): A*_fg = {:.7f}".format(A_FIXED_GRID))
     print("=" * 72, flush=True)
 
     eps_list = [3e-5, 1e-4, 1e-3, 1e-2]
@@ -121,13 +121,13 @@ def main():
         "achievements": [
             "массовый мусор у центра подавлен (max M_AH junk 3.56 -> 6.6e-5)",
             "кольцо [R_zone, 4R_zone] стабильно до самого стопа",
-            "механизм стены уточнён: чётная мода E у центра + 1/r-связка "
-            "через чётную добавку (p+q); сырое марширование вне зоны несёт "
+            "механизм стены уточнён: чётная мода E у центра + 1/r-связка " +
+            "через чётную добавку (p+q); сырое марширование вне зоны несёт " +
             "O(1)-нарушение спинорных парностей (см. spinor_analysis.json)",
             "глубина: z до 5.85 (4 зума, eps=1e-4)",
         ],
         "roadmap": [
-            "центральный Тейлор-патч (Чоптюк 1993): эволюция коэффициентов "
+            "центральный Тейлор-патч (Чоптюк 1993): эволюция коэффициентов " +
             "регулярного разложения (t0, a, ...) как внутреннего ГУ",
             "спинорная модуляция pi/15, pi/30 требует z >= 30 (>= 40 эхо)",
         ],

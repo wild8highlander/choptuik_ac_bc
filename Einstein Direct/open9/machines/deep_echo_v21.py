@@ -177,7 +177,7 @@ def classify_m1_trend(stage_m1, seed=SEED):
 def gate_word(mode):
     """Слово ворот для перцентильной гаммы (q7[T4], односторонние ворота)."""
     if mode.startswith("growing"):
-        return ("gated: 1/r-мода растёт -> перцентильная гамма загрязнена "
+        return ("gated: 1/r-мода растёт -> перцентильная гамма загрязнена " +
                 "сверху")
     if mode.startswith("junk"):
         return "open-for-percentile: M1 на мусорном полу -> ворота открыты"
@@ -340,9 +340,9 @@ class V21Runner(ZoomRunner):
                                     "attempt": camp.get_attempt(zi),
                                     "row": j, "R2": f.get("R2"),
                                     "M1": f.get("M1"), "M3": f.get("M3"),
-                                    "why": "инвазия на активной строке j=%d "
-                                           "(флагов в стадии: %d)"
-                                           % (j, flagged)})
+                                    "why": ("инвазия на активной строке j={} " +
+                                           "(флагов в стадии: {})")
+                                           .format (j, flagged)})
 
     def rollback(self):
         """[P3] откат стадии: восстановить снапшот (уплотнение окна ставит
@@ -406,9 +406,9 @@ def run_chain(eps, tag, n_grid=N_GRID, max_zooms=MAX_ZOOMS, verbose=False,
             if rec["_streak"] >= STREAK_STOP:
                 stop = {"kind": "junk_wall",
                         "detail": {"streak": int(rec["_streak"]),
-                                   "note": "инвазия в %d стадиях подряд — "
-                                           "новая стена"
-                                           % int(rec["_streak"])}}
+                                   "note": ("инвазия в {} стадиях подряд — " +
+                                           "новая стена")
+                                           .format (int(rec["_streak"]))}}
                 break
             if fixed and runner.rollback():
                 w_new = max(W_FACTOR_BASE / TIGHTEN_DIV ** driver.attempts[zi],
@@ -532,8 +532,8 @@ def _gamma_estimate(peak_rows):
     перцентиль p70), бутстрап-CI с фиксированным сидом."""
     if len(peak_rows) < 6:
         return {"status": "not_measurable",
-                "reason": "пиков < 6 (%d) — эхо-поезд не развился"
-                          % len(peak_rows)}
+                "reason": "пиков < 6 ({}) — эхо-поезд не развился"
+                          .format (len(peak_rows))}
     by_stage = {}
     for p in peak_rows:
         by_stage.setdefault(p["stage_segment"], []).append(p)
@@ -572,16 +572,16 @@ def _wiggle_gate(stages_summary):
     """Виггл-фит со свободной частотой на самой населённой стадии;
     ворота pi/15-модуляции — честно (разрешимость z >= 60)."""
     gate = {
-        "pi15_gate": ("не тестируется на z <= 30: разрешимость pi/15-"
-                      "модуляции требует z >= 60 (spinor_ladder); записан "
+        "pi15_gate": ("не тестируется на z <= 30: разрешимость pi/15-" +
+                      "модуляции требует z >= 60 (spinor_ladder); записан " +
                       "свободный виггл-фит как носитель"),
         "predicted_resolvability_z": 60.0,
     }
     best = None
     for s in stages_summary:
-        if s["n_peaks"] >= 8 and s.get("delta_eff"):
-            if best is None or s["n_peaks"] > best["n_peaks"]:
-                best = s
+        if (s["n_peaks"] >= 8 and s.get("delta_eff")
+                and (best is None or s["n_peaks"] > best["n_peaks"])):
+            best = s
     if best is None:
         gate["free_wiggle"] = None
         gate["status"] = "no_train (стадий с >= 8 пиками нет)"
@@ -589,8 +589,7 @@ def _wiggle_gate(stages_summary):
     fit = wiggle_fit_free_freq(np.array(best["v_peaks"]),
                                np.array(best["Q_peaks"]), best["delta_eff"])
     gate["free_wiggle"] = fit
-    gate["status"] = ("resolved (w/(2pi/Delta) = %.4f, amp_c1 = %.4f)"
-                      % (fit["omega_over_2pi_per_delta"], fit["amp_c1"])
+    gate["status"] = ("resolved (w/(2pi/Delta) = {:.4f}, amp_c1 = {:.4f})".format(fit["omega_over_2pi_per_delta"], fit["amp_c1"])
                       if fit else "no_fit (виггл-фит сошёлся неудачно)")
     gate["stage_segment"] = best["zoom_index"]
     gate["n_peaks"] = best["n_peaks"]
@@ -610,9 +609,8 @@ def _new_wall(stop, z_final):
         "S_req_from_new_wall": S_new,
         "S_req_x10_from_new_wall": 10.0 * S_new,
         "note": ("цель z >= 30 достигнута" if reached else
-                 "новая стена зафиксирована на z = %.2f: S_req(30) = %.3e "
-                 "(x10: %.1e) — бюджет v20b [D2] пересчитан от новой стены"
-                 % (z_final, S_new, 10 * S_new)),
+                 ("новая стена зафиксирована на z = {:.2f}: S_req(30) = {:.3e} " +
+                 "(x10: {:.1e}) — бюджет v20b [D2] пересчитан от новой стены").format(z_final, S_new, 10 * S_new)),
     }
 
 
@@ -641,15 +639,15 @@ def window_policy_probe():
             f"зумов = {rec['zooms']}, стоп = {rec['stop']['kind']}")
     return {
         "status": "executed",
-        "control_n800_plain": ("чистый ZoomRunner n = 800: z = 1.782, "
-                               "зумов 1, стоп singularity — обёртка v21 "
+        "control_n800_plain": ("чистый ZoomRunner n = 800: z = 1.782, " +
+                               "зумов 1, стоп singularity — обёртка v21 " +
                                "нейтральна к физике марша"),
-        "control_n600_plain": ("чистый ZoomRunner n = 600: z = 4.598, "
-                              "зумов 3, стоп v_exhausted — воспроизведён "
+        "control_n600_plain": ("чистый ZoomRunner n = 600: z = 4.598, " +
+                              "зумов 3, стоп v_exhausted — воспроизведён " +
                               "вердикт v20a (детерминизм машины)"),
         "rows": rows,
-        "note": ("пост-протокольная диагностика (НЕ часть [P1]-[P5]): "
-                 "w_factor — тот же рычаг, что уплотнение [P3]; стены "
+        "note": ("пост-протокольная диагностика (НЕ часть [P1]-[P5]): " +
+                 "w_factor — тот же рычаг, что уплотнение [P3]; стены " +
                  "сравниваются при фиксированных eps/n"),
     }
 
@@ -674,13 +672,12 @@ def run_ladder(main_rec):
                         "z": float(r["z_reached"]), "ref": r}
     if best["z"] < LADDER_MIN_Z:
         return {"status": "skipped",
-                "reason": "лучшая цепочка z = %.2f < %.0f (глубже всех "
-                          "сохранённых кампаний): лестница на глубокой "
-                          "цепочке не имеет носителя; дискриминатор p "
-                          "остаётся фальсифицируемым протоколом (v20a)"
-                          % (best["z"], LADDER_MIN_Z)}
+                "reason": ("лучшая цепочка z = {:.2f} < {:.0f} (глубже всех " +
+                          "сохранённых кампаний): лестница на глубокой " +
+                          "цепочке не имеет носителя; дискриминатор p " +
+                          "остаётся фальсифицируемым протоколом (v20a)").format(best["z"], LADDER_MIN_Z)}
     ref = best["ref"]
-    rungs = [{"tag": "ref(w=%.1f,eps=1e-3)" % best["w"],
+    rungs = [{"tag": "ref(w={:.1f},eps=1e-3)".format(best["w"]),
               "eps": EPS_MAIN, "z_reached": best["z"],
               "n_Q_peaks": (ref["n_Q_peaks"] if ref else
                             main_rec["n_Q_peaks"]),
@@ -705,10 +702,10 @@ def run_ladder(main_rec):
         out["fit_p_delta"] = fit
     else:
         out["fit_p_delta"] = None
-        out["note"] = ("валидных ступеней с Delta_eff < 3 (%d из %d) — "
-                       "показатель p не измерим (честно); носитель "
-                       "дискриминатора по-прежнему отсутствует"
-                       % (len(ok), len(rungs)))
+        out["note"] = (("валидных ступеней с Delta_eff < 3 ({} из {}) — " +
+                       "показатель p не измерим (честно); носитель " +
+                       "дискриминатора по-прежнему отсутствует")
+                       .format (len(ok), len(rungs)))
     return out
 
 
@@ -719,89 +716,85 @@ def build_verdict(main):
     vl = []
     nw = main["new_wall"]
     st = main["stop"]["kind"]
-    vl.append("протокол раздела 5 исполнен: eps = %.0e над A*, n = %d, "
-              "зумов %d, z = %.2f, стоп = %s"
-              % (main["eps"], main.get("config", {}).get("n_grid", N_GRID),
+    vl.append("протокол раздела 5 исполнен: eps = {:.0e} над A*, n = {}, "
+              "зумов {}, z = {:.2f}, стоп = {}"
+              .format (main["eps"], main.get("config", {}).get("n_grid", N_GRID),
                  main["zooms"], main["z_reached"], st))
     vl.append(nw["note"])
     if main["n_Q_peaks"] >= 4:
-        vl.append("эхо-поезд: %d пиков Q; Delta_eff = %s (лит. 3.44); "
-                  "эволюция по стадиям: %s"
-                  % (main["n_Q_peaks"],
-                     ("%.4f" % main["delta_eff_global"])
+        vl.append("эхо-поезд: {} пиков Q; Delta_eff = {} (лит. 3.44); "
+                  "эволюция по стадиям: {}"
+                  .format (main["n_Q_peaks"],
+                     ("{:.4f}".format(main["delta_eff_global"]))
                      if main["delta_eff_global"] else "н/д",
-                     ["z%.0f: %s" % (d["z_stage"],
-                      ("%.3f" % d["delta_eff"]) if d["delta_eff"] else "н/д")
+                     ["z{:.0f}: {}".format(d["z_stage"],
+                      ("{:.3f}".format(d["delta_eff"])) if d["delta_eff"] else "н/д")
                       for d in main["delta_evolution"][:6]]))
     else:
-        vl.append("эхо-поезд НЕ развился: %d пиков Q — воспроизведён "
+        vl.append("эхо-поезд НЕ развился: {} пиков Q — воспроизведён "
                   "вердикт v20a (стена — свойство машины); носители "
-                  "Delta_eff/гаммы отсутствуют" % main["n_Q_peaks"])
+                  "Delta_eff/гаммы отсутствуют" .format (main["n_Q_peaks"]))
     g = main["gamma"]
     if g["status"] == "measured" and g.get("gamma_hat"):
-        vl.append("гамма (эхо-область, правило %s): gamma_hat = %.4f "
-                  "(якорь 0.374, отклонение %s%%); наклон 2*gamma = %.4f"
-                  % (g["estimator_rule"], g["gamma_hat"],
-                     ("%.1f" % g["gamma_err_pct_vs_anchor"])
+        vl.append("гамма (эхо-область, правило {}): gamma_hat = {:.4f} "
+                  "(якорь 0.374, отклонение {}%); наклон 2*gamma = {:.4f}".format(g["estimator_rule"], g["gamma_hat"],
+                     ("{:.1f}".format(g["gamma_err_pct_vs_anchor"]))
                      if g.get("gamma_err_pct_vs_anchor") is not None else "н/д",
                      g["slope_2gamma"] or float("nan")))
     else:
-        vl.append("гамма НЕ измерима: %s — перцентильная оценка требует "
-                  "эхо-поезда (честный статус)" % g.get("reason", ""))
+        vl.append("гамма НЕ измерима: {} — перцентильная оценка требует "
+                  "эхо-поезда (честный статус)".format(g.get("reason", "")))
     ne = len(main["events"])
     fixed = sum(1 for o in main["stage_outcomes"]
                 if o["outcome"] == "clean")
-    vl.append("джанк-гейт [P3]: инвазий %d (стадий очищено откатом: %d); "
-              "тренд |M1|: %s; слово ворот: %s"
-              % (ne, fixed, main["M1_trend"].get("mode", "н/д"),
+    vl.append("джанк-гейт [P3]: инвазий {} (стадий очищено откатом: {}); "
+              "тренд |M1|: {}; слово ворот: {}"
+              .format (ne, fixed, main["M1_trend"].get("mode", "н/д"),
                  main["gate_word"]))
-    vl.append("виггл/pi15: %s; %s"
-              % (main["wiggle"]["status"], main["wiggle"]["pi15_gate"]))
+    vl.append("виггл/pi15: {}; {}".format(main["wiggle"]["status"], main["wiggle"]["pi15_gate"]))
     probe = main.get("window_policy_probe") or {}
     if probe.get("status") == "executed":
         rows = probe["rows"]
         z_best = max([float(main["z_reached"])]
                      + [float(r["z_reached"]) for r in rows])
-        vl.append("проба оконной политики [D-v21]: z(w=5) = %.2f -> %s — "
+        vl.append("проба оконной политики [D-v21]: z(w=5) = {:.2f} -> {} — "
                   "стена глубины чувствительна к оконному триггеру, а не "
                   "только к разрешению (w — рычаг [P3]); бюджет от лучшей "
-                  "политики: z* = %.2f, S_req(30) = %.2e"
-                  % (main["z_reached"],
-                     "; ".join("z(w=%.1f) = %.2f (%s)"
-                               % (r["w_factor"], r["z_reached"],
+                  "политики: z* = {:.2f}, S_req(30) = {:.2e}".format(main["z_reached"],
+                     "; ".join("z(w={:.1f}) = {:.2f} ({})".format(r["w_factor"], r["z_reached"],
                                   r["stop"].split(":")[-1]) for r in rows),
                      z_best, float(np.exp(GAMMA * (Z_TARGET - z_best)))))
     return vl
 
 
 HONEST_NOTES = [
-    "операционализация «уплотнения окна (w_factor x5)»: окно/5 (пол 3 "
-    "ширины фичи), а не окно x5 — при трактовке «x5 ШИРЕ» W0 = 25*width ~ "
-    "1125 du превышает n = 800 du (ламбда < 1, зум замирает); направление "
+    "операционализация «уплотнения окна (w_factor x5)»: окно/5 (пол 3 " +
+    "ширины фичи), а не окно x5 — при трактовке «x5 ШИРЕ» W0 = 25*width ~ " +
+    "1125 du превышает n = 800 du (ламбда < 1, зум замирает); направление " +
     "уплотнения выбрано в пользу лямбды и чистоты интерполяции",
-    "критерий инвазии — машинная операционализация q7, ОТКАЛИБРОВАННАЯ "
-    "прогоном 0 этой же кампании: рестарт-строки и ранние строки стадии — "
-    "вакуум (m ~ 1e-13, R2 < 0: двухпараметрический фит там не работает — "
-    "окно v уходит НАЗАД от фичи), поэтому гейт активен только на "
-    "АКТИВНЫХ строках (Q > 1% максимума Q стадии); инвазия = >= 2 флагов "
-    "на активных строках (R2 < 0.95 или |M3| <= 1e-12); пороги q7[T2], "
-    "порог активности и правило 2 флагов — выбор машины; базовая стадия "
+    "критерий инвазии — машинная операционализация q7, ОТКАЛИБРОВАННАЯ " +
+    "прогоном 0 этой же кампании: рестарт-строки и ранние строки стадии — " +
+    "вакуум (m ~ 1e-13, R2 < 0: двухпараметрический фит там не работает — " +
+    "окно v уходит НАЗАД от фичи), поэтому гейт активен только на " +
+    "АКТИВНЫХ строках (Q > 1% максимума Q стадии); инвазия = >= 2 флагов " +
+    "на активных строках (R2 < 0.95 или |M3| <= 1e-12); пороги q7[T2], " +
+    "порог активности и правило 2 флагов — выбор машины; базовая стадия " +
     "(импульс) — режим записи",
-    "гамма в координате эхо-области zeta = -ln(v* - v): наклон ln Q vs zeta "
-    "равен 2*gamma в предположении Q ~ (v*-v)^{-2 gamma}; калибровка часов "
-    "(v*, стадия) даёт систематику оценщика — абсолютное значение "
+    "гамма в координате эхо-области zeta = -ln(v* - v): наклон ln Q vs zeta " +
+    "равен 2*gamma в предположении Q ~ (v*-v)^{-2 gamma}; калибровка часов " +
+    "(v*, стадия) даёт систематику оценщика — абсолютное значение " +
     "чувствительно, ОТНОСИТЕЛЬНАЯ эволюция по стадиям — устойчива",
-    "ворота q7 односторонни (растущая M1 загрязняет гамму сверху): "
-    "открытые ворота — необходимое, не достаточное условие процентной "
+    "ворота q7 односторонни (растущая M1 загрязняет гамму сверху): " +
+    "открытые ворота — необходимое, не достаточное условие процентной " +
     "точности",
-    "чекпоинт JSON переписывается после каждого зума/события ([P4]) — "
-    "файл v21_checkpoints.json отражает ПОСЛЕДНЕЕ состояние, история "
+    "чекпоинт JSON переписывается после каждого зума/события ([P4]) — " +
+    "файл v21_checkpoints.json отражает ПОСЛЕДНЕЕ состояние, история " +
     "стадий — в основном JSON-вердикте",
-    "редуцированная модель v20b [D3] сертифицировала ОЦЕНЩИКИ; настоящая "
-    "кампания измеряет РЕАЛЬНУЮ машину — их расхождение есть результат, "
+    "редуцированная модель v20b [D3] сертифицировала ОЦЕНЩИКИ; настоящая " +
+    "кампания измеряет РЕАЛЬНУЮ машину — их расхождение есть результат, " +
     "а не ошибка",
-    "стадийный счётчик «инвазий подряд» считает СТАДИИ с впервые "
-    "поднятой инвазией: повторные поднятия на той же стадии (попытки "
+    "стадийный счётчик «инвазий подряд» считает СТАДИИ с впервые " +
+    "поднятой инвазией: повторные поднятия на той же стадии (попытки " +
     "отката) не умножают счётчик",
 ]
 
@@ -824,10 +817,10 @@ def main():
                                  max_zooms=args.max_zooms,
                                  verbose=args.verbose)
         out = {
-            "title": "КАМПАНИЯ v21: глубинная кампания эха — исполнение "
+            "title": "КАМПАНИЯ v21: глубинная кампания эха — исполнение " +
                      "протокола раздела 5 монографии (depth_z30 [D4])",
-            "question": ("достижимы ли эхо-поезда до z = 30, процентная "
-                         "гамма с CI, Delta_eff(z) и pi/15-модуляция на "
+            "question": ("достижимы ли эхо-поезда до z = 30, процентная " +
+                         "гамма с CI, Delta_eff(z) и pi/15-модуляция на " +
                          "глубокой цепочке с джанк-гейтами и откатами?"),
             "config": {"A_star": float(A_STAR), "eps": args.eps,
                        "n_grid": args.n_grid, "max_zooms": args.max_zooms,
@@ -836,11 +829,10 @@ def main():
                        "monitor_rows": list(MONITOR_ROWS),
                        "attempts_per_stage": ATTEMPTS_PER_STAGE,
                        "streak_stop": STREAK_STOP,
-                       "tighten": "w_factor/%.0f (пол %.0f)"
-                                  % (TIGHTEN_DIV, TIGHTEN_FLOOR),
-                       "determinism": "BLAS 1 thread; без RNG (бутстрап с "
-                                      "фиксированным сидом %d)" % SEED},
-            "protocol_reference": ("монография open9, раздел 5 «Протокол "
+                       "tighten": "w_factor/{:.0f} (пол {:.0f})".format(TIGHTEN_DIV, TIGHTEN_FLOOR),
+                       "determinism": ("BLAS 1 thread; без RNG (бутстрап с " +
+                                      "фиксированным сидом {})").format(SEED)},
+            "protocol_reference": ("монография open9, раздел 5 «Протокол " +
                                    "v21»; depth_z30.py [D4]"),
         }
         out.update(rec)
@@ -851,10 +843,10 @@ def main():
             out["window_policy_probe"] = {"status": "failed"}
         out["calibration_run0"] = {
             "file": "v21_calibration_run0.json",
-            "lesson": ("прогон 0 (некалиброванный гейт: рестарт-строки "
-                       "триггерили инвазию) показал: (а) рестарт/ранние "
-                       "строки — вакуум, фит там не диагностика; "
-                       "(б) путь с откатами и w = 3-уплотнением достиг "
+            "lesson": ("прогон 0 (некалиброванный гейт: рестарт-строки " +
+                       "триггерили инвазию) показал: (а) рестарт/ранние " +
+                       "строки — вакуум, фит там не диагностика; " +
+                       "(б) путь с откатами и w = 3-уплотнением достиг " +
                        "z = 5.24 — мотивировка пробы оконной политики"),
         }
         out["verdict_lines"] = build_verdict(out)
@@ -875,24 +867,23 @@ def main():
             fp = sp.get("fit_p_delta")
             if fp:
                 out["verdict_lines"].append(
-                    "лестница (второй проход): p = %.3f по Delta_eff "
+                    "лестница (второй проход): p = {:.3f} по Delta_eff "
                     "(дискриминатор: 1/2 Йордан-2 / 1 выход b2 / 2 "
-                    "ляпуновский центр)" % fp["p"])
+                    "ляпуновский центр)".format(fp["p"]))
             else:
                 out["verdict_lines"].append(
                     "лестница (второй проход): исполнена, но Delta_eff нет "
                     "на >= 3 ступенях — p не измерим (честно)")
         else:
             out["verdict_lines"].append(
-                "лестница (второй проход): ПРОПУЩЕНА — %s"
-                % sp.get("reason", ""))
+                "лестница (второй проход): ПРОПУЩЕНА — {}".format(sp.get("reason", "")))
         out["runtime_ladder_s"] = round(time.time() - T_START, 1)
         out["runtime_s"] = round(out.get("runtime_main_s",
                                           out["runtime_ladder_s"])
                                  + out["runtime_ladder_s"], 1)
         with open(OUT_PATH, "w", encoding="utf-8") as fh:
             json.dump(out, fh, ensure_ascii=False, indent=1)
-        log("Второй проход записан (%s)" % sp.get("status"))
+        log("Второй проход записан ({})".format(sp.get("status")))
     return out
 
 

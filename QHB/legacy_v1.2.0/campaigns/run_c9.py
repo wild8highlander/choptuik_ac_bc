@@ -189,14 +189,14 @@ def main():
 
     verdict = {
         "campaign": "qhb_c9",
-        "engine": "exact tridiagonal statics + piecewise-constant Floquet "
+        "engine": "exact tridiagonal statics + piecewise-constant Floquet " +
                   "exponentials (the committed G-model, no new parameters)",
         "project_version": __version__,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "map": {"N": N_MAP, "detector_floor_2oN": floor,
                 "beta_grid": list(BETA_GRID), "qpk_grid": list(QPK_GRID),
-                "regime_bound": "Delta_0 <= Omega_0/2 = 1 -> q_pk >= 0.2 "
-                                "(the shallow-well branch is OUTSIDE the "
+                "regime_bound": "Delta_0 <= Omega_0/2 = 1 -> q_pk >= 0.2 " +
+                                "(the shallow-well branch is OUTSIDE the " +
                                 "two-band reduction and is not mapped)",
                 "rows": grid},
         "valley": valley,
@@ -205,11 +205,11 @@ def main():
             "beta_c_quadratic_forecast": beta_c,
             "Delta_F_measured_at_beta_c": g_at_bc,
             "ratio_to_floor": ratio,
-            "statement": "the quadratic window law extrapolated beyond "
-                         "[0, 0.2] forecasts closure at beta_c; the map "
-                         "keeps the gap open there and everywhere on the "
-                         "searched range — a machine-found counterexample "
-                         "to naive window extrapolation (T3 itself is a "
+            "statement": "the quadratic window law extrapolated beyond " +
+                         "[0, 0.2] forecasts closure at beta_c; the map " +
+                         "keeps the gap open there and everywhere on the " +
+                         "searched range — a machine-found counterexample " +
+                         "to naive window extrapolation (T3 itself is a " +
                          "window law and is untouched)",
         },
         "gates": {
@@ -222,26 +222,26 @@ def main():
             "P4_counterexample": {"ratio_to_floor": ratio, "ok": p4_ok},
         },
         "verdicts": {
-            "phase_structure": "OPEN on the whole committed (beta, q_pk) "
-                               "map; the narrowing valley is the measured "
+            "phase_structure": "OPEN on the whole committed (beta, q_pk) " +
+                               "map; the narrowing valley is the measured " +
                                "phase feature",
-            "no_closure": "PASS (finite-range honest statement: no closure "
+            "no_closure": "PASS (finite-range honest statement: no closure " +
                           "for beta <= 10.0, q_pk in [0.2, 1.0])",
             "valley_reproducible": "PASS" if p2_ok else "FAIL",
-            "naive_window_counterexample": "REPORTED (falsified inside the "
+            "naive_window_counterexample": "REPORTED (falsified inside the " +
                                            "searched range)",
         },
         "honest_notes": [
-            "no closure is a FINITE-RANGE statement about beta <= 10 — "
+            "no closure is a FINITE-RANGE statement about beta <= 10 — " +
             "never a proof of eternal openness",
-            "the two-band reduction is valid only while Delta_0 <= "
-            "Omega_0/2 = 1; the shallow-well branch (q_pk < 0.2) is "
+            "the two-band reduction is valid only while Delta_0 <= " +
+            "Omega_0/2 = 1; the shallow-well branch (q_pk < 0.2) is " +
             "outside the committed regime and is honestly excluded",
-            "the detector floor 2/N is the committed C4 envelope: SUBFLOOR "
-            "cells would be cells where a real spectroscopy campaign at "
+            "the detector floor 2/N is the committed C4 envelope: SUBFLOOR " +
+            "cells would be cells where a real spectroscopy campaign at " +
             "this resolution could not separate the gap",
-            "the valley REOPENS: quasi-energy band structure — the drive "
-            "narrows and re-opens the gap; the window law sees none of "
+            "the valley REOPENS: quasi-energy band structure — the drive " +
+            "narrows and re-opens the gap; the window law sees none of " +
             "this (its honest scope is [0, 0.2])",
         ],
         "wall_s": time.time() - t0,

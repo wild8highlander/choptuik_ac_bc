@@ -75,15 +75,15 @@ BRANCHES = [
         "name": "Lambda_QCD",
         "T_K": LAMBDA_QCD_MeV * MeV_J / k_B,
         "anchor": f"Lambda_QCD = {LAMBDA_QCD_MeV:.1f} MeV (one-loop MS-bar)",
-        "honesty": "a renormalisation scale, NOT a temperature; the k_B "
+        "honesty": "a renormalisation scale, NOT a temperature; the k_B " +
                    "conversion is a comparison device only",
     },
     {
         "name": "QCD_crossover",
         "T_K": T_QCD_K,
-        "anchor": "T_QCD = 155.16 MeV / k_B (lattice-QCD crossover; "
+        "anchor": "T_QCD = 155.16 MeV / k_B (lattice-QCD crossover; " +
                   "the committed T8 contact)",
-        "honesty": "the only true TEMPERATURE of the three — the "
+        "honesty": "the only true TEMPERATURE of the three — the " +
                    "deconfinement bath; the committed contact of the bridge",
     },
     {
@@ -91,8 +91,8 @@ BRANCHES = [
         "T_K": V_EW_GeV * GEV_J / k_B,
         "anchor": f"v_EW = {V_EW_GeV:.2f} GeV (PDG VEV of EW symmetry "
                   "breaking)",
-        "honesty": "a vacuum expectation value (energy), NOT a bath "
-                   "temperature; the EW-epoch bath was of the same order "
+        "honesty": "a vacuum expectation value (energy), NOT a bath " +
+                   "temperature; the EW-epoch bath was of the same order " +
                    "(1e2 GeV, comparison). The LEAST honest branch — marked",
     },
 ]
@@ -183,16 +183,16 @@ def main():
 
     verdict = {
         "campaign": "qhb_c6",
-        "engine": "closed-form Schwarzschild mapping (qhb.bridge), exact "
-                  "arithmetic; the only campaign input from the machine is "
+        "engine": "closed-form Schwarzschild mapping (qhb.bridge), exact " +
+                  "arithmetic; the only campaign input from the machine is " +
                   "the committed Delta_0 of c1_verdict.json",
         "project_version": __version__,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
-        "hypothesis_status": "MARKED HYPOTHESIS — the code-unit gap -> Hz "
-                             "mapping through a contact temperature; the "
-                             "branches are comparison anchors, never fit "
+        "hypothesis_status": "MARKED HYPOTHESIS — the code-unit gap -> Hz " +
+                             "mapping through a contact temperature; the " +
+                             "branches are comparison anchors, never fit " +
                              "targets",
-        "Delta0_source": "campaigns/reference/c1_verdict.json (static "
+        "Delta0_source": "campaigns/reference/c1_verdict.json (static " +
                          "gap, N=64)",
         "Delta0": D0,
         "branches": rows,
@@ -206,22 +206,22 @@ def main():
         "verdicts": {
             "mapping_round_trip": "PASS" if g1_ok else "FAIL",
             "branch_monotonicity": "PASS" if g2_ok else "FAIL",
-            "linear_ratio_carried": "PASS (arithmetic identity, carried as "
+            "linear_ratio_carried": "PASS (arithmetic identity, carried as " +
                                     "an honesty note — not a discovery)",
-            "order_window_QCD": "REPORTED (Lambda within one decade of the "
+            "order_window_QCD": "REPORTED (Lambda within one decade of the " +
                                 "mapped gap quantum; comparison only)",
         },
         "honest_notes": [
-            "Lambda_QCD is a renormalisation scale, not a temperature; its "
+            "Lambda_QCD is a renormalisation scale, not a temperature; its " +
             "branch exists for comparison and carries the weakest claim",
-            "the electroweak branch converts a VEV (energy) to a "
-            "temperature-equivalent; the EW bath temperature was of the "
+            "the electroweak branch converts a VEV (energy) to a " +
+            "temperature-equivalent; the EW bath temperature was of the " +
             "same order but is a different quantity — least honest branch",
-            "the mapping f_gap = Delta_0 * k_B T / h is linear, so branch "
-            "RATIOS are arithmetic; the physical content claimed is only "
+            "the mapping f_gap = Delta_0 * k_B T / h is linear, so branch " +
+            "RATIOS are arithmetic; the physical content claimed is only " +
             "the three-branch spread itself and the QCD contact",
             "E_gap(QCD) ~ " + f"{eq:.1f} MeV sits within one decade of "
-            "Lambda_QCD = 332 MeV — an order-of-magnitude coincidence, "
+            "Lambda_QCD = 332 MeV — an order-of-magnitude coincidence, " +
             "explicitly NOT a derivation of Lambda_QCD",
         ],
         "wall_s": time.time() - t0,

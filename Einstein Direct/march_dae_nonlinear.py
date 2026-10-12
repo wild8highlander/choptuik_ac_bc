@@ -227,20 +227,20 @@ def campaign_point(kv, label, N2_raw, B_raw):
 
 def main() -> None:
     results = {
-        "title": "Nonlinear DAE march: finite-amplitude residue test "
+        "title": "Nonlinear DAE march: finite-amplitude residue test " +
                  "(session 19)",
-        "question": ("the whole linear world annihilates exactly (v14); is the "
-                     "baryon-asymmetry residue (phantom gap ~2.9% to pi/30, "
-                     "delta_mono) produced at FINITE amplitude by the "
+        "question": ("the whole linear world annihilates exactly (v14); is the " +
+                     "baryon-asymmetry residue (phantom gap ~2.9% to pi/30, " +
+                     "delta_mono) produced at FINITE amplitude by the " +
                      "nonlinear de-adiabatized source dynamics?"),
-        "method": ("full nonlinear DAE: F(x)=0 (12 tower + 6 prolongation "
-                   "equations), prolongation closure Uk(x) u = -Known(x)(v,dd) "
-                   "with x-dependent Jacobians (chain rule dF/dtau=0, no "
-                   "linearization); compatibility r(x)=0 = nonlinear hidden "
-                   "constraints (Procrustes-aligned left kernel of Uk); "
+        "method": ("full nonlinear DAE: F(x)=0 (12 tower + 6 prolongation " +
+                   "equations), prolongation closure Uk(x) u = -Known(x)(v,dd) " +
+                   "with x-dependent Jacobians (chain rule dF/dtau=0, no " +
+                   "linearization); compatibility r(x)=0 = nonlinear hidden " +
+                   "constraints (Procrustes-aligned left kernel of Uk); " +
                    "machine theorems T1-T3 on the solution set"),
-        "reference": ("v14: linear M2 dynamics = nilpotent Jordan-2, "
-                      "delta_mono < (2.8e-14, 2.7e-8)/echo; phantom gap "
+        "reference": ("v14: linear M2 dynamics = nilpotent Jordan-2, " +
+                      "delta_mono < (2.8e-14, 2.7e-8)/echo; phantom gap " +
                       "3.0e-3; session-18b flat direction (baseline)"),
     }
     res = {}

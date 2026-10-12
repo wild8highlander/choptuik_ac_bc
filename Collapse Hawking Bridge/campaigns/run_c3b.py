@@ -230,7 +230,7 @@ def main():
     print("=" * 72)
     a_star_800 = load_a_star()
     print(f"A* (committed C1, N=800) = {a_star_800:.8f}  [cross-reference only]")
-    print("'adaptive' = resolution CONCENTRATED on the critical window;\n"
+    print("'adaptive' = resolution CONCENTRATED on the critical window;\n" +
           "no AMR rewrite of the engine is implied or claimed.")
     print("F-2 remediation: each grid uses its OWN freshly bisected A*_N.")
 
@@ -321,18 +321,18 @@ def main():
         "a_star_per_grid": a_star_per_grid,
         "method": {
             "definition_of_adaptive": (
-                "resolution concentrated on the critical window: deep grids "
-                "spend runs only on eps in [1e-1.5, 1e-3.8] around their OWN "
-                "threshold and on echo runs nearest threshold; no AMR rewrite "
+                "resolution concentrated on the critical window: deep grids " +
+                "spend runs only on eps in [1e-1.5, 1e-3.8] around their OWN " +
+                "threshold and on echo runs nearest threshold; no AMR rewrite " +
                 "of the engine"),
             "thresholds": (
-                "v2.0.1 F-2 remediation: eps is measured from the per-grid "
-                "A*_N (freshly bisected at tol 2e-6), NOT from A*_N800; the "
-                "2.0.0 release reused A*_N800 for the deep grids, mislabeling "
-                "the eps axis by +2.8e-3 at N=1600 and biasing gamma_eff to "
+                "v2.0.1 F-2 remediation: eps is measured from the per-grid " +
+                "A*_N (freshly bisected at tol 2e-6), NOT from A*_N800; the " +
+                "2.0.0 release reused A*_N800 for the deep grids, mislabeling " +
+                "the eps axis by +2.8e-3 at N=1600 and biasing gamma_eff to " +
                 "~0.11 (audit finding F-2 / IVP-11)"),
-            "motivation": ("fixed-grid mass floor drops with resolution — "
-                           "the C3 'gamma unmeasurable' verdict is a floor "
+            "motivation": ("fixed-grid mass floor drops with resolution — " +
+                           "the C3 'gamma unmeasurable' verdict is a floor " +
                            "statement, and the floor is a knob"),
         },
         "gamma_ladder": gamma_ladder,
@@ -340,8 +340,8 @@ def main():
         "delta_eff": delta_eff,
         "products": {
             "P_anchor": DGAMMA_LIT,
-            "P_anchor_class": ("anchor arithmetic — both factors are "
-                               "literature/engine anchors; consistency with "
+            "P_anchor_class": ("anchor arithmetic — both factors are " +
+                               "literature/engine anchors; consistency with " +
                                "the target, NOT a measurement"),
             "P_anchor_verdict": "ANCHOR_ARITHMETIC",
             "P_anchor_within_target": P_anchor_within_target,
@@ -351,13 +351,13 @@ def main():
                        "frozen_by": "PREREGISTRATION.md (v2.2.0)"},
         },
         "honest_notes": {
-            "stop_criterion": ("deep-grid rows near threshold may stop with "
-                               "'AH mass saturated'; M_ah is recorded and the "
+            "stop_criterion": ("deep-grid rows near threshold may stop with " +
+                               "'AH mass saturated'; M_ah is recorded and the " +
                                "row stays in the fit set only if sane"),
-            "delta": ("delta_eff is an EFFECTIVE period from 40 snapshots "
-                      "per run; the DSS verdict of C3 is not overwritten by "
+            "delta": ("delta_eff is an EFFECTIVE period from 40 snapshots " +
+                      "per run; the DSS verdict of C3 is not overwritten by " +
                       "this campaign, only supplemented"),
-            "anchors": ("gamma_Ch and echo_delta remain comparison anchors, "
+            "anchors": ("gamma_Ch and echo_delta remain comparison anchors, " +
                         "never fit targets"),
         },
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),

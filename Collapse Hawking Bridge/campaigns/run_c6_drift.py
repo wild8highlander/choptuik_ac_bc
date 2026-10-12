@@ -164,9 +164,9 @@ def stress_test(analysis):
         "p_eff_of_fitted_law_at_200_400_800": p_eff_law,
         "p_eff_measured_at_200_400_800": p_eff_meas,
         "trajectory_incompatible": rejected,
-        "verdict": ("REJECTED as an extrapolation law: the fitted "
-                    "p_eff decreases with N while the measured climbs; "
-                    "the five-point fit is descriptive only.  A_inf is "
+        "verdict": ("REJECTED as an extrapolation law: the fitted " +
+                    "p_eff decreases with N while the measured climbs; " +
+                    "the five-point fit is descriptive only.  A_inf is " +
                     "NOT claimable from this ladder (honest negative)."
                     if rejected else
                     "not rejected (unexpected; investigate)"),
@@ -338,7 +338,7 @@ def flattening_channel(kappa, s, ladder_rows):
 # main
 # ----------------------------------------------------------------------------
 def main():
-    print("COLLAPSE-HAWKING BRIDGE — CAMPAIGN C6 (v%s)" % PROJECT_VERSION)
+    print("COLLAPSE-HAWKING BRIDGE — CAMPAIGN C6 (v{})".format(PROJECT_VERSION))
     print("the resolution-drift law: why one formula gives different values")
     print("-" * 66)
 
@@ -346,17 +346,16 @@ def main():
     analysis = ladder_analysis(rows)
     print("[1/4] ladder analysis:")
     for d, pt in zip(analysis["per_doubling_drifts"], analysis["ladder"][:-1]):
-        print("   A*_%d -> A*_%d : drift %.6e" % (pt["N"], pt["N"] * 2, d))
-    print("   p_eff measured :", ["%.3f" % p for p in analysis["p_eff_measured"]])
+        print("   A*_{} -> A*_{} : drift {:.6e}" .format (pt["N"], pt["N"] * 2, d))
+    print("   p_eff measured :", ["{:.3f}".format(p) for p in analysis["p_eff_measured"]])
     print("   monotone from above:", analysis["monotone_from_above"],
           "| p_eff climbing:", analysis["p_eff_strictly_climbing"])
 
     stress = stress_test(analysis)
-    print("[2/4] extrapolation stress test: %s" % stress["model"])
-    print("   A_inf_fit=%.8f a=%.4f b=%.1f R2=%.6f" %
-          (stress["A_inf_fit"], stress["a_fit"], stress["b_fit"], stress["r2"]))
-    print("   p_eff law:", ["%.3f" % p for p in stress["p_eff_of_fitted_law_at_200_400_800"]],
-          "vs measured", ["%.3f" % p for p in stress["p_eff_measured_at_200_400_800"]])
+    print("[2/4] extrapolation stress test: {}".format(stress["model"]))
+    print("   A_inf_fit={:.8f} a={:.4f} b={:.1f} R2={:.6f}".format(stress["A_inf_fit"], stress["a_fit"], stress["b_fit"], stress["r2"]))
+    print("   p_eff law:", ["{:.3f}".format(p) for p in stress["p_eff_of_fitted_law_at_200_400_800"]],
+          "vs measured", ["{:.3f}".format(p) for p in stress["p_eff_measured_at_200_400_800"]])
     print("   verdict:", stress["verdict"][:60], "...")
 
     checks = parabola_checks()
@@ -364,18 +363,16 @@ def main():
     worst2 = max(r["mean_relerr"] for r in checks)
     worst3 = max(r["chord_sum_closed_form_relerr"] for r in checks)
     print("[3/4] parabolic-tension lemmas (exact, machine precision):")
-    print("   max |deficit - kappa h^2/8| / (kappa h^2/8) = %.2e" % worst1)
-    print("   max |mean deficit - kappa h^2/24| / (kappa h^2/24) = %.2e" % worst2)
-    print("   max |chord chain - closed form| / closed form = %.2e" % worst3)
+    print("   max |deficit - kappa h^2/8| / (kappa h^2/8) = {:.2e}".format(worst1))
+    print("   max |mean deficit - kappa h^2/24| / (kappa h^2/24) = {:.2e}".format(worst2))
+    print("   max |chord chain - closed form| / closed form = {:.2e}".format(worst3))
 
     tension = measure_tension_from_profiles()
     sens = measure_sensitivity()
     kappa, s = tension["kappa_code"], sens["sensitivity_s_per_code_unit"]
     print("[4/4] calibration from committed artifacts:")
-    print("   kappa* = %.4f (q-profile tension at v=%.4f, v_ah=%.4f)" %
-          (kappa, tension["v_snapshot"], tension["v_ah"]))
-    print("   s = dq_max/dA = %.4g at eps_mid = %.3e" %
-          (s, math.sqrt(sens["eps_pair"][0] * sens["eps_pair"][1])))
+    print("   kappa* = {:.4f} (q-profile tension at v={:.4f}, v_ah={:.4f})".format(kappa, tension["v_snapshot"], tension["v_ah"]))
+    print("   s = dq_max/dA = {:.4g} at eps_mid = {:.3e}".format(s, math.sqrt(sens["eps_pair"][0] * sens["eps_pair"][1])))
     h_r = tension["profile_r_spacing_h"]
     chan = []
     for (n, a_star), drift in zip(rows[:-1], analysis["per_doubling_drifts"]):
@@ -386,8 +383,8 @@ def main():
     share_min = min(c["share"] for c in chan)
     share_max = max(c["share"] for c in chan)
     for c in chan:
-        print("   N=%5d: observed drift %.4e | flattening channel %.4e | share %.2e"
-              % (c["N"], c["observed_drift"], c["flattening_channel_dA"], c["share"]))
+        print("   N={:5}: observed drift {:.4e} | flattening channel {:.4e} | share {:.2e}"
+              .format (c["N"], c["observed_drift"], c["flattening_channel_dA"], c["share"]))
 
     verdict = {
         "campaign": "chb_c6_drift",
@@ -406,32 +403,32 @@ def main():
         "channel_decomposition": chan,
         "theorem": {
             "name": "T10 (parabolic-tension drift)",
-            "statement": ("a threshold formula evaluated on grid-sampled "
-                          "parabolic structures is grid-dependent: the sampled "
-                          "family's compaction peak is flattened by exactly "
-                          "kappa h^2/8 (worst alignment; kappa h^2/24 on average) "
-                          "and its chord-chain tension differs from the continuum "
-                          "arc, so the fixed-grid threshold obeys "
-                          "A*_N - A*cont = kappa* h^2/(8 s) + O(h^3) > 0 — the "
-                          "drift EXISTS, is POSITIVE (the ladder approaches the "
-                          "continuum threshold from above), and its leading exact "
+            "statement": ("a threshold formula evaluated on grid-sampled " +
+                          "parabolic structures is grid-dependent: the sampled " +
+                          "family's compaction peak is flattened by exactly " +
+                          "kappa h^2/8 (worst alignment; kappa h^2/24 on average) " +
+                          "and its chord-chain tension differs from the continuum " +
+                          "arc, so the fixed-grid threshold obeys " +
+                          "A*_N - A*cont = kappa* h^2/(8 s) + O(h^3) > 0 — the " +
+                          "drift EXISTS, is POSITIVE (the ladder approaches the " +
+                          "continuum threshold from above), and its leading exact " +
                           "channel is O(h^2)."),
-            "status": "analytically derived (exact lemmas, machine-verified); "
+            "status": "analytically derived (exact lemmas, machine-verified); " +
                       "channel magnitudes measured on committed artifacts",
         },
         "honest_notes": [
-            "no A_inf is claimed: the two-term extrapolation law is REJECTED by "
-            "its own p_eff trajectory (fitted decreases, measured climbs) — every "
+            "no A_inf is claimed: the two-term extrapolation law is REJECTED by " +
+            "its own p_eff trajectory (fitted decreases, measured climbs) — every " +
             "A*_N is a fixed-grid observable, as committed since the F-1 remediation",
-            "the exact flattening channel is real but SUB-DOMINANT (share "
-            "%.1e..%.1e across N=200..1600): the observed monotone drift is "
-            "attributed (HYPOTHESIS, labeled) to march-error amplification "
-            "under near-critical lingering — the threshold-side twin of the "
-            "mass-floor law (T5)" % (share_min, share_max),
-            "the parabola experiments are exact arithmetic checks of the lemmas, "
-            "not engine runs; the engine-side confirmation is the committed ladder "
+            ("the exact flattening channel is real but SUB-DOMINANT (share " +
+            "{:.1e}..{:.1e} across N=200..1600): the observed monotone drift is " +
+            "attributed (HYPOTHESIS, labeled) to march-error amplification " +
+            "under near-critical lingering — the threshold-side twin of the " +
+            "mass-floor law (T5)").format(share_min, share_max),
+            "the parabola experiments are exact arithmetic checks of the lemmas, " +
+            "not engine runs; the engine-side confirmation is the committed ladder " +
             "itself plus the IVP-09/IVP-11 blind measurements",
-            "the direction 'from above' is proven WITHIN the parabolic channel; the "
+            "the direction 'from above' is proven WITHIN the parabolic channel; the " +
             "observed ladder is consistent with it (monotone decreasing)",
         ],
         "wall_total_s": 0.0,

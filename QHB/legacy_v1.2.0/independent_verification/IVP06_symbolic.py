@@ -29,6 +29,6 @@ write_verdict("IVP06.json", {"check": "symbolic (SymPy)",
                              "stability_condition": str(stable_cond) + " >= 0",
                              "nu_equal_masses": "1/3",
                              "gascheau_verdict": verdict_gascheau,
-                             "lemma_A_identity": "kappa*h^2/8 == "
+                             "lemma_A_identity": "kappa*h^2/8 == " +
                                                  "kappa*(h/2)^2/2 (exact)"})
 print("IVP06:", "PASS" if ok else "FAIL")

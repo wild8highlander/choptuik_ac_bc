@@ -94,13 +94,13 @@ def build_all(lang):
     ax.plot([bc], [ybc], "o", ms=8, mfc="white", mec=C_NEG, mew=1.8, zorder=5)
     ax.annotate(f"{T['valley'][4]} = 2.9910\nΔ_F = 0.228995 = 6.3×{T['valley'][3].split(' ')[0]}",
                 xy=(bc, ybc), xytext=(2.86, 0.285), fontsize=9.5, color=C_NEG,
-                arrowprops=dict(arrowstyle="->", color=C_NEG, lw=1.0))
+                arrowprops={"arrowstyle": "->", "color": C_NEG, "lw": 1.0})
     b2 = 2.9660810826496466
     yb2 = Dmin + K*(b2-beta_star)**2
     ax.plot([b2], [yb2], "s", ms=7, mfc="white", mec=C_ACC, mew=1.8, zorder=5)
     ax.annotate(f"{T['valley'][5]}\nΔ_F = 0.235619 = 6.48×порога" if lang=="ru" else f"{T['valley'][5]}\nΔ_F = 0.235619 = 6.48×threshold",
                 xy=(b2, yb2), xytext=(3.0, 0.33), fontsize=9.5, color=C_ACC,
-                arrowprops=dict(arrowstyle="->", color=C_ACC, lw=1.0))
+                arrowprops={"arrowstyle": "->", "color": C_ACC, "lw": 1.0})
     ax.plot([beta_star], [Dmin], "*", ms=14, color=C_MAIN, zorder=5)
     ax.annotate("β* = 3.3583, Δ_F,min = 0.181777", xy=(beta_star, Dmin),
                 xytext=(3.55, 0.185), fontsize=9.5, color=C_MAIN)
@@ -165,9 +165,9 @@ def build_all(lang):
     ax.axhline(0, color=C_NEG, lw=1.2, ls=":")
     ax.axvline(0.0908885, color=C_ACC, lw=1.4, ls="--")
     ax.annotate(T["etascan"][3], xy=(0.0908885, 0.0), xytext=(0.096, 0.028),
-                fontsize=10, color=C_ACC, arrowprops=dict(arrowstyle="->", color=C_ACC))
+                fontsize=10, color=C_ACC, arrowprops={"arrowstyle": "->", "color": C_ACC})
     ax.annotate(T["etascan"][4], xy=(6.1e-10, 0.181777), xytext=(0.012, 0.16),
-                fontsize=10, color=C_NEG, arrowprops=dict(arrowstyle="->", color=C_NEG))
+                fontsize=10, color=C_NEG, arrowprops={"arrowstyle": "->", "color": C_NEG})
     ax.fill_between(eta, bar, -0.02, where=(bar <= 0), color=C_NEG, alpha=0.12)
     ax.set_xlim(0, 0.18); ax.set_ylim(-0.02, 0.19)
     ax.set_xlabel(T["etascan"][1]); ax.set_ylabel(T["etascan"][2])

@@ -7,6 +7,7 @@
   корректную башню: n = 13 делит 1092; род 14 = 1 + 1092/84;
   консистентность результатов exp3_hurwitz.json.
 """
+
 import json
 import os
 
@@ -38,10 +39,10 @@ def test_D1_finding_divisibility():
 def test_D1_alternative_towers():
     """Башни, согласованные с Риманом-Гурвицем (как в отчёте):
     для гурвицевых групп (2,3,7) род кривой g = 1 + |G|/84."""
-    assert 1 + psl2_order(13) // 84 == 14      # PSL(2,13): g = 14
-    assert 1 + 504 // 84 == 7                  # Макбит (PGL(2,7)): g = 7
-    assert 1 + 1344 // 84 == 17                # триплет: g = 17
-    for G in (168, 504, 1092, 1344):           # |G|/84 целое во всей башне
+    assert 1 + psl2_order(13) // 84 == 14  # PSL(2,13): g = 14
+    assert 1 + 504 // 84 == 7  # Макбит (PGL(2,7)): g = 7
+    assert 1 + 1344 // 84 == 17  # триплет: g = 17
+    for G in (168, 504, 1092, 1344):  # |G|/84 целое во всей башне
         assert G % 84 == 0, G
 
 
@@ -54,8 +55,11 @@ def test_b_Ch_predictions():
 
 
 def test_results_json_consistent():
-    path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                        "results", "exp3_hurwitz.json")
+    path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "results",
+        "exp3_hurwitz.json",
+    )
     with open(path, encoding="utf-8") as f:
         res = json.load(f)
     # JSON должен содержать блоки D1 и башни (структура может расширяться)

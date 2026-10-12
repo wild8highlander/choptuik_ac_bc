@@ -328,9 +328,9 @@ def t4_cubic_pencil():
             f"-> {verdict}")
     out["sigma_min_verdicts"] = verdicts
     out["verdict"] = (
-        "третий порядок (пролонгация {F=0, dF/dtau=0}) добавляет только "
-        "фантомные корни +/-i из множителя (1+l^2)^9 в det(M3^T M3); "
-        "ранг-падения M3 == ранг-падения M2 (пролонгационная инвариантность); "
+        "третий порядок (пролонгация {F=0, dF/dtau=0}) добавляет только " +
+        "фантомные корни +/-i из множителя (1+l^2)^9 в det(M3^T M3); " +
+        "ранг-падения M3 == ранг-падения M2 (пролонгационная инвариантность); " +
         "кратность l=0 не меняется (структура l^4 сессии 17)")
     return out
 
@@ -338,14 +338,14 @@ def t4_cubic_pencil():
 def main() -> None:
     results = {
         "title": "Third-order tables: the (l+a)(l+b)(l+c)F pattern (session 18a)",
-        "question": ("does the de-adiabatization pattern (l+2)(l+3)F / "
-                     "(l+4)(l+5)F generalize to third-order tables "
-                     "(l+a)(l+b)(l+c)F, and does the third order add any "
+        "question": ("does the de-adiabatization pattern (l+2)(l+3)F / " +
+                     "(l+4)(l+5)F generalize to third-order tables " +
+                     "(l+a)(l+b)(l+c)F, and does the third order add any " +
                      "genuine linear dynamics?"),
-        "method": ("weight-rule theorem (exact SymPy): d^n/dy^n[f(tau)s^-p] "
-                   "= s^-p-n * prod_{j<n}(lam+p+j) F in mode basis; third "
-                   "tables as exact y-derivatives of second tables; cubic "
-                   "pencil of the prolonged system {F=0, dF/dtau=0}: "
+        "method": ("weight-rule theorem (exact SymPy): d^n/dy^n[f(tau)s^-p] " +
+                   "= s^-p-n * prod_{j<n}(lam+p+j) F in mode basis; third " +
+                   "tables as exact y-derivatives of second tables; cubic " +
+                   "pencil of the prolonged system {F=0, dF/dtau=0}: " +
                    "M3 = [M2; l*M2] => M3^T M3 = (1+l^2) M2^T M2"),
     }
     log("=== [T1] теорема весового правила ===")
@@ -359,22 +359,22 @@ def main() -> None:
 
     t2 = results["T2_tables"]
     lines = [
-        "T1: весовое правило ТОЧНО для всех (p, n) в {0,1,2,4}x{1,2,3}: "
-        "таблица n-го порядка профиля веса p = (l+p)...(l+p+n-1) F; "
+        "T1: весовое правило ТОЧНО для всех (p, n) в {0,1,2,4}x{1,2,3}: " +
+        "таблица n-го порядка профиля веса p = (l+p)...(l+p+n-1) F; " +
         "коэффициент старшего слота = 1 — выбор сессии 17 ВЫВЕДЕН.",
-        "T2: все таблицы машины выведены из профильного анзаца как теоремы "
-        "(P0/T0, W0/D0, P2/ddQ, W2, R3, P4, R5); НОВЫЕ третьи порядки "
-        "W2'''/R3''' (l+2)(l+3)(l+4), P4''' (l+4)(l+5)(l+6), R5'' (l+4)(l+5) "
+        "T2: все таблицы машины выведены из профильного анзаца как теоремы " +
+        "(P0/T0, W0/D0, P2/ddQ, W2, R3, P4, R5); НОВЫЕ третьи порядки " +
+        "W2'''/R3''' (l+2)(l+3)(l+4), P4''' (l+4)(l+5)(l+6), R5'' (l+4)(l+5) " +
         "— каждая = точная y-производная предыдущей: "
         f"all_exact = {t2['all_exact']}.",
-        "T3: регрессия: старший коэффициент слота = 1 во всех поколениях "
+        "T3: регрессия: старший коэффициент слота = 1 во всех поколениях " +
         "(третий, второй, прецедент ddQ машины) и dd=0 -> адиабатические "
         f"ТОЧНО: {results['T3_regression']['all_ok']}.",
-        "T4: кубический карандаш: char3 = (1+l^2)^9 char2; ранг-падения "
+        "T4: кубический карандаш: char3 = (1+l^2)^9 char2; ранг-падения " +
         "неизменны; +/-i — PHANTOM (40-знаковый фильтр); кратность l=0 та же.",
-        "ВЕРДИКТ: третий порядок НЕ добавляет подлинной линейной динамики — "
-        "спектр пролонгационно-инвариантен; delta_mono = 0 устойчив к "
-        "третьему порядку; зазор фантомов ~2.9% к pi/30 — вне линейной "
+        "ВЕРДИКТ: третий порядок НЕ добавляет подлинной линейной динамики — " +
+        "спектр пролонгационно-инвариантен; delta_mono = 0 устойчив к " +
+        "третьему порядку; зазор фантомов ~2.9% к pi/30 — вне линейной " +
         "статики.",
     ]
     results["verdict_lines"] = lines

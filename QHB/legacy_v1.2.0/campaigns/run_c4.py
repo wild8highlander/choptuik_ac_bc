@@ -145,14 +145,14 @@ def main():
                      "beat_phase_step_rad": gap_ref * T_PERIOD,
                      "reference_gap": gap_ref},
         "rows": rows,
-        "floor_law": {"resolution_envelope": "err <= 2/N (the Fourier window "
+        "floor_law": {"resolution_envelope": "err <= 2/N (the Fourier window " +
                                              "in gap units)",
                       "envelope_holds_on_resolved": envelope_ok,
                       "err_exponent_measured": p_eff,
                       "err_prefactor_measured": c_fit,
-                      "honest_note": "the measured exponent rides the "
-                                     "interpolation noise below the 2/N "
-                                     "envelope; the RESOLUTION floor itself "
+                      "honest_note": "the measured exponent rides the " +
+                                     "interpolation noise below the 2/N " +
+                                     "envelope; the RESOLUTION floor itself " +
                                      "is 2/N by construction (p=1)",
                       "committed_points": [r["T_sim"] for r in resolved]},
         "honest_negatives": [
@@ -168,7 +168,7 @@ def main():
                                   else "NEGATIVE",
         },
         "honest_notes": [
-            "the floor is the Fourier resolution 2/N of the sample window — "
+            "the floor is the Fourier resolution 2/N of the sample window — " +
             "a property of the DETECTOR, not of the physics",
             "period-sampling folds nothing here (beat phase step "
             f"{gap_ref * T_PERIOD:.3f} rad < pi), but the folding rule is "

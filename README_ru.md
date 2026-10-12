@@ -129,7 +129,7 @@ ORCID [0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701) · Нальч
 |---|---|---|
 | Отслеживаемых файлов | **1 793** (~369 МБ) | `git ls-files` |
 | Исходный код | **274** Python · **19** Julia · **21** Java · 82 TSX + 25 TS · C/C++/Rust/Go/JS-близнецы | 7 языков программирования |
-| Автоматических тестов | **360+** pytest (58+10 Einstein Direct · 63 CHB · 154 QHB · 78 `python/` · dsi_lab 7 файлов) + **16** Julia-наборов + **18** закрытых Lean-ядер | все пинят числа из JSON-вердиктов |
+| Автоматических тестов | **400+** pytest (58+10 Einstein Direct · 69 CHB · 154 QHB · 78 `python/` · **dsi_lab 51**) + **16** Julia-наборов + **18** закрытых Lean-ядер + **13** проверок вердиктов dsi_lab | все пинят числа из JSON-вердиктов |
 | JSON-вердиктов кампаний | **94** (47 Einstein Direct · 16+13 CHB · 31 QHB) | машиночитаемые результаты, у каждого — конфигурация прогона |
 | Монографий и PDF/DOCX-публикаций | **71** DOCX · **110** PDF (включая **80** файлов цикла из 20 теорем) | полный реестр — [ниже](#монографии-и-публикации--полный-реестр) |
 | Фигур | **513** PNG (300–600 DPI, RU/EN × light/dark) | стиль «Ink & Gold», генерируются из JSON |
@@ -153,7 +153,7 @@ ORCID [0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701) · Нальч
 | [`Collapse Hawking Bridge/`](Collapse%20Hawking%20Bridge/) | 2.1.0 (2026-10-09) | коллапс → термодинамика ЧД | 63 | [README.md](Collapse%20Hawking%20Bridge/README.md) · [README.ru.md](Collapse%20Hawking%20Bridge/README.ru.md) |
 | [`QHB/`](QHB/) | 2.3.0 (2026-10-10) | конфайнмент → Хокинг | 154 collected | [README.md](QHB/README.md) · [README.ru.md](QHB/README.ru.md) |
 | [`QCD Bridge/`](QCD%20Bridge/) + [`code/`](code/) | v3.1 (2026-08-10) | сильная CP | кросс-сравнение в CI | [README.md](QCD%20Bridge/README.md) |
-| [`dsi_lab/`](dsi_lab/) | 7 экспериментов | DSI-динамика инвариантов | 7 pytest-файлов | [README.md](dsi_lab/README.md) |
+| [`dsi_lab/`](dsi_lab/) | v2.0.0 (2026-10-12) | DSI-динамика инвариантов | 51 pytest · Lean 4 · 6 языков · анимации · монография EN/RU | [README.md](dsi_lab/README.md) · [README.ru.md](dsi_lab/README.ru.md) |
 | [`audit_transfer/`](audit_transfer/) | v1.0 (2026-09) | аудит монографии + замыкания | Python + Julia прогоны | [README.md](audit_transfer/README.md) |
 | [`docs-site/`](docs-site/) · [`verification/`](verification/) · [`notebooks/`](notebooks/) | — | документация и досье | — | [README.md](docs-site/README.md) |
 
@@ -178,7 +178,7 @@ ORCID [0009-0003-7299-0701](https://orcid.org/0009-0003-7299-0701) · Нальч
 | [`QCD Bridge/`](QCD%20Bridge/) | Программа VI, артефакты | PNG/PDF/SVG + GIF/MP4 | манифест фигур · конфиги · отчёты 7 форматов × 2 движка |
 | [`code/`](code/) | Программа VI, движки | Python · Julia · Java · Next.js | `code/python/run.py --config …` · кросс-сравнение в CI |
 | [`docs/qcd_bridge/`](docs/qcd_bridge/) | Программа VI, монография + JSON | PDF/TeX + JSON | `choptyuk_qcd_bridge.pdf` · honesty/lattice JSON |
-| [`dsi_lab/`](dsi_lab/) | Программа VII | Python (минимум зависимостей) | `make test && make run` · 7 JSON-вердиктов |
+| [`dsi_lab/`](dsi_lab/) | Программа VII | Python + Lean 4 + C/C++/JS/Rust/Go/Julia | `make verify` (test + validate + run) · 7 JSON-вердиктов · `dsilab.validate` 13/13 |
 | [`audit_transfer/`](audit_transfer/) | Программа VIII | Python + Julia | `python3 audit_transfer/python/run_all.py` |
 | [`docs/`](docs/) | монографии (80 МБ), архитектура, REST API | DOCX/PDF/MD | `docs/monograph/` · `ARCHITECTURE.md` |
 | [`monograph/`](monograph/) | двуязычная верификационная монография + QCD DOCX | PDF/DOCX | издания без метаданных |
@@ -282,8 +282,8 @@ mindmap
       9 секций · 3 движка
       55 фигур · 19 анимаций
     dsi_lab
-      7 экспериментов DSI
-      Находки D1 и E1
+      7 экспериментов DSI v2.0.0
+      Находки D1 и E1 · Lean 4 · 6 языков
     audit_transfer
       Аудит монографии E1–E7
       Замыкание c_K3
@@ -313,6 +313,7 @@ timeline
     2026-09 : Einstein Direct: кампании v6 → v22 (13 машин OPEN9, стены глубины, часы)
          : theorems12 — цикл расширен до 20 теорем (2026-09-30)
          : dsi_lab — 7 экспериментов DSI (находки D1 и E1)
+         : dsi_lab v2.0.0 — профессиональное издание (dsilab/, lean4/, multilang/, монографии EN/RU, анимации, логотип)
     2026-10-07 : Collapse Hawking Bridge v2.0.0 — энциклопедическое издание (68 hi-res фигур, 4 анимации, 7 языков)
     2026-10-09 : CHB v2.0.1 — ремедиация трёх FAIL-находок аудита IVP-15
          : CHB v2.1.0 — «IVP-15 alignment edition» (закон дрейфа T10, 63 теста)
@@ -1215,7 +1216,12 @@ SVG, манифест с параметрами и elapsed-временем ка
 | exp6 | перепись {7,3} из GL(3,2) | V=56, E=84, F=24; лемма единственности 9/224 |
 | exp7 | порог e ≥ 1 | теоремы A/B/C доказаны (тождество 5.9e-16 на 24 000 парах) |
 
-Артефакты: 7 JSON-вердиктов, 15 фигур × RU/EN, 8 отчётов (PDF+DOCX × EN/RU), 7 pytest-файлов.
+Артефакты: 7 JSON-вердиктов, 15 фигур × RU/EN, 8 отчётов (PDF+DOCX × EN/RU),
+**51 pytest-проверка**, пакет-движок [`dsilab/`](dsi_lab/dsilab/README.md),
+Lean 4-слой [`lean4/`](dsi_lab/lean4/README.md), шести-языковое ядро
+[`multilang/`](dsi_lab/multilang/README.md), логотип/аватары и стартовые
+анимации, реестр утверждений [`docs/claim_ledger.md`](dsi_lab/docs/claim_ledger.md)
+и монографии EN/RU [`monograph/`](dsi_lab/monograph/README.md).
 
 ### VIII. Audit & Transfer Appendix (v1.0)
 

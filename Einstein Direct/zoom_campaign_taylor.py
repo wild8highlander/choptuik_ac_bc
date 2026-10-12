@@ -51,8 +51,8 @@ def main():
     out = {
         "config": {"n": 800, "max_zooms": 12, "family": "gaussian",
                    "v_p": V_P, "sigma": SIGMA,
-                   "center_closure": "taylor (ODE-evolved t0/d0, "
-                                     "offset-aware (p+q) projection, "
+                   "center_closure": "taylor (ODE-evolved t0/d0, " +
+                                     "offset-aware (p+q) projection, " +
                                      "full-radius zone, m~M3*xi^3)",
                    "eps_list": EPS_LIST},
         "a_star_source": "fixed-grid N=1600 bisection (validated, session 1)",
@@ -76,7 +76,7 @@ def main():
             pass
 
     print("=" * 72)
-    print("ЗУМ-КАМПАНИЯ (Тейлор-патч центра): A*_fg = %.7f" % A_FIXED_GRID)
+    print("ЗУМ-КАМПАНИЯ (Тейлор-патч центра): A*_fg = {:.7f}".format(A_FIXED_GRID))
     print("=" * 72, flush=True)
 
     for eps in EPS_LIST:
@@ -155,14 +155,14 @@ def main():
         "percent_level_achieved": bool(out["gamma_fit"]
                                        and out["gamma_fit"]["gamma_err"] < 0.02),
         "achievements": [
-            "машино-выведенная иерархия центра (sympy_center.py): O1-O5, "
-            "все формы верифицированы SymPy; численная верификация O1/O2 "
+            "машино-выведенная иерархия центра (sympy_center.py): O1-O5, " +
+            "все формы верифицированы SymPy; численная верификация O1/O2 " +
             "на подкритическом забеге (O2: 1.1e-3, O1: 2.8e-2)",
             "центральный Тейлор-патч: t0/d0 эволюционируют как внутреннее ГУ",
-            "глубина цепочки: z_max = %.2f (регулярная кампания: 6.05)" % z_max,
+            "глубина цепочки: z_max = {:.2f} (регулярная кампания: 6.05)".format(z_max),
         ],
         "roadmap": [
-            "устойчивый захват горизонта на глубоких стадиях "
+            "устойчивый захват горизонта на глубоких стадиях " +
             "(порог r > 8du и критерий устойчивости 6 строк)",
             "спинорная модуляция pi/15, pi/30 требует z >= 30",
         ],

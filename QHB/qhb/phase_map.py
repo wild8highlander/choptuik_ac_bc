@@ -1,11 +1,12 @@
 """C9 - phase map over (beta, L) and the naive-window falsification."""
 from __future__ import annotations
 
+from collections.abc import Sequence
+
 from .constants import BETA_C_NAIVE, BETA_STAR, DELTA_F_MIN, DELTA_THRESH
 from .core import gap_finite_volume
 
-
-def phase_grid(betas: list[float], volumes: list[float]) -> dict:
+def phase_grid(betas: Sequence[float], volumes: Sequence[float]) -> dict:
     """9 x 41 grid status map: OPEN if Delta_F > Delta_thresh, else CLOSED."""
     cells = []
     for L in volumes:

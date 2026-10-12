@@ -40,16 +40,15 @@ import numpy as np
 
 matplotlib.use("Agg")
 import matplotlib.font_manager as fm
+import contextlib
 
 # Font fallback: Noto Sans SC for CJK glyphs, DejaVu Sans for symbols
 for fp in [
     "/usr/share/fonts/truetype/chinese/NotoSansSC-Regular.ttf",
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
 ]:
-    try:
+    with contextlib.suppress(Exception):
         fm.fontManager.addfont(fp)
-    except Exception:
-        pass
 
 import matplotlib.pyplot as plt
 
@@ -574,11 +573,11 @@ def fig_trace_cancellation(outdir: Path):
     s1 = eigs[1] - eigs[0]
     s2 = eigs[2] - eigs[1]
     ax.annotate("", xy=(eigs[1], -0.5), xytext=(eigs[0], -0.5),
-                arrowprops=dict(arrowstyle="<->", color="red", lw=1.5))
+                arrowprops={"arrowstyle": "<->", "color": "red", "lw": 1.5})
     ax.text((eigs[0] + eigs[1]) / 2, -0.7, f"s1={s1:.5f}",
             ha="center", fontsize=8, color="red")
     ax.annotate("", xy=(eigs[2], -0.5), xytext=(eigs[1], -0.5),
-                arrowprops=dict(arrowstyle="<->", color="red", lw=1.5))
+                arrowprops={"arrowstyle": "<->", "color": "red", "lw": 1.5})
     ax.text((eigs[1] + eigs[2]) / 2, -0.7, f"s2={s2:.5f}",
             ha="center", fontsize=8, color="red")
 

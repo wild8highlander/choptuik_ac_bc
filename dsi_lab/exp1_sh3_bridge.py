@@ -92,7 +92,7 @@ def haar_average_G(P, Q):
 # =============================================================================
 def part_A(n_max=12, n_random=300, restarts=25):
     print("=" * 78)
-    print("A. ОСТРАЯ ТЕОРЕМА СЛЕДА ПРИ БОЛЬШИХ n (7..%d)" % n_max)
+    print("A. ОСТРАЯ ТЕОРЕМА СЛЕДА ПРИ БОЛЬШИХ n (7..{})".format(n_max))
     print("=" * 78)
     out = {"identity_max_err": 0.0, "haar_violations": 0, "haar_pairs": 0,
            "minimization": []}
@@ -106,7 +106,7 @@ def part_A(n_max=12, n_random=300, restarts=25):
             F = leavitt_F(X1, X2)
             G = G_of_PQ(P, Q).real
             ident_err = max(ident_err, abs(F - G) / max(1.0, abs(F)))
-            if G < haar_average_G(P, Q) - 1e-9:
+            if haar_average_G(P, Q) - 1e-9 > G:
                 out["haar_violations"] += 1
             out["haar_pairs"] += 1
         out["identity_max_err"] = max(out["identity_max_err"], ident_err)

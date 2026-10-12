@@ -240,7 +240,7 @@ def hq_01_ladder(t, L, ax):
                     color=t["gold"], alpha=0.18, zorder=2)
     ax.annotate(L["ladder_agree"], (800, ast[-1]),
                 xytext=(430, ast[-1] * 1.10), color=t["gold"], fontsize=11,
-                arrowprops=dict(arrowstyle="->", color=t["gold"]))
+                arrowprops={"arrowstyle": "->", "color": t["gold"]})
     for n, a in zip(ns, ast):
         ax.annotate(f"{a:.6f}", (n, a), xytext=(n * 1.03, a * 0.985),
                     fontsize=10, color=t["ink"])
@@ -438,7 +438,7 @@ def hq_10_bifurcation(t, L, ax):
     ax.axvline(eh, color=t["gold"], lw=1.6, ls="--")
     ax.annotate(L["eps_half"], (eh, 0.30), xytext=(eh * 3.0, 0.24),
                 color=t["gold"], fontsize=11,
-                arrowprops=dict(arrowstyle="->", color=t["gold"]))
+                arrowprops={"arrowstyle": "->", "color": t["gold"]})
     ax.set_xscale("log"); ax.set_yscale("log")
     ax.set_ylim(0.05, 2.2)
     ax.set_xlabel(L["scan_x"]); ax.set_ylabel(L["bif_y"])
@@ -587,7 +587,7 @@ def hq_16_page(t, L, ax):
     ax.annotate(L["page_time"], (PAGE_FRACTION, 0.40),
                 xytext=(PAGE_FRACTION - 0.42, 0.36), color=t["gold"],
                 fontsize=11,
-                arrowprops=dict(arrowstyle="->", color=t["gold"]))
+                arrowprops={"arrowstyle": "->", "color": t["gold"]})
     ax.text(0.02, 0.965, L["page_haar"], transform=ax.transAxes,
             fontsize=10, color=t["ok"], va="top")
     ax.set_xlim(0, 1.0)
@@ -680,7 +680,7 @@ def main():
     figs = FIGS if args.figs is None else \
         [f for f in FIGS if f in args.figs]
     if not figs:
-        ap.error("no matching figure types; known: " + ", ".join(FIGS))
+        ap.error(("no matching figure types; known: " + ", ").join(FIGS))
     n = 0
     for lang in langs:
         for theme in themes:

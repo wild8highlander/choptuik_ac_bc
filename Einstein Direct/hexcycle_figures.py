@@ -53,18 +53,18 @@ def station_shape(k, xi):
 
 L = {
     "ru": {
-        "wheel_title": ("Гексагональный Пуанкаре-цикл трансформаций:\n"
-                        "пирамида → конус → усечённый конус → парабола → чаша "
-                        "→ лог-замыкание → пирамида\n"
-                        "(в 1D-сечении пирамида и конус совпадают — различие "
+        "wheel_title": ("Гексагональный Пуанкаре-цикл трансформаций:\n" +
+                        "пирамида → конус → усечённый конус → парабола → чаша " +
+                        "→ лог-замыкание → пирамида\n" +
+                        "(в 1D-сечении пирамида и конус совпадают — различие " +
                         "азимутальное: 4 грани против вращения)"),
-        "center1": "ДВЕ КНИГИ ЦИКЛА\n\n"
-                   "амплитудная (per станция):\n"
-                   "CORE: ln(3/2), RING: ln(4/3)\n"
-                   r"$\kappa_{cyc}=\ln(64/9)=%.4f$" % KAPPA + "\n\n"
-                   "часы эха (per сторона):\n"
-                   r"$-\ln\tau_5=\ln(16/9)$" + "\n"
-                   r"$\Delta_{cyc}=6\ln(16/9)=%.4f$" % DELTA,
+        "center1": ("ДВЕ КНИГИ ЦИКЛА\n\n" +
+                   "амплитудная (per станция):\n" +
+                   "CORE: ln(3/2), RING: ln(4/3)\n" +
+                   r"$\kappa_{{cyc}}=\ln(64/9)={:.4f}$").format(KAPPA) + ("\n\n" +
+                   "часы эха (per сторона):\n" +
+                   r"$-\ln\tau_5=\ln(16/9)$" + "\n" +
+                   r"$\Delta_{{cyc}}=6\ln(16/9)={:.4f}$").format(DELTA),
         "station_names": ["0. Пирамида", "1. Конус", "2. Усечённый конус",
                           "3. Параболический пивот", "4. Чаша",
                           "5. Лог-замыкание (×e$^{-Δ_cyc}$)"],
@@ -75,8 +75,8 @@ L = {
                           r"$(2/\sqrt{3})^2=4/3$"],
         "zone_uv": "зона UV[ξ³]: τ₃ = (3/2)² = 9/4",
         "zone_mdef": "зона Mdef[ξ⁵]: τ₅ = (3/4)² = 9/16",
-        "dyn_title": ("Уравнения Пуанкаре и книга цикла\n"
-                      r"(a) C₆-потенциал V = −(V₆/6)cos 6θ: запирание станций "
+        "dyn_title": ("Уравнения Пуанкаре и книга цикла\n" +
+                      r"(a) C₆-потенциал V = −(V₆/6)cos 6θ: запирание станций " +
                       "V'(kπ/3) = 0; (б) амплитудная книга vs часы эха"),
         "dyn_a": "потенциал циферблата (запертая циркуляция, V₆ = 0.05)",
         "dyn_a_y": "V(θ)",
@@ -84,16 +84,16 @@ L = {
         "dyn_b": "книга: спуск κ_cyc за цикл, часы: Δ_cyc за цикл",
         "dyn_b_x": "часы z = ln(1/s) (log-время)",
         "dyn_b_y": "амплитудная книга −r",
-        "dyn_slope": r"наклон $\kappa_{cyc}/\Delta_{cyc} = %.4f$" % (KAPPA / DELTA),
+        "dyn_slope": r"наклон $\kappa_{{cyc}}/\Delta_{{cyc}} = {:.4f}$" .format ((KAPPA / DELTA)),
         "dyn_stations": "станции kπ/3 (заперты)",
         "dyn_saddle": "неустойчивые kπ/6",
         "dyn_free": r"свободная циркуляция: $p_\theta$ = const, период = Δ_cyc точно",
-        "close_title": ("Честное замыкание цикла: якоря без подгонки\n"
+        "close_title": ("Честное замыкание цикла: якоря без подгонки\n" +
                         "(все входы — машинные результаты сессий 7-8)"),
         "close_a": "правитель эха: Δ_cyc против коридора Чоптюка",
         "close_a_x": "Δ (CSS-нормировка, log-время)",
         "close_band": "Чоптюк 3.44 ± 0.02",
-        "close_cyc": r"Δ_cyc = %.4f (в коридоре)" % DELTA,
+        "close_cyc": r"Δ_cyc = {:.4f} (в коридоре)".format(DELTA),
         "close_tent": "5·ln2 = 3.4657 (+0.39%)",
         "close_b": "расхождения с якорями, %",
         "close_b_labels": ["κ_cyc vs κ_obs\n(γ_lit)\n+0.085%",
@@ -102,31 +102,31 @@ L = {
                            "Δ_cyc vs Choptuik\n(3.44)\n+0.354%",
                            "Δ_cyc vs 5·ln2\n(решётка пирамиды)\n−0.391%"],
         "close_c": "заполнение дефицита κ (динамика источников)",
-        "close_c_bars": ["башня\nλ₊(27/80)\n= %.4f" % CL["lambda_plus_tower"],
-                         "κ_obs\n(γ_lit)\n= %.4f" % CL["kappa_obs_gamma_lit"],
-                         "κ_obs\n(b_Ch)\n= %.4f" % CL["kappa_obs_b_Ch"],
-                         "цикл\nκ_cyc = ln(64/9)\n= %.4f" % KAPPA],
-        "close_c_ann": ("дефицит башни +0.451 заполнен циклом\n"
-                        "на %.1f%% (κ_cyc − λ₊ = +0.453)" % 100.4),
-        "note_norm": ("Нормировки: Δ_cyc — CSS-книга (Чоптюк); спинор-фреймворк репо "
-                      "использует Δ_sp = 7π/30 = 0.733 (R2) — другая книга; "
+        "close_c_bars": ["башня\nλ₊(27/80)\n= {:.4f}".format(CL["lambda_plus_tower"]),
+                         "κ_obs\n(γ_lit)\n= {:.4f}".format(CL["kappa_obs_gamma_lit"]),
+                         "κ_obs\n(b_Ch)\n= {:.4f}".format(CL["kappa_obs_b_Ch"]),
+                         "цикл\nκ_cyc = ln(64/9)\n= {:.4f}".format(KAPPA)],
+        "close_c_ann": (("дефицит башни +0.451 заполнен циклом\n" +
+                        "на {:.1f}% (κ_cyc − λ₊ = +0.453)").format(100.4)),
+        "note_norm": ("Нормировки: Δ_cyc — CSS-книга (Чоптюк); спинор-фреймворк репо " +
+                      "использует Δ_sp = 7π/30 = 0.733 (R2) — другая книга; " +
                       "отношение 4.71 ~ δ_F — не утверждается."),
         "files": ["fig_hexcycle.png", "fig_hexcycle_dynamics.png",
                   "fig_hexcycle_closure.png"],
     },
     "en": {
-        "wheel_title": ("Poincare hexagonal transformation cycle:\n"
-                        "pyramid -> cone -> truncated cone -> parabola -> bowl "
-                        "-> log closure -> pyramid\n"
-                        "(in the 1D cross-section pyramid and cone coincide — "
+        "wheel_title": ("Poincare hexagonal transformation cycle:\n" +
+                        "pyramid -> cone -> truncated cone -> parabola -> bowl " +
+                        "-> log closure -> pyramid\n" +
+                        "(in the 1D cross-section pyramid and cone coincide — " +
                         "the difference is azimuthal: 4 faces vs revolution)"),
-        "center1": "TWO BOOKS OF THE CYCLE\n\n"
-                   "amplitude (per station):\n"
-                   "CORE: ln(3/2), RING: ln(4/3)\n"
-                   r"$\kappa_{cyc}=\ln(64/9)=%.4f$" % KAPPA + "\n\n"
-                   "echo clock (per side):\n"
-                   r"$-\ln\tau_5=\ln(16/9)$" + "\n"
-                   r"$\Delta_{cyc}=6\ln(16/9)=%.4f$" % DELTA,
+        "center1": ("TWO BOOKS OF THE CYCLE\n\n" +
+                   "amplitude (per station):\n" +
+                   "CORE: ln(3/2), RING: ln(4/3)\n" +
+                   r"$\kappa_{{cyc}}=\ln(64/9)={:.4f}$").format(KAPPA) + ("\n\n" +
+                   "echo clock (per side):\n" +
+                   r"$-\ln\tau_5=\ln(16/9)$" + "\n" +
+                   r"$\Delta_{{cyc}}=6\ln(16/9)={:.4f}$").format(DELTA),
         "station_names": ["0. Pyramid", "1. Cone", "2. Truncated cone",
                           "3. Parabolic pivot", "4. Bowl", "5. Log closure (×e$^{-Δ_cyc}$)"],
         "station_steps": [r"step $\ln(3/2)$", r"step $\ln(3/2)$",
@@ -136,8 +136,8 @@ L = {
                           r"$(2/\sqrt{3})^2=4/3$"],
         "zone_uv": "UV[ξ³] zone: τ₃ = (3/2)² = 9/4",
         "zone_mdef": "Mdef[ξ⁵] zone: τ₅ = (3/4)² = 9/16",
-        "dyn_title": ("Poincare equations and the cycle book\n"
-                      r"(a) C6 potential V = −(V6/6)cos 6θ: station lock "
+        "dyn_title": ("Poincare equations and the cycle book\n" +
+                      r"(a) C6 potential V = −(V6/6)cos 6θ: station lock " +
                       "V'(kπ/3) = 0; (b) amplitude book vs echo clock"),
         "dyn_a": "dial potential (locked circulation, V6 = 0.05)",
         "dyn_a_y": "V(θ)",
@@ -145,16 +145,16 @@ L = {
         "dyn_b": "book: κ_cyc descent per cycle, clock: Δ_cyc per cycle",
         "dyn_b_x": "clock z = ln(1/s) (log-time)",
         "dyn_b_y": "amplitude book −r",
-        "dyn_slope": r"slope $\kappa_{cyc}/\Delta_{cyc} = %.4f$" % (KAPPA / DELTA),
+        "dyn_slope": r"slope $\kappa_{{cyc}}/\Delta_{{cyc}} = {:.4f}$" .format (KAPPA / DELTA),
         "dyn_stations": "stations kπ/3 (locked)",
         "dyn_saddle": "unstable kπ/6",
         "dyn_free": r"free circulation: $p_\theta$ = const, period = Δ_cyc exactly",
-        "close_title": ("Honest closure of the cycle: no-fitting anchors\n"
+        "close_title": ("Honest closure of the cycle: no-fitting anchors\n" +
                         "(all inputs are machine results of sessions 7-8)"),
         "close_a": "echo ruler: Δ_cyc against the Choptuik band",
         "close_a_x": "Δ (CSS normalization, log-time)",
         "close_band": "Чоптюк 3.44 ± 0.02",
-        "close_cyc": r"Δ_cyc = 6 ln(16/9) = %.4f (inside the band)" % DELTA,
+        "close_cyc": r"Δ_cyc = 6 ln(16/9) = {:.4f} (inside the band)".format(DELTA),
         "close_tent": "5·ln2 = 3.4657 (+0.39%)",
         "close_b": "deviations from anchors, %",
         "close_b_labels": ["κ_cyc vs κ_obs\n(γ_lit)\n+0.085%",
@@ -163,14 +163,14 @@ L = {
                            "Δ_cyc vs Choptuik\n(3.44)\n+0.354%",
                            "Δ_cyc vs 5·ln2\n(pyramid lattice)\n−0.391%"],
         "close_c": "filling the κ deficit (source dynamics)",
-        "close_c_bars": ["tower\nλ₊(27/80)\n= %.4f" % CL["lambda_plus_tower"],
-                         "κ_obs\n(γ_lit)\n= %.4f" % CL["kappa_obs_gamma_lit"],
-                         "κ_obs\n(b_Ch)\n= %.4f" % CL["kappa_obs_b_Ch"],
-                         "cycle\nκ_cyc = ln(64/9)\n= %.4f" % KAPPA],
-        "close_c_ann": ("tower deficit +0.451 filled by the cycle\n"
-                        "to %.1f%% (κ_cyc − λ₊ = +0.453)" % 100.4),
-        "note_norm": ("Normalizations: Δ_cyc is the CSS book (Choptuik); the repo "
-                      "spinor framework uses Δ_sp = 7π/30 = 0.733 (R2) — another "
+        "close_c_bars": ["tower\nλ₊(27/80)\n= {:.4f}".format(CL["lambda_plus_tower"]),
+                         "κ_obs\n(γ_lit)\n= {:.4f}".format(CL["kappa_obs_gamma_lit"]),
+                         "κ_obs\n(b_Ch)\n= {:.4f}".format(CL["kappa_obs_b_Ch"]),
+                         "cycle\nκ_cyc = ln(64/9)\n= {:.4f}".format(KAPPA)],
+        "close_c_ann": (("tower deficit +0.451 filled by the cycle\n" +
+                        "to {:.1f}% (κ_cyc − λ₊ = +0.453)").format(100.4)),
+        "note_norm": ("Normalizations: Δ_cyc is the CSS book (Choptuik); the repo " +
+                      "spinor framework uses Δ_sp = 7π/30 = 0.733 (R2) — another " +
                       "book; the ratio 4.71 ~ δ_F is not claimed."),
         "files": ["fig_hexcycle.png", "fig_hexcycle_dynamics.png",
                   "fig_hexcycle_closure.png"],
@@ -264,8 +264,8 @@ def fig_dynamics(lang, path):
                framealpha=0.9)
     axa.text(0.99, 0.03, d["dyn_free"], transform=axa.transAxes, ha="right",
              va="bottom", fontsize=8.6, color="#444444",
-             bbox=dict(boxstyle="round,pad=0.25", fc="white", ec="#cccccc",
-                       alpha=0.92))
+             bbox={"boxstyle": "round,pad=0.25", "fc": "white", "ec": "#cccccc",
+                       "alpha": 0.92})
     # (б) книга vs часы (ступени по 6 станциям; сторона = ln(16/9) log-времени)
     steps = np.array([np.log(1.5), np.log(1.5)] + [np.log(4 / 3)] * 4)
     side = np.log(16 / 9)
@@ -343,7 +343,7 @@ def fig_closure(lang, path):
     axc.set_ylim(0, 2.35)
     axc.text(0.02, 0.955, d["close_c_ann"], transform=axc.transAxes,
              fontsize=8.8, va="top",
-             bbox=dict(boxstyle="round,pad=0.3", fc="#f0f5fa", ec=C_CORE))
+             bbox={"boxstyle": "round,pad=0.3", "fc": "#f0f5fa", "ec": C_CORE})
     axc.set_title(d["close_c"], fontsize=11)
     fig.suptitle(d["close_title"], fontsize=12.5)
     fig.get_layout_engine().set(rect=[0.0, 0.05, 1.0, 0.95])

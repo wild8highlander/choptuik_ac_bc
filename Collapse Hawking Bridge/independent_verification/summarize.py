@@ -52,7 +52,7 @@ def main():
     counts = {}
     for _, s, _ in rows:
         counts[s] = counts.get(s, 0) + 1
-    print("\nSummary: " + ", ".join(f"{k}: {v}" for k, v in sorted(counts.items())))
+    print(("\nSummary: " + ", ").join(f"{k}: {v}" for k, v in sorted(counts.items())))
 
     out = os.path.join(RESULTS, "SUMMARY.md")
     with open(out, "w", encoding="utf-8") as f:

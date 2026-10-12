@@ -123,9 +123,9 @@ def b1_justification():
         f"весовое правило d/dy[G s^-k] = (G'+kG) s^-k-1 (k=2): {gen_ok}")
     return {"pure_form_exact": bool(ok_probe),
             "weight_rule_exact": bool(gen_ok),
-            "chain": ("остатки = Бианки-редуцированные Эйнштейна (identity в y)"
-                      " -> y-пролонгация identity -> d/dy=(1/s)(d/dtau+вес)"
-                      " (T1/T2 сессии 18a) -> tau-пролонгация = сохранение "
+            "chain": ("остатки = Бианки-редуцированные Эйнштейна (identity в y)" +
+                      " -> y-пролонгация identity -> d/dy=(1/s)(d/dtau+вес)" +
+                      " (T1/T2 сессии 18a) -> tau-пролонгация = сохранение " +
                       "ограничений -> единственное замыкание Uk")}
 
 
@@ -298,8 +298,8 @@ def b2_closure(kv, label=""):
         B2 = sp.simplify(Bm * Bm)
         B3 = sp.simplify(B2 * Bm)
         out["B_matrix_exact"] = sp.sstr(Bm)
-        out["B_nilpotent_exact"] = bool(B2 == sp.zeros(dimM2, dimM2))
-        out["B_nilpotent2_exact"] = bool(B3 == sp.zeros(dimM2, dimM2))
+        out["B_nilpotent_exact"] = bool(sp.zeros(dimM2, dimM2) == B2)
+        out["B_nilpotent2_exact"] = bool(sp.zeros(dimM2, dimM2) == B3)
         out["B_rank_exact"] = int(sp.Matrix(Bm).rank())
         out["B_nonzero"] = bool(any(sp.simplify(e) != 0 for e in Bm))
         xsym = sp.Symbol("x")
@@ -322,9 +322,9 @@ def b2_closure(kv, label=""):
     log(f"  B = {out.get('B_matrix_exact', out.get('B_matrix'))}")
     log(f"  B^2 = 0: {b2_zero}; spec(B) = {out['B_eigenvalues']}")
     out["verdict_closure"] = (
-        "пролонгационное замыкание единственно (rank Uk = 9); допустимое "
-        "многообразие M2 двумерно; эволюция на M2 — нильпотентный Йордан-2 "
-        "(B^2 = 0, spec = {0,0}): статика + линейный дрейф, БЕЗ экспонент "
+        "пролонгационное замыкание единственно (rank Uk = 9); допустимое " +
+        "многообразие M2 двумерно; эволюция на M2 — нильпотентный Йордан-2 " +
+        "(B^2 = 0, spec = {0,0}): статика + линейный дрейф, БЕЗ экспонент " +
         "и осцилляций => delta_mono = 0 в замкнутой линейной динамике")
     return out, (N, Bm)
 
@@ -378,16 +378,16 @@ def b4_alternatives():
             "common_factor": "4*T0h**2 - 27 (=0): T0h^2 = 27/4, R1h свободен",
             "dimension": "1 (плоское направление R1h — масштабный ход)",
         },
-        "C0_adiabatic": ("dd = 0 допустимо только на замороженном множестве "
-                         "(машина: 10/12 уравнений цепочки — тождества, ветви "
-                         "UV_xi3 и Mdef_xi5 дают общий фактор 4T0h^2-27); "
+        "C0_adiabatic": ("dd = 0 допустимо только на замороженном множестве " +
+                         "(машина: 10/12 уравнений цепочки — тождества, ветви " +
+                         "UV_xi3 и Mdef_xi5 дают общий фактор 4T0h^2-27); " +
                          "вне него dd=0 несовместно с ограничениями"),
-        "C_chain": ("потоки, прикованные к цепочке (d(chain)/dtau): "
-                    "единственная замкнутая точка — замороженная "
-                    "(сессия 13, V3-пролонгация, честная цитата); динамики "
+        "C_chain": ("потоки, прикованные к цепочке (d(chain)/dtau): " +
+                    "единственная замкнутая точка — замороженная " +
+                    "(сессия 13, V3-пролонгация, честная цитата); динамики " +
                     "не даёт"),
-        "C_prolongation": ("ЕДИНСТВЕННОЕ обоснованное замыкание: решение "
-                           "пролонгации тождеств (rank Uk = 9); спектр на M2 "
+        "C_prolongation": ("ЕДИНСТВЕННОЕ обоснованное замыкание: решение " +
+                           "пролонгации тождеств (rank Uk = 9); спектр на M2 " +
                            "= {0} Йордан-2 — delta_mono = 0 линейно"),
     }
     return out
@@ -395,16 +395,16 @@ def b4_alternatives():
 
 def main() -> None:
     results = {
-        "title": "Independent dd evolution law: the prolongation closure "
+        "title": "Independent dd evolution law: the prolongation closure " +
                  "(session 18b)",
-        "question": ("the dd-slots were introduced with coefficient 1 'by the "
-                     "ddQ precedent' — can the evolution law of the second "
-                     "flows be JUSTIFIED from the identities instead of "
+        "question": ("the dd-slots were introduced with coefficient 1 'by the " +
+                     "ddQ precedent' — can the evolution law of the second " +
+                     "flows be JUSTIFIED from the identities instead of " +
                      "chosen/fitted?"),
-        "method": ("state (a[9], v[8], dd[3]) = 20; constraints J1s x = 0; "
-                   "prolongation d/dtau(J1s x) = 0 with 9 unknowns "
-                   "(M5h', ddT0, ddD0, ddQ, ddR1, ddR5, dddW2, dddR3, dddP4); "
-                   "closure = unique solve of Uk u = -Known (v, dd); hidden "
+        "method": ("state (a[9], v[8], dd[3]) = 20; constraints J1s x = 0; " +
+                   "prolongation d/dtau(J1s x) = 0 with 9 unknowns " +
+                   "(M5h', ddT0, ddD0, ddQ, ddR1, ddR5, dddW2, dddR3, dddP4); " +
+                   "closure = unique solve of Uk u = -Known (v, dd); hidden " +
                    "constraints Op (v, dd) = 0; M2 = ker[J1s; Op']"),
     }
     log("=== [B1] обоснование (весовое правило) ===")
@@ -420,27 +420,27 @@ def main() -> None:
     results["B4_alternatives"] = b4_alternatives()
 
     lines = [
-        "B1: обоснование ТОЧНО: на очищенных формах d/dy = (1/s) d/dtau "
-        "(весовое правило); y-пролонгация остатков == tau-пролонгация — "
+        "B1: обоснование ТОЧНО: на очищенных формах d/dy = (1/s) d/dtau " +
+        "(весовое правило); y-пролонгация остатков == tau-пролонгация — " +
         "замыкание выводится из тождеств (Бианки), не выбирается.",
-        "B2 baseline (ТОЧНО, Q(sqrt3)): rank Uk = 9 — замыкание ЕДИНСТВЕННО; "
+        ("B2 baseline (ТОЧНО, Q(sqrt3)): rank Uk = 9 — замыкание ЕДИНСТВЕННО; "
         f"скрытых условий rank {out_b['rank_Op_hidden_constraints']}; "
         f"dim M2 = {out_b['dim_M2']}; эволюция на M2: B^2 = 0 точно, "
         f"spec(B) = {out_b['B_eigenvalues']} — нильпотентный Йордан-2 "
-        "(статика + линейный дрейф).",
-        f"B2 one-brick (numeric): rank Uk = {out_o['rank_Uk']}, "
+        "(статика + линейный дрейф)."),
+        (f"B2 one-brick (numeric): rank Uk = {out_o['rank_Uk']}, "
         f"dim M2 = {out_o['dim_M2']}, |B^2| = "
         f"{out_o.get('B_nilpotent_norm_B2', float('nan')):.1e} — та же "
-        "структура (честно: float64, зазоры сингулярных чистые).",
-        "B4: C0 (адиабатика) — только замороженное множество (общий фактор "
-        "ветвей 4T0h^2-27, R1h свободен — 1-мерное многообразие); C-chain — "
-        "только замороженная точка (сессия 13); C-prolongation — "
+        "структура (честно: float64, зазоры сингулярных чистые)."),
+        "B4: C0 (адиабатика) — только замороженное множество (общий фактор " +
+        "ветвей 4T0h^2-27, R1h свободен — 1-мерное многообразие); C-chain — " +
+        "только замороженная точка (сессия 13); C-prolongation — " +
         "единственное обоснованное.",
-        "ВЕРДИКТ: независимый закон эволюции dd = пролонгационное замыкание "
-        "— единственное решение сохранения ограничений; линейная динамика "
-        "на M2 — статика + линейный дрейф (Йордан-2), БЕЗ экспонент/"
-        "осцилляций: delta_mono = 0 в замкнутой линейной динамике. Остаток "
-        "«барионной асимметрии» (~2.9% к pi/30) — вне линейной динамики; "
+        "ВЕРДИКТ: независимый закон эволюции dd = пролонгационное замыкание " +
+        "— единственное решение сохранения ограничений; линейная динамика " +
+        "на M2 — статика + линейный дрейф (Йордан-2), БЕЗ экспонент/" +
+        "осцилляций: delta_mono = 0 в замкнутой линейной динамике. Остаток " +
+        "«барионной асимметрии» (~2.9% к pi/30) — вне линейной динамики; " +
         "тест — марш (шаг (c)).",
     ]
     results["verdict_lines"] = lines

@@ -145,7 +145,7 @@ def anim_01(L, t):
     ax2.annotate(L["a1_page"], (PAGE_FRACTION, 0.34),
                  xytext=(PAGE_FRACTION - 0.52, 0.30), color=t["gold"],
                  fontsize=10,
-                 arrowprops=dict(arrowstyle="->", color=t["gold"]))
+                 arrowprops={"arrowstyle": "->", "color": t["gold"]})
     ax2.set_xlim(0, 1); ax2.set_ylim(0.28, 1.04)
     ax2.set_xlabel(L["a1_t"], color=t["ink"])
     ax2.set_ylabel(L["a1_S"], color=t["ink"])
@@ -190,8 +190,8 @@ def anim_02(L, t):
     vline = ax.axvline(eh, color=t["gold"], lw=1.7, ls="--", alpha=0.0)
     txt = ax.annotate("", (eh, 0.24), xytext=(eh * 3.2, 0.19), color=t["gold"],
                       fontsize=11,
-                      arrowprops=dict(arrowstyle="->", color=t["gold"],
-                                      alpha=0.0))
+                      arrowprops={"arrowstyle": "->", "color": t["gold"],
+                                      "alpha": 0.0})
     ax.annotate(L["a2_eps_half"], (eh, 0.30), xytext=(eh * 3.2, 0.19),
                 color=t["gold"], fontsize=11, alpha=0.0)
     label = ax.text(0.5, 0.955, "", transform=ax.transAxes, ha="center",
