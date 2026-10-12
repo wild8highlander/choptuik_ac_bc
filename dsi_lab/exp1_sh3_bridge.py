@@ -117,7 +117,7 @@ def part_A(n_max=12, n_random=300, restarts=25):
             rng = np.random.default_rng(5000 + 97 * r + n)
             x0 = rng.standard_normal(4 * n * n)
 
-            def unpack(x):
+            def unpack(x, n=n):
                 re1, im1, re2, im2 = np.split(x, 4)
                 X1 = re1.reshape(n, n) + 1j * im1.reshape(n, n)
                 X2 = re2.reshape(n, n) + 1j * im2.reshape(n, n)
@@ -221,7 +221,7 @@ def part_EF(k_values=(2, 3, 4, 5, 6, 7)):
     print("=" * 78)
     out = {"truncation": [], "weighted": []}
     for k in k_values:
-        S1, S2, n, words, boundary, idx = build_tree_shifts(k)
+        S1, S2, n, _words, _boundary, _idx = build_tree_shifts(k)
         # E: обрезка — точный дефект n+2
         F = leavitt_F(S1, S2)
         err = abs(F - (n + 2))
@@ -233,10 +233,10 @@ def part_EF(k_values=(2, 3, 4, 5, 6, 7)):
 
         # F: X_i = c_i * S_i — численная минимизация по (c1, c2)
         #   + проверка ТОЧНОЙ формулы F = (n-1)[(u1-1)^2+(u2-1)^2] + n+2
-        def Fw(c):
+        def Fw(c, S1=S1, S2=S2):
             return leavitt_F(c[0] * S1, c[1] * S2)
 
-        def Fanalytic(c):
+        def Fanalytic(c, n=n):
             u1, u2 = c[0] ** 2, c[1] ** 2
             return (n - 1) * ((u1 - 1) ** 2 + (u2 - 1) ** 2) + n + 2
 

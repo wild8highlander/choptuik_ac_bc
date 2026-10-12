@@ -150,10 +150,8 @@ def main() -> None:
     # ---------------- baseline: точная интерполяция в Q(sqrt3) ----------------
     print("=== baseline: точные матрицы Q(sqrt3) ===", flush=True)
     t0 = time.time()
-    A_ex, B_ex, C_ex, point, tv_ex = build_exact_system(sp.Integer(2))
+    A_ex, B_ex, C_ex, _point, tv_ex = build_exact_system(sp.Integer(2))
     print(f"  построено за {time.time()-t0:.1f} c; tau* = {tv_ex} = 27/4", flush=True)
-    resid_max = max(abs(sp.N(e_.subs(point), 30)) for e_ in
-                    [sp.expand(0)] ) if False else None
     # остаток в точке: F = 0 проверен в campaign_point; здесь точные записи:
     print(f"  A_ex[0,0] = {A_ex[0, 0]};  rank-структура C:", flush=True)
     C_rank = sp.Matrix(C_ex).rank()
@@ -183,7 +181,6 @@ def main() -> None:
     fac = sp.factor(char)
     print(f"  факторизация: {str(fac)[:300]}{'...' if len(str(fac))>300 else ''}",
           flush=True)
-    mult0 = sp.Poly(char, lam).nth(0) == 0
     k0 = 0
     poly_ = char
     while sp.simplify(poly_.subs(lam, 0)) == 0 and k0 < 40:
@@ -229,7 +226,7 @@ def main() -> None:
     # ---------------- one-brick: 40-значные записи ----------------
     print("\n=== one-brick (2 - pi^2/98): записи evalf(40) ===", flush=True)
     bC = sp.pi**2 / 98
-    A_ex2, B_ex2, C_ex2, point2, tv2 = build_exact_system(2 - bC)
+    A_ex2, B_ex2, C_ex2, _point2, tv2 = build_exact_system(2 - bC)
     print(f"  tau* = {sp.N(tv2, 20)}", flush=True)
     C_rank2 = sp.Matrix(C_ex2).rank()
     print(f"  rank C (точный) = {C_rank2}", flush=True)

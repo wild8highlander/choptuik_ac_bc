@@ -45,7 +45,7 @@ flowchart TB
 
 ### Core Pipeline
 
-```
+```text
 Klein Curve Parameters
     ↓
 Spinor Phase Computation (δ_A, δ_B, δ_C)
@@ -63,7 +63,7 @@ QNM Frequency Predictions (LIGO/Virgo)
 
 ### Enhanced Pipeline
 
-```
+```text
 Choptyuk Formula (Δ_Ch)
     ↓
     ├─→ 4D Spin Manifold Extension

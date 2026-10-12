@@ -83,7 +83,7 @@ def anim_trap(lang, theme, path_base):
     tok = style(theme)
     L = LANG[lang]
     from engine.solver import make_ensemble, trio_run
-    pos0, vel0, rej = make_ensemble(1, seed=20261010 + 7)
+    pos0, vel0, _rej = make_ensemble(1, seed=20261010 + 7)
     r_free = trio_run(pos0, vel0, V0=0.0, record_every=25)
     r_trap = trio_run(pos0, vel0, V0=8.0, Omega=2.0, record_every=25)
     tf = r_free["traj"]
@@ -131,17 +131,14 @@ def anim_wu(lang, theme, path_base):
     L = LANG[lang]
     rng = np.random.default_rng(20261010)
     alpha = 0.9
-    n = 400
     # particle fountain: species +/- as dots; asymmetric annihilation
     fig = plt.figure(figsize=(7.2, 4.6), constrained_layout=True)
     ax = fig.gca()
     ax.set_xlim(0, 10)
     ax.set_ylim(0, 6)
     ax.axis("off")
-    title = ax.text(5, 5.6, L["wu_title"], ha="center", fontsize=12,
-                    color=tok["ink"])
-    plus = [[], []]
-    minus = [[], []]
+    ax.text(5, 5.6, L["wu_title"], ha="center", fontsize=12,
+            color=tok["ink"])
 
     def draw(frame):
         for c in list(ax.lines) + list(ax.collections):

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.3.0 (2026-10-10) — the Mathlib / iron-layer edition
+
 - Full port of theorem T19 into Mathlib (`monolith/lean/QHB_T19_Mathlib.lean`):
   the reduced co-rotating operator is assembled from the translation block (Lemma B)
   and the √3-free shape block (Lemma C, diagonal similarity D = diag(2√3/3, 1, 1, √3/2));
@@ -27,6 +28,7 @@
 ## v1.3.0 (2026-10-10) — Asymmetry Lock
 
 ### New
+
 - **C12 campaign `asymmetry_lock`**: the matter-antimatter asymmetry cannot close
   the gap. Worst-case unit-normalized perturbation drops the closure barrier by
   exactly 2·eta (SymPy inequality); eta_crit = Delta_F,min/2 = 0.0908885; the
@@ -47,22 +49,27 @@
 - 15 additional figures (C10/C12 family) and 600-dpi hires set.
 
 ### Changed
+
 - Test suite extended to 100+ pinned tests.
 - `qhb/pins.py` now records all calibration seeds/parameters.
 - Docs: README/RESULTS gained the C12 sections (RU/EN mirrors).
 
 ### Fixed
+
 - Box-Muller cos^2 in C5 (chi-square correctness of the analytic/MC pair).
 - C10 share normalization reported with the additivity bias separated.
 - C4 runs test degenerate-case sentinel (-999.0) instead of NaN.
 
 ## v1.2.0 (2026-10-09)
+
 - C9 phase map (9x41, all OPEN), C10 competing models, C11 vortex anchor
   (Kirchhoff layer from scratch), theorems T11-T13, Evidence Engine, IVP-11.
 
 ## v1.1.0 (2026-10-08)
+
 - Theorems T1-T10 formalized; honest-negative ledger introduced; bilingual
   mirrors; monograph volumes.
 
 ## v1.0.0 (2026-10-07)
+
 - Initial campaigns C1-C8, IVP-08 audit.

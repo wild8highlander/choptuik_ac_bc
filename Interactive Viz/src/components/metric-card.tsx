@@ -25,22 +25,27 @@ export function MetricCard({
     deviation === undefined
       ? "text-teal-400"
       : Math.abs(deviation) < 0.01
-      ? "text-emerald-400"
-      : Math.abs(deviation) < 0.1
-      ? "text-amber-400"
-      : "text-red-400";
+        ? "text-emerald-400"
+        : Math.abs(deviation) < 0.1
+          ? "text-amber-400"
+          : "text-red-400";
 
   const badgeVariant =
     deviation === undefined
       ? "default"
       : Math.abs(deviation) < 0.01
-      ? ("success" as const)
-      : Math.abs(deviation) < 0.1
-      ? ("warning" as const)
-      : ("destructive" as const);
+        ? ("success" as const)
+        : Math.abs(deviation) < 0.1
+          ? ("warning" as const)
+          : ("destructive" as const);
 
   return (
-    <Card className={cn("transition-all duration-300 hover:border-teal-500/50", className)}>
+    <Card
+      className={cn(
+        "transition-all duration-300 hover:border-teal-500/50",
+        className,
+      )}
+    >
       <CardContent className="p-4">
         <div className="flex items-center justify-between">
           <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
@@ -56,12 +61,14 @@ export function MetricCard({
           className={cn(
             "mt-2 text-2xl font-bold font-mono transition-all duration-500",
             statusColor,
-            animate && "tabular-nums"
+            animate && "tabular-nums",
           )}
         >
           {value}
           {unit && (
-            <span className="ml-1 text-sm font-normal text-gray-500">{unit}</span>
+            <span className="ml-1 text-sm font-normal text-gray-500">
+              {unit}
+            </span>
           )}
         </p>
       </CardContent>

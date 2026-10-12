@@ -246,7 +246,6 @@ class V22Runner(ZoomRunner):
                                   "why": "buffer<8"})
             return False
         u_new = np.linspace(u_lo, u_hi, self.n)
-        v_new = np.linspace(v_lo, v_hi, self.n)
         Vg, Ug = np.meshgrid(vb_s, u_new, indexing="ij")
 
         CLIP = {"r": 1e3, "Phi": 50.0, "p": 1e3, "q": 1e3, "s": 1e6, "t": 1e6,
@@ -411,7 +410,6 @@ def phase_cert():
 
     # [F1] кап не связан
     zl_ok = [zl for zl in runner.zoom_log if zl.get("ok")]
-    slack = [zl["slack_parent"] for zl in zl_ok if zl.get("slack_parent")]
     ratio = [zl["ahead_req"] / zl["slack_parent"] for zl in zl_ok
              if zl.get("slack_parent")]
     f1 = {"n_zooms": len(zl_ok),
@@ -846,7 +844,7 @@ def phase_ladder(policy, deep_rec):
         eps_arr = [r["eps"] for r in ok]
         d_ref = ok[0]["delta_eff"]
         devs = [abs(r["delta_eff"] - d_ref) / d_ref for r in ok]
-        fit, n = fit_exponent(eps_arr, devs)
+        fit, _n = fit_exponent(eps_arr, devs)
         out["fit_p_delta"] = fit
     else:
         out["fit_p_delta"] = None

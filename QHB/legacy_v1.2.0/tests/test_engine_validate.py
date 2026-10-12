@@ -16,7 +16,7 @@ def load_c2():
 class TestEngine:
     def test_kepler(self):
         from engine.solver import kepler_period_check
-        Tk, Tm, err = kepler_period_check()
+        _Tk, Tm, err = kepler_period_check()
         assert Tm is not None and err < 1e-6
 
     def test_ensemble_determinism(self):

@@ -206,8 +206,7 @@ def fig_wheel(lang, path):
                               arrowstyle="-|>", mutation_scale=22,
                               lw=2.4, color="#555555", zorder=3)
         ax.add_patch(arr)
-        nrm = np.array([-mid[1], mid[0]]) / np.linalg.norm(mid)
-        lab = r"$-\ln\tau_5$" if lang == "ru" else r"$-\ln\tau_5$"
+        lab = r"$-\ln\tau_5$"
         ax.text(mid[0] * 1.16, mid[1] * 1.16, lab, ha="center", va="center",
                 fontsize=10.5, color="#555555", rotation=0)
     # гексагон-подложка

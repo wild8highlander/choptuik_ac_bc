@@ -49,14 +49,14 @@ spectrum `M_code(eps)`, `eps = A - A*`.  Divide by the saturated
 (strongly supercritical) mass `M_code_sat` — physically the total mass
 of the pulse — and everything dimensionful drops out:
 
-```
+```text
 f~(eps) = M_code(eps) / M_code_sat ,      0 < f~ <= 1
 ```
 
 `f~` is the dimensionless profile of *how a black hole is born*.  The
 bridge maps it onto physical masses with a single input scale:
 
-```
+```text
 M_BH(eps; M_in) = M_in * f~(eps)
 ```
 
@@ -71,7 +71,7 @@ ensemble (campaign C1, N=800): `near_floor` (f~ = 0.2877), `mid`
 Setting `T_H(M) = T_CMB = 2.72548 K` gives the unique mass whose Hawking
 temperature matches today's microwave background:
 
-```
+```text
 M_CMB = hbar c^3 / (8 pi G k_B T_CMB) = 4.5016e22 kg  ~  0.61 lunar masses
 ```
 
@@ -85,7 +85,7 @@ the `CMB input` scale.
 The engine family carries an exact substructure inherited from the
 Klein quartic — the genus-3 surface
 
-```
+```text
 x^3 y + y^3 z + z^3 x = 0 ,
 ```
 
@@ -93,19 +93,19 @@ whose automorphism group PSL(2,7) has order `168 = 84(g-1)` — the
 Hurwitz bound, attained (Hurwitz 1893).  The spinor phases of the
 framework are
 
-```
+```text
 delta_A = pi/2 ,   delta_B = pi/3 ,   delta_C = pi/7   (the septinial sector)
 ```
 
 and the septinial constant is **exact**:
 
-```
+```text
 b_Ch = 1 - cos(2 pi / 7) = 2 sin^2(pi/7) = 0.37651019814126640...
 ```
 
 The *comparison* (never a fit, never a derivation):
 
-```
+```text
 |gamma_Ch - b_Ch| / b_Ch = 0.67 % ,    gamma_Ch = 0.374 (literature anchor)
 ```
 
@@ -125,7 +125,7 @@ pi^2/98`.
 
 Both dimensionless observables of the critical side enter one product:
 
-```
+```text
 Delta * gamma  =?  1.27      (project target)
 ```
 

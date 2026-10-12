@@ -44,8 +44,7 @@ def build_logo(theme):
                             0.075, fc=tok["gold_soft"], ec="none"))
     ax.text(cx, cy - R - 0.28, "$\\pi/2\\ \\pi/3\\ \\pi/7$",
             ha="center", fontsize=8, color=tok["muted"])
-    ax.text(3.3, 1.78, "QUARK–HAWKING BRIDGE" if theme == "light"
-            else "QUARK–HAWKING BRIDGE",
+    ax.text(3.3, 1.78, "QUARK–HAWKING BRIDGE",
             fontsize=21, color=tok["ink"], fontweight="bold", va="center")
     ax.text(3.32, 1.12,
             "три поправки · зазор · дверь Ву · трио-ловушка"
@@ -58,7 +57,7 @@ def build_logo(theme):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ru-subtitle", action="store_true")
-    args = ap.parse_args()
+    ap.parse_args()
     os.makedirs(OUT, exist_ok=True)
     for theme in ("light", "dark"):
         fig = build_logo(theme)

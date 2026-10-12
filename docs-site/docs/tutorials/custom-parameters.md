@@ -43,9 +43,11 @@ print(f"Choptyuk formula: {formula.delta_Ch:.6f}")
 Three presets are provided for common use cases:
 
 ### Standard (`presets/standard.json`)
+
 Default precision and tolerance for general verification.
 
 ### High Precision (`presets/high_precision.json`)
+
 Uses `mpmath` with 50 decimal digits for critical comparisons:
 
 ```json
@@ -57,6 +59,7 @@ Uses `mpmath` with 50 decimal digits for critical comparisons:
 ```
 
 ### LIGO Analysis (`presets/ligo_analysis.json`)
+
 Optimized for gravitational wave QNM corrections:
 
 ```json

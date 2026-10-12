@@ -13,7 +13,7 @@ coordinates `ds^2 = -alpha(u,v)^2 du dv + r(u,v)^2 dOmega^2`, with
 `omega = ln(alpha)` and the Misner-Sharp mass
 `m = (r/2)(1 + 4 r_u r_v / alpha^2)`:
 
-```
+```text
 (SC)  Phi_uv = -(r_u Phi_v + r_v Phi_u) / r
 (UV)  r_uv   = -(r_u r_v + alpha^2/4) / r
 (C1)  r_uu   = 2 omega_u r_u - (kappa/2) r Phi_u^2
@@ -56,7 +56,7 @@ regression on every `pytest` invocation.
 bisected to tolerance.  Crucially, the bisection is repeated at
 N = 200/400/800 and **all three values are committed**:
 
-```
+```text
 A*_200 = 0.1051048278808594
 A*_400 = 0.0882011413574219
 A*_800 = 0.08053436279296877
@@ -177,7 +177,7 @@ equal `S0/2` exactly (`tests/test_page.py::test_curve_structure`).
 
 The exact Page/Sen averaged-entropy formula for dimensions `m <= n`,
 
-```
+```text
 S(m, n) = ( sum_{k=n+1}^{mn} 1/k  -  (m-1)/(2n) ) / ln 2 ,
 ```
 

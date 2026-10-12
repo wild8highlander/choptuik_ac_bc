@@ -286,7 +286,7 @@ def t4_cubic_pencil():
 
     mp.mp.dps = 40
     out = {}
-    A_ex, B_ex, C_ex, point, tv_ex = sfe.build_exact_system(sp.Integer(2))
+    A_ex, B_ex, C_ex, _point, tv_ex = sfe.build_exact_system(sp.Integer(2))
     log(f"  [T4] система построена; tau* = {tv_ex}")
 
     # структурная идентичность на точной маленькой матрице (санити алгебры)

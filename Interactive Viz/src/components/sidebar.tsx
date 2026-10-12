@@ -36,9 +36,7 @@ export function Sidebar() {
         <h1 className="text-sm font-bold text-teal-400 tracking-tight">
           CHOPTYUK
         </h1>
-        <p className="text-xs text-gray-500 mt-0.5">
-          Spinor Monograph Viz
-        </p>
+        <p className="text-xs text-gray-500 mt-0.5">Spinor Monograph Viz</p>
       </div>
       <nav className="flex-1 p-2 space-y-1">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
@@ -51,7 +49,7 @@ export function Sidebar() {
                 "flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all",
                 active
                   ? "bg-teal-600/20 text-teal-400 font-medium"
-                  : "text-gray-400 hover:bg-navy-800 hover:text-gray-200"
+                  : "text-gray-400 hover:bg-navy-800 hover:text-gray-200",
               )}
             >
               <Icon className="h-4 w-4" />

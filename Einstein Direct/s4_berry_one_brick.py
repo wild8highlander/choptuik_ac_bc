@@ -22,8 +22,8 @@ import sympy_spinor_corrections as ssc
 
 
 def main() -> None:
-    s0, corr = ssc.s0_corrections()
-    s1, payload = ssc.s1_doors_symbolic()
+    _s0, corr = ssc.s0_corrections()
+    _s1, payload = ssc.s1_doors_symbolic()
     schemes = ssc.s2_schemes(payload, corr)
     rec = schemes["H_berry_half_down_(1-bC/2)"]
     kv = rec["kappa_uniform"]

@@ -445,7 +445,7 @@ def main():
     for kappa_T in kappa_T_values:
         observed_means = []
         for seed in range(n_seeds):
-            O, n = construct_Ochi(kappa_top=1.0, kappa_flav=1.0,
+            O, _n = construct_Ochi(kappa_top=1.0, kappa_flav=1.0,
                                    kappa_T=kappa_T, seed=seed)
             eigs = np.linalg.eigvalsh(O)
             eigs = unfold(eigs)
@@ -457,8 +457,8 @@ def main():
         obs_std = float(observed_means.std())
 
         # BF at the observed mean
-        bf_gue, pg, pp = bayes_factor_at(obs_mean, gue_means, poi_means)
-        bf_goe, pgo, pp2 = bayes_factor_at(obs_mean, goe_means, poi_means)
+        bf_gue, pg, _pp = bayes_factor_at(obs_mean, gue_means, poi_means)
+        bf_goe, pgo, _pp2 = bayes_factor_at(obs_mean, goe_means, poi_means)
         # BF(GUE/GOE)
         bf_gue_vs_goe = pg / max(pgo, 1e-30)
 

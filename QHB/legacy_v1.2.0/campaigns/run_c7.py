@@ -101,7 +101,6 @@ def main():
     # --- 0. the regression gate (the C2 anchor) --------------------------------
     r = trio_run(pos0, vel0, V0=0.0, Omega=0.0, sigma=0.0)
     p_free = float(r["escaped"].mean())
-    drift_free = r["E_drift_rel"]
     with open(os.path.join(REF, "c2_verdict.json"), encoding="utf-8") as fh:
         p_free_committed = json.load(fh)["T5_free_negative"]["P_esc_free"]
     regression_dev = abs(p_free - p_free_committed)

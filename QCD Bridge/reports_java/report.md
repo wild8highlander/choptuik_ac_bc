@@ -37,7 +37,7 @@
 
 ## Execution Log
 
-```
+```text
 [2026-08-10T14:45:51.333185626] Starting QCD bridge run, sections=[1, 2, 3]
 Section 1: O_chi operator construction
 Section 2: RMT sweep

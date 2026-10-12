@@ -35,7 +35,7 @@ done
 # ── пути: скрипт лежит в theorems12/, корень репо — на уровень выше ────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-cd "$REPO_ROOT"
+cd "$REPO_ROOT" || exit 1
 
 if [[ ! -d ".git" ]]; then
   echo "ОШИБКА: $REPO_ROOT не является git-репозиторием."

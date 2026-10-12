@@ -174,7 +174,6 @@ def analyze_channel_A(rows):
             "W2_row_over_t02_iqr": [float(np.percentile(wr, 25)),
                                     float(np.percentile(wr, 75))],
         }
-    floor_sig = out.get("odd_floor_over_signal_median")
     rf = out.get("row_fit", {})
     out["verdict"] = (
         "чётный мусор сторона-симметричен (медиана сторона-разности %.1e) "
@@ -210,8 +209,8 @@ def analyze_channel_B(rows):
         out["n_rows"] += 1
         t0 = rw["t0"]
         f = g.get("fits", {})
-        R1, R3, E0, chi = (f.get("R1"), f.get("R3"), f.get("E0"),
-                           f.get("chi"))
+        R1, R3, E0, _chi = (f.get("R1"), f.get("R3"), f.get("E0"),
+                            f.get("chi"))
         if not (t0 and np.isfinite(t0) and t0 > 0):
             continue
         if not (R1 and np.isfinite(R1) and 0.5 < R1 < 2.0):

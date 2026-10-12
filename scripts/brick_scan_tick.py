@@ -167,7 +167,7 @@ def layer_B3(kv, bp):
                         rec["r_norm_frozen"] = norms[0]
                         rec["r_max_frozen"] = rmaxes[0]
                         try:
-                            V, dia = dae.closure(x0p)
+                            V, _dia = dae.closure(x0p)
                             rec["V_norm_at_start"] = \
                                 float(np.linalg.norm(V))
                             mres = dae.march(x0p, 1)
@@ -249,7 +249,7 @@ def main() -> None:
     payload = None
     try:
         import sympy_spinor_corrections as ssc
-        _, corr = ssc.s0_corrections()
+        _, _corr = ssc.s0_corrections()
         _, payload = ssc.s1_doors_symbolic()
         log("      карандашный payload собран (фантомный слой активен)")
     except Exception as ex:                                # noqa: BLE001

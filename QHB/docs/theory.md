@@ -13,7 +13,7 @@ honest-negative, hypothesis, comparison.
 ## 2. Normalization conditions N1–N8
 
 - **N1** vortex units Γ = a = 1 ⇒ ω = 3/(2π) = 0.477464829275686…
-- **N2** gap units: C9 valley floor pinned at β* = 3.3583, Δ_F,min = 0.181777;
+- **N2** gap units: C9 valley floor pinned at β*= 3.3583, Δ_F,min = 0.181777;
   the valley profile is quadratic, Δ_F(β) = Δ_F,min + 0.35(β − β*)².
 - **N3** naive-window falsifier β_c = 2.9910 with the measured gap ratio 6.3;
   this fixes the detector threshold Δ_thresh = Δ_F(β_c)/6.3 = 0.0363485.

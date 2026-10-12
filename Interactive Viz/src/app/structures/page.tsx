@@ -27,8 +27,13 @@ export default function StructuresPage() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   const structures = useMemo(
-    () => generate64Structures(SPINOR_PHASES.delta_A, SPINOR_PHASES.delta_B, SPINOR_PHASES.delta_C),
-    []
+    () =>
+      generate64Structures(
+        SPINOR_PHASES.delta_A,
+        SPINOR_PHASES.delta_B,
+        SPINOR_PHASES.delta_C,
+      ),
+    [],
   );
 
   const sorted = useMemo(() => {
@@ -65,7 +70,10 @@ export default function StructuresPage() {
 
   // Heatmap data: 8x8 grid
   const heatmapData = useMemo(() => {
-    const rows: { row: number; cells: { idx: number; val: number; stable: boolean }[] }[] = [];
+    const rows: {
+      row: number;
+      cells: { idx: number; val: number; stable: boolean }[];
+    }[] = [];
     for (let r = 0; r < 8; r++) {
       const cells: { idx: number; val: number; stable: boolean }[] = [];
       for (let c = 0; c < 8; c++) {
@@ -127,7 +135,9 @@ export default function StructuresPage() {
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold text-amber-400">{64 - stableCount}</p>
+            <p className="text-2xl font-bold text-amber-400">
+              {64 - stableCount}
+            </p>
             <p className="text-xs text-gray-400">Unstable</p>
           </CardContent>
         </Card>
@@ -162,9 +172,14 @@ export default function StructuresPage() {
                   {heatmapData.map((row) => (
                     <div key={row.row} className="flex gap-0.5">
                       {row.cells.map((cell) => {
-                        const maxVal = Math.max(...structures.map((s) => s.delta_total));
-                        const minVal = Math.min(...structures.map((s) => s.delta_total));
-                        const norm = (cell.val - minVal) / (maxVal - minVal + 1e-10);
+                        const maxVal = Math.max(
+                          ...structures.map((s) => s.delta_total),
+                        );
+                        const minVal = Math.min(
+                          ...structures.map((s) => s.delta_total),
+                        );
+                        const norm =
+                          (cell.val - minVal) / (maxVal - minVal + 1e-10);
                         const isHovered = hoveredIdx === cell.idx;
                         return (
                           <div
@@ -173,12 +188,12 @@ export default function StructuresPage() {
                               isHovered
                                 ? "border-white scale-110 z-10"
                                 : cell.stable
-                                ? "border-navy-600"
-                                : "border-navy-700"
+                                  ? "border-navy-600"
+                                  : "border-navy-700"
                             }`}
                             style={{
                               backgroundColor: `rgb(${Math.round(20 + norm * 20)}, ${Math.round(
-                                180 - norm * 100
+                                180 - norm * 100,
                               )}, ${Math.round(190 - norm * 80)})`,
                             }}
                             onMouseEnter={() => setHoveredIdx(cell.idx)}
@@ -194,11 +209,16 @@ export default function StructuresPage() {
 
                 {/* Hover/Click Detail */}
                 <div className="flex-1 min-w-[200px]">
-                  {(selected || (hoveredIdx !== null ? structures[hoveredIdx] : null)) && (
+                  {(selected ||
+                    (hoveredIdx !== null ? structures[hoveredIdx] : null)) && (
                     <Card className="bg-navy-900/50">
                       <CardContent className="p-4 space-y-2">
                         {(() => {
-                          const s = selected || (hoveredIdx !== null ? structures[hoveredIdx] : null);
+                          const s =
+                            selected ||
+                            (hoveredIdx !== null
+                              ? structures[hoveredIdx]
+                              : null);
                           if (!s) return null;
                           return (
                             <>
@@ -207,21 +227,37 @@ export default function StructuresPage() {
                               </p>
                               <div className="grid grid-cols-2 gap-1 text-xs">
                                 <span className="text-gray-400">Phase A:</span>
-                                <span className="font-mono">{s.phase_A.toFixed(4)}</span>
+                                <span className="font-mono">
+                                  {s.phase_A.toFixed(4)}
+                                </span>
                                 <span className="text-gray-400">Phase B:</span>
-                                <span className="font-mono">{s.phase_B.toFixed(4)}</span>
+                                <span className="font-mono">
+                                  {s.phase_B.toFixed(4)}
+                                </span>
                                 <span className="text-gray-400">Phase C:</span>
-                                <span className="font-mono">{s.phase_C.toFixed(4)}</span>
+                                <span className="font-mono">
+                                  {s.phase_C.toFixed(4)}
+                                </span>
                                 <span className="text-gray-400">Δ_total:</span>
                                 <span className="font-mono text-teal-400">
                                   {s.delta_total.toFixed(4)}
                                 </span>
-                                <span className="text-gray-400">Eigenvalue:</span>
-                                <span className="font-mono">{s.eigenvalue.toFixed(4)}</span>
+                                <span className="text-gray-400">
+                                  Eigenvalue:
+                                </span>
+                                <span className="font-mono">
+                                  {s.eigenvalue.toFixed(4)}
+                                </span>
                                 <span className="text-gray-400">Symmetry:</span>
-                                <span className="font-mono">{s.symmetry_class}</span>
+                                <span className="font-mono">
+                                  {s.symmetry_class}
+                                </span>
                                 <span className="text-gray-400">Stable:</span>
-                                <Badge variant={s.is_stable ? "success" : "destructive"}>
+                                <Badge
+                                  variant={
+                                    s.is_stable ? "success" : "destructive"
+                                  }
+                                >
                                   {s.is_stable ? "Yes" : "No"}
                                 </Badge>
                               </div>
@@ -284,7 +320,9 @@ export default function StructuresPage() {
                         className="cursor-pointer"
                         onClick={() => setSelected(s)}
                       >
-                        <TableCell className="font-mono text-xs">{s.index}</TableCell>
+                        <TableCell className="font-mono text-xs">
+                          {s.index}
+                        </TableCell>
                         <TableCell className="font-mono text-xs">
                           {s.phase_A.toFixed(3)}
                         </TableCell>
@@ -306,7 +344,10 @@ export default function StructuresPage() {
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <Badge variant={s.is_stable ? "success" : "destructive"} className="text-[10px]">
+                          <Badge
+                            variant={s.is_stable ? "success" : "destructive"}
+                            className="text-[10px]"
+                          >
                             {s.is_stable ? "✓" : "✗"}
                           </Badge>
                         </TableCell>
@@ -392,7 +433,9 @@ export default function StructuresPage() {
               </div>
               <div>
                 <p className="text-gray-400">Index</p>
-                <p className="font-mono text-lg text-gray-300">{selected.index}</p>
+                <p className="font-mono text-lg text-gray-300">
+                  {selected.index}
+                </p>
               </div>
             </div>
           </CardContent>

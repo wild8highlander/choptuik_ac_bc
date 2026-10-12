@@ -93,7 +93,6 @@ def load_ladder():
 
 
 def ladder_analysis(rows):
-    Ns = [n for n, _ in rows]
     As = [a for _, a in rows]
     drifts = [As[i] - As[i + 1] for i in range(len(As) - 1)]
     p_effs = [math.log2(drifts[i] / drifts[i + 1]) for i in range(len(drifts) - 1)]

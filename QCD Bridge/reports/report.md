@@ -22,7 +22,6 @@
 - **kappa_T**: `8.450000`
 - **N**: `28`
 
-
 ### section_5_tau_relax
 
 - **theta_0**: `1.000000e-19`
@@ -35,7 +34,6 @@
 - **theta_at_5_tau**: `6.737947e-22`
 - **suppression_factor_at_1_tau**: `0.367879`
 
-
 ### section_6_kappa_T_physical
 
 - **kappa_T_lower_95CL**: `2.620000`
@@ -47,7 +45,6 @@
 - **BF_class_at_best_fit**: `decisive`
 - **physical_kappa_in_GUE_regime**: `True`
 - **GUE_threshold_kappa**: `1.500000`
-
 
 ### section_7_cabibbo
 
@@ -62,7 +59,6 @@
 - **deviation_rad**: `0.102512`
 - **deviation_pct**: `45.001405`
 - **coincidence_quality**: `weak`
-
 
 ### section_8_cp_chain
 
@@ -131,7 +127,6 @@
 - **new_symmetries_introduced**: `0`
 - **falsification_tests**: `['Direct lattice measurement of F(theta) - F(0) via Giusti-Rossi-Testa method', 'Derivation of work formula from PSL(2,7) algebraic geometry']`
 
-
 ### section_9_jet_wake
 
 - **delta_C**: `0.448799`
@@ -143,12 +138,11 @@
 - **topological_sector_count**: `22`
 - **kappa_T_coupling**: `8.450000`
 
-
 ---
 
 ## EXECUTION LOG
 
-```
+```text
 [2026-08-10 14:01:44] Starting QCD bridge run, mode=verify_all, sections=[1, 5, 6, 7, 8, 9]
 [2026-08-10 14:01:44] Language: en
 [2026-08-10 14:01:44] Output dir: reports

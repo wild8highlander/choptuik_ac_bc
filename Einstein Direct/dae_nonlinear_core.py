@@ -104,7 +104,7 @@ def build_nonlinear_system(kv, validate=True):
     chain = {"D0h": (D0h, d0), "R3h": (R3h, r3), "W2h": (W2h, w2),
              "P2h": (P2h, p2), "R5h": (R5h, r5), "M5h": (M5h, m5),
              "P4h": (P4h, p4v)}
-    for k_, (sym_, form) in chain.items():
+    for sym_, form in chain.values():
         point[sym_] = sp.simplify(sp.expand(form).subs(T0h, t0v).subs(R1h, 1))
     for f_ in (p4.dT0, p4.dD0, p4.Qh, p4.dR1, p4.dW2, p4.dR3, p4.dP4, p4.dR5):
         point[f_] = sp.Integer(0)
@@ -261,9 +261,9 @@ class NonlinearDAE:
         """lstsq-решение + res18 (ортогонален range(Uk)) + выровненный базис
         левого ядра (Procrustes к target, если задан). |r| базис-инвариантен;
         выравнивание нужно только для гладкости FD-Якобиана rvec."""
-        u, _, rank, sv = np.linalg.lstsq(Uk, rhs, rcond=None)
+        u, _, _rank, sv = np.linalg.lstsq(Uk, rhs, rcond=None)
         res18 = Uk @ u - rhs
-        u_, s_, _ = np.linalg.svd(Uk, full_matrices=True)
+        u_, _s, _ = np.linalg.svd(Uk, full_matrices=True)
         W = np.ascontiguousarray(u_[:, 9:].conj().T)     # 9x18, строки ортонорм.
         align_err = 0.0
         if target is not None:
@@ -346,7 +346,7 @@ class NonlinearDAE:
         rep = {"F_max": None, "r_max": None}
         for _ in range(rounds):
             x, rf = self.project_F(x, iters=3)
-            x, rr = self.project_r(x, iters=3)
+            x, _rr = self.project_r(x, iters=3)
         x, rf = self.project_F(x, iters=3)
         rv, _ = self.rvec(x)
         rep["F_max"], rep["r_max"] = rf["F_max"], float(np.max(np.abs(rv)))
@@ -551,8 +551,8 @@ class NonlinearDAE:
         for j in range(basis.shape[1]):
             xi = np.asarray(basis[:, j], dtype=float)
             xi = xi / float(np.max(np.abs(xi)))
-            xp, repp = self.project_Fr(x0 + h * xi, rounds=3)
-            xm, repm = self.project_Fr(x0 - h * xi, rounds=3)
+            xp, _repp = self.project_Fr(x0 + h * xi, rounds=3)
+            xm, _repm = self.project_Fr(x0 - h * xi, rounds=3)
             dp, dm = xp - x0, xm - x0
             op = self.march(xp, n_echoes)
             om = self.march(xm, n_echoes)

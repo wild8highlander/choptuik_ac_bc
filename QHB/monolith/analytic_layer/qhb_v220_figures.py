@@ -181,7 +181,7 @@ def fig_v2(L):
     ax1.axhline(1.0, color="#555555", lw=0.9, ls=":", label=TXT[L]["leg_tc"])
     ax1.axvline(TD ** 2, color=C3, lw=1.0, ls=":")
     ax1.axvline(TD, color=C2, lw=1.0, ls=":")
-    ax1.annotate(TXT[L]["ann_deadline"] + "\n" + (r"$\alpha$=1/2: 673" if L == "ru" else r"$\alpha$=1/2: 673"),
+    ax1.annotate(TXT[L]["ann_deadline"] + "\n" + r"$\alpha$=1/2: 673",
                  xy=(TD ** 2, TD), xytext=(3, 0.028), fontsize=8.8, color=C3,
                  arrowprops=dict(arrowstyle="->", color=C3, lw=1.0))
     ax1.axvspan(1.0, TD ** 2, color=C1, alpha=0.07)

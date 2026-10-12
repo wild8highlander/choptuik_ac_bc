@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Root repository logo generator — choptuik_ac_bc.
 Style: "Ink & Gold" (same family as Collapse Hawking Bridge logo).
@@ -7,11 +6,13 @@ Output: assets/logo/choptyuk_logo_{dark,light}.png (+ .svg)
 Provenance: pure matplotlib geometry, no RNG, deterministic.
 """
 import matplotlib
+
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-from matplotlib.patches import Arc, FancyArrowPatch, Circle
-import numpy as np
 import os
+
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.patches import Arc, Circle, FancyArrowPatch
 
 OUT = "/home/z/my-project/repo_choptuik/assets/logo"
 os.makedirs(OUT, exist_ok=True)

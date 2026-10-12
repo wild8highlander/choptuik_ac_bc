@@ -95,7 +95,7 @@ def main():
             "runtime_s": round(d.runtime, 1),
         }
         # пики Q (для будущей дельты)
-        vp, yp = echo_peaks(r.track, "Q")
+        vp, _yp = echo_peaks(r.track, "Q")
         rec["Q_peaks_n"] = len(vp)
         rec["Q_peaks_v"] = [round(float(x), 5) for x in vp[:10]]
         runs.append(rec)

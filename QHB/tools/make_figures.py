@@ -257,7 +257,6 @@ def fig_shares(p, t, lang):
 
 
 def fig_vortex_spec(p, t, lang):
-    d = load("c11_spectrum.json")
     fig, ax = plt.subplots(figsize=(6.4, 5.2), constrained_layout=True)
     w = 3 / (2 * math.pi)
     pts = [(0, 0), (0, 0)] + [(0, w), (0, -w)] * 2

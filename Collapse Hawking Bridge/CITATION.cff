@@ -9,7 +9,7 @@ authors:
     given-names: Ishak Khamzatovich
     affiliation: Independent researcher, Nalchik, Kabardino-Balkarian Republic, Russian Federation
 version: 2.2.0
-released: 2026-10-11
+date-released: 2026-10-11
 keywords:
   - critical gravitational collapse
   - Choptuik scaling
@@ -18,7 +18,7 @@ keywords:
   - Page curve
   - double-null evolution
   - scale ladder
-license: Isaev-Proprietary-1.0
+license-url: https://github.com/wild8highlander/choptuik_ac_bc/blob/main/LICENSE
 abstract: >-
   A self-contained research package connecting the threshold of black-hole
   formation (critical collapse of a massless scalar field, double-null

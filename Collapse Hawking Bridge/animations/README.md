@@ -25,7 +25,7 @@ element is a number landing on an axis.
 
 ## Layout
 
-```
+```text
 animations/
 ├── en/
 │   ├── anim_01_evaporation.mp4   anim_01_evaporation.gif

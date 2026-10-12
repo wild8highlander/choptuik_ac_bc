@@ -64,7 +64,6 @@ def polish_and_verdict(A_n, B_n, C_n, lam0, n_iter=80):
         return float(sv[-1])
 
     f0 = svmin_sc(lam)
-    lam_start = lam
     for _ in range(n_iter):
         M = A_n + lam * B_n + lam**2 * C_n
         U, sv, Vh = np.linalg.svd(M)
@@ -120,7 +119,6 @@ def main() -> None:
         rec["V1_kernel_Ja"] = {"rel_sigma_min_at_0": rel0,
                                "kernel_dim_approx": int(np.sum(sv < sv[0] * 1e-9))}
         # кандидаты: все genuine + фантомы с |lam| < 0.05 (окрестность нуля)
-        qep = None
         # достаём кандидатов из сохранённого JSON
         import json
         with open("results/second_flows_limit_cycle.json", encoding="utf-8") as fh:

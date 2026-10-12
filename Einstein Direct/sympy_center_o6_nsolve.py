@@ -164,7 +164,7 @@ def main():
         for k_, v_ in ok.items():
             out.setdefault("verify", {})[k_] = sp.sstr(v_)
             assert sp.sstr(v_) == "0", f"форма {k_} не верифицирована"
-        found, dep = o6.find_next_levels(coeffs, lv)
+        found, _dep = o6.find_next_levels(coeffs, lv)
         ver = o6.verify_levels(coeffs, found, lv)
         out["levels_found"] = {f"{nm}_xi{k}": {"target": t, "verify": sp.sstr(ver.get(f"{nm}_xi{k}_{t}", "?"))}
                                for (nm, k), (t, f) in found.items()}

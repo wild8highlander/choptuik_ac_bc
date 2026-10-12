@@ -375,7 +375,6 @@ def s2_tower_pencil_at_tau_star():
 # ==============================================================================
 def s4_books_monodromy(s2_out):
     log("[S4] Книги на монодромии исправленной системы...")
-    lam_s = sp.Symbol("lam_pencil")
     lp_sym = None
     lp_val = s2_out.get("lambda_plus_tower_at_tau_star")
     if lp_val is not None:
@@ -516,7 +515,6 @@ def main() -> None:
         "anchors": {"Delta_sp": "7*pi/30", "Delta_lit": "3.44",
                     "gamma_lit": "0.374", "b_Ch": "1-cos(2*pi/7)"},
     }}
-    global _CHAIN_CACHE
     # [S3] сначала (быстрый, не требует o6-системы)
     out["c1_route_ring"] = s3_c1_route_ring()
     # [S1] старый core char при tau*

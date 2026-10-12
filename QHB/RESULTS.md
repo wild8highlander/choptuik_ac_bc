@@ -44,7 +44,6 @@ Consolidated results registry. Claim ids match `data/claims.json`.
 - **hypothesis** — stated, never asserted.
 - **comparison** — external literature value; not evidence for the model.
 
-
 ## v2.3.0 — the Mathlib / iron-layer edition (appendix A, chapters 14–17 unchanged)
 
 - T19 ported into Mathlib: 8 new closed kernels (block charpolys via

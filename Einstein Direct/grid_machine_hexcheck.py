@@ -143,7 +143,6 @@ def extract_rows_v8(tay_hist_all, zs, res_max=0.3):
         if not np.isfinite(E0):
             continue
         p2_fresh = bool(np.isfinite(res_O))       # O-фит прошёл гейты
-        e0_fresh = True                            # E-фит считается всегда
         stage = int(rec.get("stage", 0))
         rows.append({
             "v": float(rec["v"]), "stage": stage,
@@ -481,7 +480,7 @@ def _summarize_run(r, d, eps, A, dt):
             np.isfinite(ae) and np.isfinite(ap)
             and 1e-300 < ae < 1e100 and ap > 1e-300) else float("nan")
     tr = r.track
-    vp, yp = echo_peaks(r.track, "Q")
+    vp, _yp = echo_peaks(r.track, "Q")
     rec = {
         "leg": "legacy+diag (v6.1 динамика)",
         "eps": eps, "A": A,

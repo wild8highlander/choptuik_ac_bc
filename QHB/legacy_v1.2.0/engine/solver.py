@@ -52,7 +52,7 @@ def trio_accel(pos, V0, Omega, t, soft2=SOFT2, R_b=WALL_R, w=WALL_W, p=WALL_P,
     with separation.  At sigma = 0 the code path is byte-identical to the
     committed v1.0.0 engine (the term simply does not exist there).
     """
-    Tn, nb = pos.shape[0], pos.shape[1]
+    nb = pos.shape[1]
     acc = np.zeros_like(pos)
     for i in range(nb):
         for j in range(nb):
@@ -260,7 +260,6 @@ def lyapunov(pos0, vel0, V0=0.0, Omega=0.0, dt=DT, steps=STEPS,
                                pos, vel, t + dt)
         dpos = dpos + (dt / 6.0) * (k1p + 2 * k2p + 2 * k3p + k4p)
         dvel = dvel + (dt / 6.0) * (k1v + 2 * k2v + 2 * k3v + k4v)
-        pos_rk = None  # base trajectory advanced below
         # advance the base trajectory with the same RK4 (duplicated logic)
         if (k + 1) % renorm_every == 0 or k == steps - 1:
             nrm = np.sqrt((dpos * dpos).sum(axis=(1, 2)) +
@@ -330,7 +329,6 @@ def kepler_period_check(e=0.5, dt=DT):
     y_prev, t_prev = pos[0, 0, 1] - pos[0, 1, 1], 0.0
     n_steps = int(4 * T_k / dt)
     for k in range(n_steps):
-        t = k * dt
 
         def deriv(p, v):
             return v, trio_accel(p, 0.0, 0.0, 0.0, soft2=soft2)

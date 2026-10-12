@@ -17,6 +17,7 @@ The `ci.yml` workflow runs on:
 - **OS**: ubuntu-latest, macos-latest, windows-latest
 
 Steps:
+
 1. Checkout repository
 2. Install Python + dependencies
 3. Run `ruff check`

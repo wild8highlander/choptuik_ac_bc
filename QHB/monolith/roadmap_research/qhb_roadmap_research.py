@@ -222,7 +222,7 @@ def r2_anisotropic():
                            "dev": abs(om_fit - om_pred), "radius_drift": r_drift})
 
     # --- (b) спектр при gamma=1: сверка с каноном T11 ---
-    eigs1, om1 = corot_spectrum([1.0, 1.0, 1.0])
+    eigs1, _om1 = corot_spectrum([1.0, 1.0, 1.0])
     def canon(eigs, tol=1e-6):
         zr = sum(1 for z in eigs if abs(z) < tol)
         posf = sorted({round(abs(z.imag), 8) for z in eigs if abs(z.imag) > tol})
@@ -283,7 +283,7 @@ def r2_anisotropic():
         base = equi_circ(g)
         R1 = math.hypot(base[0][0], base[0][1])
         pos = [(base[0][0] + 0.1 * base[0][0] / R1, base[0][1] + 0.1 * base[0][1] / R1), base[1], base[2]]
-        Jp0, H0 = invariants_aniso(pos, g)
+        Jp0, _H0 = invariants_aniso(pos, g)
         gmin = min(g)
         bound = 2.0 * math.sqrt(Jp0 / gmin)      # обобщение T12: |r_ij| <= 2 sqrt(J'/Gamma_min)
         r_max = max(math.hypot(pos[i][0] - pos[j][0], pos[i][1] - pos[j][1])

@@ -47,7 +47,7 @@ export default function SimulatePage() {
         "Δ_{Ch}": sweepDC.Delta_Ch[i],
         Observed: sweepDC.observed[i],
       })),
-    [sweepDC]
+    [sweepDC],
   );
 
   const sweepL1Data = useMemo(
@@ -58,7 +58,7 @@ export default function SimulatePage() {
         "Δ_{Ch}": sweepL1.Delta_Ch[i],
         Observed: sweepL1.observed[i],
       })),
-    [sweepL1]
+    [sweepL1],
   );
 
   const sweepBData = useMemo(
@@ -68,16 +68,16 @@ export default function SimulatePage() {
         "Δ_{Ch}": sweepB.Delta_Ch[i],
         Observed: sweepB.observed[i],
       })),
-    [sweepB]
+    [sweepB],
   );
 
   const convergenceData = useMemo(
     () =>
       convergence.terms.map((n, i) => ({
         n,
-        "S_n": convergence.partialSums[i],
+        S_n: convergence.partialSums[i],
       })),
-    [convergence]
+    [convergence],
   );
 
   const deviation = Math.abs(computed.chFull - 3.443);
@@ -98,11 +98,17 @@ export default function SimulatePage() {
         <MetricCard label="δ_C" value={fmt(computed.deltaC, 4)} unit="rad" />
         <MetricCard label="λ_{D²}" value={fmt(computed.lambdaTriv, 4)} />
         <MetricCard label="Δ_{bC}" value={fmt(computed.dBC, 4)} />
-        <MetricCard label="Δ_{Ch}" value={fmt(computed.chFull, 4)} deviation={deviation} />
+        <MetricCard
+          label="Δ_{Ch}"
+          value={fmt(computed.chFull, 4)}
+          deviation={deviation}
+        />
         <MetricCard
           label="Deviation"
           value={deviation.toExponential(3)}
-          className={deviation < 0.01 ? "border-emerald-500/30" : "border-amber-500/30"}
+          className={
+            deviation < 0.01 ? "border-emerald-500/30" : "border-amber-500/30"
+          }
         />
       </div>
 
@@ -308,10 +314,7 @@ export default function SimulatePage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <MetricCard
-                  label="Limit"
-                  value={fmt(convergence.limit, 6)}
-                />
+                <MetricCard label="Limit" value={fmt(convergence.limit, 6)} />
                 <MetricCard
                   label="Convergence Rate"
                   value={convergence.convergenceRate.toExponential(4)}

@@ -38,7 +38,7 @@ One figure = one measurement architecture. The mapping is explicit:
 
 ## Layout
 
-```
+```text
 figures_hires/
 ├── en/
 │   ├── light/   17 PNG (print, cream background)

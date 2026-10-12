@@ -454,7 +454,6 @@ class ZoomRunner:
             return False
         du_new = W_v / self.n
         u_new = np.linspace(u_lo, u_hi, self.n)
-        v_new = np.linspace(v_lo, v_hi, self.n)
         Vg, Ug = np.meshgrid(vb_s, u_new, indexing="ij")
 
         CLIP = {"r": 1e3, "Phi": 50.0, "p": 1e3, "q": 1e3, "s": 1e6, "t": 1e6,
@@ -586,7 +585,7 @@ def echo_period_from_peaks(v_peaks):
     n = np.arange(len(dv))
     A = np.vstack([n, np.ones_like(n)]).T
     y = np.log(dv)
-    sol, res, *_ = np.linalg.lstsq(A, y, rcond=None)
+    sol, _res, *_ = np.linalg.lstsq(A, y, rcond=None)
     Delta = -sol[0]
     yfit = A @ sol
     ss_res = float(((y - yfit) ** 2).sum())
@@ -604,9 +603,9 @@ def zoom_probe(A=0.0806, n=800, verbose=True, max_zooms=12):
     print(f"  supercritical = {diag.supercritical}, M_AH = {diag.m_ah:.6f} "
           f"(max {diag.m_ah_max:.6f}), zooms = {diag.zooms}, z = {runner._z_acc:.2f}, "
           f"stop = {diag.stopped}, время {diag.runtime:.1f} c")
-    vp, yp = echo_peaks(runner.track, "Q")
+    vp, _yp = echo_peaks(runner.track, "Q")
     if len(vp) >= 4:
-        D, Derr, npk = echo_period_from_peaks(vp)
+        D, Derr, _npk = echo_period_from_peaks(vp)
         print(f"  пики Q: {len(vp)}, v = {np.round(vp, 4)}")
         print(f"  Delta (ln-интервалы) = {D:.4f} +- {Derr:.4f} (лит. 0.737)")
     return runner, diag

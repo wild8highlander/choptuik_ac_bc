@@ -93,7 +93,7 @@ def static_gap(N, kappa=KAPPA, q_pk=Q_PK):
     (the continuum-consistent convention); on-site potential q_n.
     Uses a symmetric tridiagonal solver.
     """
-    x, q, hstep, L = parabolic_profile(N, kappa, q_pk)
+    _x, q, hstep, _L = parabolic_profile(N, kappa, q_pk)
     J = 1.0 / hstep ** 2
     off = -J * np.ones(N - 1)
     diag = q + 2.0 * J          # kinetic = J(2I - adjacency) >= 0

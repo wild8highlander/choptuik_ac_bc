@@ -79,7 +79,6 @@ one package-class change is made.
 - `make test`: 69 passed · `make validate`: 7/7 PASS (the Δ·γ check
   renamed to "anchor arithmetic (not a measurement)").
 
-
 ## [2.1.0] — 2026-10-09
 
 The **IVP-15 alignment edition**: every surface of the package — the
@@ -257,7 +256,7 @@ layer end to end.
 - monograph/: the encyclopedic appendix and the theorems volume, each
   in Russian and English, each as DOCX + PDF (8 documents; generators
   committed under monograph/src/, TOC placeholders + WPS-safe footers
-  + postcheck 0 errors on all four).
+  - postcheck 0 errors on all four).
 - results/ROADMAP.md: staged plan (C4 ringdown difference-measurement,
   C5 multi-family universality, the AMR engine upgrade) with explicit
   v3.0 completion criteria.
@@ -268,7 +267,7 @@ layer end to end.
 ### Changed
 
 - Version bump everywhere (VERSION, pyproject, CITATION, Makefile,
-  chbridge.__version__, campaign runners and verdicts regenerated at
+  chbridge.**version**, campaign runners and verdicts regenerated at
   2.0.0; C1 physics byte-identical to 1.1.0).
 - README/README.ru: layout tree rewritten, dissemination-layer section,
   badges extended.
@@ -344,7 +343,7 @@ First public build. Initial release of the complete bridge study.
 - `engine/solver.py` — the double-null characteristic engine for
   spherical collapse of a massless scalar field (Goursat march,
   RK2-Heun, 4 pi G = 1; Roberts-Oshiro regression verified).
-- `campaigns/` — campaign C1 (engine validation, A* grid-honesty
+- `campaigns/` — campaign C1 (engine validation, A*grid-honesty
   ladder, amplitude scans, evolution profiles) and campaign C3 (the
   Delta*gamma ~ 1.27 invariant check: measured `gamma_eff`, measured
   `Delta_eff`, anchor/mixed/engine products). Committed reference

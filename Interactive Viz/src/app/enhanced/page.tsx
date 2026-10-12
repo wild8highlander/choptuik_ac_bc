@@ -25,7 +25,7 @@ export default function EnhancedPage() {
 
   const result: EnhancedVerificationResult = useMemo(
     () => runEnhancedVerification(),
-    []
+    [],
   );
 
   const k3 = result.k3Surface;
@@ -112,14 +112,8 @@ export default function EnhancedPage() {
 
           {/* Derived invariants */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <MetricCard
-              label="Dirac Index"
-              value={fmt(k3.diracIndex)}
-            />
-            <MetricCard
-              label="b₂⁺"
-              value={fmt(k3.b2Plus)}
-            />
+            <MetricCard label="Dirac Index" value={fmt(k3.diracIndex)} />
+            <MetricCard label="b₂⁺" value={fmt(k3.b2Plus)} />
             <MetricCard
               label="b₂ Decomp"
               value={k3.b2DecompositionValid ? "Valid" : "Invalid"}
@@ -153,14 +147,8 @@ export default function EnhancedPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <MetricCard
-              label="δ₀ (base)"
-              value={fmt(tyuk.delta0)}
-            />
-            <MetricCard
-              label="δ_C"
-              value={fmt(tyuk.deltaC)}
-            />
+            <MetricCard label="δ₀ (base)" value={fmt(tyuk.delta0)} />
+            <MetricCard label="δ_C" value={fmt(tyuk.deltaC)} />
             <MetricCard
               label="δ (corrected)"
               value={fmt(tyuk.deltaCorrected)}
@@ -188,9 +176,7 @@ export default function EnhancedPage() {
                 Corrected exponent: δ₀ + δ_C²/2 − δ_C⁵/22 ={" "}
                 {fmt(tyuk.deltaCorrected)}
               </p>
-              <p>
-                Echo period: 1/δ_corrected = {fmt(tyuk.echoPeriod, 4)}
-              </p>
+              <p>Echo period: 1/δ_corrected = {fmt(tyuk.echoPeriod, 4)}</p>
               <p>
                 Kähler correction: δ_C²/2 − δ_C⁵/22 ={" "}
                 {fmt(result.kahlerCorrection)}
@@ -235,10 +221,7 @@ export default function EnhancedPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <MetricCard
-              label="δ_eff"
-              value={fmtSci(qnm.deltaEff)}
-            />
+            <MetricCard label="δ_eff" value={fmtSci(qnm.deltaEff)} />
             <MetricCard
               label="QNM Correction (δ_eff/π²)"
               value={fmtSci(qnm.qnmCorrection)}
@@ -303,16 +286,17 @@ export default function EnhancedPage() {
 
           {showDetails && (
             <div className="text-xs text-gray-500 border-t border-navy-700 pt-3 mt-3 space-y-1">
-              <p>
-                Target: δ_C⁵/k = 1/1200 for optimal b₂
-              </p>
+              <p>Target: δ_C⁵/k = 1/1200 for optimal b₂</p>
               <p>
                 δ_C = π/7 ≈ {fmt(Math.PI / 7)}, δ_C⁵ ≈{" "}
                 {fmtSci(Math.pow(Math.PI / 7, 5))}
               </p>
               <p>
                 Best fit: b₂ = 22 (deviation ={" "}
-                {fmt(b2Entries.find(([k]) => k === "b2_22")?.[1].deviationPct ?? 0, 2)}
+                {fmt(
+                  b2Entries.find(([k]) => k === "b2_22")?.[1].deviationPct ?? 0,
+                  2,
+                )}
                 %)
               </p>
             </div>
@@ -333,11 +317,7 @@ export default function EnhancedPage() {
             <MetricCard label="Total" value={String(spin.total)} />
             <MetricCard label="Even" value={String(spin.even)} />
             <MetricCard label="Odd" value={String(spin.odd)} />
-            <MetricCard
-              label="Good %"
-              value={fmt(spin.goodPct, 2)}
-              unit="%"
-            />
+            <MetricCard label="Good %" value={fmt(spin.goodPct, 2)} unit="%" />
           </div>
 
           {/* Visual bar */}

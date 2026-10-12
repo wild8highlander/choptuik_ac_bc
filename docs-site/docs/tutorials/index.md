@@ -7,10 +7,10 @@ Learn how to use the Choptyuk Spinor Corrections framework step by step.
 | Tutorial | Description | Difficulty |
 |---|---|---|
 | [Quick Start](quick-start.md) | Install and run your first verification | :material-star: Beginner |
-| [Running Verification](verification.md) | Full verification suite with custom parameters | :material-star:[:material-star:] Intermediate |
+| [Running Verification](verification.md) | Full verification suite with custom parameters | :material-star: :material-star: Intermediate |
 | [Interactive Menu](interactive-menu.md) | Using the interactive CLI menu | :material-star: Beginner |
-| [Custom Parameters](custom-parameters.md) | Configuring spinor structures and surfaces | :material-star:[:material-star:] Intermediate |
-| [LIGO QNM Analysis](ligo-analysis.md) | Quasi-normal mode corrections for gravitational wave events | :material-star:[:material-star:][:material-star:] Advanced |
+| [Custom Parameters](custom-parameters.md) | Configuring spinor structures and surfaces | :material-star: :material-star: Intermediate |
+| [LIGO QNM Analysis](ligo-analysis.md) | Quasi-normal mode corrections for gravitational wave events | :material-star: :material-star: :material-star: Advanced |
 
 ## Prerequisites
 

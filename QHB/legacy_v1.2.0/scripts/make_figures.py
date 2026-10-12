@@ -54,7 +54,7 @@ def fig_map(lang, tok, L, path):
                             mutation_scale=16, color=color, linewidth=1.8)
         ax.add_patch(a)
 
-    g, gs, ink, mut = tok["gold"], tok["gold_soft"], tok["ink"], tok["muted"]
+    g, ink, mut = tok["gold"], tok["ink"], tok["muted"]
     panel = tok["panel"]
 
     box(0.25, 4.6, 2.9, 1.2,
@@ -238,7 +238,6 @@ def fig_floor(lang, tok, L, path):
         rows.append({"T": float(p[0]), "N": int(p[1]), "beats": float(p[2]),
                      "res": float(p[3]), "gap": p[4], "err": p[5],
                      "res_flag": p[6] == "1"})
-    ref = load("floor_law.json")
     fig = new_fig()
     ax = fig.gca()
     T = np.array([r["T"] for r in rows])
@@ -264,7 +263,6 @@ def fig_floor(lang, tok, L, path):
 def fig_drift(lang, tok, L, path):
     with open(os.path.join(DATA, "drift_ladder.csv"), encoding="utf-8") as fh:
         lines = fh.read().strip().split("\n")[1:]
-    N = np.array([int(ln.split(",")[0]) for ln in lines])
     h = np.array([float(ln.split(",")[1]) for ln in lines])
     dN = np.array([float(ln.split(",")[2]) for ln in lines])
     d = load("drift_law.json")

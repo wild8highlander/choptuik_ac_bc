@@ -355,7 +355,7 @@ def numeric_center_check(A=0.02, n=800, probe_vs=None, closure="regular"):
             st = sol._do_step(st, j)
             v_now = float(sol.v[j])
             if v_now >= probe_pending[0] - 1e-12:   # первая строка >= пробной v
-                pv = probe_pending.pop(0)
+                probe_pending.pop(0)
                 rec = measure_center_row(sol, st, v_now)
                 if prev is not None:
                     dv = v_now - prev["v"]

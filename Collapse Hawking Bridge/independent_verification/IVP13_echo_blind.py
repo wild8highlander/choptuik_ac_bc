@@ -118,7 +118,7 @@ def measure_one(eps, a_star, n=N_GRID):
         x = np.array([math.log(v_star - vs[i]) for i in peaks])
         k = np.arange(len(x))
         # regression estimator: x_k = const - Delta * k
-        slope, intercept = np.polyfit(k, x, 1)
+        slope, _intercept = np.polyfit(k, x, 1)
         delta_fit = -float(slope)
         # cross-check: mean of successive differences
         dx = np.diff(x)
@@ -161,7 +161,6 @@ def main():
         else:
             log("        fewer than 3 peaks resolved -> honest negative")
 
-    n_peaks_max = max(r["n_peaks"] for r in results)
     deltas = [r["delta_regression"] for r in results
               if "delta_regression" in r]
 

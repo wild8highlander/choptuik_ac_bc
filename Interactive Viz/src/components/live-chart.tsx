@@ -36,7 +36,8 @@ export function LiveChart({
   // Use data directly with memoized reference for animation
   const chartData = useMemo(() => data, [data]);
 
-  const ChartComponent = type === "area" ? AreaChart : type === "bar" ? BarChart : LineChart;
+  const ChartComponent =
+    type === "area" ? AreaChart : type === "bar" ? BarChart : LineChart;
 
   return (
     <div className="w-full">
@@ -45,17 +46,17 @@ export function LiveChart({
       )}
       <div style={{ height }} className="transition-opacity duration-300">
         <ResponsiveContainer width="100%" height="100%">
-          <ChartComponent data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+          <ChartComponent
+            data={chartData}
+            margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+          >
             <CartesianGrid strokeDasharray="3 3" stroke="#1c2740" />
             <XAxis
               dataKey={xKey}
               tick={{ fill: "#9ca3af", fontSize: 11 }}
               stroke="#1c2740"
             />
-            <YAxis
-              tick={{ fill: "#9ca3af", fontSize: 11 }}
-              stroke="#1c2740"
-            />
+            <YAxis tick={{ fill: "#9ca3af", fontSize: 11 }} stroke="#1c2740" />
             <Tooltip
               contentStyle={{
                 backgroundColor: "#0f1525",
@@ -65,9 +66,7 @@ export function LiveChart({
                 fontSize: "12px",
               }}
             />
-            <Legend
-              wrapperStyle={{ fontSize: "11px", color: "#9ca3af" }}
-            />
+            <Legend wrapperStyle={{ fontSize: "11px", color: "#9ca3af" }} />
             {lines.map(({ key, color, name }) => {
               if (type === "area") {
                 return (

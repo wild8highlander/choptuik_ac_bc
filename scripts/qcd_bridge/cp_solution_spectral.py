@@ -290,8 +290,8 @@ def run_sweep():
     print()
 
     for kappa_T in KAPPA_T_VALUES:
-        eigs_all, rho_grid, grid_mid = ensemble_average_spectrum(kappa_T)
-        theta_min, V_min, V, theta_scan = find_theta_min(eigs_all)
+        eigs_all, _rho_grid, _grid_mid = ensemble_average_spectrum(kappa_T)
+        theta_min, V_min, _V, _theta_scan = find_theta_min(eigs_all)
         chi_top = topological_susceptibility(eigs_all, theta_min)
         t_stat, mean_lam, std_lam, n_tot = spectral_asymmetry(eigs_all)
 
@@ -366,7 +366,6 @@ def relaxation_dynamics():
         eta = kappa_T_amplification / (delta_T + 0.05)**0.5  # softened divergence
         return chi * (1 + eta)
 
-    H_T = T_range**2 / (2 * M_PL)  # Hubble at temperature T
 
     # For each temperature, compute Gamma = chi_top / (3 H) and tau = 1/Gamma
     dynamics = []
@@ -472,7 +471,7 @@ def comparison_table():
 # =============================================================================
 def make_figures(sweep_results, dynamics_results, n_scaling_results, phys_N_results):
     # ---- Figure 1: V_eff(theta) + theta_min + chi_top (3 panels) ----
-    fig, axes = plt.subplots(1, 3, figsize=(15, 4.5), constrained_layout=True)
+    _fig, axes = plt.subplots(1, 3, figsize=(15, 4.5), constrained_layout=True)
 
     # Panel (a): V_eff(theta) for several kappa_T
     ax = axes[0]
@@ -549,14 +548,13 @@ def make_figures(sweep_results, dynamics_results, n_scaling_results, phys_N_resu
     print("Saved: /home/z/my-project/download/fig_cp_solution.png")
 
     # ---- Figure 2: Relaxation dynamics ----
-    fig, axes = plt.subplots(1, 3, figsize=(15, 4.5), constrained_layout=True)
+    _fig, axes = plt.subplots(1, 3, figsize=(15, 4.5), constrained_layout=True)
 
     dyn = dynamics_results["dynamics_table"]
     T_arr = np.array([d["T_GeV"] for d in dyn])
     chi_arr = np.array([d["chi_top_GeV4"] for d in dyn])
     tau_arr = np.array([d["tau_relax_s"] for d in dyn])
     H_arr = np.array([d["t_Hubble_s"] for d in dyn])
-    ratio_arr = np.array([d["tau_over_H"] for d in dyn])
 
     # Panel (a): chi_top(T)
     ax = axes[0]

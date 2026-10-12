@@ -50,8 +50,8 @@ def main():
     t0 = time.time()
     rows = []
     for N in N_LADDER:
-        E0, E1, D0 = static_gap(N, KAPPA, Q_PK)
-        _, _, hstep, L = parabolic_profile(N, KAPPA, Q_PK)
+        _E0, _E1, D0 = static_gap(N, KAPPA, Q_PK)
+        _, _, hstep, _L = parabolic_profile(N, KAPPA, Q_PK)
         rows.append({"N": N, "h": hstep, "Delta_N": D0})
         print(f"N={N:4d}  h={hstep:.8f}  Delta_N={D0:.12f}", flush=True)
 

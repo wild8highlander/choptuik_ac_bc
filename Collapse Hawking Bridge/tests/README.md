@@ -136,7 +136,7 @@ contract in executable form:
 | Test | Purpose |
 |---|---|
 | `test_a0_mond_coincidence` | a0/(cH0/2π) ∈ (1.10, 1.20) — a comparison, never a derivation |
-| `test_gamma_vs_bch_gap` | |γ_Ch − b_Ch|/b_Ch = 0.67% |
+| `test_gamma_vs_bch_gap` | \|γ_Ch − b_Ch\|/b_Ch = 0.67% |
 | `test_surface_gravity_ordering` | κ decreases with mass along the ladder |
 | `test_kretschmann_scale_law` | K(M)·M⁴ = 3c⁸/(4G⁴) is constant |
 | `test_kretschmann_planck_value` | 1/l_P⁴ = c⁶/(ħ²G²) to 1e-12 relative |

@@ -57,7 +57,7 @@ figure from them. They invent no physics.
 Every number in the repository flows in one direction. The scripts sit
 in the middle of the chain and are deliberately unable to close it:
 
-```
+```text
 campaigns/run_c1.py  ->  campaigns/reference/c1_verdict.json
 campaigns/run_c2.py  ->  campaigns/reference/c2_verdict.json
 campaigns/run_c3.py  ->  campaigns/reference/c3_verdict.json

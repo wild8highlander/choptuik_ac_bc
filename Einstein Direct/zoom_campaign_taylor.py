@@ -98,7 +98,7 @@ def main():
                 for c in d.stage_constraints],
         }
         # эхо: пики Q на всей пост-зумовой части
-        vp, yp = echo_peaks(r.track, "Q")
+        vp, _yp = echo_peaks(r.track, "Q")
         rec["Q_peaks_n"] = len(vp)
         if len(vp) >= 4:
             D, Derr, npk = echo_period_from_peaks(vp)
@@ -131,7 +131,7 @@ def main():
         xs = np.log(np.array([e for e, _ in ok]))
         ys = np.log(np.array([m for _, m in ok]))
         Am = np.vstack([xs, np.ones_like(xs)]).T
-        sol_, res, *_ = np.linalg.lstsq(Am, ys, rcond=None)
+        sol_, _res, *_ = np.linalg.lstsq(Am, ys, rcond=None)
         gamma = float(sol_[0])
         yfit = Am @ sol_
         dof = max(len(xs) - 2, 1)

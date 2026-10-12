@@ -9,7 +9,7 @@ as the *Choptuik–Strong CP operator* framework.
 
 ## What is here
 
-```
+```text
 docs/qcd_bridge/
 ├── README.md                          # this file
 ├── choptyuk_qcd_bridge.tex            # LaTeX source (40 pages, 12 sections)

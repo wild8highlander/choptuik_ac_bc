@@ -86,7 +86,6 @@ PYEOF
     "$PYBIN" "$IVP_DIR/IVP02_canonical_job.py"
     echo "canonical_status: $?"
   } > "$LOGF" 2>&1
-  status=$?
   tail -5 "$LOGF" | sed 's/^/    /'
   if grep -q "pytest_status: 0" "$LOGF" && grep -q "canonical_status: 0" "$LOGF"; then
     echo "[IVP02] python$V: PASS (suite + canonical job)"

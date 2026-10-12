@@ -1,5 +1,7 @@
 # Quick Start
 
+<!-- markdownlint-disable MD046 -- content tabs need indented fences -->
+
 Get up and running with Choptyuk Spinor Corrections in under 5 minutes.
 
 ## Installation
@@ -34,7 +36,7 @@ python run.py --mode verify --non-interactive
 
 Expected output:
 
-```
+```text
 ═══════════════════════════════════════════════════
   Choptyuk Spinor Corrections — Verification
 ═══════════════════════════════════════════════════

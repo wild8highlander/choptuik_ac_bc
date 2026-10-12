@@ -4,7 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { LiveChart } from "@/components/live-chart";
 import { MetricCard } from "@/components/metric-card";
-import { GW_EVENTS, detectorSensitivity, CHOPTYUK_REFERENCE } from "@/lib/compute";
+import {
+  GW_EVENTS,
+  detectorSensitivity,
+  CHOPTYUK_REFERENCE,
+} from "@/lib/compute";
 import { useMemo } from "react";
 import { Radio, Satellite, Clock } from "lucide-react";
 
@@ -18,7 +22,7 @@ export default function QNMPage() {
         "M_f (M☉)": ev.finalMass,
         SNR: ev.snr,
       })),
-    []
+    [],
   );
 
   // Detector sensitivity curve
@@ -47,16 +51,22 @@ export default function QNMPage() {
   return (
     <div className="space-y-6 animate-slide-up">
       <div>
-        <h1 className="text-2xl font-bold text-white">QNM / LIGO Predictions</h1>
+        <h1 className="text-2xl font-bold text-white">
+          QNM / LIGO Predictions
+        </h1>
         <p className="text-sm text-gray-400 mt-1">
-          Quasinormal mode predictions from Choptyuk invariants for LIGO/Virgo events
+          Quasinormal mode predictions from Choptyuk invariants for LIGO/Virgo
+          events
         </p>
       </div>
 
       {/* GW Event Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {GW_EVENTS.map((ev) => (
-          <Card key={ev.name} className="hover:border-teal-500/30 transition-all">
+          <Card
+            key={ev.name}
+            className="hover:border-teal-500/30 transition-all"
+          >
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Radio className="h-5 w-5 text-science-gold" />
@@ -94,9 +104,7 @@ export default function QNMPage() {
                 </div>
                 <div>
                   <p className="text-gray-400">τ_damp</p>
-                  <p className="font-mono text-white">
-                    {ev.qnmDamping} ms
-                  </p>
+                  <p className="font-mono text-white">{ev.qnmDamping} ms</p>
                 </div>
                 <div>
                   <p className="text-gray-400">SNR</p>
@@ -119,10 +127,7 @@ export default function QNMPage() {
           label="QNM Correction Factor"
           value={(1 + 0.001 * CHOPTYUK_REFERENCE.Delta_Ch_full).toFixed(6)}
         />
-        <MetricCard
-          label="b_Ch"
-          value={CHOPTYUK_REFERENCE.b_Ch.toFixed(6)}
-        />
+        <MetricCard label="b_Ch" value={CHOPTYUK_REFERENCE.b_Ch.toFixed(6)} />
       </div>
 
       {/* Charts */}
@@ -182,14 +187,19 @@ export default function QNMPage() {
             xKey="year"
             lines={[
               { key: "LIGO A+", color: "#14b8a6", name: "LIGO A+" },
-              { key: "ET Design", color: "#8b5cf6", name: "Einstein Telescope" },
+              {
+                key: "ET Design",
+                color: "#8b5cf6",
+                name: "Einstein Telescope",
+              },
               { key: "CE (3G)", color: "#fbbf24", name: "Cosmic Explorer" },
             ]}
             type="line"
             height={300}
           />
           <p className="text-xs text-gray-500 mt-2">
-            Probability of detecting Choptyuk-corrected QNM signature over time for next-generation detectors.
+            Probability of detecting Choptyuk-corrected QNM signature over time
+            for next-generation detectors.
           </p>
         </CardContent>
       </Card>

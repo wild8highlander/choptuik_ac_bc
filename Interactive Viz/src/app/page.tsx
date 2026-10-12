@@ -41,8 +41,10 @@ export default function HomePage() {
             Choptyuk Spinor Monograph
           </h1>
           <p className="text-sm text-gray-400 mt-1">
-            Spinor corrections <span className="font-mono text-teal-400">b-C</span> and{" "}
-            <span className="font-mono text-teal-400">a-C</span> on the Klein quartic curve
+            Spinor corrections{" "}
+            <span className="font-mono text-teal-400">b-C</span> and{" "}
+            <span className="font-mono text-teal-400">a-C</span> on the Klein
+            quartic curve
           </p>
         </div>
         <Badge variant="outline" className="text-xs font-mono">
@@ -66,13 +68,13 @@ export default function HomePage() {
         <MetricCard
           label="Δ_{bC}"
           value={DIRAC_REFERENCE.delta_bC.toFixed(6)}
-          deviation={Math.abs(DIRAC_REFERENCE.delta_bC - 3.438710)}
+          deviation={Math.abs(DIRAC_REFERENCE.delta_bC - 3.43871)}
           className="animate-count-up"
         />
         <MetricCard
           label="Δ_{Ch,full}"
           value={CHOPTYUK_REFERENCE.Delta_Ch_full.toFixed(6)}
-          deviation={Math.abs(CHOPTYUK_REFERENCE.Delta_Ch_full - 3.447040)}
+          deviation={Math.abs(CHOPTYUK_REFERENCE.Delta_Ch_full - 3.44704)}
           className="animate-count-up"
         />
       </div>
@@ -97,7 +99,7 @@ export default function HomePage() {
         <MetricCard
           label="b_Ch"
           value={CHOPTYUK_REFERENCE.b_Ch.toFixed(6)}
-          deviation={Math.abs(CHOPTYUK_REFERENCE.b_Ch - 0.376510)}
+          deviation={Math.abs(CHOPTYUK_REFERENCE.b_Ch - 0.37651)}
         />
       </div>
 
@@ -110,7 +112,9 @@ export default function HomePage() {
             {loading ? (
               <Badge variant="secondary">Computing...</Badge>
             ) : (
-              <Badge variant={passCount === totalTests ? "success" : "destructive"}>
+              <Badge
+                variant={passCount === totalTests ? "success" : "destructive"}
+              >
                 {passCount}/{totalTests} passed
               </Badge>
             )}
@@ -159,11 +163,15 @@ export default function HomePage() {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">|Aut|</span>
-              <span className="font-mono text-white">{KLEIN_CURVE.automorphismOrder}</span>
+              <span className="font-mono text-white">
+                {KLEIN_CURVE.automorphismOrder}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">λ₁</span>
-              <span className="font-mono text-teal-400">{KLEIN_CURVE.lambda1}</span>
+              <span className="font-mono text-teal-400">
+                {KLEIN_CURVE.lambda1}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">R</span>
@@ -182,20 +190,30 @@ export default function HomePage() {
           <CardContent className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-400">δ_A</span>
-              <span className="font-mono text-teal-400">{SPINOR_PHASES.delta_A.toFixed(6)}</span>
+              <span className="font-mono text-teal-400">
+                {SPINOR_PHASES.delta_A.toFixed(6)}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">δ_B</span>
-              <span className="font-mono text-teal-400">{SPINOR_PHASES.delta_B.toFixed(6)}</span>
+              <span className="font-mono text-teal-400">
+                {SPINOR_PHASES.delta_B.toFixed(6)}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">δ_C</span>
-              <span className="font-mono text-teal-400">{SPINOR_PHASES.delta_C.toFixed(6)}</span>
+              <span className="font-mono text-teal-400">
+                {SPINOR_PHASES.delta_C.toFixed(6)}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Sum</span>
               <span className="font-mono text-white">
-                {(SPINOR_PHASES.delta_A + SPINOR_PHASES.delta_B + SPINOR_PHASES.delta_C).toFixed(6)}
+                {(
+                  SPINOR_PHASES.delta_A +
+                  SPINOR_PHASES.delta_B +
+                  SPINOR_PHASES.delta_C
+                ).toFixed(6)}
               </span>
             </div>
           </CardContent>
@@ -210,20 +228,32 @@ export default function HomePage() {
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-400">Δ_{'{'}Ch,base{'}'}</span>
-              <span className="font-mono text-teal-400">{CHOPTYUK_REFERENCE.Delta_Ch_base.toFixed(6)}</span>
+              <span className="text-gray-400">
+                Δ_{"{"}Ch,base{"}"}
+              </span>
+              <span className="font-mono text-teal-400">
+                {CHOPTYUK_REFERENCE.Delta_Ch_base.toFixed(6)}
+              </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Δ_{'{'}Ch,full{'}'}</span>
-              <span className="font-mono text-teal-400">{CHOPTYUK_REFERENCE.Delta_Ch_full.toFixed(6)}</span>
+              <span className="text-gray-400">
+                Δ_{"{"}Ch,full{"}"}
+              </span>
+              <span className="font-mono text-teal-400">
+                {CHOPTYUK_REFERENCE.Delta_Ch_full.toFixed(6)}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">b_Ch</span>
-              <span className="font-mono text-white">{CHOPTYUK_REFERENCE.b_Ch.toFixed(6)}</span>
+              <span className="font-mono text-white">
+                {CHOPTYUK_REFERENCE.b_Ch.toFixed(6)}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Observed Δ</span>
-              <span className="font-mono text-science-gold">{CHOPTYUK_REFERENCE.observed_Delta.toFixed(3)}</span>
+              <span className="font-mono text-science-gold">
+                {CHOPTYUK_REFERENCE.observed_Delta.toFixed(3)}
+              </span>
             </div>
           </CardContent>
         </Card>

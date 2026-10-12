@@ -301,7 +301,7 @@ class DoubleNullSolver:
     # ------------------------------------------------------- slopes (RK2)
     def _slopes(self, st):
         """Скорости по v для всех полей. st — dict текущих полей."""
-        r, Phi, p, q, s, t, c, m, a2, d, w = (
+        r, _Phi, p, q, s, t, _c, m, a2, d, _w = (
             st["r"], st["Phi"], st["p"], st["q"], st["s"], st["t"],
             st["c"], st["m"], st["alpha2"], st["d"], st["w"],
         )
@@ -1140,7 +1140,6 @@ class DoubleNullSolver:
         Пары с экстраполяцией за край стороны помечены (extrap_m) и
         отфильтровываются offline. Измерение — без влияния на динамику.
         """
-        du = self.du
         dc = d_arr - c_arr
         cd = c_arr + d_arr
         xi = x - x_star
@@ -2005,7 +2004,7 @@ def flat_space_test(n=200, verbose=True):
     data = GaussianPulseData(A=0.0, v_p=0.5, sigma=0.1, u0=-1.0, v0=0.0)
     cfg = SolverConfig(n_u=n, n_v=n, u_range=(-1.0, 1.05), v_range=(0.0, 1.0))
     sol = DoubleNullSolver(cfg, data)
-    diag = sol.run(verbose=False)
+    sol.run(verbose=False)
     err_r = np.max(np.abs(sol.r - (sol.v_final - sol.u) / 2.0))
     err_Phi = np.max(np.abs(sol.Phi))
     err_a2 = np.max(np.abs(sol.alpha2 - 1.0))

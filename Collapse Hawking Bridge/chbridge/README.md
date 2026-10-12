@@ -29,7 +29,7 @@
 
 ## Module map
 
-```
+```text
 constants.py ──> hawking.py ──> bridge.py ──> data/bridge tables
      │               │              │
      │               └──> page.py   └──> figures (via scripts/)
@@ -100,7 +100,7 @@ unitary entropy-flux kink meets at exactly `S0/2` (pinned by
 The bridge object is the dimensionless born spectrum measured by the
 engine:
 
-```
+```text
 f~(eps) = M_code(eps) / M_code_sat ,    M_BH(eps; M_in) = M_in * f~(eps)
 ```
 
@@ -132,7 +132,7 @@ grid.
 
 Unitary entropy-flux model for the born ensemble:
 
-```
+```text
 S_BH(t)  = S0 (1 - t/t_evap)^{2/3}
 S_rad(t) = S_BH(t)            t < t_Page      (young hole)
 S_rad(t) = S0 - S_BH(t)       t > t_Page      (old hole)
@@ -141,7 +141,7 @@ S_rad(t) = S0 - S_BH(t)       t > t_Page      (old hole)
 plus the exact Haar-averaged Page formula (Page 1993 / Sen 1996) for
 dimensions `m <= n`:
 
-```
+```text
 S(m, n) = ( sum_{k=n+1}^{mn} 1/k  -  (m-1)/(2n) ) / ln 2
 ```
 
@@ -174,7 +174,7 @@ is claimed.
 python3 -m chbridge.validate
 ```
 
-```
+```text
 b_Ch identity + 0.67% gap  PASS    {'gap_pct': 0.666701}
 PAGE_FRACTION              PASS    {'ref': 0.646447}
 S~M^2, T~1/M, t~M^3        PASS    {}

@@ -95,7 +95,7 @@ def measure_gap(S, T_period=T_PERIOD):
 
 def main():
     t0 = time.time()
-    E0, E1, D0, s, hstep, L = static_of_chain()
+    _E0, _E1, D0, _s, _hstep, _L = static_of_chain()
     U = build_U(D0, BETA_DEMO)
     gap_ref, _ = floquet_gap(D0, beta=BETA_DEMO, M=3840)
     print(f"reference gap (M=3840): Delta_F = {gap_ref:.10f}")
@@ -108,7 +108,7 @@ def main():
         N = int(round(T_sim / T_PERIOD))
         sig = S[:N]
         n_beats = N * gap_ref * T_PERIOD / (2 * math.pi)
-        gap_meas, f_hat = measure_gap(sig)
+        gap_meas, _f_hat = measure_gap(sig)
         resolution = 2.0 / N                       # gap units (2/N)
         if gap_meas is None:
             err, resolved = None, False

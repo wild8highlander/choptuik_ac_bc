@@ -11,7 +11,7 @@ Java and Julia ports (and the web dashboard) are checked against.
 |------|----------|
 | `qcd_bridge_engine.py` | Core engine (~26 KB): physical constants, E8 Cartan / K3 intersection form, O_chi construction and spectrum, RMT universality sweep, spectral staircase, N-scaling, τ_relax dynamics, κ_T physical estimate, Cabibbo coincidence, CP 8-step chain, jet wake bridge; `QCDBridgeConfig` + `run_all` |
 | `report_engine.py` | `ReportEngine` writing TXT, CSV, MD, PDF, HTML, DOCX, JSON; structure: `[RESULTS]` first, then `[LOGS]` |
-| `run.py` | CLI with modes `verify_all`, `verify_section`, `custom`, `interactive`, `figures`; bilingual UI (`--lang en|ru`) |
+| `run.py` | CLI with modes `verify_all`, `verify_section`, `custom`, `interactive`, `figures`; bilingual UI (`--lang en\|ru`) |
 | `generate_figures_3d_4d.py` | Per-section 3D and 4D plots (PNG 600 DPI + vector PDF + SVG); writes the figures manifest |
 | `generate_animations_4d.py` | Animated MP4 + GIF per section (4th dimension = time / sweep parameter / rotation) |
 | `web_runner.py` | stdin/stdout bridge invoked by the web app's `/api/run` and `/api/report` routes |

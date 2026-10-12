@@ -273,7 +273,7 @@ def fit_gamma_wiggle(points, delta_grid=None, delta_fixed=None):
         if best is None or rss < best[0]:
             best = (rss, dz, sol)
     rss, d_fit, sol = best
-    g, b0, B1, B2 = (float(v) for v in sol)
+    g, _b0, B1, B2 = (float(v) for v in sol)
     return {
         "gamma": g, "delta_fit": float(d_fit),
         "wiggle_amp": float(np.hypot(B1, B2)),
@@ -353,7 +353,7 @@ def run_chunk(eps_list, n=800, max_zooms=14, annulus=True, ann_factor=10.0,
         zs = stage_z_map(d.stage_constraints)
         tau_rows = extract_tau_rows(r.tay_hist_all, zs)
         tr = r.track
-        vp, yp = echo_peaks(r.track, "Q")
+        vp, _yp = echo_peaks(r.track, "Q")
         rec = {
             "eps": eps, "A": A,
             "stop": d.stopped,

@@ -60,7 +60,7 @@ OUT_PATH = os.path.join(RESULTS, "q6_puiseux_soft_pole.json")
 
 def p1_pole_anatomy():
     """[P1] простой полюс: главная часть Лорана по tau - 45/8."""
-    t, tau, h = sp.symbols("T0h tau h", real=True)
+    t, tau, _h = sp.symbols("T0h tau h", real=True)
     P4 = (352 * t ** 5 - 540 * t ** 3) / (1080 * t ** 2 - 6075)
     P4_tau = P4.subs(t, sp.sqrt(tau))
     P4_tau_s = sp.simplify(sp.powsimp(P4_tau, force=True))
@@ -71,8 +71,6 @@ def p1_pole_anatomy():
     den_fact = sp.factor(den)
     # главная часть: series по h = tau - 45/8
     series = sp.series(P4_tau, tau, sp.Rational(45, 8), 1)
-    principal = sp.simplify(series.coeff(sp.Symbol("_x", real=True))
-                            if False else series)
     return {
         "P4h_chain_in_tau": sp.sstr(sp.nsimplify(P4_tau_s, rational=True)),
         "numerator_factorized": sp.sstr(num),
@@ -129,7 +127,7 @@ def p3_softness():
     t_pole = 3 * sp.sqrt(10) / 4                   # tau = 45/8
     lin_at = sp.simplify(P4_lin.subs(t, t_pole))
     diff = sp.simplify(sp.together(P4_chain - P4_lin))
-    diff_num, diff_den = sp.together(diff).as_numer_denom()
+    _diff_num, diff_den = sp.together(diff).as_numer_denom()
     diff_den_fact = sp.factor(diff_den)
     return {
         "P4h_linear_at_pole": sp.sstr(lin_at),

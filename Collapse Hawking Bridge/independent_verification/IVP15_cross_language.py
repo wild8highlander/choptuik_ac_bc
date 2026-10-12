@@ -210,8 +210,6 @@ def main():
     n_ok = sum(1 for v in twins.values() if v["status"] == "OK")
     n_inc = sum(1 for v in twins.values() if v["status"] == "INCONCLUSIVE")
     if n_ok >= 2:
-        core_ok = all(v for k, v in checks.items()
-                      if k.startswith(("pair_", "")) and not k.endswith("vs_verifier_mpmath"))
         status = worst_status(["PASS" if v else "FAIL" for v in checks.values()])
         if n_inc:
             status = "PARTIAL" if status == "PASS" else status

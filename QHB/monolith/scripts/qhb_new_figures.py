@@ -145,8 +145,6 @@ def build_all(lang):
     save(fig, "new_crossver", lang)
 
     # ---- F3: digit stability ----
-    ds = [d for d in R["new_sensitive_tests"]["margin_digit_stability"] if d["leading_digits_match_vs_prev"]]
-    dps = [30, 50, 100, 150]
     match = [30, 51, 100]  # 30(dps30->50), 51(50->100), 100(100->150)
     fig, ax = plt.subplots(figsize=(7.2, 4.2), constrained_layout=True)
     ax.plot([1, 2, 3], match, "o-", color=C_MAIN, lw=2.0, ms=7)

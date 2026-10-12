@@ -185,7 +185,6 @@ def level3_transcendence(l2):
     P in Q[x]. Машинное эхо: стабилизация PSLQ-невязок под ростом точности
     (ложная связь коллапсировала бы при повышении точности)."""
     # формальная проверка: корни ненулевых Q-полиномов алгебраичны
-    x = sp.symbols("x")
     # эхо-тест: min |P(pi/7)| по моническим целочисленным P малой степени
     # (полный перебор deg <= 3, coeffs in [-3, 3] — синтаксический корпус)
     mp.mp.dps = 80
@@ -280,9 +279,6 @@ def run():
           ["abs_P_delta_C"], flush=True)
 
     # сводный вердикт
-    l1_ok = out["L1_closure"]["elimination_ideal_is_zero"]
-    l2 = out["L2_pslq"]
-    l3 = out["L3_transcendence"]
     out["verdict_lines"] = [
         "L1: книги {kappa(delta) = 2 - delta^2/2, tau*(delta) = 27/(4-delta^2)} "
         "оставляют delta СВОБОДНОЙ — элиминационный идеал в Q[delta] нулевой: "

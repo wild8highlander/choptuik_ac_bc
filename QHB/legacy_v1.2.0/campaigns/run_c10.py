@@ -120,7 +120,6 @@ def main():
     B2A = next(r["B2"] for r in rows if r["config"] == "A")
     B2B = next(r["B2"] for r in rows if r["config"] == "B")
     B2C = next(r["B2"] for r in rows if r["config"] == "C")
-    B2ABC = next(r["B2"] for r in rows if r["config"] == "ABC")
     total = abs(B2A) + abs(B2B) + abs(B2C)
     shares = {"A": abs(B2A) / total, "B": abs(B2B) / total,
               "C": abs(B2C) / total}

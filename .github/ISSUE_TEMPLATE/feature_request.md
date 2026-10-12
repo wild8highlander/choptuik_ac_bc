@@ -6,6 +6,7 @@ labels: enhancement
 ---
 
 ## Category
+
 - [ ] New mathematical computation
 - [ ] New surface type
 - [ ] New report format

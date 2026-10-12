@@ -61,7 +61,7 @@ NEW_FLOWS = [0, 1, 2, 3, 7]
 def rebuild_raw(kv):
     """Сырые матрицы замыкания (независимая пересборка для (m2))."""
     import second_flows_exact as sfe
-    A, B, C, point, tv = sfe.build_exact_system(kv)
+    A, B, C, _point, _tv = sfe.build_exact_system(kv)
     Ja = sp.Matrix(A)
     JvP, J2P2 = sp.Matrix(B), sp.Matrix(C)
     Jv = sp.Matrix(18, 8, lambda i, j: JvP[i, FLOW_AMP[j]])
@@ -132,7 +132,7 @@ def march(kv, label):
     growth = {T: m1[T] / g0 for T in T_grid}
     lT = np.log(np.array(T_grid))
     lG = np.log(np.array([growth[T] for T in T_grid]))
-    slope, intercept = np.polyfit(lT, lG, 1)
+    slope, _intercept = np.polyfit(lT, lG, 1)
     out["m1_growth_law"] = {str(T): growth[T] for T in T_grid}
     out["m1_loglog_slope"] = float(slope)
     out["m1_sigma_hat_final"] = float(np.log(growth[T_grid[-1]]) / T_grid[-1])
@@ -144,12 +144,10 @@ def march(kv, label):
     drift = []
     proj_corr = []
     step = 0
-    T_max = 64.0
     cross_max = 0.0
     yv = y0.copy()
     for T in T_grid:
         while step < int(round(T / dt)):
-            pre = x.copy()
             x = rk4(V_amb, x, dt)
             corr = float(np.linalg.norm(x - proj(x)))
             proj_corr.append(corr)

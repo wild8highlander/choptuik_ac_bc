@@ -77,7 +77,7 @@ def build_raw(kv):
     перестановкой: JvP[:, FLOW_AMP[j]] = Jv[:, j]; J2P2[:, DD_AMP[k]] = J2[:, k].
     """
     import second_flows_exact as sfe
-    A, B, C, point, tv = sfe.build_exact_system(kv)
+    A, B, C, _point, tv = sfe.build_exact_system(kv)
     Ja = sp.Matrix(A)
     JvP, J2P2 = sp.Matrix(B), sp.Matrix(C)
     Jv = sp.Matrix(18, 8, lambda i, j: JvP[i, FLOW_AMP[j]])
@@ -167,7 +167,7 @@ def b2_closure(kv, label=""):
         Wm = sp.Matrix.hstack(*W).T                   # 9x18
         Op = sp.simplify(Wm * Known)                  # 9x11
     else:
-        u_, s_, _ = np.linalg.svd(_n(Uk), full_matrices=True)
+        u_, _s, _ = np.linalg.svd(_n(Uk), full_matrices=True)
         Wn = u_[:, 9:].conj().T                       # 9x18
         Op = sp.Matrix((Wn @ _n(Known)).tolist())     # 9x11
     r_Op = Op.rank() if exact else int(np.sum(
@@ -343,7 +343,7 @@ def b4_alternatives():
     eqs_frozen = {k: sp.expand(v["num"].subs(zero_all))
                   for k, v in ok_sf.items()
                   if sp.expand(v["num"].subs(zero_all)) != 0}
-    T0h, P2h, D0h, R1h = p4.T0h, p4.P2h, p4.D0h, p4.R1h
+    T0h, P2h, D0h = p4.T0h, p4.P2h, p4.D0h
     W2h, R3h, P4h, R5h, M5h = p4.W2h, p4.R3h, p4.P4h, p4.R5h, p4.M5h
     subs = []
 
@@ -367,7 +367,7 @@ def b4_alternatives():
     for k_ in rest:
         e = sp.factor(sp.simplify(sp.expand(eqs_frozen[k_].subs(subs))))
         branch[k_] = sp.sstr(e)
-        q, rem = sp.div(sp.expand(eqs_frozen[k_].subs(subs)), 4 * T0h**2 - 27, T0h)
+        _q, rem = sp.div(sp.expand(eqs_frozen[k_].subs(subs)), 4 * T0h**2 - 27, T0h)
         branch[k_ + "_divisible_by_(4T0h^2-27)"] = bool(sp.simplify(rem) == 0)
         log(f"  {k_} на цепочке = {e}; делится на (4T0h^2-27): "
             f"{branch[k_ + '_divisible_by_(4T0h^2-27)']}")

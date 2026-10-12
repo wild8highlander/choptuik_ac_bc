@@ -19,7 +19,7 @@ def test_roberts_regression_n200():
     sol = DoubleNullSolver(cfg, data)
     diag = sol.run(verbose=False)
     v_f = sol.v_final
-    r_ex, Phi_ex, _, _, _, _ = data.fields(sol.u, np.full_like(sol.u, v_f))
+    r_ex, _Phi_ex, _, _, _, _ = data.fields(sol.u, np.full_like(sol.u, v_f))
     err_r = float(np.max(np.abs(sol.r - r_ex)))
     assert err_r < 1e-4, err_r
     assert abs(sol.alpha2 - 1.0).max() < 1e-3

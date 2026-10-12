@@ -195,7 +195,7 @@ def sym_poincare() -> dict:
 # ---------------------------------------------------- книги замыкания (числа) ---
 def closure_books(A: dict) -> dict:
     """Численные книги: kappa_cyc, Delta_cyc, gamma_cyc + честные расхождения."""
-    half3, half5 = 1.5, 0.75
+    half3 = 1.5
     ring = 4.0 / 3.0
     kappa_cyc = 2 * np.log(half3) + 4 * np.log(ring)          # ln(64/9)
     delta_cyc = -6 * np.log(A["tau5"])                        # 6 ln(16/9)
@@ -314,7 +314,7 @@ def numeric_cycle(A: dict) -> dict:
     acc = lambda th: -(V6v / J) * np.sin(6.0 * th)
 
     def rk4(state, dt):
-        th, om = state
+        _th, _om = state
 
         def f(s):
             return np.array([s[1], acc(s[0])])
@@ -328,7 +328,7 @@ def numeric_cycle(A: dict) -> dict:
     state = np.array([0.0, omega0])
     t_elapsed, crossings = 0.0, []
     r_book, r_at_section = 0.0, [0.0]        # амплитудная книга с пинками
-    two_pi, third = 2 * np.pi, np.pi / 3.0
+    third = np.pi / 3.0
     idx_prev = 0                              # номер стороны floor(theta/third)
     n_steps = int(3.2 * T_free / dt) + 10
     for _ in range(n_steps):

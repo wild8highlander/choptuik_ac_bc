@@ -88,7 +88,10 @@ print("deadline rows:", json.dumps(deadline_rows, indent=None))
 # ---------------------------------------------------------------------------
 # 2. P-C2: интеграл выживания (alpha = 1/2 — элементарная форма; общий alpha — mpmath)
 # ---------------------------------------------------------------------------
-def Lambda_closed(t_start, T_start, T_end, a=mp.mpf(1) / 2):
+_A_HALF_DEFAULT = mp.mpf(1) / 2
+
+
+def Lambda_closed(t_start, T_start, T_end, a=_A_HALF_DEFAULT):
     """Число ожидаемых активаций за остывание T_start -> T_end при законе T(t)=T_start (t/t_start)^(-a).
     Для a = 1/2 — замкнутая форма; иначе численный интеграл mpmath."""
     if a == mp.mpf(1) / 2:

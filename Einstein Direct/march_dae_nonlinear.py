@@ -102,12 +102,11 @@ def campaign_point(kv, label, N2_raw, B_raw):
         f"{lin_chk[1]:.1e}]")
 
     # направления
-    _, svB, vtB = np.linalg.svd(B)
+    _, _svB, vtB = np.linalg.svd(B)
     ker_dir = np.real(vtB[-1])
     ker_dir /= np.max(np.abs(ker_dir))
     w_line = N2 @ ker_dir
     w_line /= np.max(np.abs(w_line))
-    e1 = N2[:, 0] / np.max(np.abs(N2[:, 0]))
     e2 = N2[:, 1] / np.max(np.abs(N2[:, 1]))
     out["line_direction_a_part"] = [float(x) for x in w_line[:9]]
     out["line_direction_vdd_max"] = float(np.max(np.abs(w_line[9:20])))

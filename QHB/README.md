@@ -136,7 +136,7 @@ whole comparison layer: a confirmed nugget/strangelet candidate above X1–X13.
 
 ## Repository structure
 
-```
+```text
 QHB_Unified_v2.3.0/
 ├── MONOGRAPH/            # RU/EN monograph, PDF + DOCX (17 chapters)
 ├── qhb/                  # canon package: constants, core, vortex, claims…

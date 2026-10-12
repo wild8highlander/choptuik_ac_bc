@@ -21,6 +21,7 @@ labels: verification, bug
 <!-- Parameters used -->
 
 ## Execution Log
-```
+
+```text
 <!-- Paste relevant log -->
 ```

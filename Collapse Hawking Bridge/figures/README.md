@@ -39,7 +39,7 @@ Committed figure set of the **Collapse-Hawking Bridge** — 28 PNG files:
 
 ## Layout
 
-```
+```text
 figures/
 ├── en/
 │   ├── light/

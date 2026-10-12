@@ -179,8 +179,8 @@ def main():
             M = [r["M_code"] for r in sane]
             eps_true = [r["eps"] for r in sane]
             eps_mislab = [r["A"] - a800 for r in sane]
-            g1, C1_, e1, r21 = loglog_fit(eps_true, M)
-            g2, C2_, e2, r22 = loglog_fit(eps_mislab, M)
+            g1, _C1, e1, r21 = loglog_fit(eps_true, M)
+            g2, _C2, e2, r22 = loglog_fit(eps_mislab, M)
             forensic[f"N{n}"] = {
                 "n_rows": len(sane),
                 "true_threshold_fit": {"gamma": g1, "gamma_err": e1, "r2": r21},

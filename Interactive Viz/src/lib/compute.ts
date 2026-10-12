@@ -41,16 +41,16 @@ export const SPINOR_PHASES: SpinorPhases = {
 
 export const DIRAC_REFERENCE: DiracData = {
   lambda_D2_triv: 3.338,
-  delta_bC: 3.438710,
+  delta_bC: 3.43871,
   delta_aC: 0.000828,
 };
 
 export const CHOPTYUK_REFERENCE: ChoptyukData = {
   Delta_Ch_base: 3.437883,
-  Delta_Ch_full: 3.447040,
-  b_Ch: 0.376510,
+  Delta_Ch_full: 3.44704,
+  b_Ch: 0.37651,
   observed_Delta: 3.443,
-  deviation: Math.abs(3.443 - 3.447040),
+  deviation: Math.abs(3.443 - 3.44704),
 };
 
 // ---- Core Computations ----
@@ -59,7 +59,9 @@ export const CHOPTYUK_REFERENCE: ChoptyukData = {
 export function kleinLambda1(genus: number, autOrder: number): number {
   // λ₁ ≈ 2π / (g-1) * (1 + 1/√(|Aut|/48g))
   if (genus <= 1) return 0;
-  return (2 * PI) / (genus - 1) * (1 + 1 / Math.sqrt(autOrder / (48 * genus)));
+  return (
+    ((2 * PI) / (genus - 1)) * (1 + 1 / Math.sqrt(autOrder / (48 * genus)))
+  );
 }
 
 /** Compute spinor phase δ_A = π/2 */
@@ -81,7 +83,9 @@ export function spinorDeltaC(n: number = 7): number {
 export function diracTrivial(genus: number, R: number): number {
   // λ_{D²,triv} = (g-1)² / (4g) * |R| + 2(g-1)/g
   if (genus <= 0) return 0;
-  return ((genus - 1) ** 2) / (4 * genus) * Math.abs(R) + 2 * (genus - 1) / genus;
+  return (
+    ((genus - 1) ** 2 / (4 * genus)) * Math.abs(R) + (2 * (genus - 1)) / genus
+  );
 }
 
 /** b-C spinor correction: Δ_{bC} = λ_{D²,triv} + δ_A² + δ_B² - δ_C² */
@@ -89,7 +93,7 @@ export function deltaBC(
   lambdaTriv: number,
   deltaA: number,
   deltaB: number,
-  deltaC: number
+  deltaC: number,
 ): number {
   return lambdaTriv + deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
 }
@@ -105,7 +109,7 @@ export function choptyukBase(
   deltaBC: number,
   deltaAC: number,
   R: number,
-  genus: number
+  genus: number,
 ): number {
   if (genus <= 0) return 0;
   return deltaBC - deltaAC + R / (4 * genus);
@@ -115,7 +119,7 @@ export function choptyukBase(
 export function choptyukFull(
   deltaChBase: number,
   bCh: number,
-  deltaA: number
+  deltaA: number,
 ): number {
   return deltaChBase + bCh * Math.sin(deltaA);
 }
@@ -150,12 +154,12 @@ const SYMMETRY_CLASSES = ["C1", "C2", "C3", "C7", "D4", "S3", "C2×C2", "C6"];
 export function generate64Structures(
   deltaA: number = SPINOR_PHASES.delta_A,
   deltaB: number = SPINOR_PHASES.delta_B,
-  deltaC: number = SPINOR_PHASES.delta_C
+  deltaC: number = SPINOR_PHASES.delta_C,
 ): SpinorStructure[] {
   const structures: SpinorStructure[] = [];
   for (let i = 0; i < 64; i++) {
     // Each structure picks different multiples of the base phases
-    const mA = (i & 3) + 1;     // 1-4 (2 bits)
+    const mA = (i & 3) + 1; // 1-4 (2 bits)
     const mB = ((i >> 2) & 3) + 1; // 1-4
     const mC = ((i >> 4) & 3) + 1; // 1-4
 
@@ -206,7 +210,7 @@ export const RIEMANN_SURFACES: RiemannSurface[] = [
     lambda1: 4.127,
     delta_bC: 3.891,
     delta_aC: 0.00064,
-    Delta_Ch: 3.890,
+    Delta_Ch: 3.89,
     curvature: -1,
   },
   {
@@ -251,7 +255,7 @@ export const GW_EVENTS: GWEvent[] = [
     date: "2017-08-14",
     masses: [30.6, 25.2],
     finalMass: 53.4,
-    spin: 0.70,
+    spin: 0.7,
     qnmFrequency: 293.0,
     qnmDamping: 0.42,
     chirpMass: 24.1,
@@ -284,10 +288,20 @@ export function predictedQNM(Delta_Ch: number, finalMass: number): number {
 /** Detector sensitivity at frequency (simplified model) */
 export function detectorSensitivity(
   freq: number,
-  detector: "LIGO" | "Virgo" | "KAGRA" | "ET" = "LIGO"
+  detector: "LIGO" | "Virgo" | "KAGRA" | "ET" = "LIGO",
 ): number {
-  const fRef: Record<string, number> = { LIGO: 150, Virgo: 200, KAGRA: 100, ET: 10 };
-  const noiseFloor: Record<string, number> = { LIGO: 1e-23, Virgo: 3e-23, KAGRA: 5e-23, ET: 1e-24 };
+  const fRef: Record<string, number> = {
+    LIGO: 150,
+    Virgo: 200,
+    KAGRA: 100,
+    ET: 10,
+  };
+  const noiseFloor: Record<string, number> = {
+    LIGO: 1e-23,
+    Virgo: 3e-23,
+    KAGRA: 5e-23,
+    ET: 1e-24,
+  };
   const f = fRef[detector];
   const n0 = noiseFloor[detector];
   // Simplified sensitivity curve
@@ -305,9 +319,16 @@ export function runVerification(): VerificationEntry[] {
   const dB = spinorDeltaB();
   const dC = spinorDeltaC(7);
 
-  const mkEntry = (id: string, description: string, computed: number, expected: number, tolerance: number) => {
+  const mkEntry = (
+    id: string,
+    description: string,
+    computed: number,
+    expected: number,
+    tolerance: number,
+  ) => {
     const deviation = Math.abs(computed - expected);
-    const relativeError = expected !== 0 ? deviation / Math.abs(expected) : deviation;
+    const relativeError =
+      expected !== 0 ? deviation / Math.abs(expected) : deviation;
     return {
       id,
       description,
@@ -325,24 +346,42 @@ export function runVerification(): VerificationEntry[] {
   entries.push(mkEntry("delta_C", "δ_C = π/7", dC, PI / 7, 1e-10));
 
   const lTriv = diracTrivial(3, -2);
-  entries.push(mkEntry("lambda_D2_triv", "λ_{D²,triv} on Klein curve", lTriv, 3.338, 0.01));
+  entries.push(
+    mkEntry("lambda_D2_triv", "λ_{D²,triv} on Klein curve", lTriv, 3.338, 0.01),
+  );
 
   const dBC_val = deltaBC(lTriv, dA, dB, dC);
-  entries.push(mkEntry("delta_bC", "Δ_{bC} spinor correction", dBC_val, 3.438710, 0.01));
+  entries.push(
+    mkEntry("delta_bC", "Δ_{bC} spinor correction", dBC_val, 3.43871, 0.01),
+  );
 
   const dAC_val = deltaAC(dC, -2);
-  entries.push(mkEntry("delta_aC", "δ_{eff} a-C correction", dAC_val, 0.000828, 0.001));
+  entries.push(
+    mkEntry("delta_aC", "δ_{eff} a-C correction", dAC_val, 0.000828, 0.001),
+  );
 
   const chBase = choptyukBase(dBC_val, dAC_val, -2, 3);
   entries.push(mkEntry("Delta_Ch_base", "Δ_{Ch,base}", chBase, 3.437883, 0.01));
 
-  const chFull = choptyukFull(chBase, 0.376510, dA);
-  entries.push(mkEntry("Delta_Ch_full", "Δ_{Ch,full} with b_Ch", chFull, 3.447040, 0.01));
+  const chFull = choptyukFull(chBase, 0.37651, dA);
+  entries.push(
+    mkEntry("Delta_Ch_full", "Δ_{Ch,full} with b_Ch", chFull, 3.44704, 0.01),
+  );
 
-  entries.push(mkEntry("observed_Delta", "Observed Δ ≈ 3.443", 3.443, 3.443, 0.001));
+  entries.push(
+    mkEntry("observed_Delta", "Observed Δ ≈ 3.443", 3.443, 3.443, 0.001),
+  );
   entries.push(mkEntry("klein_aut", "|PSL(2,7)| = 168", 168, 168, 0));
   entries.push(mkEntry("klein_genus", "Genus = 3", 3, 3, 0));
-  entries.push(mkEntry("num_structures", "64 spinor structures", generate64Structures().length, 64, 0));
+  entries.push(
+    mkEntry(
+      "num_structures",
+      "64 spinor structures",
+      generate64Structures().length,
+      64,
+      0,
+    ),
+  );
 
   return entries;
 }
@@ -353,10 +392,11 @@ export function runHypothesisTest(
   name: string,
   computed: number,
   reference: number,
-  tolerance: number
+  tolerance: number,
 ): HypothesisTest {
   const deviation = Math.abs(computed - reference);
-  const relativeError = reference !== 0 ? deviation / Math.abs(reference) : deviation;
+  const relativeError =
+    reference !== 0 ? deviation / Math.abs(reference) : deviation;
   return {
     name,
     computed,
@@ -382,11 +422,17 @@ export function fmtSci(n: number, digits: number = 4): string {
 
 /** K3 Surface canonical data */
 export const K3_SURFACE: K3SurfaceData = {
-  b0: 1, b1: 0, b2: 22, b3: 0, b4: 1,
-  hodge11: 20, hodge20: 1,
-  diracIndex: 2, b2Plus: 3,
-  b2DecompositionValid: true,  // 22 = 20 + 2*1
-  swCompatible: true,  // b2+ = 3 > 1
+  b0: 1,
+  b1: 0,
+  b2: 22,
+  b3: 0,
+  b4: 1,
+  hodge11: 20,
+  hodge20: 1,
+  diracIndex: 2,
+  b2Plus: 3,
+  b2DecompositionValid: true, // 22 = 20 + 2*1
+  swCompatible: true, // b2+ = 3 > 1
 };
 
 /** Imaginary correction: 1 - δ_C/π² */
@@ -400,7 +446,10 @@ export function kahlerCorrection(deltaC: number = PI / 7): number {
 }
 
 /** Tyukovsky corrected critical exponent: δ₀ + δ_C²/2 - δ_C⁵/22 */
-export function tyukovskyCorrectedExponent(delta0: number, deltaC: number = PI / 7): number {
+export function tyukovskyCorrectedExponent(
+  delta0: number,
+  deltaC: number = PI / 7,
+): number {
   return delta0 + (deltaC * deltaC) / 2 - Math.pow(deltaC, 5) / 22;
 }
 
@@ -416,17 +465,24 @@ export function einsteinQNMFactor(deltaC: number = PI / 7): number {
 }
 
 /** Corrected QNM frequency: ω * (1 - δ_eff/π²) */
-export function correctedQNMFrequency(omega: number, deltaC: number = PI / 7): number {
+export function correctedQNMFrequency(
+  omega: number,
+  deltaC: number = PI / 7,
+): number {
   return omega * einsteinQNMFactor(deltaC);
 }
 
 /** b₂ uniqueness check */
-export function b2UniquenessCheck(): Record<string, {deviationPct: number; compatible: boolean}> {
+export function b2UniquenessCheck(): Record<
+  string,
+  { deviationPct: number; compatible: boolean }
+> {
   const deltaC = PI / 7;
   const target = 1 / 1200;
-  const result: Record<string, {deviationPct: number; compatible: boolean}> = {};
+  const result: Record<string, { deviationPct: number; compatible: boolean }> =
+    {};
   for (const k of [20, 21, 22, 23, 24]) {
-    const dev = Math.abs(Math.pow(deltaC, 5) / k - target) / target * 100;
+    const dev = (Math.abs(Math.pow(deltaC, 5) / k - target) / target) * 100;
     result[`b2_${k}`] = { deviationPct: dev, compatible: dev < 1.0 };
   }
   return result;

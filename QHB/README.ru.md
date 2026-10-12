@@ -135,7 +135,7 @@ lake env lean QHB_AxiomAudit.lean
 
 ## Структура репозитория
 
-```
+```text
 QHB_Unified_v2.3.0/
 ├── MONOGRAPH/            # монография RU/EN, PDF + DOCX (17 глав)
 ├── qhb/                  # канонический пакет: constants, core, vortex, claims…

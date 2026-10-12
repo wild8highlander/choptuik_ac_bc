@@ -111,7 +111,6 @@ def mode_scaling(tay_hist):
     if len(tay_hist) < 20:
         return None
     v = np.array([r["v"] for r in tay_hist])
-    st = np.array([r["stage"] for r in tay_hist])
     t0 = np.abs(np.array([r["t0"] for r in tay_hist])) + 1e-300
     P2 = np.abs(np.array([r["P2"] for r in tay_hist])) + 1e-300
     d0 = np.abs(np.array([r["d0"] for r in tay_hist])) + 1e-300

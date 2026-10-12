@@ -213,7 +213,7 @@ def ivp11_vortex_symbolic() -> dict:
 
 def ivp12_worst_case_barrier() -> dict:
     """C12: symbolic worst-case barrier inequality + margin arithmetic."""
-    x, xstar = sp.symbols('x xstar', nonnegative=True)
+    _x, _xstar = sp.symbols('x xstar', nonnegative=True)
     # sup over unit-norm profiles of [U1(xstar) - U1(0)]: both values in [-1, 1]
     # => sup = 1 - (-1) = 2 exactly; barrier(eta) = B0 - 2 eta
     eta = sp.symbols('eta', nonnegative=True)

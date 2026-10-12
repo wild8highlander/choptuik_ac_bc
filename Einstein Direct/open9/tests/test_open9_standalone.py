@@ -92,7 +92,7 @@ def test_v21_deep_echo_facts():
     assert p["status"] == "executed"
     rows = {r["w_factor"]: r for r in p["rows"]}
     # стена чувствительна к оконной политике (рычаг [P3])
-    assert rows[3.0]["z_reached"] > 7.0 > 1.8
+    assert rows[3.0]["z_reached"] > 7.0
     assert rows[3.0]["n_invasions"] == 0
     sp = d["second_pass"]
     assert sp["status"] == "executed" and len(sp["rungs"]) == 3

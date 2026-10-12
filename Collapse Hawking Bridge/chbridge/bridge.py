@@ -103,7 +103,6 @@ def master_table(verdict):
     """Build the master mapping table (list of dicts, SI units)."""
     rows, M_sat = born_spectrum(verdict)
     members = ensemble_members(rows)
-    M_CMB = equal_CMB_mass()
 
     master = []
     for scale_name, M_in in BRIDGE_SCALES:

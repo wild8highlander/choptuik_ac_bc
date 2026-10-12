@@ -6,6 +6,7 @@ labels: bug
 ---
 
 ## Environment
+
 - Implementation: [Python / Julia / Java / Interactive Viz]
 - Version:
 - OS:
@@ -21,11 +22,13 @@ labels: bug
 <!-- What you observed instead -->
 
 ## Execution Log
-```
+
+```text
 <!-- Paste the relevant portion of the execution log -->
 ```
 
 ## Configuration
-```
+
+```text
 <!-- Paste the configuration used -->
 ```

@@ -64,8 +64,6 @@ Termux, see §10) with Python ≥ 3.9, NumPy, SciPy, SymPy and pytest.
 32. [V21 — the deep-echo campaign: the Section 5 protocol executed (session 23)](#32-v21--the-deep-echo-campaign-the-section-5-protocol-executed-session-23)
 33. [V22 — the v-budget and window anchoring: the z ~ 7.2 wall attacked](#33-v22--the-v-budget-and-window-anchoring-the-z--72-wall-attacked)
 
-
-
 ---
 
 ## 1. Physics background
@@ -144,7 +142,7 @@ The full log is `results/derivation_log.txt`, the machine summary is
 
 The system integrated by `solver.py` (machine output of §3):
 
-```
+```text
 (SC)  Φ_uv  = -(r_u Φ_v + r_v Φ_u) / r
 (UV)  r_uv  = -(r_u r_v + α²/4) / r  =  -α² m / (2 r²)
 (C1)  r_uu  = 2 ω_u r_u - (κ/2) r Φ_u²        ← the coefficient 2 matters!
@@ -156,7 +154,7 @@ The system integrated by `solver.py` (machine output of §3):
 Regularizing identities used to keep the system well-behaved at the center
 `r = 0` (where `r` changes sign in the mirror extension):
 
-```
+```text
 (r²)_uv = -α²/2,     P := r r_u :  P_v = -α²/4,
 m_u = -κ r² Φ_u² r_v / α²,   m_v = -κ r² Φ_v² r_u / α²
 ```
@@ -331,7 +329,7 @@ re-examined the wall with it.
 
 **The regular center expansion** (with mirror coordinate `x = (v−u)/2 ~ r`):
 
-```
+```text
 Φ = Φ0(y) + a(y)·x² + …          (scalar field is EVEN in x)
 t = Φ_v = t0 + a·x + O(x³)       s = Φ_u = t0 − a·x + O(x³)
      └── even part E = (t+s)/2 ──┘  └─ odd part O = (t−s)/2 = a·x ─┘
@@ -473,7 +471,7 @@ instruction (`INSTRUKCIYA_Termux_RU.md`) travels inside the push bundle, includi
 
 ## 13. File map
 
-```
+```text
 einstein_direct/
 ├── sympy_derivation.py     # Hilbert action → 1+1 system, machine checks (mpmath 50 digits)
 ├── solver.py               # double-null characteristic solver (validated, 2nd order)
@@ -514,7 +512,6 @@ einstein_direct/
    hypothesis under test, and the spinor framework with the π/15, π/30
    exponents (§11).
 
-
 ---
 
 ## 15. The central Taylor patch
@@ -526,7 +523,7 @@ series in the signed radius `xi = x - x*(v)` (x = (v-u)/2, x*(v) -- the center
 worldline, chi = dx*/dy -- its drift), split by the Z2 mirror parity into the
 scalar (even) and SPINOR (odd) sectors:
 
-```
+```text
 r     = R1*xi + R3*xi^3          Phi = P0 + P2*xi^2 + P4*xi^4   (even)
 omega = W0 + W2*xi^2              m   = M3*xi^3                  (odd)
 ```
@@ -594,26 +591,28 @@ activating march_from_center silently DISABLED the center closure.
 ### 15.3 What the Taylor-patch stage achieved, and what it did not (honest)
 
 Achieved:
-- Mass junk at the center: mdef ~ 2.9e-6 (super-clean); the gauge relation
+
+* Mass junk at the center: mdef ~ 2.9e-6 (super-clean); the gauge relation
   R1^2 = alpha2(0) holds at the 1e-2 level along the chains.
-- Depth: z = 7.19 (7 zooms; patch with the edge-march configuration,
+* Depth: z = 7.19 (7 zooms; patch with the edge-march configuration,
   eps = 3e-5) vs the regular-closure record of 6.05. The final configuration
   (patch + center-march) gives z ~ 4.2-4.5 on the same eps ladder: the
   depth is CHAOS-sensitive, and single-threaded BLAS is required for
   reproducibility (multithreaded LAPACK reshuffles near-critical AH
   nucleation and changes the fate of the run).
-- The spinor ladder module (spinor_ladder.py): the pi/15, pi/30 phase
+* The spinor ladder module (spinor_ladder.py): the pi/15, pi/30 phase
   table (the ladder quantum is pi/30, an echo is 7 quanta, pi/15 is 2
   quanta; resolving pi/15 needs z >= 30, pi/30 needs z >= 60), mode-growth
   fits (kappa_t0, kappa_P2 -- order of magnitude only), an echo-harmonics
   fitter, and numeric O1/O3 residuals along the chains.
 
 NOT achieved (the wall moved, it did not vanish):
-- Percent-level gamma and Delta: the AH capture is still unreliable -- the
+
+* Percent-level gamma and Delta: the AH capture is still unreliable -- the
   q = 0 crossing either happens after the 2m/r > 2 stop fires, or is
   junk-contaminated; M(eps) could be measured for only a fraction of the
   eps ladder, and the gamma fit needs >= 3 clean points.
-- The depth wall is now OUTSIDE the patch zone: the raw march in the mirror
+* The depth wall is now OUTSIDE the patch zone: the raw march in the mirror
   region breaks the mirror parity of m (m_mirror ~ -12.7 vs m_phys ~ +4.2)
   at |r| ~ 100*du. The annulus machine roadmap: (a) parity projection in an ANNULUS
   outside the zone (mirror-antisymmetrization of the raw march), (b) a
@@ -643,13 +642,13 @@ Starting from the Hilbert-derived double-null system (Mdef, UV, C1, C2),
 SymPy derives (residuals exactly 0, with p eliminated through the Misner–Sharp
 definition and q_u = p_v vithe mixed partial r_uv):
 
-- the null flux laws of the mass function:
+* the null flux laws of the mass function:
   **m_v = −2 r² p t²/α²** and **m_u = −2 r² q s²/α²**;
-- the central mass–slope link (regular center, general drift χ):
+* the central mass–slope link (regular center, general drift χ):
   **M3 = 2 R1 t0² / (3 (1−χ)²)** — exact at EVERY y, not only in CSS;
-- the central gauge follows from m(0) = 0 (Mdef at ξ⁰):
+* the central gauge follows from m(0) = 0 (Mdef at ξ⁰):
   **(1−χ²) R1² = A0**;
-- the hoop threshold 2m/r = 1 gives the horizon radius in center coordinates
+* the hoop threshold 2m/r = 1 gives the horizon radius in center coordinates
   **ξ_AH = sqrt(R1/(2 M3))** (s-free; CSS value sqrt(3/(4τ))).
 
 ### 16.2 The log-time tower (machine reduction of the verified O1–O5)
@@ -659,7 +658,9 @@ p = 0,0,0,2,2,2,2,4) into the verified hierarchy is s-PURE — every term of
 every equation carries one power of s (machine-checked: O1:2, O2:1, O3:2,
 O5:4, O4:2). The autonomous z-tower has a CSS fixed point
 
-    d0* = 0,  t̂0* = 3P̂2*,  Ŵ2* = (4/3)τ,  M̂3*/R̂1* = (2/3)τ,  R̂3*/R̂1* = (2/9)τ,
+```text
+d0* = 0,  t̂0* = 3P̂2*,  Ŵ2* = (4/3)τ,  M̂3*/R̂1* = (2/3)τ,  R̂3*/R̂1* = (2/9)τ,
+```
 
 with τ = t̂0*² — WITHOUT the Thorne link the point has two free moduli; the
 mass-flux link closes it to exactly ONE amplitude parameter. This is the
@@ -669,40 +670,40 @@ analytic role of the Thorne route: it closes the fundamental level.
 
 Linearization of the closed tower (levels 0–2, deep sources frozen):
 
-- **τ → 0:** char = λ(λ+1)²(λ+2)(λ+3) — the EXACT fundamental spectrum
+* **τ → 0:** char = λ(λ+1)²(λ+2)(λ+3) — the EXACT fundamental spectrum
   **{0, −1, −1, −2, −3}**: integer convergence exponents — the
   "fundamental-level conclusions for the stable modes" (the O-mode slope pair
   −2, −3 is exact); the 0 is the family direction (deeper levels decide);
-- **τ > 0:** exactly ONE growing root λ⁺(τ) — the repulsion channel — inside
+* **τ > 0:** exactly ONE growing root λ⁺(τ) — the repulsion channel — inside
   the codim-1 window 0 < τ ≤ **27/80** (char(0,τ) = 8τ(80τ−27)/27 → τ₂ = 27/80
   EXACT); λ⁺(27/80) = 1.5091, so the closed tower alone gives
   **γ = Δ_sp/λ⁺ ≥ 0.4857**;
-- **exact points:** char(2) = 8(2τ−1)(8τ−45)/27 → **λ⁺ = 2 at τ = 1/2** (and
+* **exact points:** char(2) = 8(2τ−1)(8τ−45)/27 → **λ⁺ = 2 at τ = 1/2** (and
   τ = 45/8) — the same "2" as the Riccati coefficient 2d0² of O3;
-- **τ > 27/80:** a second growing root appears — the "decays/assemblies"
+* **τ > 27/80:** a second growing root appears — the "decays/assemblies"
   blow-up channel (the expected physics of the private cases).
 
 ### 16.4 Anchors (comparison only, no fitting)
 
-- κ_obs = Δ_sp/γ: **1.947** (b_Ch) and **1.960** (γ_lit) vs λ⁺(τ₂) = 1.509:
+* κ_obs = Δ_sp/γ: **1.947** (b_Ch) and **1.960** (γ_lit) vs λ⁺(τ₂) = 1.509:
   the deficit **+0.44…+0.45 in κ** is the quantitative measure of what the
   deeper tower levels (O6+) must contribute for the percent-level γ;
-- formal amplitudes where λ⁺ = κ_obs: τ ≈ 0.481–0.486 (outside the codim-1
+* formal amplitudes where λ⁺ = κ_obs: τ ≈ 0.481–0.486 (outside the codim-1
   window — there the truncation is already invalid; fixing τ is the job of
   the full tower);
-- indicative: at τ = 0.48, γ_pred = 0.377 vs b_Ch = 0.376510 (0.13%) —
+* indicative: at τ = 0.48, γ_pred = 0.377 vs b_Ch = 0.376510 (0.13%) —
   NOT a measurement (two-mode regime), a family-curve reading.
 
 ### 16.5 Empirics
 
-- the Thorne link on clean regular runs (n = 800): M3/M3_pred median ≈ 1.6
+* the Thorne link on clean regular runs (n = 800): M3/M3_pred median ≈ 1.6
   with a wide spread — the exact identity becomes a STRICT center-quality
   metric: ratio > 1 measures the ξ-junk (the 1/r mode, m/ξ³ = M1/ξ² + M3)
   and the ring-fit systematics; tightening it to percent level is an annulus-machine goal
   (the same wall as the percent-level γ);
-- ξ_AH (hoop) on the Taylor-patch stage critical chain: median 4.83 — O(1) in ξ-units, as
+* ξ_AH (hoop) on the Taylor-patch stage critical chain: median 4.83 — O(1) in ξ-units, as
   the CSS prediction sqrt(3/(4τ)) demands;
-- numeric O1 residual on the chain: median 2.5e-2; the Taylor-patch t0
+* numeric O1 residual on the chain: median 2.5e-2; the Taylor-patch t0
   transients after zoom restarts break the instantaneous identity (honest;
   the identity is exact for solutions of the system).
 
@@ -758,7 +759,7 @@ image of an exact continuum statement.
    The exact CSS relation t(ξ) = s(−ξ) resolves it: s is the trusted evolved
    field (not touched), t is re-slaved to its mirror with the annulus taper.
    This satisfies BOTH parities exactly and removes the march's C/ξ mode.
-7. **Two-sided r-fit + axis gate.** The x* intercept was fitted on the +r
+7. **Two-sided r-fit + axis gate.** The x*intercept was fitted on the +r
    side only — the cubic wave on the ring biased the intercept by ~10 du
    (measured: x* − x[i0] = 10.5 du at the death stage) — every pair,
    projection and cross-assign was built around a WRONG mirror axis and
@@ -767,27 +768,27 @@ image of an exact continuum statement.
 
 ### 17.2 Result: stable stages, record depth, the Thorne link in data
 
-- The j≈19–20 channel is CLOSED: eps = 1e-2 and 1e-3 runs end by
+* The j≈19–20 channel is CLOSED: eps = 1e-2 and 1e-3 runs end by
   **v-exhaustion, not death** — 5 zooms, z = 9.10 / 9.35 (record; the annulus machine died at
   z = 3.83 after 2 zooms, the Taylor-patch stage at z ≈ 4.2–4.5).
-- P2 unlocked → 40–181 tau-rows per stable run, continuous z_cont up to 7.9
+* P2 unlocked → 40–181 tau-rows per stable run, continuous z_cont up to 7.9
   (the annulus machine: exactly 1 tau-row).
-- **The Thorne link is visible in discrete data for the first time**
+* **The Thorne link is visible in discrete data for the first time**
   (eps = 1e-2): M3/(R1 t0²) = 0.6687 vs the exact 2/3 = 0.6667 — 0.3%
   agreement (the annulus machine empirical median was ≈ 1.6, i.e. the junk level).
-- |d0·s| → 4e-5 (CSS target 0) on the same run.
+* |d0·s| → 4e-5 (CSS target 0) on the same run.
 
 ### 17.3 Honest: tau* is still NOT measured
 
-- The W2 measurement is still crushed (W2/t0² → 0 against the CSS target
+* The W2 measurement is still crushed (W2/t0² → 0 against the CSS target
   4/3): the (d−c) ring signal is buried under the cumtrapz-junk floor of d.
   With W2 off the tower manifold, tau_row = t0⁴/(9 P2²) is an off-manifold
   proxy — the tau* fits return garbage (honestly recorded in
   `results/grid_machine_annulus.json`).
-- Small eps (3e-4, 1e-4) and 3e-3 die at zoom 1 (z = 1.78): the near-critical
+* Small eps (3e-4, 1e-4) and 3e-3 die at zoom 1 (z = 1.78): the near-critical
   branch is the next fix cycle (the next fix cycle: source dynamics W2/R3/P4 — the machine
   is now stable enough to iterate on it).
-- BLAS is pinned to 1 thread in the campaign/probe modules (reproducibility:
+* BLAS is pinned to 1 thread in the campaign/probe modules (reproducibility:
   multi-thread LAPACK reshuffles near-critical trajectories).
 
 ### 17.4 The O6+ verdict (nsolve): no exact CSS point in the truncated tower
@@ -799,14 +800,14 @@ system from the RAW purified z-coefficients (the first attempt used the
 solved N-levels, which divide by dR1 — poles/zoo at the fixed point; lesson
 recorded). Verdict, machine-exact:
 
-- the O1–O5 subsystem is consistent: D0*=0, P2h*=T0/3, W2h*=(4/3)tau,
+* the O1–O5 subsystem is consistent: D0*=0, P2h*=T0/3, W2h*=(4/3)tau,
   R3h*=(2/9)tau all DERIVE as equations — one free amplitude (tau), as in
   §16;
-- adding UV[ξ³] forces **T0² = 9/4** (tau = 2.25); adding Mdef[ξ⁵] forces
+* adding UV[ξ³] forces **T0² = 9/4** (tau = 2.25); adding Mdef[ξ⁵] forces
   **T0² = 9/16** (tau = 0.5625); together — only the trivial R3 = 0 branch.
   The system is INCOMPATIBLE: the truncated tower has NO exact CSS fixed
   point;
-- interpretation: the W2/R3/P4 sources never freeze — the source dynamics is
+* interpretation: the W2/R3/P4 sources never freeze — the source dynamics is
   essential, and binding the amplitude requires the full (untruncated)
   analysis. This is the quantitative form of the "+0.44 kappa deficit"
   localization of §16.
@@ -827,21 +828,21 @@ pivot -> bowl -> log closure -> pyramid) circulating on a C6 shape dial by
 the Poincare quasi-velocity equations. The two incompatible branches become
 steps of two DIFFERENT books of the cycle:
 
-- **amplitude book**: the CORE pair (3/2)^2 = tau3, the ring pairs
+* **amplitude book**: the CORE pair (3/2)^2 = tau3, the ring pairs
   (4/3)^2 = 1/tau5, the full cycle kappa_cyc = ln(tau3/tau5^2) = ln(64/9) =
   1.9617 vs the anchor kappa_obs = Delta_sp/gamma = 1.9600 (+0.085%); the
   frozen-tower deficit lambda+(27/80) = 1.5091 (+0.451 in kappa) is filled
   to 100.4%;
-- **echo clock**: -ln(tau5) = ln(16/9) per hexagon side,
+* **echo clock**: -ln(tau5) = ln(16/9) per hexagon side,
   Delta_cyc = 6 ln(16/9) = 12 ln(4/3) = 24 ln(2/sqrt3) = 3.4522 vs
   Delta = 3.44 (Choptuik 1993; inside the +/-0.02 corridor);
-- **hexagonal log computations are exact geometry**: the ring step 4/3 =
+* **hexagonal log computations are exact geometry**: the ring step 4/3 =
   (2/sqrt3)^2 — the square of the hexagon's own circumradius/inradius ratio;
   the O6 branches are themselves squares (sqrt(tau3) = 3/2, sqrt(tau5) = 3/4,
   ratio 2 — the pyramid doubling);
-- **gamma_cyc = Delta_sp/kappa_cyc = 0.373683** (gamma_lit = 0.374, -0.085%;
+* **gamma_cyc = Delta_sp/kappa_cyc = 0.373683** (gamma_lit = 0.374, -0.085%;
   b_Ch -0.75%);
-- **the attractor is a limit cycle (DSS, not CSS)**: the return map lands on
+* **the attractor is a limit cycle (DSS, not CSS)**: the return map lands on
   the pyramid exactly (max-norm error 0), the scale drops by e^Delta ~ 31.6
   per cycle — a structural explanation of Choptuik's observation.
 
@@ -862,42 +863,43 @@ python3 hexcycle_figures.py      # RU/EN 300-dpi figures, ~30 s
 ## 19. Hexcheck campaign: checking kappa = ln(64/9) and W2/t0^2 -> 4/3
 
 The hexcycle (section 18) made two quantitative predictions for the
-near-critical tau* campaign: the amplitude book kappa = ln(64/9) =
+near-critical tau*campaign: the amplitude book kappa = ln(64/9) =
 1.9616585 and the ring W2/t0^2 -> 4/3 = 1/sqrt(tau5). `grid_machine_hexcheck.py`
 runs the check on the stable annulus chains (z ~ 9.1-9.35) with full
 measurement instrumentation, and it changed the diagnosis of everything
 that was blocking the tau* measurement:
 
-- **clock bug**: `dv_ode == 0` after the first row of every stage (the
+* **clock bug**: `dv_ode == 0` after the first row of every stage (the
   chi section overwrote `tay["v_prev"]` before the ODE read it) — the
   center ODEs O1/O3 were dead since the Taylor-patch stage. Flag-fixed (`tay_ode_fix`);
   legacy is reproduced exactly.
-- **gate freeze**: the E/O fit gates use a max-res metric that the zone
+* **gate freeze**: the E/O fit gates use a max-res metric that the zone
   edge (dynamic range ~1000) crushes to ~1 on deep rows, so the gates
   fail everywhere and the P2/W2 relays freeze at stage-1 values. The
   fresh book is therefore built from RAW pre-gate fits:
   tau_fresh = E0_free^4/(9 P2_raw^2), with MAD outlier rejection.
-- **live tower**: with the clock alive, three closures of the center
+* **live tower**: with the clock alive, three closures of the center
   dynamics (blind ODE with self-referential P2; Riccati clock; width
   clock) all blow up t0 within 1-2 stages, because the E0_free anchor is
   poisoned by the zone rebuild (E_zone[0] = t0). The center book on this
   grid is always series-mediated — the Taylor-patch wall reopened at the P4 level;
   an independent dynamical confirmation of the O6 source-dynamics
   verdict. In the live tower W2 is enforced by the machine-verified CSS
-  equation W2* = kappa t0^2 - M3*/R1 (4/3 at chi=0).
+  equation W2*= kappa t0^2 - M3*/R1 (4/3 at chi=0).
 
 Verdicts (results/grid_machine_hexcheck.json, honest statuses):
-- kappa = ln(64/9): **blocked** — the unstable-mode departure does not
+
+* kappa = ln(64/9): **blocked** — the unstable-mode departure does not
   grow inside the deep window (lambda_fit at the grid edge; the chain
   rides the DSS limit cycle and departs only inside the final junk
   explosion); the M(eps) gamma channel is unavailable (AH never
   nucleates, M_frozen = 0).
-- Delta: **indicative** — model B Delta = 0.73 (-0.4% vs Delta_sp =
+* Delta: **indicative** — model B Delta = 0.73 (-0.4% vs Delta_sp =
   7pi/30), model A 0.77 (+5.0%); the book is noisy (amp ~ 3 in ln tau).
   The geometric Q-peak echo on the zoom-ladder clock gives Delta =
   1.732 +/- 0.451, i.e. Delta_cyc/Delta_Q ~ 2.0 — the pyramid doubling
   of the hexcycle book (indicative, 26% error).
-- W2/t0^2 -> 4/3: **blocked** — the raw (d-c) signal is ~1e13 t0^2
+* W2/t0^2 -> 4/3: **blocked** — the raw (d-c) signal is ~1e13 t0^2
   above the target under the d-junk floor in all three channels (raw
   fit, dc-pair, d0-clock). The channel requires P4 dynamics (O6+) or a
   clean d-field.
@@ -911,13 +913,13 @@ Machine: `sympy_p4_einstein_hilbert.py` -> `results/p4_einstein_hilbert.json`.
 
 **How the cycle lives in the classical Einstein equations (all SymPy-exact):**
 
-- The double-null residuals ARE `G = kappa T`: `G_uu - kappa T_uu = -(2/r) * C1-form`,
+* The double-null residuals ARE `G = kappa T`: `G_uu - kappa T_uu = -(2/r) * C1-form`,
   `G_vv - kappa T_vv = -(2/r) * C2-form`, `G_uv = -(2/r) * (UV + r(TH - st))`,
   `Mdef` = mass constraint, `SC = -(alpha^2/4) box Phi`. The six stations are
   regimes of ONE tensor, not new physics.
-- `T_uv == 0` identically: the null-null sector of the Hilbert tensor is empty;
+* `T_uv == 0` identically: the null-null sector of the Hilbert tensor is empty;
   the scalar sources enter only through the uu/vv sectors (C1/C2) and the TH mixing.
-- Hilbert identity (fresh 4D derivation): `nabla_mu T^{mu}_nu = (box Phi) nabla_nu Phi`
+* Hilbert identity (fresh 4D derivation): `nabla_mu T^{mu}_nu = (box Phi) nabla_nu Phi`
   — the source dynamics IS the Bianchi/Hilbert conservation law. This is where
   "sources must flow" lives in the classical equations.
 
@@ -931,13 +933,13 @@ and `R5'`: the `TBL_F` substitution `R5(y) -> R5h/S^4` collapses `Derivative(R5(
 to 0, and only `P2''` had an explicit z-table. With corrected adiabatic tables
 (`F'' -> (5 dF + 6 F)/S^(p+1)`, second flows = 0):
 
-- the `UV[xi^3]` and `Mdef[xi^5]` branches MERGE into one common root
+* the `UV[xi^3]` and `Mdef[xi^5]` branches MERGE into one common root
   **tau* = 27/4**: the frozen CSS point of the O6 tower EXISTS (unique);
-- the session-8 incompatibility (tau = 9/4 vs 9/16) and the two-branch book
+* the session-8 incompatibility (tau = 9/4 vs 9/16) and the two-branch book
   construction `kappa_cyc = ln(64/9)` built on it were artifacts of that drop;
-- at tau* = 27/4 the amplitudes are `T0h = 3 sqrt(3)/2`, `W2h = 9`, `R3h = 3/2`,
+* at tau* = 27/4 the amplitudes are `T0h = 3 sqrt(3)/2`, `W2h = 9`, `R3h = 3/2`,
   `P2h = sqrt(3)/2 = sin(pi/3)` — the hexagonal ratio appears on its own;
-- spectrum: `lambda+(tau)` is monotone; `lambda+ = kappa_obs ~ 1.96` at
+* spectrum: `lambda+(tau)` is monotone; `lambda+ = kappa_obs ~ 1.96` at
   `tau ~ 0.486`; at `tau* = 27/4` (off-grid) `lambda+ ~ 8` — the truncated-tower
   point is NOT the critical attractor by spectrum.
 
@@ -976,15 +978,16 @@ targets +-xi_t, then the P4-B extractor
 the mirror fit `D = c_ser(xi) - c_ser(-xi) = -(2 W2 xi + 4 W4 xi^3)` -> `W2_ser`.
 
 Results (legacy legs eps = 1e-3 / 1e-2, live leg eps = 1e-2):
-- the EVEN junk is side-symmetric to a median relative difference of
+
+* the EVEN junk is side-symmetric to a median relative difference of
   `3.2e-8 .. 3.8e-7` (against `leak ~ 0.92` of the hexcheck pairs) and is killed by the
   extractor EXACTLY — the mirror instrumentation works as designed;
-- the W2/t0^2 measurement stays **BLOCKED**: the ODD marsh junk of (d-c) is
+* the W2/t0^2 measurement stays **BLOCKED**: the ODD marsh junk of (d-c) is
   chaotic (per-row fits of the mirror differences do not close, res ~ 0.4-0.6),
   its linear-in-xi component is degenerate with the signal `2 W2 xi`, and the
   per-pair floor `|W2_pair|/t0^2` is 1.4 (eps=1e-3) to 2.3e+2 (eps=1e-2) against
   the target 4/3;
-- channel B is symbolically EXACT (see below) but its input `R3` (the cubic
+* channel B is symbolically EXACT (see below) but its input `R3` (the cubic
   coefficient of the ring r-fit) is junk on marsh data (`R3/t0^2 ~ 1e3..1e5`
   against CSS 2/9) and enters the linear coefficient degenerately.
 
@@ -997,12 +1000,13 @@ machine route (after the O3 route `W2* = kappa t0^2 - M3*/R1` and the corrected
 chain `W2h/T0h^2 = 4/3`), independent of R1 and d0.
 
 **(3) Exact char polynomial at tau* = 27/4.**
-- OLD core (torne link, sources frozen at CSS): substituting `tau = 27/4` into
+
+* OLD core (torne link, sources frozen at CSS): substituting `tau = 27/4` into
   the stored quintic gives the exact polynomial with real roots
   `{-11.587049, -6.634885, -0.590872, +2.399389, +9.413416}`;
   **lambda+_old(27/4) = 9.4134160947** (the session-11 log-grid interpolation
   ~7.99 was low; and it was an artifact of freezing the sources).
-- CORRECTED tower (audit tables, 12 tower equations with live first flows + 6
+* CORRECTED tower (audit tables, 12 tower equations with live first flows + 6
   chain-preservation prolongations = 18 equations on 9 amplitudes + 8 flows;
   the pencil `M(lam) = J_a + lam J_v P` with the flow->amplitude projection P,
   since `M5h` has no flow): the exact characteristic polynomial
@@ -1024,19 +1028,20 @@ vertex — consistent with the session-11 prolongation verdict and with the hexc
 campaign signals.
 
 **(4) Monodromy books of the corrected system (replacing the two-branch books).**
-- amplitude book: `kappa_book = ln(tau*) = ln(27/4) = 3 ln 3 - 2 ln 2
+
+* amplitude book: `kappa_book = ln(tau*) = ln(27/4) = 3 ln 3 - 2 ln 2
   = 4 ln(3/2) + ln(4/3)` (both decompositions machine-checked) = 1.9095425,
   i.e. -2.57% against `kappa_obs(gamma_lit) = 1.9599954` and -1.92% against the
   b_Ch anchor — the single-branch replacement of the artifact `ln(64/9)`;
-- station ladder of the corrected chain at tau* (exact):
+* station ladder of the corrected chain at tau* (exact):
   `W2h/R3h = 6 = 2*3`, `W2h/T0h^2 = 4/3`, `R3h/T0h^2 = 2/9`, `P2h/T0h = 1/3`,
   `T0h/P2h = 3`, `P2h = sin(pi/3)`, `R5h = 183/40`, `M5h = -105/4`,
   `P4h = 153 sqrt(3)/10`;
-- monodromy identity: the product of the six loop ratios
+* monodromy identity: the product of the six loop ratios
   `R1h -> T0h -> P2h -> R3h -> W2h -> R5h -> R1h` equals **1 exactly**
   (machine-checked) — the amplitude monodromy around the six-station cycle is
   the identity (return to the pyramid);
-- the clock book is NOT derivable from the chain (honest): the measured clocks
+* the clock book is NOT derivable from the chain (honest): the measured clocks
   of the hexcheck campaign stand (model B Delta ~ 0.73 ~ Delta_sp - 0.4%; Q-echo
   doubling `Delta_cyc/Delta_Q ~ 2`); `Delta_cyc = 6 ln(16/9)` of session 11 is
   an artifact-book. Surviving books: the ring 4/3, the DSS picture, the hexcheck campaign
@@ -1069,14 +1074,15 @@ Berry `beta(d) = d^2/2`, braking `alpha(d) = d^5/22` (k = b2(K3) = 22):
 **(1) Doors audit: there is NO error in the equations — there is a STRUCTURE.**
 With per-channel couplings (kappa_C1 in C1: (k/2) r s^2, kappa_C2 in C2:
 (k/2) r t^2, kappa_TH in TH: (k/2) s t) the symbolic rebuild shows:
-- **SC/UV/Mdef are kappa-FREE** (zero leaks): the wave equation, the
+
+* **SC/UV/Mdef are kappa-FREE** (zero leaks): the wave equation, the
   cross-constraint and the Misner-Sharp definition are pure geometry —
   nothing to "repair" there;
-- the channel map is exact: C1_xi{1,2,3} <- kappa_C1 only; C2_xi{1,2,3} <-
+* the channel map is exact: C1_xi{1,2,3} <- kappa_C1 only; C2_xi{1,2,3} <-
   kappa_C2 only; TH_xi2 <- kappa_TH only;
-- **RING CONSISTENCY (new machine theorem):** the C1 residuals at the chain
+* **RING CONSISTENCY (new machine theorem):** the C1 residuals at the chain
   point vanish if and only if **kappa_C1 = kappa_C2** (machine factored);
-- **BRANCH CONSISTENCY:** the residual branches
+* **BRANCH CONSISTENCY:** the residual branches
   `UV_xi3 = -2 T0h^2 (8 k2^2 T0h^2 - 93 k2 - 15 kT)` and
   `Mdef_xi5 = -2 T0h^2 (4 k2^2 T0h^2 - 39 k2 - 15 kT)` share their positive
   root if and only if **kappa_C2 = kappa_TH** (difference
@@ -1092,31 +1098,33 @@ the admissible form of the corrections — obtained, not assumed.
 **(2) The corrected family is EXACT: `tau*(kappa) = 27/(2 kappa)`.**
 Under the uniform renormalization the corrected point exists for every
 kappa > 0 and the chain gives:
-- `T0h^2 = 27/(2 kappa)` (so the uncorrected point is the kappa = 2 member);
-- **holonomy-invariant station ladder** (kappa-free at the point):
+
+* `T0h^2 = 27/(2 kappa)` (so the uncorrected point is the kappa = 2 member);
+* **holonomy-invariant station ladder** (kappa-free at the point):
   `R3h = 3/2`, `W2h = 9`, `R5h = 183/40`, `M5h = -105/4`,
   mass link `M3*/R1* = 9/2`, clock `P2h/T0h = 1/3`;
-- what MOVES: the log-time base `tau*` itself, hence `P2h = T0h/3`,
+* what MOVES: the log-time base `tau*` itself, hence `P2h = T0h/3`,
   `P4h ~ kappa^{-1/2}`, and the T0h-relative ratios
   `W2h/T0h^2 = 2 kappa/3` (the ring 4/3 is the kappa = 2 member —
   the mirror campaign target becomes `2 kappa_hol/3`), `R3h/T0h^2 = kappa/9`;
-- amplitude book: `ln tau* = ln(27/(2 kappa))`.
+* amplitude book: `ln tau* = ln(27/(2 kappa))`.
 
 **(3) Do the corrections close the books? (honest numbers, no fitting).**
 The book closure `ln tau* = kappa_obs` requires `kappa_req = 27/(2 e^{kappa_obs})`
 = **1.901597** (gamma_lit anchor; 1.926609 for the b_Ch anchor) — i.e. a
 **uniform shift Delta kappa / kappa = -4.92%** from the bare kappa = 2:
-- multiplicative monograph-sign embedding `kappa = 2(1 + bC - aC)` = 2.19976:
+
+* multiplicative monograph-sign embedding `kappa = 2(1 + bC - aC)` = 2.19976:
   book -7.43% (moves AWAY);
-- opposite sign (screening) `kappa = 2(1 - bC + aC)` = 1.80024: book +2.79%
+* opposite sign (screening) `kappa = 2(1 - bC + aC)` = 1.80024: book +2.79%
   (overshoots);
-- **additive Berry screening `kappa = 2 - bC` = 2 - pi^2/98** = 1.899290:
+* **additive Berry screening `kappa = 2 - bC` = 2 - pi^2/98** = 1.899290:
   `tau* = 7.10792`, book = 1.961210 = **+0.062%** against
   kappa_obs(gamma_lit) (and -0.12% coupling distance to kappa_req); with the
   braking terms subtracted as well (`2 - bC + aC`, `2 - bC/2 - aC`): +0.11%,
   +0.43%... — the b_C-sized uniform screening lands ON the book closure;
-- braking-only embeddings (`2(1 - aB)`, `2(1 - aC - aB)`): +0.43% / +0.48%;
-- sign-combination scan over the four correction values (81 combos,
+* braking-only embeddings (`2(1 - aB)`, `2(1 - aC - aB)`): +0.43% / +0.48%;
+* sign-combination scan over the four correction values (81 combos,
   **multiple-testing caveat**): best -0.26%..-0.43%; the additive-Berry
   screening is not one of the 81 (it is a half-weight scheme) and beats them
   all.
@@ -1126,11 +1134,12 @@ The book closure `ln tau* = kappa_obs` requires `kappa_req = 27/(2 e^{kappa_obs}
   (b) the response family tau* = 27/(2 kappa).
 
 **(4) pi/30 closure tests.**
-- the tower chain still does NOT produce pi/30 exactly: the clock 1/3 and the
+
+* the tower chain still does NOT produce pi/30 exactly: the clock 1/3 and the
   station ladder are rational; the echo book remains measured (the hexcheck campaign);
-- the pencil spectrum in the corrected points (numeric QEP + sigma_min
+* the pencil spectrum in the corrected points (numeric QEP + sigma_min
   phantom filter, session-14 protocol reproduced: 4 genuine lambda = 0 modes
-  + 12 phantoms in ALL points): the phantom Im lambda sit NEAR the spinor
+  * 12 phantoms in ALL points): the phantom Im lambda sit NEAR the spinor
   ladder — baseline best hit `Im lambda = 0.1080 ~ 1*pi/30` (3.10%),
   screening point `0.10745` (2.60%), monograph-sign point `0.91564 ~
   9*pi/30` (2.85%) — proximity, NOT closure (nothing within 1%).
@@ -1161,6 +1170,7 @@ physics."
 **Sakharov mapping (structural; mechanism, NOT numbers).** The three
 conditions of matter survival have exact tower counterparts, all
 machine-established in previous sessions:
+
 1. *departure from equilibrium* <-> criticality / the limit cycle: the
    frozen point tau* is spectrally inert (no real modes, not an attractor);
    the dynamics lives in the second flows (DSS) — the system never settles;
@@ -1176,15 +1186,16 @@ machine-established in previous sessions:
    sector.
 
 **Machine facts (this run).**
-- The REAL sector annihilates EXACTLY in every corrected point: zero real
+
+* The REAL sector annihilates EXACTLY in every corrected point: zero real
   exponential modes; the 4 genuine modes are numerically-zero neutral
   oscillations (|lambda| ~ 2e-3). What survives the annihilation is the
   imaginary (phase) sector — the 12 "phantoms" of the session-12 protocol.
-- Under the baryon-asymmetry reading this INVERTS the phantom verdict:
+* Under the baryon-asymmetry reading this INVERTS the phantom verdict:
   the phantom sector is not garbage to filter but the surviving asymmetric
   residue of the spectrum — the tower's own "baryon asymmetry". (Labeled
   as interpretation, not derivation.)
-- Phantom Im lambda vs the spinor ladder k*pi/30 across schemes:
+* Phantom Im lambda vs the spinor ladder k*pi/30 across schemes:
   baseline +3.10%, monograph-sign +3.43% (9pi/30: -2.85%), two-brick
   screening +2.60%, and — the previously MISSING run — the one-brick
   additive Berry scheme kappa = 2 - bC (tau* = 7.10792):
@@ -1233,10 +1244,11 @@ W2'' -> (ddW2 + 5 dW2 + 6 W2h)/S^4, R3'' -> (ddR3 + ...)/S^4,
 P4'' -> (ddP4 + 9 dP4 + 20 P4h)/S^6, dd* := d^2(amp)/dtau^2. T0/D0/R1 are NOT
 touched (their tables are exact lower levels, not adiabatic closures); ddQ is
 a vestige (P2'' is pre-substituted by the exact O5 — no equation contains it).
-- regression: dd = 0 reproduces the adiabatic system EXACTLY (12/12);
-- frozen-point residuals 1e-23..1e-24 at both points (kappa = 2 and the
+
+* regression: dd = 0 reproduces the adiabatic system EXACTLY (12/12);
+* frozen-point residuals 1e-23..1e-24 at both points (kappa = 2 and the
   one-brick 2 - pi^2/98, tau* = 27/(2 kappa));
-- **the l^2-sector is LIVE: rank C = 3 EXACTLY (symbolic) at both points.**
+* **the l^2-sector is LIVE: rank C = 3 EXACTLY (symbolic) at both points.**
 
 **(1) The true quadratic pencil.** With the limit-cycle ansatz
 A(tau) = A* + a e^{l tau} (flows = l a, second flows = l^2 a) the 18-equation
@@ -1244,28 +1256,30 @@ system (12 tower + 6 prolongs) becomes the polynomial pencil
 M(l) = Ja + l*Jv*P + l^2*J2*P2 (18x9). Rank drops = genuine modes.
 
 **(2) The verification instrument (three layers, honest).**
-- session-14 protocol (rel sigma_min < 1e-8 on float candidates) is NOT
+
+* session-14 protocol (rel sigma_min < 1e-8 on float candidates) is NOT
   calibrated for the l^2-sector: at |l| ~ 1e5 the l^2-dominance makes the
   relative test too lenient (the "7 genuine modes" of the first run were
   threshold artifacts);
-- Newton polish of l on sigma_min(M(l)) + mpmath: every nonzero candidate
+* Newton polish of l on sigma_min(M(l)) + mpmath: every nonzero candidate
   STALLS at rel 1e-9..1e-13 (12+ orders above the true-kernel behavior
   1e-21..0) — near-zeros, not modes;
-- **the exact instrument (baseline, all values in Q(sqrt3)):** the char
+* **the exact instrument (baseline, all values in Q(sqrt3)):** the char
   polynomial det(M^T M) built by exact rational interpolation (45 points,
   cross-checked at l = 1/2): **char = 9 l^4 Q18(l), degree 22, multiplicity
   of l = 0 is 4 — EXACTLY the lambda^4 structure of the session-14 linear
   pencil.** The de-adiabatization did NOT change the kernel.
 
 **(3) Verdict.**
-- the ONLY genuine mode at both points is **l = 0** (the marginal scale
+
+* the ONLY genuine mode at both points is **l = 0** (the marginal scale
   direction; at one-brick rel40 = 0 exactly);
-- all 18 nonzero exact roots at baseline are PHANTOMS (rel40 = 2.3e-06..
+* all 18 nonzero exact roots at baseline are PHANTOMS (rel40 = 2.3e-06..
   3.8e-04 — 24+ orders above the genuine floor 1e-30);
-- **delta_mono = 0 at linear order**: no true complex pair means no
+* **delta_mono = 0 at linear order**: no true complex pair means no
   amplitude-independent monodromy residue per echo. The tower's
   "B-violation" is NOT a linear phenomenon;
-- the near-pi/30 structure of the phantoms (sessions 14-16) is a property of
+* the near-pi/30 structure of the phantoms (sessions 14-16) is a property of
   the NEAR-KERNEL GEOMETRY (pseudospectrum), not of true dynamics: the
   softest baseline phantom sits at l = -0.102 +/- 0.122i (rel40 2.3e-06);
   observation, no claim.
@@ -1294,7 +1308,7 @@ The three honest next steps of §24, all executed. Machines:
 
 **Theorem (exact, SymPy).** For a profile of weight p, f(tau)*s^-p with
 ds/dy = -1 (tau = -ln s), the n-th y-derivative table is
-d^n/dy^n[f s^-p] = s^-p-n * Sum_k c_{n,k}(p) f^(k)(tau), where the
+d^n/dy^n[f s^-p] = s^-p-n* Sum_k c_{n,k}(p) f^(k)(tau), where the
 coefficients c_{n,k}(p) are CONSTANTS (purity is part of the theorem) and in
 the mode basis factorize EXACTLY as (l+p)(l+p+1)...(l+p+n-1). Verified for
 all (p, n) in {0,1,2,4}x{1,2,3}; in particular c_{n,n} = 1 for ALL (n, p):
@@ -1305,9 +1319,10 @@ All machine tables (P0/T0, W0/D0, P2/ddQ, W2, R3, P4, R5) are re-derived
 from the profile ansatz as theorems, and the NEW third-order tables are
 built — each one is the EXACT y-derivative of the second-order table
 (d/dy[G s^-k] = (G' + kG) s^-k-1):
-- W2''' / R3''' -> (ddd + 9 dd + 26 d + 24 amp)/s^5 — (l+2)(l+3)(l+4);
-- P4''' -> (ddd + 15 dd + 74 d + 120 amp)/s^7 — (l+4)(l+5)(l+6);
-- R5'' -> (dd + 9 d + 20 amp)/s^6 — (l+4)(l+5).
+
+* W2''' / R3''' -> (ddd + 9 dd + 26 d + 24 amp)/s^5 — (l+2)(l+3)(l+4);
+* P4''' -> (ddd + 15 dd + 74 d + 120 amp)/s^7 — (l+4)(l+5)(l+6);
+* R5'' -> (dd + 9 d + 20 amp)/s^6 — (l+4)(l+5).
 Regression: the leading slot coefficient is 1 in ALL generations (third,
 second, machine ddQ); dd = 0 reduces the second tables to the adiabatic
 audit tables exactly.
@@ -1336,20 +1351,21 @@ choice: differentiate the constraints and solve.
 
 Machine facts (baseline kappa = 2, EXACT in Q(sqrt3); one-brick numeric
 float64 with clean singular gaps):
-- the prolongation d/dtau(J1s x) = 0 has 9 unknowns (M5h', ddT0, ddD0, ddQ,
+
+* the prolongation d/dtau(J1s x) = 0 has 9 unknowns (M5h', ddT0, ddD0, ddQ,
   ddR1, ddR5, dddW2, dddR3, dddP4; the derivatives of dW2/dR3/dP4 ARE the
   state dd); the unknown matrix Uk (18x9) has rank 9 EXACTLY — **the
   closure is UNIQUE**;
-- solvability = hidden constraints Op (v, dd) = 0, rank 5 (9x11);
-- the level-2 manifold ker[J1s; Op'] is 3-dimensional; the level-3
+* solvability = hidden constraints Op (v, dd) = 0, rank 5 (9x11);
+* the level-2 manifold ker[J1s; Op'] is 3-dimensional; the level-3
   violations Op (v', dd') have rank 1 on it and cut it to **dim M2 = 2**;
   on M2 the evolution is invariant (level-4 violations = 0 EXACTLY);
-- **the closed evolution on M2 is B = [[0, -350/61], [0, 0]] EXACTLY:
+* **the closed evolution on M2 is B = [[0, -350/61], [0, 0]] EXACTLY:
   B^2 = 0, spec(B) = {0, 0}** — a nilpotent Jordan block of size 2 (statics
-  + LINEAR secular drift, no exponentials, no oscillations);
-- one-brick: the same structure (rank Uk = 9, dim M2 = 2, |B^2| = 3.9e-13
+  * LINEAR secular drift, no exponentials, no oscillations);
+* one-brick: the same structure (rank Uk = 9, dim M2 = 2, |B^2| = 3.9e-13
   at ||B||^2-scaled tolerance, eigenvalues ~ 2.5e-7 ~ 0);
-- alternatives (machine facts): C0 (dd = 0) is admissible ONLY on the
+* alternatives (machine facts): C0 (dd = 0) is admissible ONLY on the
   frozen set (the branch equations UV_xi3 = -16 R1h^3 T0h^2 (4T0h^2-27)/27
   and Mdef_xi5 = -8 R1h^2 T0h^2 (4T0h^2-27)/27 share the factor 4T0h^2-27;
   the C1 rows vanish identically; R1h is the flat direction — a 1-dimensional
@@ -1363,25 +1379,27 @@ index reduction (dim M2 = 2, Jordan-2), and the march (25.4).
 ### 25.4 (c) delta_mono MEASURED by the march (precision-generation instrumentation)
 
 Two independent marches of the closed linear DAE:
-- (m1) coordinate: y' = B y on M2 (B exact from 25.3);
-- (m2) ambient: x' = V(x) in R^20 with the closure RE-IMPLEMENTED from the
+
+* (m1) coordinate: y' = B y on M2 (B exact from 25.3);
+* (m2) ambient: x' = V(x) in R^20 with the closure RE-IMPLEMENTED from the
   raw matrices (Uk-solve at every RK4 stage + projection onto M2), with
   constraint-drift monitoring.
 
 Measurements (baseline; one-brick in parentheses):
-- growth law: log-log slope 1.0225 (0.9587) -> asymptotically 1: LINEAR
+
+* growth law: log-log slope 1.0225 (0.9587) -> asymptotically 1: LINEAR
   secular growth (Jordan-2), NOT an exponential, NOT an oscillation;
-- the propagator over one echo Delta_sp = 0.7330382858376652 (the hexcheck campaign, model B):
+* the propagator over one echo Delta_sp = 0.7330382858376652 (the hexcheck campaign, model B):
   coordinate eig = (1, 1) EXACTLY at baseline; ambient
   eig = 1 +/- 2.7e-8 i (1 +/- 2.3e-7 i) — the splitting of a DEFECTIVE
   double eigenvalue under roundoff is ~sqrt(eps), an honest numerical FLOOR,
   not a signal; |eig| - 1 < 2.8e-14 (9.3e-14);
-- **delta_mono per echo: growth < 2.8e-14 (9.3e-14), phase < 2.7e-8
+* **delta_mono per echo: growth < 2.8e-14 (9.3e-14), phase < 2.7e-8
   (2.3e-7)** — the march CONFIRMS the derived verdict delta_mono = 0 by an
   independent pipeline (ODE integration instead of the spectral one);
-- cross-validation m1 vs m2: relative max 4.7e-12 (6.6e-11); constraint
+* cross-validation m1 vs m2: relative max 4.7e-12 (6.6e-11); constraint
   drift 1.5e-12 (1.7e-11); projection corrections ~1e-13;
-- the phantom-gap scale 3.0e-3 (2.9% of pi/30) is 1e4..1e5 times LARGER
+* the phantom-gap scale 3.0e-3 (2.9% of pi/30) is 1e4..1e5 times LARGER
   than the march bound — **the gap is NOT reproduced by the linear
   dynamics; it is not a linear monodromy residue.**
 
@@ -1418,29 +1436,29 @@ The full nonlinear system is built symbolically and lambdified (build ~8 s,
 evaluation 0.08 ms, cross-check of the lambdified Jacobians against the exact
 session-17 matrices rel ~1e-15):
 
-- **constraints** F(x) = 0 — 18 equations (12 tower + 6 chain-prolongation),
+* **constraints** F(x) = 0 — 18 equations (12 tower + 6 chain-prolongation),
   polynomial/rational in the state x = (a[9], v[8], dd[3]);
-- **closure** — the *exact* nonlinear generalization of the session-18b
+* **closure** — the *exact* nonlinear generalization of the session-18b
   prolongation: dF/dτ = J_a(x)a′ + J_v(x)v′ + J₂(x)dd′ = 0 by the CHAIN RULE
   (no linearization), with the same kinematics and the same 9 unknowns;
   Uk(x) u = −Known(x)(v, dd), all matrices evaluated at the current x;
-- **compatibility** r(x) = 0 — the component of −Known(x)(v,dd) outside
+* **compatibility** r(x) = 0 — the component of −Known(x)(v,dd) outside
   range(Uk(x)) (Procrustes-aligned left kernel, norm basis-invariant): the
   nonlinear analog of the hidden constraints Op(v,dd) = 0;
-- RK4 (dt = 2e-3, as the third-order campaign), min-norm Newton projections onto {F=0} and {r=0},
+* RK4 (dt = 2e-3, as the third-order campaign), min-norm Newton projections onto {F=0} and {r=0},
   monitors: rank Uk, lstsq residual, F-drift, alignment angle.
 
 Machine facts established on the way (both points κ = 2 and 2 − π²/98):
 
-- rank DF(x*) = 14 (the linearization degeneracy of session 18b), but rank DF
+* rank DF(x*) = 14 (the linearization degeneracy of session 18b), but rank DF
   rises to 15 at finite amplitude — x* is a *singular* point of the constraint
   set;
-- **[T1] THE FLAT LINE.** The ker-B direction is a-pure (v = dd = 0 exactly;
+* **[T1] THE FLAT LINE.** The ker-B direction is a-pure (v = dd = 0 exactly;
   the R1h–R3h–R5h–M5h chain walk) and carries F = 0, r = 0, V = 0 EXACTLY
   (machine zero up to radius |x − x*| ~ 26): a line of EXACT equilibria of
   the nonlinear DAE; an 8-echo march from it drifts by 0 (baseline) / 8.6e-12
   (one-brick).
-- **[T2] STATICS OF S = {F=0} ∩ {r=0}.** (a) The M2 direction e2 does NOT
+* **[T2] STATICS OF S = {F=0} ∩ {r=0}.** (a) The M2 direction e2 does NOT
   touch S: the cokernel residual |P_coker G(x*+h·e2)|/|G| is CONSTANT in h
   (0.058 baseline, 5.9e-4 one-brick — no O(h) decay, so no C² branch can
   bend it away); the joint Newton from an e2-point collapses toward x*/the
@@ -1449,7 +1467,7 @@ Machine facts established on the way (both points κ = 2 and 2 − π²/98):
   analysis of session 18b killed! The b2-branch EXISTS statically: the joint
   Newton holds the radius (×1.03–1.04) with |F|, |r| ~ 1e-14 at all tested
   amplitudes up to |x − x*| ≈ 1.35.
-- **[T3] THE FLOW ON THE BRANCHES.** On the line V = 0 (equilibria). From
+* **[T3] THE FLOW ON THE BRANCHES.** On the line V = 0 (equilibria). From
   the b2-branch the closure is compatible AT the point (r ~ 1e-14) but the
   flow LEAVES S immediately: the level-3 exit rate |Dr(x0)·V(x0)| = (39.2 ±
   0.2)·A at BOTH points (linear in A), the closure breaks down in the first
@@ -1479,7 +1497,7 @@ the third-order campaign `.npy` exports; ~55 s) → `results/march_dae_nonlinear
 ## 27. HEXCYCLE-DAE — the figure cycle as a global predictor (session 20)
 
 **Question (the nonlinear-DAE campaign verdict + author's proposal).** The nonlinear-DAE campaign proved that the local DAE
-march near x* is algebraically impossible (the only solution manifold through
+march near x*is algebraically impossible (the only solution manifold through
 the critical point is the flat line of equilibria) and left a caveat: *global
 components of S away from x* were not searched*. The author proposed to use
 the dynamic geometric cycle itself — pyramid → cone → truncated cone →
@@ -1488,29 +1506,29 @@ predictor: a finite-amplitude route through the figures.
 
 ### 27.1 The embedding (axioms E1–E3, all flagged, no fitting)
 
-- **E1 (amplitude book).** The scale T0h moves by the cycle steps:
+* **E1 (amplitude book).** The scale T0h moves by the cycle steps:
   T0h_k = T0h*·exp(∓r_k), r_k = Σ STEPS — the pair closures (3/2)² = τ3 = 9/4
   (CORE, UV[ξ³]) and (4/3)² = 1/τ5 = 16/9 (RING, Mdef[ξ⁵]) are the machine's
   own ladder numbers; station 0 (pyramid) = the critical scale; station names
   cycle with period 6.
-- **E2 (ruler).** The pure book keeps R1h = 1; ruler compensation is tested
+* **E2 (ruler).** The pure book keeps R1h = 1; ruler compensation is tested
   separately (T1c/T1d).
-- **E3 (chain + kinematics).** Amplitudes = the exact chain forms of the nonlinear-DAE campaign
+* **E3 (chain + kinematics).** Amplitudes = the exact chain forms of the nonlinear-DAE campaign
   (D0h ≡ 0 verified); the homothetic walk uses τ = T0h², dT0h/dτ = 1/(2T0h)
   with flows/dd by the exact chain rule.
 
 ### 27.2 Machine facts (both points κ = 2 and 2 − π²/98)
 
-- **[T1a] The pure book is statically OFF.** F(chain(T0h_k, 1), 0, 0) reaches
+* **[T1a] The pure book is statically OFF.** F(chain(T0h_k, 1), 0, 0) reaches
   2.7e1 (collapse, 13 stations) and 2.7e5 (blowup); worst equations {0, 2}
   (baseline) / {2, 6} (one-brick). Station 0 = x* exactly (anchor).
-- **[T1b] The P4h pole is SOFT.** The chain form P4h has a genuine pole at
+* **[T1b] The P4h pole is SOFT.** The chain form P4h has a genuine pole at
   τ = 45/8 = 5.625 (baseline; T0h = 3√10/4 ≈ 2.3717 — inside the first ring
   side of the collapse walk); at the one-brick point the pole MOVES to
   τ ≈ 5.923. Multistart Newton with free amplitudes at the pole scale reaches
   F ~ 1e−15: the static branch PASSES through the pole scale — the pole is an
   artifact of the solved chain representation, not a barrier of the book.
-- **[T1c] THE COMPENSATED BOOK EXISTS — global static components of S.**
+* **[T1c] THE COMPENSATED BOOK EXISTS — global static components of S.**
   Minimal-correction static landings (min-norm Newton from the pure book,
   T0h pinned, degenerate corner R1h → 0 with R3h = R5h = M5h = 0 rejected)
   converge at ALL booked scales: 12/12 collapse + 6/6 blowup at both points.
@@ -1518,23 +1536,23 @@ predictor: a finite-amplitude route through the figures.
   verified): the first GLOBAL components of S = {F=0} ∩ {r=0} away from x* —
   the nonlinear-DAE campaign caveat is answered. The local dimension of the static set at pinned
   scale is 0–1 (isolated points / curves).
-- **The locked ruler.** In the collapse direction R1h(k) dips at the ring
+* **The locked ruler.** In the collapse direction R1h(k) dips at the ring
   stations (min 0.687 at the truncated-cone scale) and RELAXES back to 1
   (0.9997 by station 12); the one-cycle return defect δ_R1h = 0.064; the dip
   does NOT repeat in cycle 2 (max |R1h(k+6) − R1h(k)| = 0.31 — a transient,
   selection path-dependent). In the blowup direction the selection slides
   toward the near-degenerate corner (R1h ~ 0.056–0.1) — the half-annihilated
   branch attracts the blow-up book (interpretive asymmetry, flagged).
-- **[T1d] On-chain compensation is impossible.** Scanning R1h at fixed chain
+* **[T1d] On-chain compensation is impossible.** Scanning R1h at fixed chain
   amplitudes, the residual vanishes only toward the degenerate corner
   (R1h → 0, residual ∝ R1h³): the non-degenerate compensation necessarily
   leaves the chain manifold.
-- **[T2] The kinetic layer annihilates.** The prolongation equations are
+* **[T2] The kinetic layer annihilates.** The prolongation equations are
   exact along the homothetic walk BY CONSTRUCTION (≤ 1.2e−13), but the
   closure is incompatible with it: r_max = 2.1/9.7 (baseline collapse/blowup),
   1.6/8.3 (one-brick); closure breakdown at all kinetic stations (7/7). The
   homothetic book-walk is NOT a DAE solution.
-- **[T3] Global shooting.** Free joint-Newton [F; r] landings: 14/24
+* **[T3] Global shooting.** Free joint-Newton [F; r] landings: 14/24
   converged; every landed point with |V| > 1e−3 has exit_rate 62…8e5 — the
   flow leaves S immediately (the nonlinear-DAE-campaign T3 verdict extends globally); points
   with tiny |V| (1e−8…1e−4) are equilibrium dust (exit ~ 1e−14…1e−10).
@@ -1584,30 +1602,30 @@ on the pin and stand.
 
 ### Machine facts (both points kappa = 2 and 2 - pi^2/98)
 
-- **[A1] The honest static map.** Multi-start Newton (5 R1h seeds) with a
+* **[A1] The honest static map.** Multi-start Newton (5 R1h seeds) with a
   HARD-pinned T0h (dx[0] = 0) at every booked scale: 0/18 non-degenerate
   static states in BOTH points — every landing (except station 0 = x*)
   falls into the half-tower R1h -> 0 (F ~ 1e-14..1e-27 at R1h ~ 1e-15,
   ring sector R3h = R5h = M5h = 0). The clocks have NO static carrier
   away from the critical scale.
-- **[C1] THE CLOCK-PAIR THEOREM (exact, SymPy).** On the chain the branch
+* **[C1] THE CLOCK-PAIR THEOREM (exact, SymPy).** On the chain the branch
   equations UV[xi^3] and Mdef[xi^5] have a UNIQUE common positive root
   tau*(kappa) = 27/(2kappa): baseline UV_xi3 = -16T0h^2(4T0h^2-27)/27,
   Mdef_xi5 = -8T0h^2(4T0h^2-27)/27, GCD = T0h^2(4T0h^2-27)/4, tau* = 27/4;
-  one-brick GCD = T0h^2(196-pi^2)(-T0h^2 + 1323/(196-pi^2)), tau* =
+  one-brick GCD = T0h^2(196-pi^2)(-T0h^2 + 1323/(196-pi^2)), tau*=
   1323/(196-pi^2) = 7.107920. The zero test at tau* is EXACT; uniqueness
   holds. The naive 9/4-vs-9/16 incompatibility is dissolved by the
   de-adiabatized (T1c) source form: both branches close on ONE clock, and
   one brick moves that clock 27/4 -> 1323/(196-pi^2) — the ln tau*
   closure from -2.57% to +0.062% (consistent with the correction campaign).
-- **[C2] Clock carriers.** At x* the books are EXACT in both points:
+* **[C2] Clock carriers.** At x*the books are EXACT in both points:
   W2h/T0h^2 = 2kappa/3 (defect 0), the UV book 9R3h/(2R1hT0h^2) = kappa/2
   (defect 0; R3h = 3/2 EXACTLY in both points — the holonomy-invariant
   ladder of the correction campaign visible in the data), s = 3P2h/T0h = 1. Away from x* the
   carrier annihilates (half-tower: ring amplitudes = 0 — the ring clock
   is dead).
-- **[C3] The B4 remnant (greater delta-sensitivity).** The kernel
-  M_r: (v,dd) -> r at fixed amplitudes is 5-dimensional at x* in both
+* **[C3] The B4 remnant (greater delta-sensitivity).** The kernel
+  M_r: (v,dd) -> r at fixed amplitudes is 5-dimensional at x*in both
   points (rank 6 of 11; clean singular values). Lifting the kernel
   kinematics onto the joint manifold {F=0, r=0} STALLS: F ~ 1e-13..1e-7
   but r ~ O(kick) (baseline 3.4e-2 at kick 0.27, 1.6e-1 at kick 1.33;
@@ -1656,16 +1674,16 @@ A brick = a Berry phase delta with the additive screening
 kappa(delta) = 2 - delta^2/2 (the recorded correction-campaign convention). Ladder:
 delta_k = pi/k, k in {2..12, 14} + baseline (delta = 0) — 12 points.
 
-- **[B2] CLOCK-PAIR THEOREM ON THE LADDER (exact, SymPy).** On **12/12
+* **[B2] CLOCK-PAIR THEOREM ON THE LADDER (exact, SymPy).** On **12/12
   bricks** the on-chain GCD(UV_xi3, Mdef_xi5) has a **unique common
   positive root** tau*(delta) = 27/(2 - delta^2) with an **exact zero**
   there: 27/4 (baseline) -> 17.617 (k=2) -> 7.108 (k=7, survivor) ->
   6.836 (k=14). The clock pair moves continuously with the brick across
   the whole ladder — the clock-closure campaign [C1] generalization from two points to the
   full brick series.
-- **[B1] The nonlinear-DAE campaign T1 flat line is brick-independent:** the R1h line at
+* **[B1] The nonlinear-DAE campaign T1 flat line is brick-independent:** the R1h line at
   the critical scale T0h*(delta) is static (F <= 1e-7) on 12/12 bricks.
-- **[B3] Tick obstruction vs delta (the primary observable).** ERRATUM
+* **[B3] Tick obstruction vs delta (the primary observable).** ERRATUM
   to the clock-closure campaign [C3] method: `r_max = max|W*res18|` is a basis-dependent
   quantity (W_align is mutated by the rvec Procrustes continuation), so
   the absolute [C3] the clock-closure campaign numbers were history-dependent. This campaign
@@ -1679,11 +1697,11 @@ delta_k = pi/k, k in {2..12, 14} + baseline (delta = 0) — 12 points.
   relative anchor survives on the invariant measure: one-brick
   ||r|| = 0.032 < baseline 0.043 (kick 0.05); 0.029 < 0.107 (kick
   0.01).
-- **[B4] The phantom gap across the ladder.** Pencil scan at the
+* **[B4] The phantom gap across the ladder.** Pencil scan at the
   corrected points: best hit **+1.139% of pi/30 at delta = pi/3**
   (baseline +3.10%, one-brick +2.88%); **nothing within 1%** (0 of 12)
   — the scan does not close pi/30 (multiple-testing caveat).
-- **[B5] The book defect is kappa-independent:** F_static_max = 26.79 on
+* **[B5] The book defect is kappa-independent:** F_static_max = 26.79 on
   all 12 bricks (the same 24 scales of the first cycle) — the defect
   lives in the kappa-free part of the equations (consistent with the correction campaign:
   SC/UV/Mdef have no kappa leakage).
@@ -1693,7 +1711,7 @@ delta_k = pi/k, k in {2..12, 14} + baseline (delta = 0) — 12 points.
 Known families: S0 trivial, S1 x*, S2 the nonlinear-DAE campaign T1 flat line, S3 the
 half-tower. Both points (baseline, one-brick).
 
-- **[G1a] FACTORIZATION THEOREM (exact, SymPy) — the on-chain census is
+* **[G1a] FACTORIZATION THEOREM (exact, SymPy) — the on-chain census is
   EXHAUSTIVE.** After the chain substitutions the rest system is just
   TWO equations, and they factorize: Mdef_xi5 = -8*R1h^2*T0h^2*
   (4*T0h^2-27)/27, **UV_xi3 = 2*R1h*Mdef_xi5 exactly** (one-brick: the
@@ -1704,15 +1722,15 @@ half-tower. Both points (baseline, one-brick).
   flat line is the ONLY non-degenerate one. The "clock pair" is ONE
   clock equation in two branches with different powers of R1h — the
   machine reason why the clock-closure campaign GCD theorem yields unique clocks.
-- **[G1] The numeric census confirms:** a 2501-cell 2D scan
+* **[G1] The numeric census confirms:** a 2501-cell 2D scan
   (T0h*10^[-4.5,1.5] x 10^[-2.3,1.7]) + multi-start Gauss-Newton (56
   seeds): all roots fall into the three families, **0 new** (full
   F-check).
-- **[G2] Off-chain free Newton** (8 amplitudes, no pin, 300 random
+* **[G2] Off-chain free Newton** (8 amplitudes, no pin, 300 random
   starts in a wide box with perturbed chain amplitudes): 34 flat-line
   captures, ~165 trivial escapes, ~100 no-landing (best unlanded
   F = 4.4e-13 — stiffness stalls), **0 new candidates**.
-- **[G3] Shooting/continuation from x\*:** the static kernel of dF/da
+* **[G3] Shooting/continuation from x\*:** the static kernel of dF/da
   at x\* is **1-dimensional** (only the flat-line tangent) — no other
   static directions leave x\*; 4-7 rank drops along the line
   (bifurcation candidates) — the branching attempts (pinned-T0h Newton
@@ -1759,7 +1777,7 @@ passed by chance.
 
 ### Machine facts (all reproducible: `results/q*_*.json`)
 
-- **[Q1] Structural barrier (three-level null test).** L1: the books
+* **[Q1] Structural barrier (three-level null test).** L1: the books
   {kappa(delta) = 2 − delta²/2, tau*(delta) = 27/(4−delta²)} leave delta
   FREE — the elimination ideal in Q[delta] is {0} (Gröbner/lex). L2: PSLQ
   over [1, d..d⁸] at 50/100/200 digits finds no polynomial; the method
@@ -1769,7 +1787,7 @@ passed by chance.
   algebraic condition can ever select π/7. **The algebraic tower books
   alone cannot select the brick; selection must enter through the
   transcendental sector (finite-amplitude monodromy or Berry holonomy).**
-- **[Q2] The π/30 residue is structural and NOT linear.** Two independent
+* **[Q2] The π/30 residue is structural and NOT linear.** Two independent
   linear systems give Im λ = 0.10773 / 0.10797 (spread 0.22%) against the
   offset +2.88%/+3.10% to π/30; the offset is ~1e11 the march growth bound
   (and 1e5 the √eps defectiveness floor). Minimal Jordan-2 model
@@ -1777,7 +1795,7 @@ passed by chance.
   ~ eps^(1/2) (numpy fit p = 0.5000). Falsifiable discriminator vs the
   Lyapunov (p = 2 in A) route; the exponent is UNMEASURED with saved data
   (protocol emitted).
-- **[Q3] Percentile γ/Δ.** The percentile estimators are delivered and
+* **[Q3] Percentile γ/Δ.** The percentile estimators are delivered and
   self-tested (synthetic floor: OLS 0.281 vs percentile 0.398 against the
   true 0.374). On the repo bisect data the mass floor dominates
   (lower half of masses FLAT, slope −0.03; percentile p70 CI useless at
@@ -1785,7 +1803,7 @@ passed by chance.
   6ln(16/9) = 3.4522 (0.35%) stands; re-measurement needs z ≥ 30.
   GATE (after #7): junk-floor M1 ⇒ the percentile γ is floor-limited, not
   mode-limited.
-- **[Q4] The W2 ring 4/3 stays BLOCKED, now quantitatively.** Offline
+* **[Q4] The W2 ring 4/3 stays BLOCKED, now quantitatively.** Offline
   re-analysis of 10 665 saved mirror pairs (172 rows): MAD-trim medians do
   NOT converge to 4/3 (1.15 / 0.071 / 0.165 across runs); the core
   criterion (≥5 rows with |W2/t0²−4/3| ≤ 0.1) is passed by 6 rows, but the
@@ -1793,7 +1811,7 @@ passed by chance.
   chance; the odd junk is background-like (not outlier-like) and row
   quality does not mature with stage (Spearman 0.22). Channel B: R3/t0²
   ~ junk (degenerate), CSS-R3 subset = 2 rows.
-- **[Q5] The tower's base layer closes exactly; a NEW identity.** The chain
+* **[Q5] The tower's base layer closes exactly; a NEW identity.** The chain
   {D0h = 0, R3h = 2R1T0²/9, W2h = 4T0²/3, P2h = T0/3} closes the linear
   z-system F1/F2/F4/F5 IDENTICALLY; F3 gives the linear P4h closure
   P4h_lin = t(16t²+27)/270 — a polynomial, regular EVERYWHERE. The M3-link
@@ -1803,7 +1821,7 @@ passed by chance.
   one-brick clock are the SAME number by two independent routes (verified
   symbolically).** Convergence is NOT established (6.75 → 7.1079, +5.27%);
   the O7 program (5 fixations) is written.
-- **[Q6] The 45/8 pole anatomy.** P4h_chain = t³(352t²−540)/(135(8t²−45)):
+* **[Q6] The 45/8 pole anatomy.** P4h_chain = t³(352t²−540)/(135(8t²−45)):
   a SIMPLE pole in τ (numerator at the pole = 6075√10 ≠ 0). EXACT
   coincidence: char(λ=2, τ) = 8(2τ−1)(8τ−45)/27 — the growing mode λ⁺ = 2
   lives at τ ∈ {1/2, 45/8}, the second point is exactly the chain pole
@@ -1813,13 +1831,13 @@ passed by chance.
   artifact of the chain parametrization, not of the book (consistent with
   T1b). The pole moves with the brick (45/8 → 5.9233 one-brick); the
   char(2) coincidence at the brick is open.
-- **[Q7] The 1/r mode does NOT grow at accessible depth.** m = M1·ξ + M3·ξ³
+* **[Q7] The 1/r mode does NOT grow at accessible depth.** m = M1·ξ + M3·ξ³
   on the outer window of 20 saved probe profiles (R2 median 0.999): |M1|
   by zoom = 1.2e-8 → 1.1e-9 → 2.3e-12 → 4.8e-20 (slope log|M1| vs zoom
   negative, CI excludes 0): junk floor with decay. Junk invasion localized
   (zoom3 j ≥ 12: R2 drops to 0.88, M3 negative — flagged and excluded).
   Gate word for #3 emitted.
-- **[Q8] No Lyapunov center at x\*.** char(iω, τ* = 27/4) has the single
+* **[Q8] No Lyapunov center at x\*.** char(iω, τ* = 27/4) has the single
   real solution ω = 0 — no purely imaginary pairs (checked symbolically);
   the corrected pencil has only λ = 0. Together with the b2 exit rate
   (39.2±0.2)·A: no cycle bifurcates from the critical point or the line.
@@ -1828,7 +1846,7 @@ passed by chance.
   a transient, not a cycle); blowup slides to the degenerate corner
   (R1h → 0.08). No attracting finite-amplitude cycle in the static book;
   the residue monodromy, if any, is a global Poincaré-map object.
-- **[Q9] The static census is CERTIFIED.** Own interval arithmetic
+* **[Q9] The static census is CERTIFIED.** Own interval arithmetic
   (outward rounding) + Krawczyk: 1D clock census on [1e-3, 30] gives ONE
   certified root box per model, each CONTAINING the booked value
   (3√3/2 = 2.5980762; one-brick 2.6660683) with uniqueness certificates,
@@ -1844,8 +1862,7 @@ passed by chance.
 residue is structural with a falsifiable √eps law; #5/#6 deliver two exact
 new machine facts (the τ*(δ_C) = τ*_T1c identity; the pole = char(2)
 coincidence + linear-level finiteness); #7 kills the growing-1/r scare at
-accessible depth and un-gates #3; #4 stays blocked with a quantified null;
-#8 excludes the local Lyapunov route; #9 turns the Newton census into
+accessible depth and un-gates #3; #4 stays blocked with a quantified null; #8 excludes the local Lyapunov route; #9 turns the Newton census into
 certificates. The percent-level γ (#3) and the finite-amplitude residue
 (#2) now have precise, honest protocols that need DEPTH (z ≥ 30) and an
 amplitude ladder — the next campaigns.**
@@ -1874,13 +1891,13 @@ The falsifiable discriminator of q2 [F3] (Jordan-2 carrier ⇒ |Δ_eff − Δ_re
 REAL ladder over the PDE machine: eps ∈ {3e-3, 1e-3, 3e-4, 1e-4} over A*
 (n = 600, ≤ 8 zooms per rung, ~15–20 s per rung). Result:
 
-- **The echo trains do not develop on any rung** (0–3 significant Q-peaks,
+* **The echo trains do not develop on any rung** (0–3 significant Q-peaks,
   stop = singularity / v_exhausted, z ≤ 4.6). A cross-check against ALL
   saved zoom campaigns (v2, v3.2, v5, spinor ladder) shows the same: every
   run on the same amplitudes stops at "singularity" with z ≤ 6.05 and 0
   Q-peaks. The absence of an echo train is a property of the CURRENT
   machine (the depth wall), not of the chosen eps values.
-- **Honest verdict: the exponent p is NOT measured.** The discriminator
+* **Honest verdict: the exponent p is NOT measured.** The discriminator
   stays falsifiable; the per-rung cost is negligible (15–20 s); the
   blocker is the wall physics, i.e. the floor suppression S_req of v20b
   [D2] — first depth (v21), then the ladder.
@@ -1889,20 +1906,20 @@ REAL ladder over the PDE machine: eps ∈ {3e-3, 1e-3, 3e-4, 1e-4} over A*
 
 Four machine facts toward the percent-level γ/Δ at z ≥ 30:
 
-- **[D1] The linear sector is certified to z = 30 in CLOSED FORM.** The M2
+* **[D1] The linear sector is certified to z = 30 in CLOSED FORM.** The M2
   propagator is exactly Π(T) = I + B·T (B^2 = 0, the Jordan-2 of the v14
   closure): the drift phase is EXACTLY 0 (real spectrum {1,1}), the growth
   is secular (σ_max ≈ 126 at T = 30·Δ_sp, ~4.4 per echo — polynomial, not
   exponential). An RK4 march to z = 30 matches the closed form to machine
   precision. Consequence: a percent-level γ measured at z ≥ 30 is clean of
   linear-monodromy contamination by construction.
-- **[D2] The depth budget.** The mass floor must be suppressed by
+* **[D2] The depth budget.** The mass floor must be suppressed by
   S_req(z) = e^{γ(z − z_wall)}: at z = 30 that is ≈ 2.26e3 (×10 percentile
   margin ≈ 2.3e4); the depth spans 41 spinor echoes; bisection cannot carry
   depth ((A−A*)/A* ~ e^(−z/γ) ~ 1e-35 at z = 30) — the zoom RESCALING does
   (z += ln λ per stage); a realistic start is eps ~ 1e-3 (z_0 ≈ 2.6) plus
   ~25–30 zooms.
-- **[D3] The closed loop on the reduced ladder.** Synthetic echo trains
+* **[D3] The closed loop on the reduced ladder.** Synthetic echo trains
   (geometric peak intervals, masses e^(−γz), floor at depth
   z_f = 7 + (z − 9.35), 5% junk on clamped points, fixed seeds): the
   A-PRIORI estimator rule (observed floor pile-up < 15% → survivor-OLS,
@@ -1911,7 +1928,7 @@ Four machine facts toward the percent-level γ/Δ at z ≥ 30:
   reproduces the q3 failure (−23% at the wall, −2.5…−8% deeper). The loop
   S_req ↔ percent-level is closed: suppress the floor per [D2] and the
   estimators deliver.
-- **[D4] The v21 protocol** (deep-echo campaign): start eps = 1e-3, junk
+* **[D4] The v21 protocol** (deep-echo campaign): start eps = 1e-3, junk
   gate word from q7 (|M1| decreasing across zooms), W2/M3 gates active,
   per-echo JSON checkpoints, stop at z ≥ 30 or after 3 consecutive
   junk invasions.
@@ -1951,19 +1968,19 @@ the deepest chain policy.
 
 ### Machine facts
 
-- **Calibration run 0.** The literal gate (fit on restart rows) misfires:
+* **Calibration run 0.** The literal gate (fit on restart rows) misfires:
   restart/early stage rows are VACUUM (m ~ 1e-13, R² < 0 — the zoom
   v-window extends BACKWARD from the feature), so the two-parameter mass
   decomposition is not a diagnostic there. The gate was recalibrated to
   ACTIVE rows (Q > 1% of the stage max Q). Preserved as
   `results/v21_calibration_run0.json`; its rollback-tightening path
   (z = 5.24) motivated the window probe.
-- **Main chain (protocol defaults, w = 5):** z = 1.78, 1 zoom, stop =
+* **Main chain (protocol defaults, w = 5):** z = 1.78, 1 zoom, stop =
   singularity, 1 Q-peak, 0 gate invasions. Gate word: `gated: режим M1 не
   определён` — no clean active fits (the chains die too young for the q7
   trend). Echo train, Δ_eff, percentile γ, π/15 wiggle: all honestly NOT
   measurable on this chain.
-- **[D-v21] window-policy probe.** z(w=5) = 1.78 → z(w=3) = **7.20**
+* **[D-v21] window-policy probe.** z(w=5) = 1.78 → z(w=3) = **7.20**
   (v_exhausted) → z(w=1.5) = 6.66, all invasion-free. The depth wall is
   TRIGGER-POLICY sensitive, not only resolution-limited: tightening the
   zoom window (the same [P3] lever) pushes past EVERY saved campaign
@@ -1971,10 +1988,10 @@ the deepest chain policy.
   z = 1.782 exactly (the v21 wrapper is neutral to the march physics);
   at n = 600 it reproduces the v20a verdict (4.598, v_exhausted) — full
   determinism.
-- **Budget update.** From the best-policy wall z\* = 7.20:
+* **Budget update.** From the best-policy wall z\* = 7.20:
   S_req(30) = e^{0.374·22.8} ≈ 5.0e3 (×10 margin 5.0e4) — the v20b [D2]
   budget recomputed from the actually reached wall.
-- **Ladder (second pass, w = 3):** eps 3e-3 → z = 3.76 (singularity);
+* **Ladder (second pass, w = 3):** eps 3e-3 → z = 3.76 (singularity);
   eps 1e-4 → z = 7.48 (v_exhausted). Δ_eff remains unmeasurable
   (≤ 3 Q-peaks per chain): the exponent p is NOT measured — the
   p = 1/2 (Jordan-2) vs p = 1 (b2-exit) vs p = 2 (Lyapunov center)
@@ -2007,6 +2024,7 @@ standalone).
 ---
 
 ## 33. V22 — the v-budget and window anchoring: the z ~ 7.2 wall attacked
+
 (session 24)
 
 The order for v22: extend the v-budget at w = 3 (v_ahead_factor / telescope)
@@ -2016,31 +2034,31 @@ then probes window-placement policies on the raw ZoomRunner physics.
 
 ### The diagnosis (four machine facts)
 
-- **[F1] The telescope cap never binds.** On all 4 zooms the requested
+* **[F1] The telescope cap never binds.** On all 4 zooms the requested
   ahead-span is 3.4–15× smaller than the parent's slack (max ratio 0.295):
   the wall is NOT the v-envelope — it is the window's own span design.
-- **[F2] The final stage is VACUUM.** Q ≈ 0, w_cells = 0, mx = 0 on 100%
+* **[F2] The final stage is VACUUM.** Q ≈ 0, w_cells = 0, mx = 0 on 100%
   of its 799 rows: the trigger ladder DESCENDS in v (0.4781 → 0.4072 →
   0.4035 → 0.4015) while the window looks ahead (+v) into empty space.
-- **[F3] v-extension is dead code by construction.** `_try_extend` is called
+* **[F3] v-extension is dead code by construction.** `_try_extend` is called
   only at j ≥ n, where v_now = v[n−1] = stage_v[1]; slack = 0.0 exactly
   (runtime trace: 1/1 calls). v_exhausted is therefore always terminal.
-- **[F4] Backward-span starvation + coverage ratchet.** The buffer clamp
+* **[F4] Backward-span starvation + coverage ratchet.** The buffer clamp
   (v_lo ≥ buffer_v[0] = the parent's floor) binds at zooms 2 and 4; the
   floor can only RISE — floor ≡ 0.40113 across the whole ladder — while the
   ladder descends toward it. The wall is TOPOLOGICAL, not budget-sized.
 
 ### The probes
 
-- **[C2] Global backward anchor is DESTRUCTIVE.** k_back ≥ 1 from zoom 1
+* **[C2] Global backward anchor is DESTRUCTIVE.** k_back ≥ 1 from zoom 1
   drops the restart row into the incoming-pulse region (v_p = 0.5 ± 0.1):
   every branch dies at 1 zoom (z ~ 1.5–1.9). v_ahead = 3.0 — inert (the
   clamp intercepts). The user's forward lever is tested and honestly
   redirected: the working lever is BACKWARD.
-- **[C2b] Late anchor is clamped.** k_back ≥ 1 from zoom 3: z = 7.196 ≈
+* **[C2b] Late anchor is clamped.** k_back ≥ 1 from zoom 3: z = 7.196 ≈
   control on all branches — every late window is pinned by the ratcheted
   floor 0.40113.
-- **[C2c] ROOT anchor + coverage-floor anchor BREAK the wall.** k1 on
+* **[C2c] ROOT anchor + coverage-floor anchor BREAK the wall.** k1 on
   zoom 1 lowers the ROOT floor below the expected next echo (~0.4003;
   critical k = 0.507); from zoom 2 the window anchors at the deepest
   covered point (v_lo = buffer_v[0]) — the floor freezes and the ladder

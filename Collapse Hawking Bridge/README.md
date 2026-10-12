@@ -414,7 +414,7 @@ half-width `ε½ = 4.86e-3`.
 | `campaigns/reference/c3b_verdict.json` | `campaigns/run_c3b.py` (16 runs, ~334 s) | per-grid thresholds, floor law, γ/Δ ladders at N=1600/3200 |
 | `campaigns/reference/a_star_ladder.{json,csv}` | the F-1 remediation run (committed artifact) | the five-grid A\* ladder, tol 5e-8, straddle probes |
 | `campaigns/reference/c6_drift_verdict.json` | `campaigns/run_c6_drift.py` (~2 s, no engine march) | the drift-law verdict: ladder analysis, exact lemmas, channel calibration |
-| `data/bridge/*.csv|json` (13 files) | `scripts/rebuild_data.py` | born spectrum, master table, Page grid/members/Haar, ladders, constants, campaign tables |
+| `data/bridge/*.csv\|json` (13 files) | `scripts/rebuild_data.py` | born spectrum, master table, Page grid/members/Haar, ladders, constants, campaign tables |
 | `figures/**/*.png` (28 files) | `scripts/make_figures.py` | 7 figures × RU/EN × light/dark, 300 dpi |
 | `figures/logo/` | `scripts/make_logo.py` | the package logo: light/dark × PNG(600dpi)/SVG |
 | `results/RESULTS.md` | hand-maintained ledger | the headline register + roadmap |
@@ -545,9 +545,6 @@ author retains all rights.
 8. Gundlach, C. (1999). Critical phenomena in gravitational collapse. *Living Rev. Relativity* 2, 4.
 9. Gundlach, C., Hodgson, L. (2002). Self-similar echoes and their period. *Phys. Rev. D* 66, 104025.
 10. Hurwitz, A. (1893). Algebraische Gebilde mit eindeutigen Transformationen in sich.
-
-[T10]: docs/scaling_law.md
-[C6]: results/scaling_drift/REPORT.md
 
 ---
 

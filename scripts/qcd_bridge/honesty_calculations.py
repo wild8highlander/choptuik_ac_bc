@@ -461,8 +461,6 @@ def coincidence_significance() -> dict:
 def seesaw_divisor_scan() -> dict:
     log_ratio = math.log(1e12 / 100.0)  # ~ 18.4
     c_theta = C_THETA
-    cp = math.sin(-math.pi/4.0)**2  # delta_CP = -pi/2 -> sin^2(pi/4) = 0.5
-    atmos = math.sin(math.radians(45.0) * 2)**2 / 4.0  # = 0.25
 
     # Wait: code uses sin^2(delta_CP/2) where delta_CP = -pi/2
     # sin(-pi/4)^2 = (sqrt(2)/2)^2 = 0.5

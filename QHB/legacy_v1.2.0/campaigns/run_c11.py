@@ -118,7 +118,7 @@ def main():
     out = {}
 
     # ================== B1 — T11 exact: the linearization ==================
-    ev, omega_ex, J = linearize_triangle_exact((GAMMA,) * 3, A_SIDE)
+    ev, omega_ex, _J = linearize_triangle_exact((GAMMA,) * 3, A_SIDE)
     imag_pairs = [e for e in ev if abs(e.imag) > 1e-6]
     zero_pair = [e for e in ev if abs(e.imag) <= 1e-6]
     re_imag = max(abs(e.real) for e in imag_pairs)
@@ -207,7 +207,7 @@ def main():
     out["B3_T12_manifold"] = {**b3, "ok": b3_ok}
 
     # ================== B4 — T13: the static barrier ========================
-    pos0, vel0, rejected = make_ensemble()
+    pos0, vel0, _rejected = make_ensemble()
     E0 = total_energy(pos0, vel0, 0.0, 0.0, 0.0)
     E0_max = float(E0.max())
     pair_floor = 3.0 / math.sqrt(SOFT2)          # softened pair floor (exact)

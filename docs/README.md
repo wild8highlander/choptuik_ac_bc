@@ -10,7 +10,7 @@ are the citable, versioned reference texts of the repository.
 
 | Path | Contents |
 |------|----------|
-| `api/REST_API.md` | Full REST reference for the Java web app: base URL `http://localhost:8080`, `GET /api/verify` (verification suite JSON with spinor phases, formula deviations, `all_passed`), `GET /api/reports?format=json|html|csv|txt|md`, simulation and enhanced endpoints |
+| `api/REST_API.md` | Full REST reference for the Java web app: base URL `http://localhost:8080`, `GET /api/verify` (verification suite JSON with spinor phases, formula deviations, `all_passed`), `GET /api/reports?format=json\|html\|csv\|txt\|md`, simulation and enhanced endpoints |
 | `architecture/ARCHITECTURE.md` | Architecture overview with a Mermaid diagram: theory (Klein quartic, spinor phases, Dirac operator, formula) → four independent implementations (Python, Julia, Java, Next.js) → CI/CD layer; the core data-flow pipeline from curve parameters to QNM predictions |
 | `monograph/` | The braking-monograph manuscripts in DOCX + PDF (English and Russian, final and enhanced renderings), LaTeX sources `monograph_enhanced_en.tex` / `_ru.tex`, 16 figures (`figures/fig_*.png`), and the verification artifacts: `original_verification_code.py`, `original_verification_results.json`, `verification_results_enhanced.json` |
 | `qcd_bridge/` | Self-contained companion monograph "Choptuik–QCD bridge" with its own `README.md`, LaTeX source + compiled PDF, 12 figure pairs (PNG + PDF) in `figures/`, and four JSON result files (`ochi_eigenvalues.json`, `ochi_lattice_results.json`, `qcd_vs_framework_params.json`, `honesty_results.json`) |

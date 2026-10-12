@@ -78,7 +78,7 @@ placeholder entries and an explicit refresh hint.
 
 The single source of text is the generator pair under `src/`:
 
-```
+```text
 src/common.js          shared builder (cover R2, styles, tables, math, assembly)
 src/theorems_ru.js     → theorems_ru.docx
 src/theorems_en.js     → theorems_en.docx
@@ -204,13 +204,13 @@ both PDFs keep the document metadata (title, author, description).
 
 ## See also
 
-* `../figures_hires/README.md` — the print-grade figure catalog.
-* `../figures/logo/` — the package logo (light/dark, PNG + SVG).
-* `../tables/README.md` — the Excel data layer.
-* `../multilang/README.md` — the cross-language twins.
-* `../results/ROADMAP.md` — where the research goes next.
-* `../docs/scaling_law.md` — the T10 derivation the theorems volume summarises.
-* `../docs/theory.md`, `../docs/methods.md` — the technical prose.
+- `../figures_hires/README.md` — the print-grade figure catalog.
+- `../figures/logo/` — the package logo (light/dark, PNG + SVG).
+- `../tables/README.md` — the Excel data layer.
+- `../multilang/README.md` — the cross-language twins.
+- `../results/ROADMAP.md` — where the research goes next.
+- `../docs/scaling_law.md` — the T10 derivation the theorems volume summarises.
+- `../docs/theory.md`, `../docs/methods.md` — the technical prose.
 
 ## Краткое резюме (RU)
 

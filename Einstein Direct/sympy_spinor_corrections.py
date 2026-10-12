@@ -94,7 +94,6 @@ def s0_corrections():
     if os.path.exists(mono):
         with open(mono, encoding="utf-8") as fh:
             m = json.load(fh)
-        lamD2 = sp.Rational(3338, 1000)
         chk1 = sp.simplify((sp.Float(m["Delta_bC"], 20) - sp.Float(m["lambda_1_D2"], 20)) - sp.N(bC, 20))
         chk2 = abs(float(m["delta_eff"]) - float(sp.N(aC, 20)))
         chk3 = abs(float(m["gamma"]) - float(sp.N(dC**4 / 22, 20)))
@@ -146,15 +145,13 @@ def s1_doors_symbolic():
     log("[S1] Двери: символьная система с kappa_C1, kappa_C2, kappa_TH...")
     t0 = time.time()
     K1, K2, KT = sp.symbols("K1 K2 KT", real=True)
-    mod, p4 = load_patched(K1, K2, KT)
+    _mod, p4 = load_patched(K1, K2, KT)
     zc = p4.build_z_coefficients()
     ok = {k: v for k, v in zc.items() if v.get("status") == "ok"}
     # карта каналов
     chan = {}
     for k, v in ok.items():
         n = v["num"]
-        ch = ([["C1"] if n.has(K1) else [], ["C2"] if n.has(K2) else [],
-               ["TH"] if n.has(KT) else []])
         tags = []
         if n.has(K1):
             tags.append("C1")
@@ -245,7 +242,6 @@ def s1_doors_symbolic():
         log(f"    {key}(T0h; K2, KT) = {sstr(gp.as_expr())}")
     # проверка при kappa=2
     b_uv2 = sp.expand(branches["UV_xi3"].subs(sub_base))
-    b_md2 = sp.expand(branches["Mdef_xi5"].subs(sub_base))
     base_ok = bool(sp.simplify(b_uv2 / (-16 * T0h**2 * (4 * T0h**2 - 27)) - 1) == 0
                    if b_uv2 != 0 else False)
     # резольвента: условие на (K2, KT) существования общего корня
@@ -295,8 +291,8 @@ def s2_schemes(payload, corr):
     log("[S2] Исправленные башни по схемам встраивания...")
     K1, K2, KT = payload["K"]
     T0h, R1h = payload["p4"].T0h, payload["p4"].R1h
-    eqs, subs, chain = payload["eqs"], payload["subs"], payload["chain"]
-    bC, aC, bB, aB = corr["bC"], corr["aC"], corr["bB"], corr["aB"]
+    eqs, chain = payload["eqs"], payload["chain"]
+    bC, aC, aB = corr["bC"], corr["aC"], corr["aB"]
 
     # --- (a) СТРУКТУРА СЕМЕЙСТВА: корни ветвей как формулы ----------------
     # UV_xi3   = -2 T0h^2 (8 K2^2 T0h^2 - 93 K2 - 15 KT)  ->  T0h^2 = (93 K2 + 15 KT)/(8 K2^2)
@@ -666,7 +662,7 @@ def main() -> None:
     results["S3_closure"] = s3_closure(results["S2_schemes"], corr)
 
     # [S4] карандаш: базовая точка (контроль протокола) + принципиальные схемы
-    K1, K2, KT = payload["K"]
+    _K1, _K2, _KT = payload["K"]
     base = results["S2_schemes"]["S0_baseline"]
     results["S4_pencil_baseline"] = s4_pencil(
         payload, "S0_baseline", (2, 2, 2), base.get("tau_star_corrected"))

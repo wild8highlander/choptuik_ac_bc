@@ -10,9 +10,11 @@
 ### Verification
 
 #### `GET /api/verify`
+
 Run full verification suite and return results.
 
 **Response**:
+
 ```json
 {
   "spinor_phases": {
@@ -39,9 +41,11 @@ Run full verification suite and return results.
 ### Reports
 
 #### `GET /api/reports?format=json`
+
 Generate verification report in specified format.
 
 **Query Parameters**:
+
 | Parameter | Type | Values | Default |
 |---|---|---|---|
 | `format` | string | json, html, csv, txt, md | json |
@@ -49,9 +53,11 @@ Generate verification report in specified format.
 ### Simulation
 
 #### `POST /api/simulate`
+
 Run parameter sweep simulation.
 
 **Request Body**:
+
 ```json
 {
   "parameter": "delta_C",
@@ -67,9 +73,11 @@ Run parameter sweep simulation.
 ### K3 Surface
 
 #### `GET /api/enhanced/k3`
+
 Return K3 surface data and verification.
 
 **Response**:
+
 ```json
 {
   "betti_numbers": { "b0": 1, "b1": 0, "b2": 22, "b3": 0, "b4": 1 },
@@ -86,14 +94,17 @@ Return K3 surface data and verification.
 ### Tyukovsky Equations
 
 #### `GET /api/enhanced/tyukovsky`
+
 Return Tyukovsky equation adaptation data.
 
 **Query Parameters**:
+
 | Parameter | Type | Default | Description |
 |---|---|---|---|
 | `delta0` | float | 0.36 | Uncorrected critical exponent |
 
 **Response**:
+
 ```json
 {
   "delta_0": 0.36,
@@ -109,9 +120,11 @@ Return Tyukovsky equation adaptation data.
 ### Einstein GR QNM Correction
 
 #### `GET /api/enhanced/einstein-qnm`
+
 Return Einstein GR QNM frequency correction data.
 
 **Response**:
+
 ```json
 {
   "delta_eff": 0.000828,
@@ -132,9 +145,11 @@ Return Einstein GR QNM frequency correction data.
 ### Full Enhanced Verification
 
 #### `GET /api/enhanced/verify`
+
 Run complete enhanced verification across all extensions.
 
 **Response**:
+
 ```json
 {
   "klein": { "delta_C": 0.448799, "effective_phase": 0.000828, "unified_formula": 3.437883 },
@@ -163,6 +178,7 @@ Run complete enhanced verification across all extensions.
 ## Error Responses
 
 All endpoints return errors in the format:
+
 ```json
 {
   "error": "Description of the error",
@@ -171,6 +187,7 @@ All endpoints return errors in the format:
 ```
 
 Common HTTP status codes:
+
 - `200` — Success
 - `400` — Invalid input parameter
 - `500` — Internal computation error

@@ -443,7 +443,7 @@ def layer_C3(kv, bp, label):
                        "start_r_max": rep["r_max"],
                        "kick": e_eps}
                 try:
-                    V, dia = dae.closure(x0p)
+                    V, _dia = dae.closure(x0p)
                     h = 1e-7 * max(1.0, float(np.linalg.norm(x0p)))
                     rp, _ = dae.rvec(x0p + h * V)
                     rm, _ = dae.rvec(x0p)
@@ -496,7 +496,6 @@ def layer_C3(kv, bp, label):
             f"{fmx:.3e}, r_homothetic_max = {rmx:.3e}")
     tt = out.get("tick_test", {})
     t05 = tt.get("eps0.05", {})
-    t01 = tt.get("eps0.01", {})
     out["verdict"] = (
         f"кернел (v,dd)->r в x* {11 - rk7}-мерен (линейная свобода тика "
         f"есть), но подъём на совместное многообразие остановивается "

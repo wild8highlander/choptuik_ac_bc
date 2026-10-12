@@ -187,7 +187,7 @@ def main():
 
     # [M3] фиты показателя
     if len(ok) >= 3:
-        fit_d, n_d = fit_exponent(
+        fit_d, _n_d = fit_exponent(
             eps_arr, [r["delta_rel_dev_vs_ref"] for r in ok])
         out["fit_p_delta"] = fit_d
         if fit_d:
@@ -196,11 +196,11 @@ def main():
                 f"{fit_d['max_loglog_resid']:.2f})")
         amps = [r["wiggle"]["amp_c1"] for r in ok if "wiggle" in r]
         if len(amps) == len(ok):
-            fit_a, n_a = fit_exponent(eps_arr, amps)
+            fit_a, _n_a = fit_exponent(eps_arr, amps)
             out["fit_p_wiggle_amp"] = fit_a
         devs_w = [r.get("omega_rel_dev_vs_ref") for r in ok]
         if sum(x is not None for x in devs_w) >= 3:
-            fit_w, n_w = fit_exponent(eps_arr, devs_w)
+            fit_w, _n_w = fit_exponent(eps_arr, devs_w)
             out["fit_p_wiggle_freq"] = fit_w
 
     # [M4] санити глубины

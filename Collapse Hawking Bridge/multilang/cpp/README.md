@@ -28,14 +28,14 @@ time), the critical amplitude ladder (honest F-1 drift 2.79e-3 per doubling — 
 
 ## Reading notes
 
-The C++ twin uses no headers beyond <cmath> and <cstdio>: no
+The C++ twin uses no headers beyond `<cmath>` and `<cstdio>`: no
 classes, no templates, no iostream formatting surprises. printf keeps
 the output byte-comparable with the C twin, which is the point — the
 two differ by one letter in the filename and by the exponent operator.
 
 ## Porting details
 
-M_PI is not standard C++; the file uses std::cos with 2.0 * M_PI via <cmath> on glibc. On MSVC add #define _USE_MATH_DEFINES before <cmath>.
+M_PI is not standard C++; the file uses std::cos with 2.0 * M_PI via `<cmath>` on glibc. On MSVC add #define _USE_MATH_DEFINES before `<cmath>`.
 
 ## Cross-checks
 

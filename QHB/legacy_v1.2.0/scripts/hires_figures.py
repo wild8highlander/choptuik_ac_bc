@@ -45,8 +45,6 @@ BASE_NAMES = {
 # --- extended architectures --------------------------------------------------
 def hq_per_sector(lang, tok, L, path):
     d = load("gap_per_sector.json")
-    scan = load("gap_scan_window.json")
-    d0 = scan["gap"][0]
     fig = new_fig()
     ax = fig.gca()
     betas = np.linspace(0.01, 0.2, 60)
@@ -214,7 +212,7 @@ def hq_lemma_a(lang, tok, L, path):
     from qhb.gap import KAPPA, Q_PK, parabolic_profile
     fig = new_fig()
     ax = fig.gca()
-    x, q, hstep, Lb = parabolic_profile(16, KAPPA, Q_PK)
+    x, q, _hstep, Lb = parabolic_profile(16, KAPPA, Q_PK)
     xc = np.linspace(-Lb / 2, Lb / 2, 400)
     qc = 0.5 * KAPPA * xc ** 2 - Q_PK
     ax.plot(xc, qc, "-", lw=1.4, color=tok["muted"], alpha=0.8)
@@ -257,7 +255,6 @@ def hq_kepler(lang, tok, L, path):
 def hq_master_heat(lang, tok, L, path):
     with open(os.path.join(DATA, "bridge_master.csv"), encoding="utf-8") as fh:
         lines = fh.read().strip().split("\n")
-    header = lines[0].split(",")
     fig = new_fig(9.6, 6.4)
     ax = fig.gca()
     rows_txt = []
@@ -405,13 +402,9 @@ def hq_phase_heatmap(lang, tok, L, path):
 
 def hq_ablation_zoom(lang, tok, L, path):
     """The ablation B2 ladder with the additive predictions overlaid."""
-    import json as _json
     with open(os.path.join(DATA, "ablation.csv"), encoding="utf-8") as fh:
         lines = fh.read().strip().split("\n")[1:]
     meas = {ln.split(",")[0]: abs(float(ln.split(",")[1])) for ln in lines}
-    with open(os.path.join(DATA, "ablation_additivity.json"),
-              encoding="utf-8") as fh:
-        add = _json.load(fh)
     single = {"A": meas["A"], "B": meas["B"], "C": meas["C"]}
     order = ["A", "B", "C", "AB", "AC", "BC", "ABC"]
     fig = new_fig(9.0, 5.2)

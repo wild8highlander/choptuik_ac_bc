@@ -7,9 +7,9 @@
 Результат: таблица всех вычисленных констант с отклонениями от наблюдаемых.
 """
 
-import numpy as np
-from itertools import product
 import json
+
+import numpy as np
 
 # ============================================================
 # ЧАСТЬ I. КРИВАЯ КЛЕЙНА И СПИНОРНЫЕ ФАЗЫ
@@ -56,7 +56,7 @@ DELTA_A = np.pi / 2  # фаза на A
 DELTA_B = np.pi / 3  # фаза на B
 DELTA_C = np.pi / 7  # фаза на C
 
-print(f"\nСпинорные фазы:")
+print("\nСпинорные фазы:")
 print(f"  δ_A = π/2 = {DELTA_A:.6f} (порядок 2 в PSL)")
 print(f"  δ_B = π/3 = {DELTA_B:.6f} (порядок 3 в PSL)")
 print(f"  δ_C = π/7 = {DELTA_C:.6f} (порядок 7 в PSL)")
@@ -128,7 +128,7 @@ print("=" * 70)
 # Базовая формула: Δ_Ch = λ₁ - R/4 + δ_C²/2 - δ_C⁵/22
 DELTA_CH_BASE = LAMBDA_D2_TRIV + DELTA_C**2/2 - DELTA_EFF
 
-print(f"Базовая: Δ_Ch = λ₁ - R/4 + δ_C²/2 - δ_C⁵/22")
+print("Базовая: Δ_Ch = λ₁ - R/4 + δ_C²/2 - δ_C⁵/22")
 print(f"       = {LAMBDA_D2_TRIV} + {DELTA_C**2/2:.6f} - {DELTA_EFF:.6f}")
 print(f"       = {DELTA_CH_BASE:.6f}")
 deviation_ch = abs(DELTA_CH_BASE - DELTA_OBS) / DELTA_OBS * 100
@@ -139,8 +139,8 @@ C4 = 1/8  # коэффициент 3-го порядка
 C6 = 1/2  # коэффициент 4-го порядка
 DELTA_CH_FULL = DELTA_CH_BASE + DELTA_C**4 * C4 + DELTA_C**6 * C6
 
-print(f"\nС высшими порядками:")
-print(f"Δ_Ch = базовая + δ_C⁴/8 + δ_C⁶/2")
+print("\nС высшими порядками:")
+print("Δ_Ch = базовая + δ_C⁴/8 + δ_C⁶/2")
 print(f"     = {DELTA_CH_BASE:.6f} + {DELTA_C**4/8:.6f} + {DELTA_C**6/2:.6f}")
 print(f"     = {DELTA_CH_FULL:.6f}")
 deviation_full = abs(DELTA_CH_FULL - DELTA_OBS) / DELTA_OBS * 100
@@ -160,7 +160,7 @@ B_CH_ALT = 2 * np.sin(np.pi / 7)**2
 
 print(f"b_Ch = 1 - cos(2π/7) = {B_CH:.6f}")
 print(f"     = 2·sin²(π/7) = {B_CH_ALT:.6f}")
-print(f"     ≈ 0.377 (наблюдаемое)")
+print("     ≈ 0.377 (наблюдаемое)")
 deviation_b_ch = abs(B_CH - 0.377) / 0.377 * 100
 print(f"Отклонение от 0.377: {deviation_b_ch:.3f}%")
 
@@ -193,8 +193,9 @@ print(f"  Δ = {best['Delta']:.6f}, отклонение = {best['deviation']:.3
 
 # Распределение
 from collections import Counter
+
 counts = Counter(s["n_active"] for s in structures_64)
-print(f"\nРаспределение по числу активных образующих:")
+print("\nРаспределение по числу активных образующих:")
 for n in sorted(counts.keys()):
     avg = np.mean([s["Delta"] for s in structures_64 if s["n_active"] == n])
     print(f"  k={n}: {counts[n]} структур, ср. Δ = {avg:.4f}")
@@ -301,5 +302,5 @@ with open('/home/z/my-project/download/monograph/verification_results.json', 'w'
         "deviation_b_ch_pct": deviation_b_ch,
     }, f, ensure_ascii=False, indent=2)
 
-print(f"\nРезультаты сохранены в /home/z/my-project/download/monograph/verification_results.json")
+print("\nРезультаты сохранены в /home/z/my-project/download/monograph/verification_results.json")
 print("ВСЕ ВЫЧИСЛЕНИЯ ВЕРИФИЦИРОВАНЫ ✓")

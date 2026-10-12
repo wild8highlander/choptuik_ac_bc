@@ -317,7 +317,6 @@ def einstein_hilbert_level() -> dict:
     """
     log("[1] [E] Классические уравнения + [H] тождество Гильберта (4D, SymPy)...")
     u, v, th = sp.symbols("u v theta", real=True)
-    kap = sp.Symbol("kappa", positive=True)
     al = sp.Function("alpha")(u, v)
     r = sp.Function("r")(u, v)
     Ph = sp.Function("Phi")(u, v)
@@ -477,7 +476,6 @@ def prolonged_point() -> dict:
            dT0, dD0, Qh, dR1, dW2, dR3, dP4, dR5]
     fs = _lambdify_eqs(eqs_v3, unk)
 
-    core_d = dict(core)
     def seed_vec(t0v, sT, sR):
         vals = {T0h: t0v, R1h: 1.0}
         for amp, form in core:
@@ -507,7 +505,7 @@ def prolonged_point() -> dict:
             vals = {sp.sstr(u_): float(x[i]) for i, u_ in enumerate(unk)}
             if vals[sp.sstr(R1h)] < 0.3:
                 continue  # вырожденная ветвь R1 -> 0
-            def sg(nmv, amv):
+            def sg(nmv, amv, vals=vals):
                 return (vals[nmv] / vals[amv]
                         if abs(vals[amv]) > 1e-14 else None)
             points.append({
@@ -611,7 +609,6 @@ def dynamic_point(zc: dict, chain_forms: dict) -> dict:
            if k in ("R3h", "W2h", "P2h", "R5h", "M5h", "P4h")}
 
     def seed_amps(t0v, r1v=1.0, jitter=0.0, rng=None):
-        tau_ = t0v * t0v
         base = {"T0h": t0v, "R1h": r1v, "D0h": 0.0,
                 "P2h": float(ana["P2h"].subs(seed_syms["T0h"], t0v)
                              .subs(seed_syms["R1h"], r1v)),
@@ -852,7 +849,6 @@ def books_from_branches(fz: dict, A: dict) -> dict:
                 taus = np.array([c["tau"] for c in cur])
                 lams = np.array([c["lambda_plus"] for c in cur])
                 o_ = np.argsort(taus)
-                ts_ = float(sp.N(sp.sqrt(tau_s)))
                 in_range = bool(taus[o_][-1] >= float(sp.N(tau_s)))
                 lam_i = float(np.interp(np.log(float(sp.N(tau_s))),
                                         np.log(taus[o_]), lams[o_]))

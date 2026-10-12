@@ -333,16 +333,13 @@ def main():
 
         # Lattice (chGUE)
         lat_means = []
-        lat_spectra = []
         for seed in range(n_seeds):
-            O, _, spec = construct_lattice_Ochi(N_pos=11, N_f=6, nu=0,
+            O, _, _spec = construct_lattice_Ochi(N_pos=11, N_f=6, nu=0,
                                                   kappa_T=kappa_T, seed=seed)
             eigs = unfold(np.linalg.eigvalsh(O))
             r = folded_ratios(eigs)
             if len(r) > 0:
                 lat_means.append(np.mean(r))
-            if seed == 0:
-                lat_spectra = spec.tolist()
 
         k3_mean = float(np.mean(k3_means))
         k3_std = float(np.std(k3_means))

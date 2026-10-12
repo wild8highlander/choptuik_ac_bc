@@ -149,7 +149,11 @@ export default function VerifyPage() {
                   <TableRow
                     key={check.id}
                     className={`transition-all duration-300 ${
-                      isPending ? "opacity-30" : isComputing ? "bg-teal-900/20" : ""
+                      isPending
+                        ? "opacity-30"
+                        : isComputing
+                          ? "bg-teal-900/20"
+                          : ""
                     }`}
                   >
                     <TableCell className="font-mono text-xs text-gray-500">
@@ -192,8 +196,8 @@ export default function VerifyPage() {
                             result.relativeError < 0.01
                               ? "text-emerald-400"
                               : result.relativeError < 0.1
-                              ? "text-amber-400"
-                              : "text-red-400"
+                                ? "text-amber-400"
+                                : "text-red-400"
                           }
                         >
                           {result.relativeError.toExponential(3)}

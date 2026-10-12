@@ -416,7 +416,7 @@ ringdown.
 | `campaigns/reference/c3b_verdict.json` | `campaigns/run_c3b.py` (16 прогонов, ~334 с) | пороги по сеткам, закон пола, лестницы γ/Δ на N=1600/3200 |
 | `campaigns/reference/a_star_ladder.{json,csv}` | прогон ремедиации F-1 (зафиксированный артефакт) | пятиуровневая лестница A\*, допуск 5e-8, стрэддл-пробы |
 | `campaigns/reference/c6_drift_verdict.json` | `campaigns/run_c6_drift.py` (~2 с, без марша движка) | дрейфовый вердикт: анализ лестницы, точные леммы, калибровка каналов |
-| `data/bridge/*.csv|json` (13 файлов) | `scripts/rebuild_data.py` | спектр рождения, мастер-таблица, сетка Пейджа/члены/Хаар, лестницы, константы, таблицы кампаний |
+| `data/bridge/*.csv\|json` (13 файлов) | `scripts/rebuild_data.py` | спектр рождения, мастер-таблица, сетка Пейджа/члены/Хаар, лестницы, константы, таблицы кампаний |
 | `figures/**/*.png` (28 файлов) | `scripts/make_figures.py` | 7 фигур × RU/EN × light/dark, 300 dpi |
 | `figures/logo/` | `scripts/make_logo.py` | логотип пакета: light/dark × PNG(600dpi)/SVG |
 | `results/RESULTS.md` | ручной реестр | заголовочный регистр + роадмап |
@@ -548,9 +548,6 @@ Proprietary v1.0 — исследовательское и научное исп
 8. Gundlach, C. (1999). Critical phenomena in gravitational collapse. *Living Rev. Relativity* 2, 4.
 9. Gundlach, C., Hodgson, L. (2002). Self-similar echoes and their period. *Phys. Rev. D* 66, 104025.
 10. Hurwitz, A. (1893). Algebraische Gebilde mit eindeutigen Transformationen in sich.
-
-[T10]: docs/scaling_law.md
-[C6]: results/scaling_drift/REPORT.md
 
 ---
 

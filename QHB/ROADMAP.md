@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Executed (v2.1.0, chapter 14)
+
 - **R1 — continuum stress**: ladder L = 4…10^6; order p = 0.99998; residual 2e-16.
 - **R2 — anisotropic vortices**: branch laws nu_tr = (2+gamma)/2pi, nu_int = sqrt(3(1+2gamma))/2pi
   (dev 5e-9); Re = 0 (same-sign); Synge threshold 0.5.
@@ -11,6 +12,7 @@
 - **R7 — twins**: JS/C/C++ 14/14 PASS byte-for-byte; Go/Rust/Julia static audit.
 
 ## Executed (v2.2.0, chapters 15–17)
+
 - **Analytic proof of the R2 branch laws (T19)**: chi(C0) factorization dev 0.0;
   lab spectrum chi(J0); circulation dispersion law (50 digits, dev 1.5e-16);
   Jordan block at the zero pair; Synge as a sign corollary.
@@ -21,6 +23,7 @@
   volume (three-rung continuum 0–5.6e-17), budget (1/ln N), sample (n^-1/2).
 
 ## Executed (v2.3.0, appendix A + the iron layer)
+
 - **Full T19 port into Mathlib**: 8 closed kernels over Matrix.charpoly +
   charpoly_fromBlocks_zero₂₁; axiom audit across 18 closed kernels; Lean/Mathlib CI.
 - **Erratum T20.stall**: stall-cliff monotonicity sign fixed and kernel closed;
@@ -30,10 +33,12 @@
   animated READMEs (EN/RU), landing page, social preview.
 
 ## Next candidates (not started, no promises)
+
 - Executable verification of Go/Rust/Julia once a toolchain is available.
 - Closing the standard-basis similarity anchor (lemma B/C) as a Lean kernel.
 - New X-rows as publications appear.
 
 ## Falsification-first policy
+
 Any roadmap item starts from the falsifier of the corresponding claim, not
 from the confirmation.

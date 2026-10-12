@@ -4,7 +4,16 @@
 // ============================================================
 
 import type { SimulationParams, SweepResult, ConvergenceData } from "./types";
-import { computeFull, deltaBC, deltaAC, choptyukBase, choptyukFull, spinorDeltaA, spinorDeltaB, diracTrivial } from "./compute";
+import {
+  computeFull,
+  deltaBC,
+  deltaAC,
+  choptyukBase,
+  choptyukFull,
+  spinorDeltaA,
+  spinorDeltaB,
+  diracTrivial,
+} from "./compute";
 
 /** Default simulation parameters matching the Klein curve */
 export const DEFAULT_PARAMS: SimulationParams = {
@@ -15,7 +24,7 @@ export const DEFAULT_PARAMS: SimulationParams = {
   c6: 1.0,
   genus: 3,
   R: -2,
-  b_Ch: 0.376510,
+  b_Ch: 0.37651,
 };
 
 /** Sweep a single parameter over a range, computing all invariants */
@@ -24,7 +33,7 @@ export function sweepParameter(
   min: number,
   max: number,
   steps: number,
-  baseParams: SimulationParams = DEFAULT_PARAMS
+  baseParams: SimulationParams = DEFAULT_PARAMS,
 ): SweepResult {
   const values: number[] = [];
   const dBC_arr: number[] = [];
@@ -90,7 +99,7 @@ export function sweepBCh(baseParams?: SimulationParams): SweepResult {
 /** Compute convergence of the Choptyuk series */
 export function computeConvergence(
   params: SimulationParams = DEFAULT_PARAMS,
-  maxTerms: number = 50
+  maxTerms: number = 50,
 ): ConvergenceData {
   const terms: number[] = [];
   const partialSums: number[] = [];
@@ -99,16 +108,21 @@ export function computeConvergence(
 
   for (let n = 1; n <= maxTerms; n++) {
     // Choptyuk series: Δ_Ch = Σ (-1)^(n+1) · b_Ch^n · sin(n·δ_A) / n²
-    const term = ((-1) ** (n + 1)) * (params.b_Ch ** n) * Math.sin(n * deltaA) / (n * n);
+    const term =
+      ((-1) ** (n + 1) * params.b_Ch ** n * Math.sin(n * deltaA)) / (n * n);
     sum += term;
     terms.push(n);
     partialSums.push(sum + params.lambda_1); // offset by base eigenvalue
   }
 
   const limit = partialSums[partialSums.length - 1];
-  const convergenceRate = partialSums.length > 10
-    ? Math.abs(partialSums[partialSums.length - 1] - partialSums[partialSums.length - 11]) / 10
-    : 0;
+  const convergenceRate =
+    partialSums.length > 10
+      ? Math.abs(
+          partialSums[partialSums.length - 1] -
+            partialSums[partialSums.length - 11],
+        ) / 10
+      : 0;
 
   return {
     terms,
@@ -128,7 +142,7 @@ export function sweep2D(
   min2: number,
   max2: number,
   steps2: number,
-  baseParams: SimulationParams = DEFAULT_PARAMS
+  baseParams: SimulationParams = DEFAULT_PARAMS,
 ): { x: number[]; y: number[]; z: number[][] } {
   const x: number[] = [];
   const y: number[] = [];

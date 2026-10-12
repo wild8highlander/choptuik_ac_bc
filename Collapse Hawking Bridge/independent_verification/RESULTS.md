@@ -197,7 +197,7 @@ at N=1600, A=0.0777 → subcritical and A=0.0785 → supercritical;
 at N=3200, A=0.0755 → subcritical and A=0.0770 → supercritical —
 bracketing the verifier's bisected thresholds.
 
-**Impact.**  Statements of the form "A* is converged to 1e-6 at N=800"
+**Impact.**  Statements of the form "A*is converged to 1e-6 at N=800"
 (README item 1's agreement line, multilang twin printout, c1 verdict
 honest note) are not supported: the fixed-grid threshold at N=800 is
 still ≈ 2.8e-3 away from the N=1600 threshold.  The A* *values
@@ -303,7 +303,7 @@ Fresh venvs, declared deps only, `pip install --no-deps -e .`:
 | -- | -- | -- | -- |
 | 3.12.14 | PASS | 60/60 | bitwise identical |
 | 3.13.5 | PASS (via `--without-pip` + `pip --python`) | 60/60 | bitwise identical |
-| 3.9 / 3.10 / 3.11 | INCONCLUSIVE — interpreter absent on audit machine |
+| 3.9 / 3.10 / 3.11 | INCONCLUSIVE — interpreter absent on audit machine | — | — |
 
 The canonical numeric job (Roberts regression + flat space + Gaussian
 observable, full 17-digit output) is **bit-identical across 3.12 and

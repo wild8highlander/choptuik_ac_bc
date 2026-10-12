@@ -105,7 +105,6 @@ def verify_mirror_parity(A=0.075, n=500, v_probe=0.55, closure="clamp"):
         ks = np.arange(k_lo, k_hi + 1)
         ip, im = i0 - ks, i0 + ks
         ts_scale = max(float(np.max(np.abs(t[ip]) + np.abs(s[ip]))), 1e-300)
-        pq_scale = max(float(np.max(np.abs(p[ip]) + np.abs(q[ip]))), 1e-300)
         m_scale = max(float(np.max(np.abs(m[ip]))), 1e-300)
         st_v = float(np.max(np.abs(s[im] - t[ip]))) / ts_scale
         Sp, Sm = p[ip] + q[ip], p[im] + q[im]

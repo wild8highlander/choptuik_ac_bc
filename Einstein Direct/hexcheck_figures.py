@@ -76,7 +76,6 @@ def pick(runs, eps):
 def fig1(lang):
     T = L[lang]
     runs = D["runs"]
-    r1 = pick(runs, 1e-2)
     fig, ax = plt.subplots(1, 2, figsize=(11.5, 4.6), constrained_layout=True)
     # (a) ln tau_fresh vs z_fine
     for r_, cc, lab in ((pick(runs, 1e-2), C_LEG, "eps=1e-2"),

@@ -123,7 +123,7 @@ python3 independent_verification/IVP15_cross_language.py
 
 ## 6. Outputs
 
-```
+```text
 independent_verification/
 ├── PROTOCOL.md              this document
 ├── RESULTS.md               committed audit report of the v2.0.0-IVP run

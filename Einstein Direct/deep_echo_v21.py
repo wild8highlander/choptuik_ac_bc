@@ -701,7 +701,7 @@ def run_ladder(main_rec):
         eps_arr = [r["eps"] for r in ok]
         d_ref = ok[0]["delta_eff_global"]
         devs = [abs(r["delta_eff_global"] - d_ref) / d_ref for r in ok]
-        fit, n = fit_exponent(eps_arr, devs)
+        fit, _n = fit_exponent(eps_arr, devs)
         out["fit_p_delta"] = fit
     else:
         out["fit_p_delta"] = None

@@ -134,7 +134,7 @@ def part1_center_link():
     om_e = W0
     m_e = M3 * xi**3
     a2_e = sp.exp(2 * om_e)
-    s_e, t_e = d_u(Phi_e), d_v(Phi_e)
+    _, t_e = d_u(Phi_e), d_v(Phi_e)
     p_e, q_e = d_u(r_e), d_v(r_e)
     # поток: d_v m  vs  -2 r^2 p t^2 / a2
     lhs = d_v(m_e)
@@ -668,7 +668,7 @@ def main():
     log("ЧАСТЬ III. Линеаризация: спектр сходимости и отталкивания")
     log("=" * 78)
     lin = part3_linearization(state, sources, Fs, M3_expr, A0)
-    lin_out, char_n, cf_exprs = lin
+    lin_out, _char_n, cf_exprs = lin
     result["spectrum"] = lin_out
 
     # --- IV. Эмпирика -----------------------------------------------------------

@@ -125,8 +125,6 @@ def fig_scaling(t, L, ax):
     C = math.log10(2.1e-2) - gamma_Ch * math.log10(1.3e-2)
     ax.plot(eps_line, 10 ** (C + gamma_Ch * np.log10(eps_line)),
             color=t["gold"], lw=1.6, ls="--", label=L["anchor"])
-    floor = c1["honest_notes"] and min(
-        r["M_code"] for r in c1["scan_N800"]["rows"] if r["sane"] and r["stop"] == "completed")
     ax.axhline(1.55e-2, color=t["muted"], lw=1.2, ls=":", label=L["floor"])
     ax.set_xscale("log"); ax.set_yscale("log")
     ax.set_xlabel(L["scaling_x"]); ax.set_ylabel(L["scaling_y"])

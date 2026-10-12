@@ -170,7 +170,6 @@ def fig_r3(lang):
         eta = np.maximum(0.0, (B0 - Tg * L) / 2)
         ax.plot(Tg, eta, "-", lw=1.9, color=cols[i], label=t["r3"][3+i])
         ax.axvline(b["T_death"], color=cols[i], ls=":", lw=1.0)
-    etas = np.linspace(0, 0.11, 200)
     # зона выживания при N=1e12
     L12 = math.log(1e12 * nu / 1e-12)
     ax.fill_between(Tg, np.maximum(0, (B0 - Tg*L12)/2), 0.11,

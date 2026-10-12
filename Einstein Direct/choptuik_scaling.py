@@ -49,7 +49,7 @@ def bisect_critical(lo, hi, n=800, tol=1e-6, max_iter=40, verbose=True):
         mid = 0.5 * (lo + hi)
         if hi - lo < tol:
             break
-        sup, m, diag, _ = run_amplitude(mid, n)
+        sup, m, _diag, _ = run_amplitude(mid, n)
         hist.append({"iter": it, "A": mid, "supercritical": bool(sup), "M_AH": m})
         if verbose:
             print(f"  [{it:2d}] A = {mid:.8f} -> {'SUPER' if sup else 'sub'} "
@@ -73,7 +73,7 @@ def mass_scaling(a_star, n=3000, decades=3.5, n_points=10, verbose=True):
     data = []
     for eps in eps_list:
         A = a_star + eps
-        sup, m, diag, sol = run_amplitude(A, n)
+        sup, m, diag, _sol = run_amplitude(A, n)
         if not sup or m <= 0 or m > 0.05:
             if verbose:
                 print(f"  A - A* = {eps:.2e}: не сверхкритическое / M вне диапазона — пропуск")

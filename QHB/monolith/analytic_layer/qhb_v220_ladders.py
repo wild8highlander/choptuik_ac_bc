@@ -130,7 +130,7 @@ for T_rot in (128, 256, 512, 1024, 2048, 4096):
     F = np.fft.rfft(s * np.hanning(n_s))
     freqs = np.fft.rfftfreq(n_s, d=dtA)
 
-    def peak_near(target_rad):
+    def peak_near(target_rad, freqs=freqs, F=F):
         # freqs в циклах/ед. времени; цель — в рад/ед.: переводим обе стороны
         tgt_c = target_rad / (2 * math.pi)
         win = 0.45 * SPLIT / (2 * math.pi)   # окно уже расщепления ветвей

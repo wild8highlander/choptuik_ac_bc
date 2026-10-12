@@ -16,7 +16,7 @@ export default function SurfacesPage() {
         "Δ_{Ch}": s.Delta_Ch,
         "λ₁": s.lambda1,
       })),
-    []
+    [],
   );
 
   const genusData = useMemo(
@@ -26,7 +26,7 @@ export default function SurfacesPage() {
         genus: s.genus,
         "|Aut|": s.automorphismOrder,
       })),
-    []
+    [],
   );
 
   return (
@@ -41,7 +41,10 @@ export default function SurfacesPage() {
       {/* Surface Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {RIEMANN_SURFACES.map((s) => (
-          <Card key={s.name} className="hover:border-teal-500/30 transition-all">
+          <Card
+            key={s.name}
+            className="hover:border-teal-500/30 transition-all"
+          >
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Layers className="h-5 w-5 text-teal-400" />
@@ -55,24 +58,34 @@ export default function SurfacesPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-400">|Aut|</span>
-                <span className="font-mono text-white">{s.automorphismOrder}</span>
+                <span className="font-mono text-white">
+                  {s.automorphismOrder}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-400">λ₁</span>
                 <span className="font-mono text-teal-400">{s.lambda1}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">Δ_{'{'}bC{'}'}</span>
-                <span className="font-mono text-teal-400">{s.delta_bC.toFixed(4)}</span>
+                <span className="text-gray-400">
+                  Δ_{"{"}bC{"}"}
+                </span>
+                <span className="font-mono text-teal-400">
+                  {s.delta_bC.toFixed(4)}
+                </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">Δ_{'{'}aC{'}'}</span>
+                <span className="text-gray-400">
+                  Δ_{"{"}aC{"}"}
+                </span>
                 <span className="font-mono text-amber-400">
                   {s.delta_aC.toExponential(4)}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">Δ_{'{'}Ch{'}'}</span>
+                <span className="text-gray-400">
+                  Δ_{"{"}Ch{"}"}
+                </span>
                 <span className="font-mono text-science-violet">
                   {s.Delta_Ch.toFixed(4)}
                 </span>
@@ -130,8 +143,8 @@ export default function SurfacesPage() {
       <Card>
         <CardContent className="p-4">
           <p className="text-xs text-gray-500">
-            Note: Δ_{'{'}aC{'}'} values are scaled ×1000 in the bar chart for visibility.
-            Actual values range from ~4×10⁻⁴ to ~1×10⁻³.
+            Note: Δ_{"{"}aC{"}"} values are scaled ×1000 in the bar chart for
+            visibility. Actual values range from ~4×10⁻⁴ to ~1×10⁻³.
           </p>
         </CardContent>
       </Card>

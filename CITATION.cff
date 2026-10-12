@@ -8,6 +8,7 @@ authors:
     email: "aslan08_05@mail.ru"
     orcid: "https://orcid.org/0009-0003-7299-0701"
 date-released: 2026-08-10
+version: "1.002"
 repository-code: "https://github.com/wild8highlander/choptuik_ac_bc"
 url: "https://wild8highlander.github.io/choptuik_ac_bc/"
 abstract: >
@@ -35,12 +36,11 @@ keywords:
   - "Tyukovsky equations"
   - "Einstein equations"
   - "Seiberg-Witten"
-license: OTHER
-license-url: LICENSE
+license-url: https://github.com/wild8highlander/choptuik_ac_bc/blob/main/LICENSE
 preferred-citation:
   type: book
   title: "Spinor corrections b-C and a-C and the solution of the Choptyuk problem"
-  author:
+  authors:
     - family-names: "Isaev"
       given-names: "Ishak Khamzatovich"
       orcid: "https://orcid.org/0009-0003-7299-0701"

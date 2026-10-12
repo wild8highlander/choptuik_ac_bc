@@ -34,7 +34,7 @@ theorems12/
 
 | № | Theorem | One-line statement | Machine | Verdict JSON | EN | RU |
 |---|---|---|---|---|---|---|
-| 1 | The clock-pair theorem | GCD of the books = `T0h²(4T0h²−27)/4`, τ* = **27/4**; brick: τ* = **1323/(196−π²)** — one common root, book defect 0.0 | `clock_closure_t1c.py` | `clock_closure_t1c.json` | [pdf](monographs_en/theorem_01_clock_pair_EN.pdf) | [pdf](monographs_ru/theorem_01_clock_pair_RU.pdf) |
+| 1 | The clock-pair theorem | GCD of the books = `T0h²(4T0h²−27)/4`, τ*= **27/4**; brick: τ* = **1323/(196−π²)** — one common root, book defect 0.0 | `clock_closure_t1c.py` | `clock_closure_t1c.json` | [pdf](monographs_en/theorem_01_clock_pair_EN.pdf) | [pdf](monographs_ru/theorem_01_clock_pair_RU.pdf) |
 | 2 | The brick-ladder theorem | τ*(δ) = **27/(4−δ²)** = 27k²/(4k²−π²) exactly on **12/12** rungs δ_k = π/k; the clock is brick-invariant, the tick does not select | `brick_scan_tick.py` | `brick_scan_tick.json` | [pdf](monographs_en/theorem_02_brick_ladder_EN.pdf) | [pdf](monographs_ru/theorem_02_brick_ladder_RU.pdf) |
 | 3 | The static factorization theorem | `UV_ξ3 = 2·R1h·Mdef_ξ5` identically; **S∩C = {R1h=0} ∪ {T0h=0} ∪ {T0h=T0h*}**; census G1–G3: 0 new branches | `global_static_search.py` | `global_static_search.json` | [pdf](monographs_en/theorem_03_factorization_EN.pdf) | [pdf](monographs_ru/theorem_03_factorization_RU.pdf) |
 | 4 | The weight-rule theorem | Tables factor as `(λ+p)…(λ+p+n−1)F` (12/12, the dd-coefficient 1 derived); **M3ᵀM3 = (1+λ²)M2ᵀM2**, char3 = (1+λ²)⁹·char2, ±i are phantoms | `sympy_third_order.py` | `third_order_tables.json` | [pdf](monographs_en/theorem_04_weight_rule_EN.pdf) | [pdf](monographs_ru/theorem_04_weight_rule_RU.pdf) |

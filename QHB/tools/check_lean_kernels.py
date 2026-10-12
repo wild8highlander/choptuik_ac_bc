@@ -66,7 +66,7 @@ if not AUDIT.exists():
     FAIL.append("missing file: QHB_AxiomAudit.lean")
 else:
     audit = AUDIT.read_text(encoding="utf-8")
-    for fname, kernels in REGISTRY.items():
+    for kernels in REGISTRY.values():
         for k in kernels:
             if f".{k}" not in audit:
                 FAIL.append(f"QHB_AxiomAudit.lean: kernel `{k}` not audited")

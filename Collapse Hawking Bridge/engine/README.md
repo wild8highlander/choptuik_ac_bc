@@ -32,7 +32,7 @@
 Spherical Einstein-scalar system, double-null form
 `ds^2 = -alpha(u,v)^2 du dv + r(u,v)^2 dOmega^2`, `omega := ln(alpha)`:
 
-```
+```text
 (SC)  Phi_uv   = -(r_u Phi_v + r_v Phi_u) / r
 (UV)  r_uv     = -(r_u r_v + alpha^2/4) / r
 (C1)  r_uu     = 2 omega_u r_u - (kappa/2) r Phi_u^2
@@ -42,14 +42,14 @@ Spherical Einstein-scalar system, double-null form
 
 with the Misner-Sharp mass
 
-```
+```text
 1 - 2m/r = g^{ab} r_a r_b  <=>  m = (r/2)(1 + 4 r_u r_v / alpha^2).
 ```
 
 The formulation is closed by regularity identities that keep the march
 well-defined down to the centre `r = 0`:
 
-```
+```text
 (r^2)_uv = -alpha^2/2 ,     P := r r_u :  P_v = -alpha^2/4 ,
 m_u = -kappa r^2 Phi_u^2 r_v / alpha^2 ,
 m_v = -kappa r^2 Phi_v^2 r_u / alpha^2 .

@@ -63,7 +63,8 @@ const DEFAULT_HYPOTHESES: HypothesisInput[] = [
 ];
 
 export default function HypothesisPage() {
-  const [hypotheses, setHypotheses] = useState<HypothesisInput[]>(DEFAULT_HYPOTHESES);
+  const [hypotheses, setHypotheses] =
+    useState<HypothesisInput[]>(DEFAULT_HYPOTHESES);
   const [sweepParam, setSweepParam] = useState("b_Ch");
   const [sweepMin, setSweepMin] = useState("0");
   const [sweepMax, setSweepMax] = useState("1");
@@ -77,10 +78,10 @@ export default function HypothesisPage() {
           h.name,
           parseFloat(h.computed),
           parseFloat(h.reference),
-          parseFloat(h.tolerance)
-        )
+          parseFloat(h.tolerance),
+        ),
       ),
-    [hypotheses]
+    [hypotheses],
   );
 
   const passCount = results.filter((r) => r.passed).length;
@@ -112,7 +113,7 @@ export default function HypothesisPage() {
         const bc = deltaBC(lT, deltaA, deltaB, t);
         const ac = deltaAC(t, -2);
         const cb = choptyukBase(bc, ac, -2, 3);
-        row["Δ_{Ch}"] = choptyukFull(cb, 0.376510, deltaA);
+        row["Δ_{Ch}"] = choptyukFull(cb, 0.37651, deltaA);
       } else {
         row["Δ_{Ch}"] = chBase + t;
       }
@@ -133,9 +134,13 @@ export default function HypothesisPage() {
     setHypotheses((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  const updateHypothesis = (idx: number, field: keyof HypothesisInput, value: string) => {
+  const updateHypothesis = (
+    idx: number,
+    field: keyof HypothesisInput,
+    value: string,
+  ) => {
     setHypotheses((prev) =>
-      prev.map((h, i) => (i === idx ? { ...h, [field]: value } : h))
+      prev.map((h, i) => (i === idx ? { ...h, [field]: value } : h)),
     );
   };
 
@@ -149,7 +154,9 @@ export default function HypothesisPage() {
           </p>
         </div>
         <div className="flex gap-2 items-center">
-          <Badge variant={passCount === results.length ? "success" : "destructive"}>
+          <Badge
+            variant={passCount === results.length ? "success" : "destructive"}
+          >
             {passCount}/{results.length} passed
           </Badge>
           <Button variant="outline" size="sm" onClick={addHypothesis}>
@@ -178,25 +185,33 @@ export default function HypothesisPage() {
                 >
                   <Input
                     value={h.name}
-                    onChange={(e) => updateHypothesis(idx, "name", e.target.value)}
+                    onChange={(e) =>
+                      updateHypothesis(idx, "name", e.target.value)
+                    }
                     className="h-8 text-sm"
                     placeholder="Name"
                   />
                   <Input
                     value={h.computed}
-                    onChange={(e) => updateHypothesis(idx, "computed", e.target.value)}
+                    onChange={(e) =>
+                      updateHypothesis(idx, "computed", e.target.value)
+                    }
                     className="h-8 text-sm font-mono"
                     placeholder="Computed"
                   />
                   <Input
                     value={h.reference}
-                    onChange={(e) => updateHypothesis(idx, "reference", e.target.value)}
+                    onChange={(e) =>
+                      updateHypothesis(idx, "reference", e.target.value)
+                    }
                     className="h-8 text-sm font-mono"
                     placeholder="Reference"
                   />
                   <Input
                     value={h.tolerance}
-                    onChange={(e) => updateHypothesis(idx, "tolerance", e.target.value)}
+                    onChange={(e) =>
+                      updateHypothesis(idx, "tolerance", e.target.value)
+                    }
                     className="h-8 text-sm font-mono"
                     placeholder="Tol"
                   />
@@ -205,7 +220,8 @@ export default function HypothesisPage() {
                       variant={result.passed ? "success" : "destructive"}
                       className="text-[10px]"
                     >
-                      {result.passed ? "PASS" : "FAIL"} (ε={result.relativeError.toExponential(1)})
+                      {result.passed ? "PASS" : "FAIL"} (ε=
+                      {result.relativeError.toExponential(1)})
                     </Badge>
                   )}
                   <Button
@@ -283,7 +299,11 @@ export default function HypothesisPage() {
             xKey="x"
             lines={[
               { key: "Δ_{Ch}", color: "#8b5cf6", name: "Δ_{Ch}" },
-              { key: "Reference", color: "#fbbf24", name: "Observed Δ = 3.443" },
+              {
+                key: "Reference",
+                color: "#fbbf24",
+                name: "Observed Δ = 3.443",
+              },
             ]}
             type="line"
             height={300}

@@ -144,7 +144,6 @@ def main():
     expr_free = sp.simplify(res_free["C1(kappa=kappa)"])
     factored = sp.factor(expr_free)
     log(f"    C1 residual (free kappa) factors as: {factored}")
-    poly_k = sp.Poly(factored, kap)
     contains_k_minus_2 = False
     if factored.has(kap):
         # check the polynomial in kappa vanishes at kappa = 2
@@ -164,7 +163,6 @@ def main():
     worst = mp.mpf(0)
     for uu in (mp.mpf("-0.2"), mp.mpf("0.1"), mp.mpf("0.4")):
         for vv in (mp.mpf("0.8"), mp.mpf("1.3")):
-            sub = {u: mp.mpf(uu), v: mp.mpf(vv), s: s_val}
             for name, expr in res2.items():
                 val = mp.mpf(str(sp.N(expr.subs({u: uu, v: vv, s: s_val}), 30)))
                 worst = max(worst, abs(val))

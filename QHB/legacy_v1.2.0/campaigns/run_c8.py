@@ -78,7 +78,6 @@ def integrate_pair(lam, alpha, tau_f=TAU_F, n_steps=1 << 13):
     dt = tau_f / n_steps
     n = np.zeros(2)
     for k in range(n_steps):
-        t = k * dt
         k1 = rhs(n, lam, alpha)
         k2 = rhs(n + 0.5 * dt * k1, lam, alpha)
         k3 = rhs(n + 0.5 * dt * k2, lam, alpha)
@@ -152,7 +151,7 @@ def main():
     r1, r2, r3 = (ladder[-3]["r"], ladder[-2]["r"], ladder[-1]["r"])
     denom = abs(r1 - r2)
     if denom > 0 and abs(r2 - r3) > 0:
-        p_measured = math.log(denom / abs(r2 - r3), 2.0)
+        p_measured = math.log2(denom / abs(r2 - r3))
     conv_ok = p_measured is not None and abs(p_measured - 4.0) < 0.05
     print(f"convergence: p_eff = {p_measured:.4f} -> "
           f"{'PASS' if conv_ok else 'CHECK'}", flush=True)

@@ -41,7 +41,7 @@ the figures, the docs and the results ledger quote numerically lives under
 
 Data flows in one direction only; there is no circularity anywhere in the chain.
 
-```
+```text
 campaigns/run_c1.py   ──►  campaigns/reference/c1_verdict.json   (validation, A* ladder, born spectrum)
 campaigns/run_c2.py   ──►  campaigns/reference/c2_verdict.json   (both branches around the threshold)
 campaigns/run_c3.py   ──►  campaigns/reference/c3_verdict.json   (Δ·γ check)
@@ -173,7 +173,7 @@ Column dictionary — 23 columns in six groups:
 | `M_code_sat` / `mass_floor_N800_code` | 0.079443 / 0.022852 (near-floor member mass) |
 | `f_tilde_range_resolved` | [0.28765, 1.0] |
 | `gamma_campaign` | "honestly unmeasurable: fixed-grid floor dominates (C3 floor-biased gamma_eff = 0.005 +- 0.035 at N=800; C3b per-grid remediation concurs: 0.041 / 0.060 at N=1600/3200, floor-dominated)" |
-| `gamma_Ch_anchor` / `b_Ch` | 0.374 / 0.3765101981412664 — the 0.67% gap is |γ_Ch − b_Ch|/b_Ch (literature vs the project's own hypothesis constant; the former `b_Ch_lit` key was a rounded copy of b_Ch and is removed at v2.2.0) |
+| `gamma_Ch_anchor` / `b_Ch` | 0.374 / 0.3765101981412664 — the 0.67% gap is \|γ_Ch − b_Ch\|/b_Ch (literature vs the project's own hypothesis constant; the former `b_Ch_lit` key was a rounded copy of b_Ch and is removed at v2.2.0) |
 | `junk_rows` / `M_CMB_kg` / `members` | 6 / 4.5016e22 / the three members above |
 
 ## The campaign tables: verdict rows, verbatim

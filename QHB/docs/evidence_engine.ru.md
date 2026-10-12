@@ -3,7 +3,7 @@
 Каждое утверждение пакета живёт в `data/claims.json` с полями:
 
 - **id** — стабильный идентификатор (реестр теорем T1–T15 + результаты кампаний
-  + аудит);
+  - аудит);
 - **status** — один из `exact`, `measured-law`, `honest-negative`, `hypothesis`,
   `comparison`;
 - **statement** — зеркала RU и EN;

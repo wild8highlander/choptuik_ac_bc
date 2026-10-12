@@ -218,7 +218,6 @@ def run():
     print("  [L4] связь с Q2...", flush=True)
     out["L4_q2_link"] = l4_q2_link()
 
-    l1 = out["L1_no_center"]
     l3 = out["L3_return_map"]
     out["verdict_lines"] = [
         "ЛОКАЛЬНЫЙ НЕГАТИВ (теорема-проверка): char(i*omega, tau* = 27/4) "

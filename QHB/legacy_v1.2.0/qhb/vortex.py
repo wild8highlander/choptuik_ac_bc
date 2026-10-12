@@ -158,7 +158,6 @@ def kirchhoff_run(pos0, Gamma, dt=1e-3, steps=40000, record_every=0):
     if record_every:
         traj.append(pos.copy())
     for k in range(steps):
-        t = k * dt
 
         def f(p):
             return kirchhoff_rhs(p, Gamma)
@@ -265,7 +264,6 @@ def triangle_shape_error(pos, a=1.0):
 def rotation_angle(traj, Gamma=1.0, a=1.0):
     """Accumulated rotation angle of the triangle (sum of per-sample
     angular increments of vortex 0 about the centroid).  traj (m,3,2)."""
-    R = circumradius(a)
     ang = np.arctan2(traj[:, 0, 1], traj[:, 0, 0])
     d = np.diff(ang)
     d = (d + math.pi) % TWO_PI - math.pi               # unwrap
