@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="formal_choptuik avatar">
+  <defs>
+    <radialGradient id="abg" cx="0.5" cy="0.42" r="0.75">
+      <stop offset="0" stop-color="#141E42"/>
+      <stop offset="0.7" stop-color="#0C142E"/>
+      <stop offset="1" stop-color="#080D1F"/>
+    </radialGradient>
+    <linearGradient id="adisk" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E8A33D"/>
+      <stop offset="0.5" stop-color="#9B7EDE"/>
+      <stop offset="1" stop-color="#4CC9F0"/>
+    </linearGradient>
+    <radialGradient id="aglow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#E8B44A" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#E8B44A" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="asoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#abg)"/>
+
+  <g fill="#E8ECFF">
+    <circle cx="70"  cy="90"  r="2.2"><animate attributeName="opacity" values="0.15;1;0.15" dur="3.1s" repeatCount="indefinite"/></circle>
+    <circle cx="150" cy="60"  r="1.6"><animate attributeName="opacity" values="0.9;0.1;0.9" dur="2.6s" repeatCount="indefinite"/></circle>
+    <circle cx="420" cy="80"  r="2.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="4.2s" repeatCount="indefinite"/></circle>
+    <circle cx="450" cy="300" r="1.8"><animate attributeName="opacity" values="0.9;0.15;0.9" dur="2.9s" repeatCount="indefinite"/></circle>
+    <circle cx="80"  cy="400" r="2.0"><animate attributeName="opacity" values="0.2;0.9;0.2" dur="3.7s" repeatCount="indefinite"/></circle>
+    <circle cx="230" cy="450" r="1.5"><animate attributeName="opacity" values="0.1;0.8;0.1" dur="2.3s" repeatCount="indefinite"/></circle>
+    <circle cx="380" cy="430" r="2.1"><animate attributeName="opacity" values="0.2;1;0.2" dur="4.6s" repeatCount="indefinite"/></circle>
+  </g>
+
+  <g>
+    <circle cx="256" cy="256" r="170" fill="url(#aglow)"/>
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 256 256" to="360 256 256" dur="18s" repeatCount="indefinite"/>
+      <ellipse cx="256" cy="256" rx="178" ry="62" fill="none" stroke="url(#adisk)" stroke-width="13" opacity="0.9" filter="url(#asoft)"/>
+      <ellipse cx="256" cy="256" rx="140" ry="46" fill="none" stroke="url(#adisk)" stroke-width="6" opacity="0.95"/>
+    </g>
+    <circle cx="256" cy="256" r="76" fill="none" stroke="#F0C060" stroke-width="3">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="256" cy="256" r="58" fill="#05060C"/>
+    <text x="256" y="276" text-anchor="middle" font-family="Georgia, serif" font-size="58" fill="#F0C060">λ</text>
+    <circle r="7" fill="#FFE9B0">
+      <animateMotion dur="8s" repeatCount="indefinite"
+        path="M 78,256 A 178,62 0 1,1 434,256 A 178,62 0 1,1 78,256"/>
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.92;1" dur="8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

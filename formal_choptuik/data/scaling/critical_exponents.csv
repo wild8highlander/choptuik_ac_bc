@@ -1,0 +1,12 @@
+quantity,value,source_or_meaning,reference
+gamma,0.373882,least-squares fit of this dataset,python/scripts/generate_data.py
+gamma,0.374,"Choptuik 1993 (scalar field, DSS)","Phys. Rev. Lett. 70, 9"
+gamma,0.374,Gundlach & Martin-Garcia 2007 review,Living Rev. Relativity 10(5)
+gamma_over_lambda0_check,0.373902,gamma = 1/lambda_0 (model constant),choptuik_service/evolver.py
+lambda0,2.6745,unstable eigenvalue (calibrated),choptuik_service/evolver.py
+Delta_echoing,0.693147,echo period fitted / ln 2,echo_profile.csv + autocorrelation
+Delta_ln2,0.693147,literature value Delta ~ ln 2,Gundlach & Martin-Garcia 2007
+fit_log_intercept,-0.223514,ln M0 of the fit,this dataset
+fit_rms_residual,0.002126,fit quality (log-log),this dataset
+correction_B,-0.30,leading analytic correction amplitude,scaling ansatz
+correction_omega,2.00,leading analytic correction exponent,scaling ansatz

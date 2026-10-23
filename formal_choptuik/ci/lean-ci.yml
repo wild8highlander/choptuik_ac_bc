@@ -1,0 +1,63 @@
+name: formal-choptuik CI
+
+# Template — install at the REPOSITORY ROOT as
+#   .github/workflows/formal-choptuik-ci.yml
+# (GitHub only reads .github/ at the repo root.)
+
+on:
+  push:
+    paths: ['formal_choptuik/**']
+  pull_request:
+    paths: ['formal_choptuik/**']
+  workflow_dispatch:
+
+jobs:
+  lean:
+    name: Lean theory — build + axiom audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: formal_choptuik/lean
+      - name: Axiom audit (no project-specific axioms in theory modules)
+        run: |
+          # admissible: none in Choptuik/** (the three standard axioms are
+          # kernel-provided and need no 'axiom' declaration of ours)
+          if grep -RInE '^[[:space:]]*axiom[[:space:]]' formal_choptuik/lean/Choptuik/; then
+            echo "::error::project-specific axiom found in theory modules"
+            exit 1
+          fi
+      - name: sorry ledger audit (every sorry names a gap id)
+        run: |
+          bad=$(grep -RIn 'sorry' formal_choptuik/lean/Choptuik/ | grep -vE 'G[1-6]' || true)
+          if [ -n "$bad" ]; then
+            echo "::error::sorry without gap tag:"; echo "$bad"; exit 1
+          fi
+
+  python:
+    name: Python service — pytest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install numpy matplotlib pillow pytest
+      - name: Protocol + physics regressions
+        working-directory: formal_choptuik/python
+        run: python -m pytest tests/ -v
+
+  regen:
+    name: Reproducibility — data regenerates bit-stable
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install numpy
+      - name: Regenerate data and diff
+        working-directory: formal_choptuik/python
+        run: |
+          python scripts/generate_data.py
+          git diff --exit-code -- ../data || {
+            echo "::error::data/ is not reproducible from seed 1993"; exit 1; }

@@ -1,0 +1,16 @@
+mode_id,k,Re_lambda,Im_lambda,abs_lambda,growth_rate,type,structure
+mode_01,0,2.674500,0.000000,2.674500,2.674500,unstable,unstable_real
+mode_02,1,-4.300000,4.532360,6.247583,-4.300000,decaying,conjugate_pair
+mode_03,2,-4.300000,-4.532360,6.247583,-4.300000,decaying,conjugate_pair
+mode_04,3,-6.100000,13.597080,14.902704,-6.100000,decaying,conjugate_pair
+mode_05,4,-6.100000,-13.597080,14.902704,-6.100000,decaying,conjugate_pair
+mode_06,5,-7.900000,22.661801,23.999317,-7.900000,decaying,conjugate_pair
+mode_07,6,-7.900000,-22.661801,23.999317,-7.900000,decaying,conjugate_pair
+mode_08,7,-9.700000,31.726521,33.176228,-9.700000,decaying,conjugate_pair
+mode_09,8,-9.700000,-31.726521,33.176228,-9.700000,decaying,conjugate_pair
+mode_10,9,-11.500000,40.791241,42.381309,-11.500000,decaying,conjugate_pair
+mode_11,10,-11.500000,-40.791241,42.381309,-11.500000,decaying,conjugate_pair
+mode_12,11,-13.300000,49.855962,51.599485,-13.300000,decaying,conjugate_pair
+mode_13,12,-13.300000,-49.855962,51.599485,-13.300000,decaying,conjugate_pair
+mode_14,13,-15.100000,58.920682,60.824804,-15.100000,decaying,conjugate_pair
+mode_15,14,-15.100000,-58.920682,60.824804,-15.100000,decaying,conjugate_pair

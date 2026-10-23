@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="220" viewBox="0 0 1280 220" role="img" aria-label="Roadmap banner">
+  <defs>
+    <linearGradient id="rbg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0B1226"/>
+      <stop offset="1" stop-color="#121C3E"/>
+    </linearGradient>
+    <linearGradient id="rscan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E8B44A" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#E8B44A" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#E8B44A" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="220" fill="url(#rbg)"/>
+  <g fill="#E8ECFF">
+    <circle cx="120" cy="40" r="1.3"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" repeatCount="indefinite"/></circle>
+    <circle cx="300" cy="180" r="1.1"><animate attributeName="opacity" values="0.9;0.15;0.9" dur="2.6s" repeatCount="indefinite"/></circle>
+    <circle cx="620" cy="50" r="1.4"><animate attributeName="opacity" values="0.2;0.9;0.2" dur="3.8s" repeatCount="indefinite"/></circle>
+    <circle cx="900" cy="170" r="1.2"><animate attributeName="opacity" values="0.1;0.9;0.1" dur="2.9s" repeatCount="indefinite"/></circle>
+    <circle cx="1150" cy="60" r="1.5"><animate attributeName="opacity" values="0.2;1;0.2" dur="4.3s" repeatCount="indefinite"/></circle>
+  </g>
+  <g font-family="Georgia, 'Times New Roman', serif">
+    <text x="56" y="92" font-size="42" fill="#E8B44A" letter-spacing="4">ROADMAP</text>
+    <text x="56" y="130" font-size="19" fill="#C9CBDD" font-style="italic">Three phases from numerical evidence to a machine-checked theorem</text>
+  </g>
+  <g font-family="'Courier New', monospace" font-size="15">
+    <rect x="560" y="70" width="200" height="80" rx="12" fill="#141F44" stroke="#4CC9F0" stroke-width="1.4"/>
+    <text x="660" y="102" text-anchor="middle" fill="#BDE9F7" font-weight="bold">PHASE I</text>
+    <text x="660" y="126" text-anchor="middle" fill="#8FA3C8">Foundation</text>
+    <text x="660" y="143" text-anchor="middle" fill="#8FA3C8">3-6 months</text>
+    <rect x="800" y="70" width="200" height="80" rx="12" fill="#141F44" stroke="#9B8CDE" stroke-width="1.4">
+      <animate attributeName="stroke-opacity" values="1;0.35;1" dur="4s" repeatCount="indefinite"/>
+    </rect>
+    <text x="900" y="102" text-anchor="middle" fill="#C9BDF0" font-weight="bold">PHASE II</text>
+    <text x="900" y="126" text-anchor="middle" fill="#8FA3C8">Existence</text>
+    <text x="900" y="143" text-anchor="middle" fill="#8FA3C8">6-12 months</text>
+    <rect x="1040" y="70" width="200" height="80" rx="12" fill="#141F44" stroke="#E8B44A" stroke-width="1.4"/>
+    <text x="1140" y="102" text-anchor="middle" fill="#F2DCA4" font-weight="bold">PHASE III</text>
+    <text x="1140" y="126" text-anchor="middle" fill="#8FA3C8">Stability</text>
+    <text x="1140" y="143" text-anchor="middle" fill="#8FA3C8">6-9 months</text>
+  </g>
+  <g stroke="#7E86A8" stroke-width="2" fill="none">
+    <path d="M 762,110 h 30 m -8,-6 l 8,6 l -8,6"/>
+    <path d="M 1002,110 h 30 m -8,-6 l 8,6 l -8,6"/>
+  </g>
+  <rect x="560" y="160" width="680" height="5" rx="2.5" fill="url(#rscan)">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="3.4s" repeatCount="indefinite"/>
+  </rect>
+  <line x1="0" y1="212" x2="1280" y2="212" stroke="#E8B44A" stroke-width="1.2" opacity="0.7"/>
+</svg>

@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: >-
+  formal_choptuik: a machine-checked theory of Choptuik critical
+  phenomena — the formal-verification wing of choptuik_ac_bc.
+title: formal_choptuik
+authors:
+  - family-names: Isaev
+    given-names: Ishak Khamzatovich
+    orcid: https://orcid.org/0009-0003-7299-0701
+    affiliation: Independent researcher, Nalchik, Kabardino-Balkarian Republic
+version: 0.3.0
+date-released: "2026-10-24"
+license: Isaev-Proprietary
+repository-code: https://github.com/wild8highlander/choptuik_ac_bc
+url: https://github.com/wild8highlander/choptuik_ac_bc/tree/main/formal_choptuik
+keywords:
+  - Choptuik critical collapse
+  - discrete self-similarity
+  - mass scaling law
+  - Lean 4
+  - mathlib
+  - formal verification
+  - gravitational collapse
+  - interval arithmetic
+abstract: >-
+  A disciplined scaffold for formalizing the critical phenomena of
+  gravitational collapse (Choptuik 1993; Reiterer-Trubowitz 2019) in
+  Lean 4 with mathlib: the double-null arena, DSS echoing bookkeeping,
+  the spectral core of the scaling law, a ZeroMQ bridge to a
+  deterministic Python numerical service, a classified gap registry
+  (G1-G6), a three-phase roadmap, and two research monographs (RU/EN,
+  DOCX/PDF).

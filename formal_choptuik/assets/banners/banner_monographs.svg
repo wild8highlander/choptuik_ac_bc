@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="220" viewBox="0 0 1280 220" role="img" aria-label="Monographs banner">
+  <defs>
+    <linearGradient id="mbg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0B1226"/>
+      <stop offset="1" stop-color="#181430"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="220" fill="url(#mbg)"/>
+  <g fill="#E8ECFF">
+    <circle cx="420" cy="40" r="1.3"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.3s" repeatCount="indefinite"/></circle>
+    <circle cx="820" cy="180" r="1.1"><animate attributeName="opacity" values="0.9;0.1;0.9" dur="2.6s" repeatCount="indefinite"/></circle>
+    <circle cx="1200" cy="60" r="1.4"><animate attributeName="opacity" values="0.2;0.9;0.2" dur="4.1s" repeatCount="indefinite"/></circle>
+  </g>
+  <!-- floating monograph volumes -->
+  <g>
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0,0;0,-7;0,0" dur="5s" repeatCount="indefinite"/>
+      <rect x="560" y="60" width="90" height="120" rx="6" fill="#1A2444" stroke="#9B8CDE" stroke-width="1.6"/>
+      <rect x="572" y="60" width="8" height="120" fill="#9B8CDE" opacity="0.65"/>
+      <text x="622" y="112" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#C9BDF0">I</text>
+      <line x1="586" y1="136" x2="638" y2="136" stroke="#8FA3C8" stroke-width="2"/>
+      <line x1="586" y1="148" x2="626" y2="148" stroke="#8FA3C8" stroke-width="2"/>
+    </g>
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0,0;0,-7;0,0" dur="5s" begin="1.6s" repeatCount="indefinite"/>
+      <rect x="680" y="60" width="90" height="120" rx="6" fill="#1A2444" stroke="#E8B44A" stroke-width="1.6"/>
+      <rect x="692" y="60" width="8" height="120" fill="#E8B44A" opacity="0.65"/>
+      <text x="742" y="112" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#F2DCA4">II</text>
+      <line x1="706" y1="136" x2="758" y2="136" stroke="#8FA3C8" stroke-width="2"/>
+      <line x1="706" y1="148" x2="746" y2="148" stroke="#8FA3C8" stroke-width="2"/>
+    </g>
+  </g>
+  <g font-family="Georgia, 'Times New Roman', serif">
+    <text x="56" y="92" font-size="42" fill="#F2DCA4" letter-spacing="4">MONOGRAPHS</text>
+    <text x="56" y="130" font-size="19" fill="#C9CBDD" font-style="italic">Two research monographs · Russian and English · DOCX and PDF</text>
+    <text x="56" y="168" font-size="15" fill="#7E86A8">I. Formalization roadmap   ·   II. Gap analysis and proof-assistant selection</text>
+  </g>
+  <g font-family="'Courier New', monospace" font-size="13" fill="#8FA3C8">
+    <text x="880" y="196">20-30 pages · TOC · figures · references</text>
+  </g>
+  <line x1="0" y1="212" x2="1280" y2="212" stroke="#E8B44A" stroke-width="1.2" opacity="0.7"/>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="280" viewBox="0 0 960 280" role="img" aria-label="formal_choptuik logo">
+  <defs>
+    <linearGradient id="ldisk" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E8A33D"/>
+      <stop offset="0.5" stop-color="#9B7EDE"/>
+      <stop offset="1" stop-color="#4CC9F0"/>
+    </linearGradient>
+    <radialGradient id="lglow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#E8B44A" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#E8B44A" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="lsoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="4"/></filter>
+  </defs>
+
+  <!-- emblem -->
+  <g>
+    <circle cx="150" cy="140" r="112" fill="url(#lglow)"/>
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 150 140" to="360 150 140" dur="22s" repeatCount="indefinite"/>
+      <ellipse cx="150" cy="140" rx="108" ry="38" fill="none" stroke="url(#ldisk)" stroke-width="8" opacity="0.9" filter="url(#lsoft)"/>
+      <ellipse cx="150" cy="140" rx="84" ry="28" fill="none" stroke="url(#ldisk)" stroke-width="4" opacity="0.95"/>
+    </g>
+    <circle cx="150" cy="140" r="45" fill="none" stroke="#F0C060" stroke-width="2">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="150" cy="140" r="34" fill="#05060C"/>
+    <!-- lambda glyph engraved on the horizon -->
+    <text x="150" y="156" text-anchor="middle" font-family="Georgia, serif" font-size="38" fill="#F0C060">λ</text>
+    <circle r="4" fill="#FFE9B0">
+      <animateMotion dur="7s" repeatCount="indefinite"
+        path="M 42,140 A 108,38 0 1,1 258,140 A 108,38 0 1,1 42,140"/>
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="7s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- wordmark -->
+  <g font-family="'Courier New', monospace">
+    <text x="300" y="150" font-size="64" fill="#F5F3EE" font-weight="bold">formal</text>
+    <text x="474" y="150" font-size="64" fill="#F5F3EE" font-weight="bold">_</text>
+    <text x="496" y="150" font-size="64" fill="#E8B44A" font-weight="bold">choptuik</text>
+    <text x="303" y="196" font-size="16" letter-spacing="7" fill="#9B8CDE">LEAN-VERIFIED CRITICAL COLLAPSE</text>
+    <text x="303" y="228" font-size="13" fill="#7E86A8">geometry · existence · stability · scaling</text>
+  </g>
+
+  <g fill="#E8ECFF">
+    <circle cx="700" cy="70" r="1.3"><animate attributeName="opacity" values="0.15;1;0.15" dur="3.3s" repeatCount="indefinite"/></circle>
+    <circle cx="800" cy="200" r="1.1"><animate attributeName="opacity" values="0.9;0.1;0.9" dur="2.8s" repeatCount="indefinite"/></circle>
+    <circle cx="900" cy="100" r="1.4"><animate attributeName="opacity" values="0.2;0.9;0.2" dur="4s" repeatCount="indefinite"/></circle>
+    <circle cx="620" cy="230" r="1.0"><animate attributeName="opacity" values="0.1;0.8;0.1" dur="2.5s" repeatCount="indefinite"/></circle>
+  </g>
+</svg>
