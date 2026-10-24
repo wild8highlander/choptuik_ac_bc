@@ -21,7 +21,7 @@ status — from *numerical evidence* into a **machine-checked proof**.
   <a href="python/tests/"><img alt="tests" src="https://img.shields.io/badge/pytest-65/65_passing-8FB7A4?style=flat-square"></a>
   <a href="#reproducibility"><img alt="seed" src="https://img.shields.io/badge/seed-1993·deterministic-E8B44A?style=flat-square"></a>
   <a href="blueprint/gap_registry.csv"><img alt="gaps" src="https://img.shields.io/badge/gap_registry-G1..G6-E86A6A?style=flat-square"></a>
-  <a href="monographs/"><img alt="monographs" src="https://img.shields.io/badge/monographs-2×(RU·EN·DOCX·PDF)-B08A3E?style=flat-square"></a>
+  <a href="monographs/"><img alt="monographs" src="https://img.shields.io/badge/monographs-3×(RU·EN·DOCX·PDF)-B08A3E?style=flat-square"></a>
   <img alt="license" src="https://img.shields.io/badge/license-Isaev_Proprietary-8A8272?style=flat-square">
 </p>
 <p align="center">
@@ -63,7 +63,7 @@ assistant can give.
 skeleton** (`lean/`), a **deterministic numerical service** (`python/`), a
 **typed bridge** between them (`bridge/`), the **obligation ledger** and
 tooling decision record (`blueprint/`), the **three-phase roadmap**
-(`roadmap/`), and two **research monographs**, each in {RU, EN} × {DOCX, PDF}
+(`roadmap/`), and three **research monographs**, each in {RU, EN} × {DOCX, PDF}
 (`monographs/`).
 
 ## Table of contents
@@ -95,7 +95,7 @@ from the files as they stand, not promised:
 | **Python service** (`python/`) | **65 pytests — 17 service + 18 certificate + 30 client** (ZMQ round-trip, fuzz, timeouts); ZMQ REP on `tcp://127.0.0.1:5557`; certificate producer `certify.py` with `emit` / `check` |
 | **Data** (`data/`) | **7 deterministic CSVs**, 12,890 rows total, seed 1993 |
 | **Figures & animations** | **8 PNG figures @ 300 dpi** (dark/light × en/ru) + **4 GIFs** (24–72 frames) |
-| **Monographs** (`monographs/`) | **8 renditions** — 2 volumes × {RU, EN} × {DOCX, PDF}, 16–20 pages each |
+| **Monographs** (`monographs/`) | **12 renditions** — 3 volumes × {RU, EN} × {DOCX, PDF}; Volumes I–II: 16–21 pages each, Volume III (the certificate channel): 54–62 pages |
 | **Governance** | gap ledger G1–G6 with per-gap status (2 resolved, 3 partial, bridge live); roadmap with 17 tasks and a 9-milestone ledger (M1.1, M1.2 done); CI template enforcing axiom audit + data byte-identity |
 
 Calibrated constants of the committed build — locked by the tests against the
@@ -124,7 +124,7 @@ committed CSVs:
 | [`bridge/`](bridge/) | protocol v1.1 (7 methods) + 4 committed certificate JSONs + example client | [`bridge/README.md`](bridge/README.md) |
 | [`blueprint/`](blueprint/) | technical spec, axiomatic base, gap registry, tooling verdict, module map | [`blueprint/README.md`](blueprint/README.md) |
 | [`roadmap/`](roadmap/) | three phases with 17 tasks, acceptance criteria, milestone ledger | [`roadmap/README.md`](roadmap/README.md) |
-| [`monographs/`](monographs/) | 2 monographs × {RU, EN} × {DOCX, PDF} | [`monographs/README.md`](monographs/README.md) |
+| [`monographs/`](monographs/) | 3 monographs × {RU, EN} × {DOCX, PDF} | [`monographs/README.md`](monographs/README.md) |
 | [`figures/`](figures/) | 8 publication-grade figures (300 dpi) | [`figures/README.md`](figures/README.md) |
 | [`assets/`](assets/) | 2 logos + 8 animated SVG banners + 4 GIFs | [`assets/README.md`](assets/README.md) |
 | [`data/`](data/) | 7 deterministic CSVs (~12.9k rows) behind every figure | [`data/README.md`](data/README.md) |
@@ -232,9 +232,11 @@ v0.4.1, the rest open): [`roadmap/milestones.csv`](roadmap/milestones.csv).
 |---|---|---|
 | **I** | *From Code to Machine-Checked Proof: a Formalization Roadmap for Choptuik Critical Phenomena* | [`ru/…Roadmap_RU.docx/.pdf`](monographs/ru/) · [`en/…Roadmap_EN.docx/.pdf`](monographs/en/) |
 | **II** | *Gap Analysis and Proof-Assistant Selection for the Choptuik Formalization Programme* | [`ru/…Gaps_RU.docx/.pdf`](monographs/ru/) · [`en/…Gaps_EN.docx/.pdf`](monographs/en/) |
+| **III** | *The Certificate Channel and the Architecture of Trust* — verified interval arithmetic, the Lean⇄Python bridge, and the routes to existence and stability | [`ru/…Certificate_Channel_RU.docx/.pdf`](monographs/ru/) · [`en/…Certificate_Channel_EN.docx/.pdf`](monographs/en/) |
 
-Each volume: 16–20 pages, cover, table of contents, embedded figures,
-references.  Details and reading order: [`monographs/README.md`](monographs/README.md).
+Volumes I–II: 16–21 pages each; Volume III: 54–62 pages.  Each volume: cover,
+table of contents, embedded figures, references.  Details and reading order:
+[`monographs/README.md`](monographs/README.md).
 
 ---
 
