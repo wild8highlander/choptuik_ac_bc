@@ -1,10 +1,12 @@
-# Bridge Protocol v1.0 — Lean ⇄ Python
+# Bridge Protocol v1.1 — Lean ⇄ Python
 
 > The contract that lets a proof assistant drive a numerical service.
 > Lean 4 is the **client** (initiates every request); the Python service
 > is the **server** (answers, never asks).  All payloads are UTF-8 JSON
 > objects; all numbers are IEEE-754 doubles unless explicitly interval
-> endpoints, which are always sent as `[lo, hi]` pairs.
+> endpoints, which are always sent as `[lo, hi]` pairs — or **exact
+> decimal rationals encoded as strings** on the certificate channel
+> (v1.1), where nothing floating-point is allowed to cross.
 
 ## Transport
 
@@ -105,6 +107,32 @@ Strict outward-rounded enclosure of a polynomial image (gap G5).
 > true image (dependency problem).  Soundness is the property the proof
 > side relies on; tightness is the Python side's problem.
 
+### `certificate` (v1.1)
+
+Proof-grade rational certificate bundle — the payload of the offline
+> certificate channel (see *The certificate channel* below).
+
+```json
+→ { "method": "certificate", "kind": "spectrum" }
+← { "status": "ok",
+    "certificate": {
+      "schema": "choptuik-certificate/1.0",
+      "kind": "spectrum",
+      "producer": { "tool": "choptuik_service.certify", "version": "0.4.1",
+                    "protocol": "1.1" },
+      "lambda0": { "enclosure": { "lo": "2.6744999", "hi": "2.674500101" },
+                   "model": "2.6745", "computed": 2.6745 },
+      ... } }
+```
+
+Kinds: `spectrum` (rational enclosures of the computed spectrum of the
+truncated mode model), `newton` (Newton–Kantorovich constants + the
+interval-Newton band of the correction equation), `scaling`
+(deep-scaling γ-fit enclosure vs `1/λ₀`), `interval` (exact rational
+Horner enclosure of the band image).  Unknown kinds are `bad_input`
+errors.  Every rational is an **exact decimal string**; the response is
+deterministic (regeneration is byte-stable).
+
 ## Error codes
 
 | Code | Meaning |
@@ -115,13 +143,52 @@ Strict outward-rounded enclosure of a polynomial image (gap G5).
 | `bad_input` | parameter present but invalid (shape, sign, size) |
 | `no_echo` | the series does not exhibit a recoverable echo peak |
 
+## The certificate channel (v1.1, the proof-grade half of gap G4)
+
+The interactive channel above is for exploration and calibration.  The
+PROOF-FEEDING channel is offline and file-based — live floats never
+enter the proof layer:
+
+```
+python/choptuik_service/certify.py
+   │  compute (float64, LAPACK)
+   │  + outward rounding to exact rationals (pads ≫ solver error)
+   ├──▶ bridge/certificates/<kind>_certificate.json     (machine-readable)
+   └──▶ lean/Choptuik/Bridge/Generated.lean             (Lean data + checks)
+              │  norm_num over ℚ  (exact, machine-checked)
+              ▼
+        lean/Choptuik/Bridge/{Certificates,Discharge}.lean
+           (robustness theorems turn checks into physics)
+```
+
+Division of labor (the honesty contract):
+
+* **Lean proves**: the certificate checks (tightness, agreement with
+  the rational model targets, echo structure) and the robustness
+  theorems (`spectrum_shape_of_certificate`,
+  `newton_kantorovich_local`, and the `Choptuik.Bridge.Discharge`
+  headlines).
+* **Python computes**: the numerical values and their PAIRING with the
+  certificate slots — regression-locked by `tests/test_certify.py`,
+  not by Lean.
+* Regeneration is byte-stable for any conforming LAPACK (the pads
+  exceed the eigensolver error by three orders of magnitude);
+  `python -m choptuik_service.certify check` verifies the committed
+  artifacts against a rebuild.
+
 ## Versioning & change discipline
 
 * `protocol` field in every `ping` reply; breaking changes bump the
   major part and require a paired update of `bridge/protocol.md`,
-  `python/choptuik_service/server.py` and the Lean client.
+  `python/choptuik_service/server.py` and the typed client
+  (`python/choptuik_service/client.py`).
+* v1.0 → v1.1 (this revision) is ADDITIVE: the new `certificate`
+  method, the typed client codecs, and the offline certificate
+  channel; all v1.0 methods keep their schemas (one latent v1.0 bug
+  was fixed: `evolve` now emits `[re, im]` pairs as specified instead
+  of non-serializable complex numbers).
 * Every protocol change must ship with a pytest in
-  `python/tests/test_service.py` — the protocol is regression-locked.
+  `python/tests/` — the protocol is regression-locked.
 * Numerical constants (`lambda0`, `gamma`, `echo_period`) are calibrated
-  values; when Lean derives them formally (Phase 3), the Python values
-  become *checks against the proof*, not sources of truth.
+  values; the certificate channel is the discipline through which they
+  are CHECKED against the proof (`scaling_agreement`), not trusted.

@@ -1,0 +1,26 @@
+{
+  "schema": "choptuik-certificate/1.0",
+  "kind": "scaling",
+  "producer": {
+    "tool": "choptuik_service.certify",
+    "version": "0.4.1",
+    "protocol": "1.1"
+  },
+  "source": {
+    "family": "ModeModel.black_hole_mass (noiseless)",
+    "range": "d in [1e-9, 1e-4], 24 log-spaced samples",
+    "fit": "least squares of log M against log d"
+  },
+  "gamma_fit": 0.3739016637724408,
+  "target": "2000/5349",
+  "enclosure": {
+    "lo": "0.373900663",
+    "hi": "0.373902664"
+  },
+  "tolerance": "0.000001",
+  "lean": {
+    "module": "Choptuik.Bridge.Generated",
+    "interval_def": "scalingIv",
+    "checks_theorem": "scalingChecks_generated"
+  }
+}

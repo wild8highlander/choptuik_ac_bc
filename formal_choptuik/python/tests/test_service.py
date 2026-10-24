@@ -147,3 +147,27 @@ def test_interval_endpoint() -> None:
     lo, hi = reply["image"]
     assert lo <= 0.0 <= hi                  # sound enclosure of the minimum
     assert lo <= 0.25 <= hi                 # sound enclosure of the maximum
+
+
+# ----------------------------------------------------------------------
+# protocol v1.1: the certificate method (gap G4)
+# ----------------------------------------------------------------------
+def test_ping_reports_protocol_v1_1() -> None:
+    reply = handle_request({"method": "ping"})
+    assert reply["protocol"] == "1.1"
+
+
+def test_certificate_endpoint_spectrum() -> None:
+    reply = handle_request({"method": "certificate", "kind": "spectrum"})
+    assert reply["status"] == "ok"
+    cert = reply["certificate"]
+    assert cert["kind"] == "spectrum"
+    assert cert["schema"] == "choptuik-certificate/1.0"
+    assert cert["source"]["n_decaying_pairs"] == 7
+    assert len(cert["re"]) == 7 and len(cert["im"]) == 7
+
+
+def test_certificate_endpoint_rejects_bad_kind() -> None:
+    reply = handle_request({"method": "certificate", "kind": 42})
+    assert reply["status"] == "error"
+    assert reply["error"]["code"] == "bad_input"

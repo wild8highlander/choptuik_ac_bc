@@ -29,7 +29,8 @@ lean/
     ├── Analysis/            HyperbolicPDE · Interval
     ├── Existence/           DSS · ImplicitFunction
     ├── Stability/           Linearization · Spectrum
-    └── Scaling.lean         universality + echoing formula
+    ├── Scaling.lean         universality + echoing formula
+    └── Bridge/              Certificates · Generated (auto) · Discharge
 ```
 
 Full module ↔ obligation ↔ phase mapping: [`blueprint/module_map.md`](../blueprint/module_map.md).
@@ -50,11 +51,12 @@ lake build             # type-checks every proof, emits .olean
 
 | Status | Items |
 |---|---|
-| **Proved (v0.4)** | everything: `add_sound`, `mul_sound` (G5 closed), `certificate_principle`, `local_wellposedness` (weak form, see S9), `critical_solution_exists` (S10 scope), `dss_fundamental_domain_determination`, `critical_solution_unique` (repaired S8), `dss_reparametrization_invariance`, `newton_map_contractive`, `existence_via_implicit_function` (Newton–Kantorovich, repaired S2), `newton_zero_unique`, `existence_persists_under_perturbation` (repaired S3), `unique_unstable_mode` (certificate-conditional, repaired S5), `echo_family_structure`, `mass_scaling_law` (log-log form, repaired S4), `gamma_close_to_published`, `universality` (repaired S6), `echoing_formula` (repaired S7), `critical_singularity_is_strong_and_isotropic` (certificate-conditional, repaired S1), `divergence_invariant_under_rescaling` |
-| **Carried as explicit hypotheses** | RT Newton certificate (G1), spectrum certificate `hcert` (G2), coercivity/Weyl certificates (G3) — to be discharged through the bridge (G4) |
+| **Proved (v0.4.1)** | everything: `add_sound`, `mul_sound` (G5 closed), `certificate_principle`, `local_wellposedness` (weak form, see S9), `critical_solution_exists` (S10 scope), `dss_fundamental_domain_determination`, `critical_solution_unique` (repaired S8), `dss_reparametrization_invariance`, `newton_map_contractive`, `existence_via_implicit_function` (Newton–Kantorovich, repaired S2), `newton_zero_unique`, `existence_persists_under_perturbation` (repaired S3), `unique_unstable_mode` (certificate-conditional, repaired S5), `echo_family_structure`, `mass_scaling_law` (log-log form, repaired S4), `gamma_close_to_published`, `universality` (repaired S6), `echoing_formula` (repaired S7), `critical_singularity_is_strong_and_isotropic` (certificate-conditional, repaired S1), `divergence_invariant_under_rescaling`, **bridge (v0.4.1)**: `im_odd_multiple`, `spectrum_shape_of_certificate`, `newton_kantorovich_local` (certificate-supplied constants, ball-local defect), the four `*_generated` check suites (exact rational `norm_num`), `bridge_unique_unstable_mode`, `correction_root_exists`, `correction_root_in_band`, `correction_band_image_sound`, `scaling_agreement` |
+| **Carried as explicit hypotheses** | RT Newton certificate for the TRUE Einstein-scalar residual map (G1, Phase 2/3; the format + checker + demonstration are live), spectrum pairing for the true operator (G2; the model-level pairing is pytest-locked), coercivity/Weyl certificates (G3, producer pending the geometry wing) |
 
 Axiom audit: `lake env lean AxiomAudit.lean` — every headline theorem
-reports `[propext, Classical.choice, Quot.sound]` only.
+(33 entries: 21 theory + 12 bridge) reports
+`[propext, Classical.choice, Quot.sound]` only.
 
 CI (template in [`ci/`](../ci/)) additionally enforces: no new `axiom`
 declarations in theory modules, and every `sorry` comment carries a

@@ -6,14 +6,17 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10+-4CC9F0?logo=python&logoColor=white&style=flat-square)
 ![numpy](https://img.shields.io/badge/numpy-deterministic-4CC9F0?logo=numpy&logoColor=white&style=flat-square)
-![tests](https://img.shields.io/badge/pytest-14/14_passing-8FB7A4?style=flat-square)
+![tests](https://img.shields.io/badge/pytest-65/65_passing-8FB7A4?style=flat-square)
 ![seed](https://img.shields.io/badge/seed-1993-E8B44A?style=flat-square)
 ![pyzmq](https://img.shields.io/badge/pyzmq-optional_extra-9B8CDE?style=flat-square)
+![certificates](https://img.shields.io/badge/certificates-exact_rationals-43AA8B?style=flat-square)
 
 The computational service the Lean side drives: a calibrated linear-mode
 model of the DSS critical solution, a genuine eigensolve of the
-linearized operator, directed-rounding interval arithmetic, and a
-JSON-over-ZMQ server implementing [`bridge/protocol.md`](../bridge/protocol.md).
+linearized operator, directed-rounding interval arithmetic, a
+JSON-over-ZMQ server implementing [`bridge/protocol.md`](../bridge/protocol.md)
+v1.1, and — the proof-grade half — a **certificate producer** whose
+exact rational artifacts are checked by the Lean theory layer.
 
 > [!IMPORTANT]
 > **Honest caveat.**  The mode model is *calibrated* to the published
@@ -30,13 +33,19 @@ python/
 │   ├── evolver.py               mode model, scaling fit, echo recovery
 │   ├── spectrum.py              block-matrix operator + eigensolve
 │   ├── interval_checks.py       outward-rounded Interval (gap G5)
-│   └── server.py                pure dispatcher + ZMQ REP loop
+│   ├── certify.py               CERTIFICATE PRODUCER (gap G4): exact
+│   │                            rationals -> JSON + Generated.lean
+│   ├── client.py                typed client: schema-checked decoding,
+│   │                            fail-closed timeouts, fuzz-safe
+│   └── server.py                pure dispatcher + ZMQ REP loop (v1.1)
 ├── scripts/
 │   ├── generate_data.py         -> data/*.csv
 │   ├── generate_figures.py      -> figures/*.png (dark/light × en/ru)
 │   ├── generate_animations.py   -> assets/gifs/*.gif
 │   └── generate_architecture.py -> fig_architecture.png
-├── tests/test_service.py        14 regression-locked tests
+├── tests/test_service.py        protocol + physics regressions
+├── tests/test_certify.py        certificate soundness + byte-stability
+├── tests/test_client.py         codecs, fuzz, live ZMQ round-trip
 └── requirements.txt
 ```
 
@@ -44,10 +53,14 @@ python/
 
 ```bash
 pip install -r requirements.txt     # pyzmq commented: enable for the bridge
-python -m pytest tests/ -v          # protocol + physics regressions
+python -m pytest tests/ -v          # protocol + physics + certificate regressions
 python scripts/generate_data.py     # byte-identical CSVs on a given numpy
 python choptuik_service/server.py   # serve tcp://127.0.0.1:5557
 python choptuik_service/server.py --selftest   # one ping, no socket
+
+# the proof-grade channel (gap G4):
+python -m choptuik_service.certify emit    # JSON certs + Generated.lean
+python -m choptuik_service.certify check   # verify committed artifacts
 ```
 
 ## What the service guarantees

@@ -11,7 +11,11 @@ directory inside ``wild8highlander/choptuik_ac_bc``.  It provides:
 * ``interval_checks``— directed-rounding interval arithmetic used for
   strict error bounds (gap G5 of the gap registry);
 * ``server``         — a JSON-over-ZMQ service exposing the above to the
-  Lean 4 proof assistant (bridge protocol, see ``bridge/protocol.md``).
+  Lean 4 proof assistant (bridge protocol, see ``bridge/protocol.md``);
+* ``certify``        — the certificate producer (gap G4): exact rational
+  certificates + the generated Lean module consumed by the theory;
+* ``client``         — the typed client of the interactive channel
+  (schema-checked decoding, fail-closed timeouts).
 
 Honest-scope note (the discipline of the parent repository):
 ``hypothesis -> machine confirmation -> honest caveats``.  The mode model
@@ -36,8 +40,8 @@ ASCII banner
 
 from __future__ import annotations
 
-__all__ = ["evolver", "spectrum", "interval_checks", "server"]
-__version__ = "0.3.0"
+__all__ = ["evolver", "spectrum", "interval_checks", "server", "certify", "client"]
+__version__ = "0.4.1"
 
 BANNER = r"""
 +--------------------------------------------------------------+

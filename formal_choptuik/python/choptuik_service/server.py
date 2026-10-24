@@ -14,6 +14,7 @@ scaling_fit     -> fit gamma from (delta_p, mass) samples
 echo_period     -> recover the echoing period from an amplitude series
 evolve          -> critical-evolution profiles at requested log-times
 interval_bound  -> strict enclosure of a polynomial image (gap G5)
+certificate     -> proof-grade rational certificate bundle (v1.1, gap G4)
 """
 
 from __future__ import annotations
@@ -24,6 +25,7 @@ from typing import Any
 import numpy as np
 
 from . import __version__
+from .certify import build_certificate
 from .evolver import (
     ECHO_PERIOD,
     GAMMA,
@@ -35,7 +37,9 @@ from .evolver import (
 from .interval_checks import Interval, _down, _up
 from .spectrum import compute_spectrum
 
-PROTOCOL_VERSION = "1.0"
+PROTOCOL_VERSION = "1.1"
+
+CERTIFICATE_KINDS = ("spectrum", "newton", "scaling", "interval")
 
 
 def _err(code: str, message: str) -> dict[str, Any]:
@@ -63,7 +67,7 @@ def handle_request(payload: dict[str, Any]) -> dict[str, Any]:
 
     if method == "spectrum":
         n = int(payload.get("n_decaying", 7))
-        res = compute_spectrum(n_decaying)
+        res = compute_spectrum(n)
         return {
             "status": "ok",
             "eigenvalues": [
@@ -120,7 +124,10 @@ def handle_request(payload: dict[str, Any]) -> dict[str, Any]:
         for t in taus:
             p = model.profile(float(t))
             profiles.append({"tau": float(t), "r": model.grid.tolist(), "phi": p.tolist()})
-        return {"status": "ok", "profiles": profiles, "eigenvalues": model.eigenvalues}
+        # v0.4.1 fix: complex values are not JSON-serializable — emit [re, im]
+        # pairs exactly as bridge/protocol.md specifies (v0.3 sent raw complex)
+        evs = [[float(v.real), float(v.imag)] for v in model.eigenvalues]
+        return {"status": "ok", "profiles": profiles, "eigenvalues": evs}
 
     if method == "interval_bound":
         try:
@@ -137,6 +144,12 @@ def handle_request(payload: dict[str, Any]) -> dict[str, Any]:
             "image": [enc.lo, enc.hi],
             "width": enc.width(),
         }
+
+    if method == "certificate":
+        kind = payload.get("kind", "spectrum")
+        if kind not in CERTIFICATE_KINDS:
+            return _err("bad_input", f"unknown certificate kind: {kind!r}")
+        return {"status": "ok", "certificate": build_certificate(kind)}
 
     return _err("unknown_method", f"unknown method: {method!r}")
 

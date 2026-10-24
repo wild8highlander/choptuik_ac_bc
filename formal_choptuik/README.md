@@ -27,7 +27,7 @@ status — from *numerical evidence* into a **machine-checked proof**.
 <p align="center">
   <img alt="blocks" src="https://img.shields.io/badge/blockers-G1_existence·G2_stability-E86A6A?style=flat-square">&nbsp;
   <img alt="phase" src="https://img.shields.io/badge/roadmap-3_phases·27_months-9B8CDE?style=flat-square">&nbsp;
-  <img alt="bridge" src="https://img.shields.io/badge/bridge-Lean⇄Python·ZeroMQ-4CC9F0?style=flat-square">&nbsp;
+  <img alt="bridge" src="https://img.shields.io/badge/bridge-certificate_channel_live-43AA8B?style=flat-square">&nbsp;
   <img alt="parent" src="https://img.shields.io/badge/wing_of-choptuik__ac__bc-8A8272?style=flat-square">
 </p>
 
@@ -86,9 +86,9 @@ tooling decision record (`blueprint/`), the **three-phase roadmap**
 
 | Folder | Contents | Entry point |
 |---|---|---|
-| [`lean/`](lean/) | Lean 4 theory: `Choptuik.{Geometry,Analysis,Existence,Stability,Scaling}` + lakefile | [`lean/README.md`](lean/README.md) |
-| [`python/`](python/) | numerical service (ZMQ), data/figure/GIF generators, 14 pytest | [`python/README.md`](python/README.md) |
-| [`bridge/`](bridge/) | Lean⇄Python protocol v1.0 + example client | [`bridge/README.md`](bridge/README.md) |
+| [`lean/`](lean/) | Lean 4 theory: `Choptuik.{Geometry,Analysis,Existence,Stability,Scaling,Bridge}` + lakefile | [`lean/README.md`](lean/README.md) |
+| [`python/`](python/) | numerical service (ZMQ v1.1), certificate producer, 65 pytests | [`python/README.md`](python/README.md) |
+| [`bridge/`](bridge/) | protocol v1.1 + certificate artifacts + example client | [`bridge/README.md`](bridge/README.md) |
 | [`blueprint/`](blueprint/) | technical spec, axiomatic base, gap registry, tooling verdict, module map | [`blueprint/README.md`](blueprint/README.md) |
 | [`roadmap/`](roadmap/) | three phases with tasks, acceptance criteria, milestones | [`roadmap/README.md`](roadmap/README.md) |
 | [`monographs/`](monographs/) | 2 monographs × {RU, EN} × {DOCX, PDF} | [`monographs/README.md`](monographs/README.md) |
@@ -152,7 +152,7 @@ lives in [`figures/`](figures/) with captions in [`figures/README.md`](figures/R
 | **G1** | Existence of the critical solution | 🔴 Blocker | II | Newton in a Banach space + compact inverse + IFT |
 | **G2** | Stability spectrum of the linearized operator | 🔴 Blocker | III | spectral theory ⇒ unique unstable mode, γ = 1/λ₀ |
 | **G3** | Isotropic strong singularity, conformal compactification | 🟠 High | II–III | null-geodesic criterion + compactification layer |
-| **G4** | Lean⇄Python typed bridge | 🟠 High | I | ZeroMQ REQ/REP, regression-locked protocol |
+| **G4** | Lean⇄Python typed bridge | 🟠 High | I | certificate channel (v0.4.1: live) + ZMQ v1.1, regression-locked |
 | **G5** | Verified interval arithmetic | 🟡 Medium | I | outward rounding, soundness proofs, certificates |
 | **G6** | Axiomatic base declaration | 🟢 Low | I | three standard axioms, CI-enforced |
 
@@ -225,11 +225,15 @@ lake build            # check every proof, emit .olean
 ```
 
 > [!NOTE]
-> v0.4: the tree is obligation-free and axiom-clean — 0 `sorry`, 0 project
-> axioms, every headline theorem depending only on `propext`,
-> `Classical.choice`, `Quot.sound` (audit: `lean/AxiomAudit.lean`).
+> v0.4.1: the tree is obligation-free and axiom-clean — 0 `sorry`, 0 project
+> axioms, all 33 headline theorems (21 theory + 12 bridge) depending only on
+> `propext`, `Classical.choice`, `Quot.sound` (audit: `lean/AxiomAudit.lean`).
 > Open physics content (RT certificate, spectrum discharge) is carried by
-> explicit, documented hypothesis parameters pending the bridge (G4).
+> explicit, documented hypothesis parameters — and since v0.4.1 the
+> **certificate channel is live**: the Python producer emits exact rational
+> certificates that Lean checks (`Choptuik.Bridge.Generated`) and discharges
+> into the spectral, Newton–Kantorovich and interval headlines
+> (`Choptuik.Bridge.Discharge`).
 
 ## Python numerical service
 

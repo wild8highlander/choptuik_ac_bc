@@ -1,0 +1,26 @@
+{
+  "schema": "choptuik-certificate/1.0",
+  "kind": "interval",
+  "producer": {
+    "tool": "choptuik_service.certify",
+    "version": "0.4.1",
+    "protocol": "1.1"
+  },
+  "source": {
+    "polynomial": "1 - (3/10) x^2",
+    "domain": "the certified Newton band",
+    "method": "exact rational Horner enclosure (G5 pattern)"
+  },
+  "domain": {
+    "lo": "1.290994",
+    "hi": "1.290995"
+  },
+  "image": {
+    "lo": "0.4999995729925",
+    "hi": "0.5000003475892"
+  },
+  "lean": {
+    "module": "Choptuik.Bridge.Generated",
+    "checks_theorem": "intervalChecks_generated"
+  }
+}

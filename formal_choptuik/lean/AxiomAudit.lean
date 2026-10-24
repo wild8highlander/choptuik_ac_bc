@@ -31,3 +31,16 @@ import Choptuik
 #print axioms Choptuik.Scaling.gamma_close_to_published
 #print axioms Choptuik.Scaling.universality
 #print axioms Choptuik.Scaling.echoing_formula
+-- Bridge (G4, v0.4.1)
+#print axioms Choptuik.Bridge.im_odd_multiple
+#print axioms Choptuik.Bridge.spectrum_shape_of_certificate
+#print axioms Choptuik.Bridge.newton_kantorovich_local
+#print axioms Choptuik.Bridge.Generated.spectrumChecks_generated
+#print axioms Choptuik.Bridge.Generated.newtonChecks_generated
+#print axioms Choptuik.Bridge.Generated.scalingChecks_generated
+#print axioms Choptuik.Bridge.Generated.intervalChecks_generated
+#print axioms Choptuik.Bridge.Discharge.bridge_unique_unstable_mode
+#print axioms Choptuik.Bridge.Discharge.correction_root_exists
+#print axioms Choptuik.Bridge.Discharge.correction_root_in_band
+#print axioms Choptuik.Bridge.Discharge.correction_band_image_sound
+#print axioms Choptuik.Bridge.Discharge.scaling_agreement

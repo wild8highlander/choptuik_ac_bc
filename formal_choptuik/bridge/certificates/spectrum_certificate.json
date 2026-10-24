@@ -1,0 +1,162 @@
+{
+  "schema": "choptuik-certificate/1.0",
+  "kind": "spectrum",
+  "producer": {
+    "tool": "choptuik_service.certify",
+    "version": "0.4.1",
+    "protocol": "1.1"
+  },
+  "source": {
+    "operator": "build_operator(7) — real block matrix of the truncated mode model",
+    "eigensolver": "numpy.linalg.eigvals (LAPACK *geev)",
+    "n_decaying_pairs": 7
+  },
+  "tolerances": {
+    "pad": "0.0000001",
+    "echo_tolerance": "0.00001",
+    "width_max": "0.000001"
+  },
+  "lambda0": {
+    "enclosure": {
+      "lo": "2.6744999",
+      "hi": "2.674500101"
+    },
+    "model": "2.6745",
+    "computed": 2.6745
+  },
+  "re": [
+    {
+      "k": 0,
+      "enclosure": {
+        "lo": "-4.3000001",
+        "hi": "-4.299999899"
+      },
+      "model": "-4.3",
+      "computed": -4.3
+    },
+    {
+      "k": 1,
+      "enclosure": {
+        "lo": "-6.1000001",
+        "hi": "-6.099999899"
+      },
+      "model": "-6.1",
+      "computed": -6.099999999999996
+    },
+    {
+      "k": 2,
+      "enclosure": {
+        "lo": "-7.900000101",
+        "hi": "-7.8999999"
+      },
+      "model": "-7.9",
+      "computed": -7.900000000000006
+    },
+    {
+      "k": 3,
+      "enclosure": {
+        "lo": "-9.7000001",
+        "hi": "-9.699999899"
+      },
+      "model": "-9.7",
+      "computed": -9.7
+    },
+    {
+      "k": 4,
+      "enclosure": {
+        "lo": "-11.5000001",
+        "hi": "-11.499999899"
+      },
+      "model": "-11.5",
+      "computed": -11.499999999999982
+    },
+    {
+      "k": 5,
+      "enclosure": {
+        "lo": "-13.300000101",
+        "hi": "-13.2999999"
+      },
+      "model": "-13.3",
+      "computed": -13.3
+    },
+    {
+      "k": 6,
+      "enclosure": {
+        "lo": "-15.100000101",
+        "hi": "-15.0999999"
+      },
+      "model": "-15.1",
+      "computed": -15.100000000000001
+    }
+  ],
+  "im": [
+    {
+      "k": 0,
+      "enclosure": {
+        "lo": "4.532360041",
+        "hi": "4.532360242"
+      },
+      "model_formula": "(2k+1)*pi/ln(2)",
+      "computed": 4.532360141827194
+    },
+    {
+      "k": 1,
+      "enclosure": {
+        "lo": "13.597080325",
+        "hi": "13.597080526"
+      },
+      "model_formula": "(2k+1)*pi/ln(2)",
+      "computed": 13.59708042538158
+    },
+    {
+      "k": 2,
+      "enclosure": {
+        "lo": "22.661800609",
+        "hi": "22.66180081"
+      },
+      "model_formula": "(2k+1)*pi/ln(2)",
+      "computed": 22.661800709235983
+    },
+    {
+      "k": 3,
+      "enclosure": {
+        "lo": "31.726520892",
+        "hi": "31.726521093"
+      },
+      "model_formula": "(2k+1)*pi/ln(2)",
+      "computed": 31.726520992790377
+    },
+    {
+      "k": 4,
+      "enclosure": {
+        "lo": "40.791241176",
+        "hi": "40.791241377"
+      },
+      "model_formula": "(2k+1)*pi/ln(2)",
+      "computed": 40.79124127634475
+    },
+    {
+      "k": 5,
+      "enclosure": {
+        "lo": "49.85596146",
+        "hi": "49.855961661"
+      },
+      "model_formula": "(2k+1)*pi/ln(2)",
+      "computed": 49.85596156019914
+    },
+    {
+      "k": 6,
+      "enclosure": {
+        "lo": "58.920681743",
+        "hi": "58.920681944"
+      },
+      "model_formula": "(2k+1)*pi/ln(2)",
+      "computed": 58.92068184375353
+    }
+  ],
+  "lean": {
+    "module": "Choptuik.Bridge.Generated",
+    "certificate_def": "spectrumCert",
+    "checks_theorem": "spectrumChecks_generated"
+  }
+}

@@ -42,8 +42,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
-      - run: pip install numpy matplotlib pillow pytest
-      - name: Protocol + physics regressions
+      - run: pip install numpy matplotlib pillow pytest pyzmq
+      - name: Protocol + physics + certificate regressions
         working-directory: formal_choptuik/python
         run: python -m pytest tests/ -v
 
@@ -61,3 +61,7 @@ jobs:
           python scripts/generate_data.py
           git diff --exit-code -- ../data || {
             echo "::error::data/ is not reproducible from seed 1993"; exit 1; }
+      - name: Certificate artifacts regenerate byte-stably (G4)
+        working-directory: formal_choptuik/python
+        run: |
+          python -m choptuik_service.certify check
