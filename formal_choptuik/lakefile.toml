@@ -1,0 +1,21 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║   F O R M A L   C H O P T U I K   ·   lakefile                    ║
+# ║   machine-checked theory of Choptuik critical phenomena           ║
+# ╠══════════════════════════════════════════════════════════════════╣
+# ║   build :  lake build        (checks every proof, emits .olean)   ║
+# ║   cache :  lake exe cache get! (fetch mathlib prebuilt artifacts) ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+name = "Choptuik"
+version = "0.4.1"
+defaultTargets = ["Choptuik"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+# Pin the mathlib release matching lean-toolchain; bump both together.
+rev = "v4.21.0"
+
+[[lean_lib]]
+name = "Choptuik"
+# Roots: Choptuik.lean -> Choptuik.{Geometry,Analysis,Existence,Stability,Scaling}
