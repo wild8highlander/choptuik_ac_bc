@@ -1,10 +1,10 @@
 id,phase,month,milestone,deliverable,status
-M1.1,Phase 1,1,environment operational,lake build green on CI + toolchain pin,done
-M1.2,Phase 1,5,interval certificates verified,Interval.mul_sound proved (gap G5 closed),open
+M1.1,Phase 1,1,environment operational,done (v0.4: build actually green now; v0.3 did not compile - see report B-1),done
+M1.2,Phase 1,5,interval certificates verified,done (v0.4: Interval.mul_sound proved; G5 closed),open
 M1.3,Phase 1,6,bridge v1 live,typed Lean client round-trips spectrum/interval_bound,open
 M2.1,Phase 2,10,field system formalized,Einstein-scalar constraints + evolution explicit,open
 M2.2,Phase 2,12,numeric seed packaged,high-precision profile as Lean data with certificate,open
-M2.3,Phase 2,18,existence proven,critical_solution_exists discharged (gap G1 closed),open
-M3.1,Phase 3,23,spectral core proven,unique_unstable_mode discharged (gap G2 closed),open
-M3.2,Phase 3,25,scaling law derived,gamma = 1/lambda_0 + echoing formula,open
+M2.3,Phase 2,18,existence proven,partial (v0.4: scaffold-level existence proved; Newton-Kantorovich core proved; RT certificate pending),open
+M3.1,Phase 3,23,spectral core proven,partial (v0.4: proved conditional on spectrum certificate),open
+M3.2,Phase 3,25,scaling law derived,partial (v0.4: gamma_close_to_published + echoing_formula proved; mass_scaling_law in log-log form),open
 M3.3,Phase 3,27,universality assembled,cross-family scaling with shared constants,open

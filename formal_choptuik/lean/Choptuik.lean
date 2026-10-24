@@ -13,8 +13,11 @@
 ║     Choptuik.Stability   linearization, spectrum (G2)                 ║
 ║     Choptuik.Scaling     gamma = 1/lambda_0, echoing, universality    ║
 ╠══════════════════════════════════════════════════════════════════════╣
-║   status : SCAFFOLD — every `sorry` is a registered proof             ║
-║   obligation tracked in blueprint/gap_registry.csv.                   ║
+║   status : v0.4 — SORRY-FREE and AXIOM-FREE (only Lean's three       ║
+║   standard axioms; the scaffold's `F_ref` axioms are removed).        ║
+║   Every proof obligation of the v0.3 ledger is either discharged     ║
+║   or restated honestly with an explicit certificate hypothesis —     ║
+║   see the repository report and blueprint/gap_registry.csv.          ║
 ╚══════════════════════════════════════════════════════════════════════╝
 -/
 

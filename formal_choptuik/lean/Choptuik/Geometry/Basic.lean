@@ -11,14 +11,28 @@
 ║   with u, v null coordinates and r the areal radius.  This module     ║
 ║   fixes the geometric arena used by every later module.               ║
 ╠══════════════════════════════════════════════════════════════════════╣
-║   status : SCAFFOLD — signatures stable, proofs pending               ║
+║   status : v0.4 — compiles clean.  The v0.3 scaffold did not: a       ║
+║   doc-comment cannot precede `namespace`, `ContDiff ℝ 3 d.f` fails    ║
+║   because the bare type ℝ → ℝ carries no normed-space structure, and  ║
+║   `Tendsto`/`atTop`/`nhds` are not exported by `Mathlib.Tactic`.      ║
+║   All three defects are repaired here (see the repository report,     ║
+║   finding B-1).                                                       ║
 ╚══════════════════════════════════════════════════════════════════════╝
 -/
 
 import Mathlib.Tactic
+import Mathlib.Order.Filter.Defs
+import Mathlib.Order.Filter.AtTopBot.Defs
+import Mathlib.Topology.Basic
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
-/-- The `Choptuik` namespace: every artifact of the formalization lives here. -/
+-- The `Choptuik` namespace: every artifact of the formalization lives here.
+-- (v0.4: this line is a plain comment — a doc-comment may only be attached
+--  to a declaration, not to a `namespace` command.)
 namespace Choptuik.Geometry
+
+open Filter
 
 /-! ### The double-null arena -/
 
@@ -35,9 +49,12 @@ def ArealPositive (d : DoubleNullData) : Prop :=
   ∀ u v, d.r u v > 0
 
 /-- Regularity assumption used throughout: the metric data are smooth.
-The full formalization will use mathlib's `ContDiff ℝ ∞` on product spaces. -/
+The two-variable data `g : ℝ → ℝ → ℝ` is read through `Function.uncurry`,
+giving a map `ℝ × ℝ → ℝ` between genuine normed spaces; the curried form
+has no `NormedAddCommGroup` instance, which is why the v03 scaffold
+failed to elaborate `ContDiff ℝ 3 d.f`. -/
 def SmoothData (d : DoubleNullData) : Prop :=
-  ContDiff ℝ 3 d.f ∧ ContDiff ℝ 3 d.r
+  ContDiff ℝ 3 (Function.uncurry d.f) ∧ ContDiff ℝ 3 (Function.uncurry d.r)
 
 /-! ### Spherical symmetry -/
 

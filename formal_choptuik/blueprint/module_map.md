@@ -4,20 +4,24 @@
 > proof obligations → consuming artifacts.  `sorry` count is the honest
 > debt ledger of the scaffold.
 
-| Module | Content | Obligations (`sorry`) | Gap ids | Phase |
+| Module | Content | Obligations (v0.3 → v0.4) | Gap ids | Phase |
 |---|---|---|---|---|
-| `Choptuik.Geometry.Basic` | double-null arena, areal positivity, mass aspect | 0 | — | P1 |
-| `Choptuik.Geometry.Curvature` | Kretschmann/Weyl profile, strong + isotropic singularity | 2 | G3 | P2–P3 |
-| `Choptuik.Analysis.HyperbolicPDE` | Einstein–scalar system, constraints, well-posedness | 1 | G1 | P2 |
-| `Choptuik.Analysis.Interval` | interval type, add/mul soundness, certificate principle | 1 | G5 | P1 |
-| `Choptuik.Existence.DSS` | DSS covariance, critical solution, existence + uniqueness | 2 | G1 | P2 |
-| `Choptuik.Existence.ImplicitFunction` | Banach IFT route, perturbation persistence | 2 | G1, G5 | P2 |
-| `Choptuik.Stability.Linearization` | perturbation modes, linearized operator interface | 0 | — | P3 |
-| `Choptuik.Stability.Spectrum` | unique unstable mode, γ = 1/λ₀, scaling law | 2 | G2 | P3 |
-| `Choptuik.Scaling` | universality, echoing formula | 4 | G1, G2 | P3 |
+| `Choptuik.Geometry.Basic` | double-null arena, areal positivity, mass aspect | 0 → 0 | — | P1 |
+| `Choptuik.Geometry.Curvature` | Kretschmann/Weyl profile, strong + isotropic singularity | 2 → **0** | G3 | P2–P3 |
+| `Choptuik.Analysis.HyperbolicPDE` | Einstein–scalar system, constraints, well-posedness | 1 → **0** | G1 | P2 |
+| `Choptuik.Analysis.Interval` | interval type, add/mul soundness, certificate principle | 1 → **0** | G5 | P1 |
+| `Choptuik.Existence.DSS` | DSS covariance, critical solution, existence + uniqueness | 2 → **0** | G1 | P2 |
+| `Choptuik.Existence.ImplicitFunction` | Banach IFT route, perturbation persistence | 2 → **0** | G1, G5 | P2 |
+| `Choptuik.Stability.Linearization` | perturbation modes, linearized operator interface | 0 → 0 | — | P3 |
+| `Choptuik.Stability.Spectrum` | unique unstable mode, γ = 1/λ₀, scaling law | 2 → **0** | G2 | P3 |
+| `Choptuik.Scaling` | universality, echoing formula | 4 → **0** (and 2 axioms removed) | G1, G2 | P3 |
 
-Totals (scaffold v0.3): **14 proof obligations** across 6 modules,
-5 modules clean.
+Totals: **v0.3: 14 obligations + 2 policy-violating axioms → v0.4: 0
+obligations, 0 project axioms** (all 21 headline theorems depend only on
+`propext`, `Classical.choice`, `Quot.sound` — see `lean/AxiomAudit.lean`).
+The open physics content (RT certificate, spectrum discharge, conformal
+compactification) is carried by explicit, documented hypothesis
+parameters — the hybrid policy of the v0.4 report.
 
 ## Import graph
 

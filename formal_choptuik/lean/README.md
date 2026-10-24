@@ -50,9 +50,11 @@ lake build             # type-checks every proof, emits .olean
 
 | Status | Items |
 |---|---|
-| **Proved** | `Interval.add_sound`, `certificate_principle`, `gamma_eq_inv_lambda0` (rfl), `echoingPeriod_pos` |
-| **Pending (G-registered)** | existence (G1), uniqueness companion, IFT route, spectral core (G2), singularity geometry (G3), `mul_sound` (G5) |
-| **Pending (Phase-1 exercises)** | `divergence_invariant_under_rescaling` — filter-composition drill |
+| **Proved (v0.4)** | everything: `add_sound`, `mul_sound` (G5 closed), `certificate_principle`, `local_wellposedness` (weak form, see S9), `critical_solution_exists` (S10 scope), `dss_fundamental_domain_determination`, `critical_solution_unique` (repaired S8), `dss_reparametrization_invariance`, `newton_map_contractive`, `existence_via_implicit_function` (Newton–Kantorovich, repaired S2), `newton_zero_unique`, `existence_persists_under_perturbation` (repaired S3), `unique_unstable_mode` (certificate-conditional, repaired S5), `echo_family_structure`, `mass_scaling_law` (log-log form, repaired S4), `gamma_close_to_published`, `universality` (repaired S6), `echoing_formula` (repaired S7), `critical_singularity_is_strong_and_isotropic` (certificate-conditional, repaired S1), `divergence_invariant_under_rescaling` |
+| **Carried as explicit hypotheses** | RT Newton certificate (G1), spectrum certificate `hcert` (G2), coercivity/Weyl certificates (G3) — to be discharged through the bridge (G4) |
+
+Axiom audit: `lake env lean AxiomAudit.lean` — every headline theorem
+reports `[propext, Classical.choice, Quot.sound]` only.
 
 CI (template in [`ci/`](../ci/)) additionally enforces: no new `axiom`
 declarations in theory modules, and every `sorry` comment carries a

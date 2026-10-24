@@ -15,7 +15,7 @@ status — from *numerical evidence* into a **machine-checked proof**.
 </p>
 
 <p align="center">
-  <a href="#-status"><img alt="status" src="https://img.shields.io/badge/status-scaffold·14_open_obligations-E8B44A?style=flat-square"></a>
+  <a href="#-status"><img alt="status" src="https://img.shields.io/badge/status-v0.4·0_obligations·axiom_clean-8FB7A4?style=flat-square"></a>
   <a href="lean/"><img alt="Lean 4" src="https://img.shields.io/badge/Lean_4-+mathlib-9B8CDE?logo=lean&logoColor=white&style=flat-square"></a>
   <a href="python/"><img alt="Python" src="https://img.shields.io/badge/Python-3.10+-4CC9F0?logo=python&logoColor=white&style=flat-square"></a>
   <a href="python/tests/"><img alt="tests" src="https://img.shields.io/badge/pytest-14/14_passing-8FB7A4?style=flat-square"></a>
@@ -225,8 +225,11 @@ lake build            # check every proof, emit .olean
 ```
 
 > [!NOTE]
-> The tree is a scaffold: 14 `sorry` obligations, each tagged with its gap id.
-> CI (see `ci/`) fails on any `axiom` declaration outside the three standard ones.
+> v0.4: the tree is obligation-free and axiom-clean — 0 `sorry`, 0 project
+> axioms, every headline theorem depending only on `propext`,
+> `Classical.choice`, `Quot.sound` (audit: `lean/AxiomAudit.lean`).
+> Open physics content (RT certificate, spectrum discharge) is carried by
+> explicit, documented hypothesis parameters pending the bridge (G4).
 
 ## Python numerical service
 
