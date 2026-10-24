@@ -39,12 +39,19 @@ seed 1993 via [`python/scripts/generate_animations.py`](../python/scripts/genera
 |---|---|---|
 | [`collapse_animation.gif`](gifs/collapse_animation.gif) | 48 | three families around the threshold; horizon forms in the supercritical panel |
 | [`echoing_animation.gif`](gifs/echoing_animation.gif) | 72 | profile drift by Δ per period + echo-phase dial |
-| [`scaling_animation.gif`](gifs/scaling_animation.gif) | 34 | the scaling law assembled run by run, γ settling to 0.3739 |
+| [`scaling_animation.gif`](gifs/scaling_animation.gif) | 24 | the scaling law assembled run by run, γ settling to 0.3739 |
 | [`attractor_animation.gif`](gifs/attractor_animation.gif) | 64 | trajectories peel off the codimension-one attractor; black hole at the end |
 
 Palette (dark cosmic): background `#0F172A`, gold `#E8B44A`, violet
 `#9B8CDE`, cyan `#4CC9F0` — a continuation of the parent repository's
 "Ink & Gold" identity into deep space.
+
+> [!NOTE]
+> Frame counts are as stored in the committed GIFs (verified by
+> regeneration, md5-identical to the committed files): Pillow merges the
+> ten trailing hold frames of `scaling_animation.gif` into a single
+> longer final frame (600 ms), so the generator's 24 data frames + 10
+> hold frames are stored as 24 frames.
 
 <p align="center">
   <img src="banners/divider_photon.svg" alt="" width="100%">

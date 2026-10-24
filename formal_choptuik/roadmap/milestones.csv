@@ -1,6 +1,6 @@
 id,phase,month,milestone,deliverable,status
 M1.1,Phase 1,1,environment operational,done (v0.4: build actually green now; v0.3 did not compile - see report B-1),done
-M1.2,Phase 1,5,interval certificates verified,done (v0.4: Interval.mul_sound proved; G5 closed),open
+M1.2,Phase 1,5,interval certificates verified,"done (v0.4: Interval.mul_sound + add_sound proved, certificate_principle in place; evidence: lean/Choptuik/Analysis/Interval.lean, axiom audit lean/AxiomAudit.lean, G5 resolved in blueprint/gap_registry.csv)",done
 M1.3,Phase 1,6,bridge v1 live,typed Lean client round-trips spectrum/interval_bound,"partial (v0.4.1: bridge v1.1 live - typed client round-trips ping/spectrum/certificate/interval_bound over ZMQ incl. timeout/fuzz; proof-grade certificate channel: 4 kinds emitted, Lean-checked and discharged into headlines; Lean FFI client remains illustrative by design)"
 M2.1,Phase 2,10,field system formalized,Einstein-scalar constraints + evolution explicit,open
 M2.2,Phase 2,12,numeric seed packaged,high-precision profile as Lean data with certificate,open

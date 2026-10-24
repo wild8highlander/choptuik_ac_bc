@@ -6,7 +6,7 @@
 
 ![Lean 4](https://img.shields.io/badge/Lean_4-v4.21-9B8CDE?logo=lean&logoColor=white&style=flat-square)
 ![mathlib](https://img.shields.io/badge/mathlib-pinned-9B8CDE?style=flat-square)
-![sorry ledger](https://img.shields.io/badge/sorry_ledger-14_obligations-E8B44A?style=flat-square)
+![sorry ledger](https://img.shields.io/badge/sorry_ledger-0_open·v0.4.1-8FB7A4?style=flat-square)
 ![axioms](https://img.shields.io/badge/axioms-choice·propext·Quot.sound-8FB7A4?style=flat-square)
 ![build](https://img.shields.io/badge/lake-build_only-8A8272?style=flat-square)
 
@@ -15,7 +15,9 @@ collapse, the Einstein–scalar system, the DSS echoing law, and the
 spectral core of universality.  Every module carries its mathematical
 role in banner comments; every `sorry` is a numbered obligation of
 [`blueprint/gap_registry.csv`](../blueprint/gap_registry.csv) — no
-anonymous gaps.
+anonymous gaps.  As of v0.4.1 none are open: the tree is sorry-free,
+every obligation discharged or restated as an explicit certificate
+hypothesis.
 
 ## Layout
 

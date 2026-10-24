@@ -32,9 +32,13 @@ experienced contributor working part-time with the parent programme.
 
 ## Milestone ledger
 
-Machine-readable: [`milestones.csv`](milestones.csv) — nine milestones,
-`M1.1` (environment) already **done**, the rest open.  A milestone flips
-status only with its acceptance evidence committed.
+Machine-readable: [`milestones.csv`](milestones.csv) — nine milestones:
+`M1.1` (environment) **done**; `M1.2` (interval certificates) **done**
+with v0.4 — `Interval.mul_sound` + `add_sound` proved and
+`certificate_principle` in place, G5 resolved; `M1.3` partial-live as of
+v0.4.1 (bridge v1.1 round-trips, the certificate channel is live); the
+rest open.  A milestone flips status only with its acceptance evidence
+committed.
 
 <p align="center">
   <img src="../assets/banners/divider_wave.svg" alt="" width="100%">

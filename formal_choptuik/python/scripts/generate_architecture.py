@@ -15,7 +15,10 @@ from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-BUILD = Path("/home/z/my-project/scripts/build")
+# Repo-relative paths: ROOT = formal_choptuik/, BUILD = transient light
+# variants for the monographs (git-ignored via the `build/` pattern).
+ROOT = Path(__file__).resolve().parents[2]
+BUILD = ROOT / "python" / "scripts" / "build"
 
 TEXT = {
     "en": {
@@ -27,12 +30,12 @@ TEXT = {
                 "Choptuik.Stability", "Choptuik.Scaling"],
         "l2": "LAYER 2 · BRIDGE",
         "l2s": "JSON over ZeroMQ · REQ/REP · tcp://127.0.0.1:5557",
-        "l2c": ["ping", "spectrum", "scaling_fit", "echo_period", "evolve", "interval_bound"],
+        "l2c": ["ping", "spectrum", "scaling_fit", "echo_period", "evolve", "interval_bound", "certificate"],
         "l3": "LAYER 3 · NUMERICAL SERVICE",
         "l3s": "python/choptuik_service — deterministic, seed 1993",
         "l3c": ["evolver.py — mode model", "spectrum.py — linearized operator",
-                "interval_checks.py — strict bounds", "server.py — REP loop",
-                "pytest — 14 protocol tests"],
+                "interval_checks.py — strict bounds", "certify.py — certificate producer",
+                "server.py — REP loop", "pytest — 65 tests"],
         "l4": "LAYER 4 · VERIFIED ARTIFACTS",
         "l4s": "everything regenerates from one command",
         "l4c": ["data/*.csv", "figures/*.png", "assets/gifs/*.gif", "monographs/*"],
@@ -50,12 +53,12 @@ TEXT = {
                 "Choptuik.Stability", "Choptuik.Scaling"],
         "l2": "СЛОЙ 2 · МОСТ",
         "l2s": "JSON поверх ZeroMQ · REQ/REP · tcp://127.0.0.1:5557",
-        "l2c": ["ping", "spectrum", "scaling_fit", "echo_period", "evolve", "interval_bound"],
+        "l2c": ["ping", "spectrum", "scaling_fit", "echo_period", "evolve", "interval_bound", "certificate"],
         "l3": "СЛОЙ 3 · ЧИСЛЕННЫЙ СЕРВИС",
         "l3s": "python/choptuik_service — детерминированный, seed 1993",
         "l3c": ["evolver.py — модовая модель", "spectrum.py — линеаризованный оператор",
-                "interval_checks.py — строгие оценки", "server.py — цикл REP",
-                "pytest — 14 протокольных тестов"],
+                "interval_checks.py — строгие оценки", "certify.py — производитель сертификатов",
+                "server.py — цикл REP", "pytest — 65 тестов"],
         "l4": "СЛОЙ 4 · ПРОВЕРЕННЫЕ АРТЕФАКТЫ",
         "l4s": "всё воспроизводится одной командой",
         "l4c": ["data/*.csv", "figures/*.png", "assets/gifs/*.gif", "monographs/*"],
@@ -179,7 +182,7 @@ def render(lang: str, theme: str, out: Path) -> None:
 
 if __name__ == "__main__":
     BUILD.mkdir(parents=True, exist_ok=True)
-    render("en", "dark", ROOT_FIGURES := Path("/home/z/my-project/download/formal_choptuik/figures/fig_architecture.png"))
+    render("en", "dark", ROOT / "figures" / "fig_architecture.png")
     render("en", "light", BUILD / "fig_architecture_en.png")
     render("ru", "light", BUILD / "fig_architecture_ru.png")
     print("architecture diagrams done")

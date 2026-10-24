@@ -23,7 +23,7 @@ GitHub rendition; the monographs embed light **Ink & Gold** versions
 | [`fig_spectrum_eigenvalues.png`](fig_spectrum_eigenvalues.png) | linearized spectrum: one unstable λ₀, decay family, spacing 2π/Δ ≈ 9.06 | `spectrum/eigenvalues.csv` |
 | [`fig_collapse_profiles.png`](fig_collapse_profiles.png) | subcritical / critical / supercritical field evolutions | `collapse/field_profiles.csv` |
 | [`fig_gap_severity_matrix.png`](fig_gap_severity_matrix.png) | G1–G6 × severity / effort / dependency | `blueprint/gap_registry.csv` |
-| [`fig_roadmap_gantt.png`](fig_roadmap_gantt.png) | 14 tasks across the 27-month plan, milestones at 6/18/27 | `roadmap/milestones.csv` |
+| [`fig_roadmap_gantt.png`](fig_roadmap_gantt.png) | 14 phase-level task bars across the 27-month plan (the ledger in `roadmap/phase*.md` defines 17 tasks), milestones at 6/18/27 | `roadmap/milestones.csv` |
 | [`fig_tooling_radar.png`](fig_tooling_radar.png) | Lean vs Coq vs Isabelle on six programme axes | tooling decision record |
 | [`fig_architecture.png`](fig_architecture.png) | the four-layer Lean⇄ZeroMQ⇄Python⇄artifacts system | `bridge/protocol.md` |
 

@@ -6,7 +6,7 @@
 
 ![format](https://img.shields.io/badge/format-CSV·utf8-4CC9F0?style=flat-square)
 ![seed](https://img.shields.io/badge/seed-1993-E8B44A?style=flat-square)
-![rows](https://img.shields.io/badge/rows-~13.8k_total-8A8272?style=flat-square)
+![rows](https://img.shields.io/badge/rows-~12.9k_total-8A8272?style=flat-square)
 ![origin](https://img.shields.io/badge/origin-python_scripts-9B8CDE?style=flat-square)
 
 The numbers behind every figure and every test.  Regenerate byte-identical
