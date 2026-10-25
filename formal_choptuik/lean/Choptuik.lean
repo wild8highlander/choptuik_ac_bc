@@ -38,3 +38,8 @@ import Choptuik.Scaling
 import Choptuik.Bridge.Certificates
 import Choptuik.Bridge.Generated
 import Choptuik.Bridge.Discharge
+import Choptuik.Analysis.FieldEquations
+import Choptuik.Existence.DSSBoundary
+import Choptuik.ScalingDerivation
+import Choptuik.Stability.Gershgorin
+import Choptuik.Existence.TruncatedDSS
