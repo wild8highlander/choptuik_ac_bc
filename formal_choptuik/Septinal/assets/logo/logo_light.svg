@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="240" viewBox="0 0 640 240">
+  <rect width="640" height="240" fill="none"/>
+  <circle cx="120" cy="120" r="30" fill="none" stroke="#E8B44A" stroke-width="1.6" opacity="0.95"/>
+  <circle cx="120" cy="120" r="62" fill="none" stroke="#E8B44A" stroke-width="1.6" opacity="0.65"/>
+  <circle cx="120" cy="120" r="94" fill="none" stroke="#E8B44A" stroke-width="1.6" opacity="0.4"/>
+  <circle cx="120" cy="120" r="104" fill="none" stroke="#E8B44A" stroke-width="1.6" opacity="0.2"/>
+  <circle cx="120" cy="120" r="42" fill="url(#g)"/>
+  <defs>
+    <radialGradient id="g" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#8A6A24"/>
+      <stop offset="0.4" stop-color="#E8B44A" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#E8B44A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <line x1="115.5" y1="21.5" x2="124.5" y2="30.5" stroke="#E86A6A" stroke-width="2.4" opacity="0.95"/>
+  <line x1="115.5" y1="30.5" x2="124.5" y2="21.5" stroke="#E86A6A" stroke-width="2.4" opacity="0.95"/>
+  <circle cx="144.3" cy="29.2" r="3.2" fill="#9B8CDE" opacity="0.9"/>
+  <circle cx="167.0" cy="38.6" r="3.2" fill="#4CC9F0" opacity="0.9"/>
+  <circle cx="186.5" cy="53.5" r="3.2" fill="#8FB7A4" opacity="0.9"/>
+  <circle cx="201.4" cy="73.0" r="3.2" fill="#E86A6A" opacity="0.9"/>
+  <circle cx="210.8" cy="95.7" r="3.2" fill="#E8B44A" opacity="0.9"/>
+  <circle cx="214.0" cy="120.0" r="3.2" fill="#9B8CDE" opacity="0.9"/>
+  <circle cx="210.8" cy="144.3" r="3.2" fill="#4CC9F0" opacity="0.9"/>
+  <circle cx="201.4" cy="167.0" r="3.2" fill="#8FB7A4" opacity="0.9"/>
+  <circle cx="186.5" cy="186.5" r="3.2" fill="#E86A6A" opacity="0.9"/>
+  <circle cx="167.0" cy="201.4" r="3.2" fill="#E8B44A" opacity="0.9"/>
+  <circle cx="144.3" cy="210.8" r="3.2" fill="#9B8CDE" opacity="0.9"/>
+  <line x1="115.5" y1="209.5" x2="124.5" y2="218.5" stroke="#E86A6A" stroke-width="2.4" opacity="0.95"/>
+  <line x1="115.5" y1="218.5" x2="124.5" y2="209.5" stroke="#E86A6A" stroke-width="2.4" opacity="0.95"/>
+  <circle cx="95.7" cy="210.8" r="3.2" fill="#8FB7A4" opacity="0.9"/>
+  <circle cx="73.0" cy="201.4" r="3.2" fill="#E86A6A" opacity="0.9"/>
+  <circle cx="53.5" cy="186.5" r="3.2" fill="#E8B44A" opacity="0.9"/>
+  <circle cx="38.6" cy="167.0" r="3.2" fill="#9B8CDE" opacity="0.9"/>
+  <circle cx="29.2" cy="144.3" r="3.2" fill="#4CC9F0" opacity="0.9"/>
+  <circle cx="26.0" cy="120.0" r="3.2" fill="#8FB7A4" opacity="0.9"/>
+  <circle cx="29.2" cy="95.7" r="3.2" fill="#E86A6A" opacity="0.9"/>
+  <circle cx="38.6" cy="73.0" r="3.2" fill="#E8B44A" opacity="0.9"/>
+  <circle cx="53.5" cy="53.5" r="3.2" fill="#9B8CDE" opacity="0.9"/>
+  <circle cx="73.0" cy="38.6" r="3.2" fill="#4CC9F0" opacity="0.9"/>
+  <circle cx="95.7" cy="29.2" r="3.2" fill="#8FB7A4" opacity="0.9"/>
+  <text x="248" y="118" font-family="Georgia, 'Times New Roman', serif" font-size="52"
+        fill="#2B2A28" letter-spacing="8">SEPTINAL</text>
+  <text x="250" y="156" font-family="Verdana, DejaVu Sans, sans-serif" font-size="17"
+        fill="#E8B44A">24 - 2 = 22   ·   Lean 4   ·   seed 1993</text>
+</svg>

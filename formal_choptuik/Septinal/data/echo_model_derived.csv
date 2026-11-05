@@ -1,0 +1,5 @@
+quantity,value,window,check,verdict
+wiggle period lambda0*Delta/2 (calibrated),4.607431224575,"[4.60, 4.62]",|v-4.61|<1/100,PROVED (wiggle_published_check)
+"wiggle period over Delta in [3.44, 3.45]","[4.600140, 4.613513]","[4.60, 4.62]",3.44<=Delta<=3.45 -> 4.61 window,PROVED (wiggle_physical_check)
+growth per echo e^(lambda0*Delta),10045.323171933658,-,-,derived
+radius shrink per echo e^(-Delta),0.031890331529,-,-,derived

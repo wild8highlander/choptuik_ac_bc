@@ -1,0 +1,5 @@
+quantity,exact_rational,decimal,published,abs_diff_exact,abs_diff_decimal,bound,verdict
+gamma = 1/lambda0,2000/5349,0.373901663862,0.374000000000,263/2674500,0.000098336138,1/1000,PROVED (|gamma - 0.374| < 1e-3)
+echoing period Delta (Martín-García & Gundlach 2003),1722726201/500000000,3.445452402000,3.445300000000,76201/500000000,0.000152402000,5e-4,PROVED (|Delta - 3.4453| < 5e-4)
+"gamma3 = 1 - cos(2*pi/7) - pi/1200 (exact, parameter-free)",closed form (septinial three-term record),0.373892204263,0.374000000000,-,0.000107795737,bracket 1 - sqrt(2)/2 - 1/4 < gamma3 < 1/2,"PROVED (Satellite.Corrections.gamma3_bounds, Unlock.gamma_exact)"
+b_Ch = 1 - cos(2*pi/7) (the Choptuik constant of sector C),closed form,0.376510198141,0.374000000000,-,0.002510198141,1 - sqrt(2)/2 < b_Ch < 1/2,PROVED (Satellite.Corrections.b_Ch_bounds)

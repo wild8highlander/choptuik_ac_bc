@@ -1,0 +1,110 @@
+{
+  "seed": 1993,
+  "slots": 24,
+  "gap": [
+    0,
+    12
+  ],
+  "effective_capacity": 22,
+  "k_structural": 22,
+  "chiral_split": {
+    "left": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "right": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "mirror": "x -> 24 - x",
+    "swaps_sectors": true
+  },
+  "cascade": {
+    "group": "D_24 (order 48)",
+    "rot_survivors": [
+      0,
+      12
+    ],
+    "refl_survivors": [
+      0,
+      12
+    ],
+    "survivors_total": 4,
+    "closure": "Klein four-group V4",
+    "oriented_tail": [
+      0,
+      12
+    ],
+    "tail_name": "Z2",
+    "chain": "48 -> 4 -> 2"
+  },
+  "privileged_pairs": [
+    [
+      0,
+      12
+    ],
+    [
+      1,
+      13
+    ],
+    [
+      2,
+      14
+    ],
+    [
+      3,
+      15
+    ],
+    [
+      4,
+      16
+    ],
+    [
+      5,
+      17
+    ],
+    [
+      6,
+      18
+    ],
+    [
+      7,
+      19
+    ],
+    [
+      8,
+      20
+    ],
+    [
+      9,
+      21
+    ],
+    [
+      10,
+      22
+    ],
+    [
+      11,
+      23
+    ]
+  ],
+  "verdict": "ALL BRUTE-FORCE CHECKS PASS \u2014 mirrors Satellite.Dial/Chiral/Cascade"
+}

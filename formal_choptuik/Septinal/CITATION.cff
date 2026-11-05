@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "SEPTINAL — Formal Choptuik & the Septinial Braking Satellite"
+authors:
+  - family-names: "Isaev"
+    given-names: "Ishak Khamzatovich"
+    email: "aslan08_05@mail.ru"
+    orcid: "https://orcid.org/0009-0003-7299-0701"
+date-released: 2026-11-04
+repository-code: "https://github.com/wild8highlander/choptuik_ac_bc"
+url: "https://github.com/wild8highlander/choptuik_ac_bc"
+abstract: >
+  A machine-verified research package: two Lean 4 + Mathlib libraries that
+  formalize the Choptuik critical gravitational collapse — the discretely
+  self-similar critical solution, its single unstable mode λ₀ = 2.6745, the
+  mass scaling law γ = 1/λ₀ with the proved bound |γ − 0.374| = 263/2674500 <
+  10⁻³, and the echoing period Δ = 3.445452402 — together with the Septinial
+  braking satellite: the 24-slot dial with k = 24 − 2 = 22 = b₂(K3), the
+  chiral split 11 + 11, the symmetry cascade 48 → 4 → 2, the exhaustive
+  PSL(2,7) / Klein-quartic {7,3} enumeration (168 elements, 179 subgroups,
+  14 × S₄), and the exact parameter-free three-term record
+  γ₃ = 1 − cos(2π/7) − π/1200 = 0.373892. Zero sorry, zero project axioms,
+  axiom audit exit 0 across 95 audited headline declarations; a rational
+  certificate bridge (spectrum / newton / scaling / interval) connects the
+  Python twins to the Lean kernel; every figure, animation and data file is
+  deterministic (seed 1993). A machine-verified wing of choptuik_ac_bc.
+keywords:
+  - Choptuik collapse
+  - critical phenomena
+  - formal verification
+  - Lean 4
+  - Mathlib
+  - discretely self-similar
+  - mass scaling law
+  - echoing
+  - Klein quartic
+  - PSL(2,7)
+  - K3 surface
+  - spinor corrections
+license: "Isaev-Proprietary"

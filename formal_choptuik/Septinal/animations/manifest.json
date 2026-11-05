@@ -1,0 +1,15 @@
+{
+  "seed": 1993,
+  "fps": 14,
+  "languages": [
+    "en",
+    "ru"
+  ],
+  "animations": [
+    "anim_echoing",
+    "anim_scaling",
+    "anim_collapse",
+    "anim_dial",
+    "anim_spectrum"
+  ]
+}

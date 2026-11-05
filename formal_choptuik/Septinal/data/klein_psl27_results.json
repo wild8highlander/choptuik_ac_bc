@@ -1,0 +1,203 @@
+{
+  "seed": 1993,
+  "group": {
+    "name": "GL(3,2) = PSL(2,7)",
+    "order": 168,
+    "element_order_distribution": {
+      "1": 1,
+      "2": 21,
+      "3": 56,
+      "4": 42,
+      "7": 48
+    },
+    "order_dist_sum": "1 + 21 + 56 + 42 + 48 = 168"
+  },
+  "generators": {
+    "a_order7_index": 33,
+    "b_order3_index": 14,
+    "ab_order": 2,
+    "presentation": "(2,3,7)"
+  },
+  "map_7_3": {
+    "faces": 24,
+    "vertices": 56,
+    "edges": 84,
+    "euler": -4,
+    "genus": 3,
+    "face_degree": 7,
+    "vertex_degree": 3,
+    "flags": 168,
+    "faces_times_stab": "24 * 7 = 168",
+    "flags_split": "56*3 = 84*2 = 168"
+  },
+  "antipodal": {
+    "sphere_profile": "1 + 7 + 14 + 2 = 24",
+    "partners_per_face": 2,
+    "distance3_graph": "8 disjoint triangles",
+    "triples": [
+      [
+        0,
+        10,
+        16
+      ],
+      [
+        1,
+        15,
+        20
+      ],
+      [
+        2,
+        8,
+        18
+      ],
+      [
+        3,
+        12,
+        23
+      ],
+      [
+        4,
+        11,
+        21
+      ],
+      [
+        5,
+        14,
+        17
+      ],
+      [
+        6,
+        13,
+        19
+      ],
+      [
+        7,
+        9,
+        22
+      ]
+    ],
+    "privileged_pairs": [
+      [
+        0,
+        10
+      ],
+      [
+        0,
+        16
+      ],
+      [
+        1,
+        15
+      ],
+      [
+        1,
+        20
+      ],
+      [
+        2,
+        8
+      ],
+      [
+        2,
+        18
+      ],
+      [
+        3,
+        12
+      ],
+      [
+        3,
+        23
+      ],
+      [
+        4,
+        11
+      ],
+      [
+        4,
+        21
+      ],
+      [
+        5,
+        14
+      ],
+      [
+        5,
+        17
+      ],
+      [
+        6,
+        13
+      ],
+      [
+        6,
+        19
+      ],
+      [
+        7,
+        9
+      ],
+      [
+        7,
+        22
+      ],
+      [
+        8,
+        18
+      ],
+      [
+        9,
+        22
+      ],
+      [
+        10,
+        16
+      ],
+      [
+        11,
+        21
+      ],
+      [
+        12,
+        23
+      ],
+      [
+        13,
+        19
+      ],
+      [
+        14,
+        17
+      ],
+      [
+        15,
+        20
+      ]
+    ],
+    "pairs_total": 276,
+    "max_pair_stabilizer": 7
+  },
+  "subgroup_lattice": {
+    "total": 179,
+    "by_order": {
+      "1": 1,
+      "2": 21,
+      "3": 28,
+      "4": 35,
+      "6": 28,
+      "7": 8,
+      "8": 21,
+      "12": 14,
+      "21": 8,
+      "24": 14,
+      "168": 1
+    },
+    "s4_count": 14,
+    "orders_row": "1+21+28+35+28+8+21+14+8+14+1 = 179"
+  },
+  "k3_bridge": {
+    "identity": "1 + 22 + 1 = 24",
+    "capacity": "24 - 2 = 22 = k"
+  },
+  "verdict": "ALL EXHAUSTIVE CHECKS PASS \u2014 integer skeleton mirrored in C5_Klein.lean"
+}

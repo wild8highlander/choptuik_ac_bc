@@ -1,0 +1,23 @@
+{
+  "seed": 1993,
+  "lean_modules": 24,
+  "top_level_theorems": 145,
+  "total_lines": 5108,
+  "sorry_occurrences_in_code": 9,
+  "sorry_note": "the string 'sorry' appears only inside doc comments of the form 'Zero sorry'",
+  "axiom_audit": {
+    "choptuik_headline": 33,
+    "satellite_headline": 62,
+    "permitted": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "audit_exit": 0
+  },
+  "build": {
+    "steps_main": 2894,
+    "steps_merged": 2885,
+    "exit": 0
+  }
+}

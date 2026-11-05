@@ -1,0 +1,147 @@
+{
+  "package": "Septinal \u2014 formal Choptuik + Septinial braking satellite",
+  "seed": 1993,
+  "lean": {
+    "toolchain": "leanprover/lean4:v4.21.0",
+    "mathlib": "v4.21.0"
+  },
+  "calibrated": {
+    "lambda0": "2.674500000000",
+    "gamma": "0.373901663862",
+    "delta_echoing": "3.445452402000",
+    "delta_published": "3.445300000000",
+    "echo_spacing_2pi_over_ln2": "9.064720283654",
+    "wiggle_period_lambda0_delta_over_2": "4.607431224575"
+  },
+  "records": {
+    "gamma_check": {
+      "quantity": "gamma = 1/lambda0",
+      "exact_rational": "2000/5349",
+      "decimal": "0.373901663862",
+      "published": "0.374000000000",
+      "abs_diff_exact": "263/2674500",
+      "abs_diff_decimal": "0.000098336138",
+      "bound": "1/1000",
+      "verdict": "PROVED (|gamma - 0.374| < 1e-3)"
+    },
+    "delta_check": {
+      "quantity": "echoing period Delta (Mart\u00edn-Garc\u00eda & Gundlach 2003)",
+      "exact_rational": "1722726201/500000000",
+      "decimal": "3.445452402000",
+      "published": "3.445300000000",
+      "abs_diff_exact": "76201/500000000",
+      "abs_diff_decimal": "0.000152402000",
+      "bound": "5e-4",
+      "verdict": "PROVED (|Delta - 3.4453| < 5e-4)"
+    },
+    "gamma3_check": {
+      "quantity": "gamma3 = 1 - cos(2*pi/7) - pi/1200 (exact, parameter-free)",
+      "exact_rational": "closed form (septinial three-term record)",
+      "decimal": "0.373892204263",
+      "published": "0.374000000000",
+      "abs_diff_exact": "-",
+      "abs_diff_decimal": "0.000107795737",
+      "bound": "bracket 1 - sqrt(2)/2 - 1/4 < gamma3 < 1/2",
+      "verdict": "PROVED (Satellite.Corrections.gamma3_bounds, Unlock.gamma_exact)"
+    },
+    "b_Ch_check": {
+      "quantity": "b_Ch = 1 - cos(2*pi/7) (the Choptuik constant of sector C)",
+      "exact_rational": "closed form",
+      "decimal": "0.376510198141",
+      "published": "0.374000000000",
+      "abs_diff_exact": "-",
+      "abs_diff_decimal": "0.002510198141",
+      "bound": "1 - sqrt(2)/2 < b_Ch < 1/2",
+      "verdict": "PROVED (Satellite.Corrections.b_Ch_bounds)"
+    }
+  },
+  "bridge": {
+    "spectrum": {
+      "lam0": {
+        "lo": "26744999/10000000",
+        "hi": "2674500101/1000000000",
+        "value": "2.6745",
+        "decimal": [
+          2.6744999,
+          2.674500101
+        ]
+      },
+      "tolerance": "1/100000",
+      "widthMax_note": "every slot width <= certificate tolerance",
+      "echo_spacing_2pi_over_ln2": "9.064720283654"
+    },
+    "newton_kantorovich": {
+      "equation": "1/2 - (3/10)x^2 = 0",
+      "exact_root": "sqrt(5/3)",
+      "root_decimal": "1.290994448736",
+      "x0": "13/10",
+      "ball_radius_R": "1/10",
+      "beta_inverse_bound": "50/39",
+      "lipschitz_L": "3/50",
+      "residual_bound_r": "7/1000",
+      "kantorovich_h": "(50/39)*(7/1000)/(1-(50/39)*(3/50))",
+      "h_value": "0.009722222222",
+      "window": "[12/10, 14/10]",
+      "verdict": "PROVED (truncated_dss_solution_exists_unique)"
+    }
+  },
+  "septinial": {
+    "k_structural": 22,
+    "dial_slots": 24,
+    "gap": 2,
+    "chiral_split": "11 + 11",
+    "denominators": {
+      "A": 704,
+      "B": 5346,
+      "C": 369754
+    },
+    "phases": {
+      "A": "pi/2",
+      "B": "pi/3",
+      "C": "pi/7"
+    },
+    "quanta": {
+      "beta": "d^2/2",
+      "alpha": "d^5/22",
+      "beta_C": "pi^2/98",
+      "alpha_C": "pi^5/369754"
+    },
+    "gamma3": "0.373892204263",
+    "b_Ch": "0.376510198141",
+    "cascade": "48 -> 4 -> 2 (Klein four-group, Z2 tail)",
+    "klein": {
+      "group": "PSL(2,7) = GL(3,2)",
+      "order": 168,
+      "order_dist": [
+        1,
+        21,
+        56,
+        42,
+        48
+      ],
+      "subgroups": 179,
+      "subgroup_orders": [
+        1,
+        21,
+        28,
+        35,
+        28,
+        8,
+        21,
+        14,
+        8,
+        14,
+        1
+      ],
+      "s4_count": 14,
+      "map_7_3": {
+        "faces": 24,
+        "edges": 84,
+        "vertices": 56,
+        "euler": -4,
+        "genus": 3
+      },
+      "k3_bridge": "1 + 22 + 1 = 24"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+# Lean build artifacts
+lean/.lake/
+lake-packages/
+*.olean
+*.ilean
+*.trace
+.build/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS noise
+.DS_Store
+Thumbs.db
