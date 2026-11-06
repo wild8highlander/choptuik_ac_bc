@@ -23,3 +23,7 @@ name = "Choptuik"
 [[lean_lib]]
 name = "Satellite"
 roots = ["Satellite"]
+
+[[lean_lib]]
+name = "SeptinalYM"
+roots = ["SeptinalYM"]
