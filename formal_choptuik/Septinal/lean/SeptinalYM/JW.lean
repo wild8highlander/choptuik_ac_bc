@@ -706,4 +706,90 @@ theorem V_parity_commute (J : ℝ) (x y : Cfg) (h : (V J) x y ≠ 0) : par x = p
     rw [V, Matrix.smul_apply, Finset.sum_apply, Finset.sum_apply, smul_eq_mul]
   exact h (by rw [hv, hsum, mul_zero])
 
+
+/-! ## Ребро-обмотка (21, 0): мажораны с оператором чётности (пункт JW-программы 1) -/
+
+/-- Вес `x` распадается на строку последнего слота и его бит. -/
+theorem weight_eq_wBelow_add_last (x : Cfg) :
+    weight x = wBelow 21 x + (if x 21 = 1 then 1 else 0) := by
+  have h21 : ((21 : Slot) : ℕ) = 21 := rfl
+  unfold weight wBelow
+  have hcompl : (Finset.univ.filter fun u : Slot => (u : ℕ) < ((21 : Slot) : ℕ))ᶜ
+      = {(21 : Slot)} := by
+    ext u
+    simp only [Finset.mem_compl, Finset.mem_filter, Finset.mem_univ,
+      Finset.mem_singleton, true_and]
+    constructor
+    · intro h
+      have h1 := u.isLt
+      have h22 : numSlots = 22 := rfl
+      have h4 : (u : ℕ) = 21 := by
+        have h5 : ((21 : Slot) : ℕ) = 21 := rfl
+        have h6 : (u : ℕ) < numSlots := u.isLt
+        have h7 : numSlots = 22 := rfl
+        omega
+      exact Fin.val_inj.mp h4
+    · intro h hc
+      rw [h] at hc
+      simp at hc
+  rw [← Finset.sum_add_sum_compl
+    (Finset.univ.filter fun u : Slot => (u : ℕ) < ((21 : Slot) : ℕ))
+    (fun u : Slot => (if x u = 1 then 1 else 0)), hcompl, Finset.sum_singleton]
+
+/-- Для последнего слота `(−1)^{строка} · чётность = (−1)^{бит}`:
+промежуточные биты сокращаются. -/
+theorem powBelow_mul_par_last (x : Cfg) :
+    ((-1 : ℂ) ^ wBelow 21 x) * par x = (-1 : ℂ) ^ (if x 21 = 1 then 1 else 0) := by
+  have hw := weight_eq_wBelow_add_last x
+  unfold par at *
+  have e1 : ((-1 : ℂ) ^ wBelow 21 x) * ((-1 : ℂ) ^ weight x)
+      = ((-1 : ℂ) ^ (wBelow 21 x + weight x)) := (pow_add _ _ _).symm
+  rw [e1, hw]
+  have h2 : wBelow 21 x + (wBelow 21 x + (if x 21 = 1 then 1 else 0))
+      = (2 * wBelow 21 x) + (if x 21 = 1 then 1 else 0) := by ring
+  rw [h2, pow_add, negOne_pow_two_mul, one_mul]
+
+/-- Скрученная мажорана слота 0: строка Джордана–Вигнера замыкается через
+оператор чётности `P = (−1)^N`, т.е. `γ_{2·22+a} = P·γ_a`. -/
+def majTw (a : Bool) (v : Vec) : Vec := fun x =>
+  par x * lsig a (x 0) * v (flipOne 0 x)
+
+/-- Числовое ядро кросс-случаев: `I² = −1`, поэтому правая часть равна `2w`. -/
+theorem bondTerm_cross_mul (w : ℂ) : w * 2 = -(w * Complex.I ^ (2 : ℕ) * 2) := by
+  have hI : Complex.I ^ (2 : ℕ) = -1 := by norm_num
+  rw [hI]
+  ring
+
+/-- **Ребро-обмотка (21, 0)**: с учётом замыкания строки через чётность,
+`bondTerm 21 = i(γ_{42}·(Pγ_1) − γ_{43}·(Pγ_0))`. -/
+theorem bondTerm_last_mulVec_eq (v : Vec) (x : Cfg) :
+    (bondTerm 21 *ᵥ v) x
+      = Complex.I * ((majX 21 (majTw true v)) x - (majY 21 (majTw false v)) x) := by
+  rw [mulVec_bondTerm 21 v x, show ((21 + 1 : Slot)) = 0 from by decide]
+  have hz0 : (flipOne 21 x) 0 = x 0 := by
+    simp [flipOne, flipTwo]
+  have hX : (majX 21 (majTw true v)) x
+      = ((-1 : ℂ) ^ wBelow 21 x) * par (flipOne 21 x)
+        * (lsig true (x 0) * v (flipOne 0 (flipOne 21 x))) := by
+    simp only [majX, majVia, majTw]
+    rw [hz0, show lsig false (x 21) = 1 from rfl]
+    ring
+  have hY : (majY 21 (majTw false v)) x
+      = ((-1 : ℂ) ^ wBelow 21 x) * par (flipOne 21 x)
+        * (lsig true (x 21) * v (flipOne 0 (flipOne 21 x))) := by
+    simp only [majY, majVia, majTw]
+    rw [hz0, show lsig false (x 0) = 1 from rfl]
+    ring
+  rw [hX, hY, flipOne_pair 21 0 (Ne.symm (suc_ne_all 21)) x, par_flipOne, mul_neg,
+    powBelow_mul_par_last]
+  rcases bit_cases (x 21) with hb | hb <;>
+    rcases bit_cases (x 0) with hb2 | hb2 <;>
+    rw [hb, hb2] <;> simp [hb, hb2, lsig, Complex.I]
+  all_goals
+    refine Complex.ext ?_ ?_
+    · simp [Complex.mul_re, Complex.neg_re, Complex.sub_re]
+      ring
+    · simp [Complex.mul_im, Complex.neg_im, Complex.sub_im]
+      ring
+
 end Septinal
