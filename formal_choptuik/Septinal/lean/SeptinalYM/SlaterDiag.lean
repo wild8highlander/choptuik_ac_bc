@@ -921,4 +921,56 @@ theorem det_wrap_left {n : ℕ} (M M' : Matrix (Fin n.succ) (Fin n.succ) ℂ)
   rw [hcol i, hcof i]
   ring
 
+/-! ## Stage 3: цели — диагональность A·Ψ_S, чётные секторы, Коши–Бине -/
+
+/-- Скалярное произведение состояний: `⟨f, g⟩ = Σ_x conj(f x)·g x`. -/
+noncomputable def slaterIP (f g : Cfg → ℂ) : ℂ := ∑ x, star (f x) * g x
+
+/-- Антипериодическая фаза твиста: `ζ = exp(πi/22)`, `ζ^{22} = −1`. -/
+noncomputable def zeta : ℂ := Complex.exp (Real.pi * Complex.I / numSlots)
+
+/-- Твистованые моды: `ψ̃_k(u) = ζ^u·ψ_k(u)` — делают оператор цепочки
+диагональным во ВСЕХ секторах, включая чётные (дополнительный множитель
+`ζ^{±1}` на границе 21↦0 / 0↦21 компенсирует знак `(−1)^{k−1}`). -/
+noncomputable def psiTwist (k : ℕ) (u : Slot) : ℂ := zeta ^ (u : ℕ) * psi k u
+
+/-- **Цель Stage 3 (гипотеза Odd).** Оператор прыжков цепочки
+`A = Σ_s bondTerm s` диагонализуется слейтеровскими определителями:
+при нечётном `|S|`
+`A·Ψ_S = (Σ_{k∈S} ε_k)·Ψ_S` на всех конфигурациях веса `|S|`
+(без требования `supp x = S`). Все детерминантные кирпичи готовы:
+scaled_column_det, wrong_cofactor_zero, row_cofactor_sum,
+slaterMat_replace_succ/pred_matrix, det_replace_column,
+det_wrap_right/left (знак `(−1)^n = +1` при нечётных). -/
+theorem slater_diag_odd (S : Finset Slot) (hOdd : Odd S.card) :
+    (∑ s : Slot, bondTerm s).mulVec (fun y => slater S y)
+      = (∑ i : Fin S.card, (eps (modeOf S i) : ℂ)) • (fun y => slater S y) := by
+  sorry
+
+/-- Слейтеровские определители с твистованными модами. -/
+noncomputable def slaterTwist (S : Finset Slot) (x : Cfg) : ℂ :=
+  if h : (supp x).card = S.card then
+    (Matrix.of fun i j => psiTwist (modeOf S i)
+      ((supp x).orderEmbOfFin h j)).det
+  else 0
+
+/-- **Цель для чётных секторов (твист).** С твистованными модами
+`ψ̃_k(u) = ζ^u·ψ_k(u)` (`ζ^{22} = −1`, антипериодическое условие) оператор
+прыжков диагонален и в чётных секторах: знак `(−1)^{k−1}` границы
+компенсируется фазой `ζ^{±1}`. -/
+theorem slater_diag_even_twist (S : Finset Slot) (hEven : Even S.card) :
+    (∑ s : Slot, bondTerm s).mulVec (fun y => slaterTwist S y)
+      = (∑ i : Fin S.card, (eps (modeOf S i) : ℂ)) • (fun y => slaterTwist S y) := by
+  sorry
+
+/-- **Цель: ортогональность Слейтера (Коши–Бине).** Для наборов мод
+одинаковой мощности `⟨Ψ_S, Ψ_T⟩ = δ_{S,T}`: при `S = T` норма 1, при
+`S ≠ T` — нуль. Сводится к Коши–Бине для прямоугольных матриц мод
+(ортонормальность строк `ψ_k` — Ortho.lean); леммы Коши–Бине в mathlib
+нет. -/
+theorem slater_orth (S T : Finset Slot) (hST : S.card = T.card) :
+    slaterIP (fun y => slater S y) (fun y => slater T y)
+      = if S = T then 1 else 0 := by
+  sorry
+
 end Septinal
