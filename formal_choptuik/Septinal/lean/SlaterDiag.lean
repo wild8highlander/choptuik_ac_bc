@@ -408,4 +408,129 @@ theorem det_replace_column {n : ℕ} (M : Matrix (Fin n.succ) (Fin n.succ) ℂ)
     exact h i j
   rw [hmeq, scaled_column_det]
 
+
+/-! ## Сдвиг фазы влево и транспорт определителя -/
+
+/-- Сдвиг фазы влево: `ψ_k(u−1) = ω^{−k}·ψ_k(u)`; равномерно по `u`
+(включая цикл `0 ↦ 21`), так как `val_pred` — модульное равенство. -/
+theorem psi_pred_shift (k : ℕ) (u : Slot) :
+    psi k (u - 1) = omega ^ (numSlots - k % numSlots) * psi k u := by
+  have h1 := psi_shift k (u - 1)
+  rw [pred_add_one] at h1
+  have hpow : (omega ^ (k % numSlots)) * omega ^ (numSlots - k % numSlots) = 1 := by
+    have hsum : k % numSlots + (numSlots - k % numSlots) = numSlots := by
+      rw [show numSlots = 22 from rfl]
+      omega
+    rw [← pow_add, hsum, omega_pow_numSlots]
+  have hne : omega ^ (k % numSlots) ≠ 0 := by
+    intro hc
+    rw [hc, zero_mul] at hpow
+    exact zero_ne_one hpow
+  have hinv : (omega ^ (k % numSlots))⁻¹ = omega ^ (numSlots - k % numSlots) := by
+    calc (omega ^ (k % numSlots))⁻¹
+        = (omega ^ (k % numSlots))⁻¹
+            * (omega ^ (k % numSlots) * omega ^ (numSlots - k % numSlots)) := by
+          rw [hpow, mul_one]
+      _ = ((omega ^ (k % numSlots))⁻¹ * omega ^ (k % numSlots))
+            * omega ^ (numSlots - k % numSlots) := (mul_assoc _ _ _).symm
+      _ = omega ^ (numSlots - k % numSlots) := by
+          rw [inv_mul_cancel₀ hne, one_mul]
+  calc psi k (u - 1) = (omega ^ (k % numSlots))⁻¹ * psi k u := by
+        rw [h1, inv_mul_cancel_left₀ hne]
+    _ = omega ^ (numSlots - k % numSlots) * psi k u := by rw [hinv]
+
+/-- Перечисление носителя с заменой `u₀ ↦ v = u₀ − 1` (без цикла 0 ↦ 21)
+в покардинальной форме: позиция `j₀` даёт `v`, остальные — как в `U`. -/
+theorem orderEmb_replace_pred_index (U : Finset Slot) (u₀ : Slot) (hu : u₀ ∈ U)
+    (v : Slot) (hv : v ∉ U) (hadj : v = u₀ - 1) (hnb : (u₀ : ℕ) ≠ 0)
+    {k : ℕ} (hk : U.card = k) (j₀ : Fin k) (hj₀ : (U.orderEmbOfFin hk j₀ : Slot) = u₀)
+    (j : Fin k) :
+    ((U \ {u₀} ∪ {v}).orderEmbOfFin ((card_replace U u₀ hu v hv).trans hk) j : Slot)
+      = if j = j₀ then v else (U.orderEmbOfFin hk j : Slot) := by
+  have hfun : (fun j : Fin k => if j = j₀ then v else (U.orderEmbOfFin hk j : Slot))
+      = (U \ {u₀} ∪ {v}).orderEmbOfFin ((card_replace U u₀ hu v hv).trans hk) := by
+    refine Finset.orderEmbOfFin_unique ((card_replace U u₀ hu v hv).trans hk) ?_ ?_
+    · intro j
+      by_cases hj : j = j₀
+      · subst hj
+        rw [if_pos rfl]
+        simp
+      · rw [if_neg hj]
+        have hmem : (U.orderEmbOfFin hk j : Slot) ∈ U := Finset.orderEmbOfFin_mem U hk j
+        have hne : (U.orderEmbOfFin hk j : Slot) ≠ u₀ := by
+          intro hcc
+          exact hj ((U.orderEmbOfFin hk).injective (by rw [hcc, hj₀]))
+        simp [hmem, hne, hv]
+    · intro a b hab
+      dsimp only
+      by_cases ha : a = j₀
+      · by_cases hb : b = j₀
+        · exfalso
+          subst ha
+          subst hb
+          exact hab.ne rfl
+        · rw [if_pos ha, if_neg hb]
+          subst hadj
+          have hmon : ((U.orderEmbOfFin hk a : Slot) : ℕ) <
+              ((U.orderEmbOfFin hk b : Slot) : ℕ) :=
+            (U.orderEmbOfFin hk).strictMono hab
+          have haE : (U.orderEmbOfFin hk a : Slot) = u₀ := by rw [ha, hj₀]
+          have ha1 : ((U.orderEmbOfFin hk a : Slot) : ℕ) = (u₀ : ℕ) := congrArg Fin.val haE
+          have hspr : ((u₀ - 1 : Slot) : ℕ) = (u₀.val + 21) % 22 := by
+            rw [val_pred u₀]
+          have hg : ((u₀ - 1 : Slot) : ℕ) < ((U.orderEmbOfFin hk b : Slot) : ℕ) := by omega
+          exact hg
+      · by_cases hb : b = j₀
+        · rw [if_neg ha, if_pos hb]
+          subst hadj
+          have hmon : ((U.orderEmbOfFin hk a : Slot) : ℕ) <
+              ((U.orderEmbOfFin hk b : Slot) : ℕ) :=
+            (U.orderEmbOfFin hk).strictMono hab
+          have hbE : (U.orderEmbOfFin hk b : Slot) = u₀ := by rw [hb, hj₀]
+          have hb1 : ((U.orderEmbOfFin hk b : Slot) : ℕ) = (u₀ : ℕ) := congrArg Fin.val hbE
+          have hmem : ((U.orderEmbOfFin hk a : Slot) : Slot) ∈ U :=
+            Finset.orderEmbOfFin_mem U hk a
+          have hne : ((U.orderEmbOfFin hk a : Slot) : Slot) ≠ (u₀ - 1 : Slot) := by
+            intro hc
+            exact hv (hc ▸ hmem)
+          have hne1 : ((U.orderEmbOfFin hk a : Slot) : ℕ) ≠ ((u₀ - 1 : Slot) : ℕ) := by
+            intro hc
+            exact hne (Fin.val_injective hc)
+          have hspr : ((u₀ - 1 : Slot) : ℕ) = (u₀.val + 21) % 22 := by
+            rw [val_pred u₀]
+          have hns : numSlots = 22 := rfl
+          have hg : ((U.orderEmbOfFin hk a : Slot) : ℕ) < ((u₀ - 1 : Slot) : ℕ) := by omega
+          exact hg
+        · rw [if_neg ha, if_neg hb]
+          exact (U.orderEmbOfFin hk).strictMono hab
+  rw [← hfun]
+
+/-- Столбец прыжка влево (без цикла): при замене занятого сайта `u₀ ↦
+v = u₀ − 1` (без цикла 0 ↦ 21) матрица с носителем `supp x \ {u₀} ∪ {v}`
+равна `slaterMat S x h` со столбцом `j₀`, поточечно умноженным на
+`ω^{−k_i}` по строкам-модам. -/
+theorem slaterMat_replace_pred_matrix (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (u₀ : Slot) (hU₀mem : u₀ ∈ supp x) (v : Slot) (hvnot : v ∉ supp x)
+    (hadj : v = u₀ - 1) (hnb : (u₀ : ℕ) ≠ 0) (j₀ : Fin S.card)
+    (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = u₀) :
+    (Matrix.of fun i j =>
+        psi (modeOf S i)
+          (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
+            ((card_replace (supp x) u₀ hU₀mem v hvnot).trans h) j))
+      = Matrix.of fun i j =>
+          if j = j₀ then omega ^ (numSlots - modeOf S i % numSlots) * slaterMat S x h i j₀
+          else slaterMat S x h i j := by
+  ext i j
+  simp only [Matrix.of_apply, slaterMat_entry_emb]
+  by_cases hj : j = j₀
+  · rw [hj, if_pos rfl,
+      orderEmb_replace_pred_index (supp x) u₀ hU₀mem v hvnot hadj hnb h j₀ hj₀ j₀,
+      if_pos rfl, hadj, psi_pred_shift, hj₀]
+  · rw [if_neg hj,
+      orderEmb_replace_pred_index (supp x) u₀ hU₀mem v hvnot hadj hnb h j₀ hj₀ j,
+      if_neg hj]
+
+
+
 end Septinal
