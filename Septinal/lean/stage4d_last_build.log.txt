@@ -1,0 +1,434 @@
+⚠ [2086/2093] Replayed SeptinalYM.Basic
+warning: SeptinalYM/Basic.lean:91:40: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+⚠ [2087/2093] Replayed SeptinalYM.MatrixAux
+warning: SeptinalYM/MatrixAux.lean:56:24: unused variable `x`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [2088/2093] Replayed SeptinalYM.JW
+warning: SeptinalYM/JW.lean:467:46: this tactic is never executed
+note: this linter can be disabled with `set_option linter.unreachableTactic false`
+warning: SeptinalYM/JW.lean:467:46: 'norm_num' tactic does nothing
+note: this linter can be disabled with `set_option linter.unusedTactic false`
+warning: SeptinalYM/JW.lean:471:34: this tactic is never executed
+note: this linter can be disabled with `set_option linter.unreachableTactic false`
+warning: SeptinalYM/JW.lean:471:34: 'norm_num' tactic does nothing
+note: this linter can be disabled with `set_option linter.unusedTactic false`
+info: SeptinalYM/JW.lean:589:2: Try this: ring_nf
+info: SeptinalYM/JW.lean:601:2: Try this: ring_nf
+⚠ [2090/2093] Replayed SeptinalYM.Slater
+warning: SeptinalYM/Slater.lean:285:41: unused variable `hsum`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Slater.lean:288:39: unused variable `k`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [2091/2093] Replayed SeptinalYM.SlaterDiag
+warning: SeptinalYM/SlaterDiag.lean:1313:45: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: SeptinalYM/SlaterDiag.lean:1357:23: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: SeptinalYM/SlaterDiag.lean:1447:35: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: SeptinalYM/SlaterDiag.lean:1451:52: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: SeptinalYM/SlaterDiag.lean:1541:35: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: SeptinalYM/SlaterDiag.lean:1545:51: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+⚠ [2092/2093] Replayed SeptinalYM.Stage4c
+warning: SeptinalYM/Stage4c.lean:92:20: unused variable `hu₀`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4c.lean:92:40: unused variable `hu₁`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4c.lean:104:5: unused variable `hu0`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4c.lean:104:33: unused variable `hu21`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+✖ [2093/2093] Building SeptinalYM.Stage4d
+trace: .> LEAN_PATH=/home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/packages/Cli/.lake/build/lib/lean:/home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/packages/batteries/.lake/build/lib/lean:/home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/packages/Qq/.lake/build/lib/lean:/home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/packages/aesop/.lake/build/lib/lean:/home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/packages/importGraph/.lake/build/lib/lean:/home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/packages/plausible/.lake/build/lib/lean:/home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/packages/mathlib/.lake/build/lib/lean:/home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/build/lib/lean /home/z/.elan/toolchains/leanprover--lean4---v4.21.0/bin/lean /home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/SeptinalYM/Stage4d.lean -R /home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean -o /home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/build/lib/lean/SeptinalYM/Stage4d.olean -i /home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/build/lib/lean/SeptinalYM/Stage4d.ilean -c /home/z/my-project/leanwork/choptuik_ac_bc/formal_choptuik/Septinal/lean/.lake/build/ir/SeptinalYM/Stage4d.c --json
+warning: SeptinalYM/Stage4d.lean:93:16: unused variable `h1`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4d.lean:93:31: unused variable `h2`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4d.lean:93:52: unused variable `hnb`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+info: SeptinalYM/Stage4d.lean:393:2: Try this: ring_nf
+warning: SeptinalYM/Stage4d.lean:426:16: unused variable `h1`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4d.lean:426:31: unused variable `h2`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4d.lean:426:59: unused variable `hnb`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4d.lean:492:17: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: SeptinalYM/Stage4d.lean:598:5: unused variable `hz`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4d.lean:619:5: unused variable `hz`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4d.lean:683:72: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+note: this linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+error: SeptinalYM/Stage4d.lean:1064:6: tactic 'rewrite' failed, did not find instance of the pattern in the target expression
+  ↑2 * ((∑ i, omega ^ (modeOf S i % numSlots)) * (slaterMat S x h).det)
+S : Finset Slot
+x : Cfg
+h : #(supp x) = #S
+hOdd : Odd #S
+hz : 0 < #S
+e1 :
+  ↑2 * ((∑ i, omega ^ (modeOf S i % numSlots)) * (slaterMat S x h).det) =
+    ∑ i, ↑2 * omega ^ (modeOf S i % numSlots) * (slaterMat S x h).det
+e2 :
+  ↑2 * ((∑ i, omega ^ (numSlots - modeOf S i % numSlots)) * (slaterMat S x h).det) =
+    ∑ i, ↑2 * omega ^ (numSlots - modeOf S i % numSlots) * (slaterMat S x h).det
+⊢ ↑2 * ∑ i, omega ^ (modeOf S i % numSlots) * (slaterMat S x h).det +
+      ↑2 * ((∑ i, omega ^ (numSlots - modeOf S i % numSlots)) * (slaterMat S x h).det) =
+    (∑ i, ↑(eps (modeOf S i))) * (slaterMat S x h).det
+warning: SeptinalYM/Stage4d.lean:1155:20: unused variable `hu₀`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4d.lean:1155:40: unused variable `hu₁`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+error: SeptinalYM/Stage4d.lean:1175:2: type mismatch
+  this
+has type
+  psiTwist (modeOf S i) (((supp x).orderEmbOfFin h) j0) =
+    -(zeta * omega ^ (modeOf S i % numSlots)) * psiTwist (modeOf S i) (((supp x).orderEmbOfFin h) j21) : Prop
+but is expected to have type
+  slaterMatTwist S x h i j0 = -zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h i j21 : Prop
+error: SeptinalYM/Stage4d.lean:1179:2: type mismatch
+  psiTwist_shift_wrap (modeOf S i)
+has type
+  psiTwist (modeOf S i) (21 + 1) = -zeta * omega ^ (modeOf S i % numSlots) * psiTwist (modeOf S i) 21 : Prop
+but is expected to have type
+  psiTwist (modeOf S i) (21 + 1) = -(zeta * omega ^ (modeOf S i % numSlots)) * psiTwist (modeOf S i) 21 : Prop
+error: SeptinalYM/Stage4d.lean:1195:4: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: SeptinalYM/Stage4d.lean:1198:6: tactic 'rewrite' failed, did not find instance of the pattern in the target expression
+  ?a * (?b * ?c)
+k : ℕ
+u : Slot
+hz : zeta * omega ^ (k % numSlots) ≠ 0
+hval : ↑(u - 1 + 1) = ↑u
+hup : ↑(u - 1) + 1 < numSlots
+h1 : psiTwist k u = zeta * omega ^ (k % numSlots) * psiTwist k (u - 1)
+⊢ psiTwist k (u - 1) = (zeta * omega ^ (k % numSlots))⁻¹ * psiTwist k u
+error: SeptinalYM/Stage4d.lean:1219:69: Application type mismatch: In the application
+  hu_of_hnb u₀ hnb
+the argument
+  hnb
+has type
+  ↑v ≠ 0 : Prop
+but is expected to have type
+  ↑(u₀ + 1) ≠ 0 : Prop
+warning: SeptinalYM/Stage4d.lean:1444:23: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: SeptinalYM/Stage4d.lean:1497:23: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: SeptinalYM/Stage4d.lean:1604:35: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: SeptinalYM/Stage4d.lean:1609:17: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+error: SeptinalYM/Stage4d.lean:1622:4: tactic 'rewrite' failed, did not find instance of the pattern in the target expression
+  slaterTwist S (flipTwo 21 0 x)
+S : Finset Slot
+x : Cfg
+h : #(supp x) = #S
+h1 : x 21 = 1
+h0 : x 0 = 0
+hu : 21 ∈ supp x
+hv : 0 ∉ supp x
+⊢ ↑2 * slaterTwist S (flipTwo 0 21 x) =
+    ↑2 *
+      (of fun i j =>
+          if ↑j = 0 then -zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h i ⟨#S - 1, ⋯⟩
+          else slaterMatTwist S x h i ⟨↑j - 1, ⋯⟩).det
+warning: SeptinalYM/Stage4d.lean:1700:35: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: SeptinalYM/Stage4d.lean:1705:17: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+error: SeptinalYM/Stage4d.lean:1718:4: tactic 'rewrite' failed, did not find instance of the pattern in the target expression
+  slaterTwist S (flipTwo 21 0 x)
+S : Finset Slot
+x : Cfg
+h : #(supp x) = #S
+h1 : x 0 = 1
+h0 : x 21 = 0
+hu : 0 ∈ supp x
+hv : 21 ∉ supp x
+⊢ ↑2 * slaterTwist S (flipTwo 0 21 x) =
+    ↑2 *
+      (of fun i j =>
+          if hj : ↑j = #S - 1 then (-zeta)⁻¹ * (omega ^ (modeOf S i % numSlots))⁻¹ * slaterMatTwist S x h i ⟨0, ⋯⟩
+          else slaterMatTwist S x h i ⟨↑j + 1, ⋯⟩).det
+warning: SeptinalYM/Stage4d.lean:1723:16: unused variable `h1`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4d.lean:1723:31: unused variable `h2`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4d.lean:1758:16: unused variable `h1`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+warning: SeptinalYM/Stage4d.lean:1758:31: unused variable `h2`
+note: this linter can be disabled with `set_option linter.unusedVariables false`
+error: SeptinalYM/Stage4d.lean:1803:45: tactic 'rewrite' failed, did not find instance of the pattern in the target expression
+  -?a * ?b
+S : Finset Slot
+x : Cfg
+h✝ : #(supp x) = #S
+h21 : 21 ∈ supp x
+h0 : 0 ∈ supp x
+j21 j0 : Fin #S
+hj21 : ((supp x).orderEmbOfFin h✝) j21 = 21
+hj0 : ((supp x).orderEmbOfFin h✝) j0 = 0
+h : ∑ i, -zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h✝ i j21 * cofG (slaterMatTwist S x h✝) i j21 = 0
+i : Fin #S
+x✝ : i ∈ univ
+⊢ -(zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h✝ i j21 * cofG (slaterMatTwist S x h✝) i j21) =
+    ?m.65170 i
+error: SeptinalYM/Stage4d.lean:1800:81: unsolved goals
+S : Finset Slot
+x : Cfg
+h✝ : #(supp x) = #S
+h21 : 21 ∈ supp x
+h0 : 0 ∈ supp x
+j21 j0 : Fin #S
+hj21 : ((supp x).orderEmbOfFin h✝) j21 = 21
+hj0 : ((supp x).orderEmbOfFin h✝) j0 = 0
+h : ∑ i, -zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h✝ i j21 * cofG (slaterMatTwist S x h✝) i j21 = 0
+⊢ univ.sum ?m.65170 = 0
+
+S : Finset Slot
+x : Cfg
+h✝ : #(supp x) = #S
+h21 : 21 ∈ supp x
+h0 : 0 ∈ supp x
+j21 j0 : Fin #S
+hj21 : ((supp x).orderEmbOfFin h✝) j21 = 21
+hj0 : ((supp x).orderEmbOfFin h✝) j0 = 0
+h : ∑ i, -zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h✝ i j21 * cofG (slaterMatTwist S x h✝) i j21 = 0
+⊢ Fin #S → ℂ
+error: SeptinalYM/Stage4d.lean:1821:6: tactic 'rewrite' failed, equality or iff proof expected
+  ℂ
+S : Finset Slot
+x : Cfg
+h : #(supp x) = #S
+h21 : 21 ∈ supp x
+h0 : 0 ∈ supp x
+j21 j0 : Fin #S
+hj21 : ((supp x).orderEmbOfFin h) j21 = 21
+hj0 : ((supp x).orderEmbOfFin h) j0 = 0
+hne : j0 ≠ j21
+i : Fin #S
+⊢ (-zeta)⁻¹ * (omega ^ (modeOf S i % numSlots))⁻¹ * slaterMatTwist S x h i j0 = slaterMatTwist S x h i j21
+error: SeptinalYM/Stage4d.lean:1835:17: tactic 'rewrite' failed, did not find instance of the pattern in the target expression
+  ?a * (?b * ?c)
+S : Finset Slot
+x : Cfg
+h✝ : #(supp x) = #S
+h21 : 21 ∈ supp x
+h0 : 0 ∈ supp x
+j21 j0 : Fin #S
+hj21 : ((supp x).orderEmbOfFin h✝) j21 = 21
+hj0 : ((supp x).orderEmbOfFin h✝) j0 = 0
+h :
+  ∑ i,
+      (-zeta)⁻¹ * (omega ^ (modeOf S i % numSlots))⁻¹ * slaterMatTwist S x h✝ i j0 * cofG (slaterMatTwist S x h✝) i j0 =
+    0
+i : Fin #S
+x✝ : i ∈ univ
+⊢ -(zeta⁻¹ * (omega ^ (modeOf S i % numSlots))⁻¹ * slaterMatTwist S x h✝ i j0 * cofG (slaterMatTwist S x h✝) i j0) =
+    ?m.67645 i
+warning: SeptinalYM/Stage4d.lean:1849:17: try 'simp' instead of 'simpa'
+note: this linter can be disabled with `set_option linter.unnecessarySimpa false`
+error: SeptinalYM/Stage4d.lean:1899:6: tactic 'rewrite' failed, did not find instance of the pattern in the target expression
+  2 * m - 1
+case intro
+m : ℕ
+hk : 0 < m + m
+hm : 1 ≤ m
+⊢ (-1) ^ (m + m - 1) = -1
+error: SeptinalYM/Stage4d.lean:1920:26: function expected at
+  hs0
+term has type
+  x s = 0
+error: SeptinalYM/Stage4d.lean:1922:28: function expected at
+  hs0
+term has type
+  x s = 0
+error: SeptinalYM/Stage4d.lean:1935:54: type mismatch
+  hc.left
+has type
+  x s = 1 : Prop
+but is expected to have type
+  x s = 0 : Prop
+error: SeptinalYM/Stage4d.lean:1937:6: tactic 'rfl' failed, the left-hand side
+  0
+is not definitionally equal to the right-hand side
+  ↑2 * 0 + ↑2 * 0
+case inr.inr
+S : Finset Slot
+x : Cfg
+h : #(supp x) = #S
+hz : 0 < #S
+s : Slot
+hnb : ↑(s + 1) ≠ 0
+hs1 : x s = 1
+ht1 : x (s + 1) = 1
+⊢ 0 = ↑2 * 0 + ↑2 * 0
+error: SeptinalYM/Stage4d.lean:1960:26: function expected at
+  hs0
+term has type
+  x 21 = 0
+error: SeptinalYM/Stage4d.lean:1962:28: function expected at
+  hs0
+term has type
+  x 21 = 0
+error: SeptinalYM/Stage4d.lean:1981:48: tactic 'rewrite' failed, did not find instance of the pattern in the target expression
+  -∑ x ∈ ?m.78544, ?m.78545 x
+case inr.inl
+S : Finset Slot
+x : Cfg
+h : #(supp x) = #S
+hz : 0 < #S
+hEven : Even #S
+hs1 : x 21 = 1
+ht0 : x 0 = 0
+⊢ ↑2 *
+      -(1 *
+          ∑ i,
+            -zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h i (embInv S x h hz 21) *
+              cofG (slaterMatTwist S x h) i (embInv S x h hz 21)) =
+    ↑2 *
+        ∑ i,
+          zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h i (embInv S x h hz 21) *
+            cofG (slaterMatTwist S x h) i (embInv S x h hz 21) +
+      ↑2 * 0
+error: SeptinalYM/Stage4d.lean:1986:54: type mismatch
+  hc.left
+has type
+  x 21 = 1 : Prop
+but is expected to have type
+  x 21 = 0 : Prop
+error: SeptinalYM/Stage4d.lean:1988:6: tactic 'rfl' failed, the left-hand side
+  0
+is not definitionally equal to the right-hand side
+  ↑2 * 0 + ↑2 * 0
+case inr.inr
+S : Finset Slot
+x : Cfg
+h : #(supp x) = #S
+hz : 0 < #S
+hEven : Even #S
+hs1 : x 21 = 1
+ht1 : x 0 = 1
+⊢ 0 = ↑2 * 0 + ↑2 * 0
+error: SeptinalYM/Stage4d.lean:2001:29: Application type mismatch: In the application
+  succ_sum_reindex S x h fun u =>
+    ∑ i,
+      zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h i (embInv S x h hz u) *
+        cofG (slaterMatTwist S x h) i (embInv S x h hz u)
+the argument
+  fun u =>
+    ∑ i,
+      zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h i (embInv S x h hz u) *
+        cofG (slaterMatTwist S x h) i (embInv S x h hz u)
+has type
+  Slot → ℂ : Type
+but is expected to have type
+  0 < #S : Prop
+error: SeptinalYM/Stage4d.lean:2000:42: unsolved goals
+S : Finset Slot
+x : Cfg
+h : #(supp x) = #S
+hz : 0 < #S
+⊢ (∑ s,
+      if x s = 1 ∧ x (s + 1) = 0 then
+        ∑ i,
+          zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h i (embInv S x h hz s) *
+            cofG (slaterMatTwist S x h) i (embInv S x h hz s)
+      else 0) =
+    (∑ i, zeta * omega ^ (modeOf S i % numSlots)) * (slaterMatTwist S x h).det
+error: SeptinalYM/Stage4d.lean:2055:29: Application type mismatch: In the application
+  pred_sum_reindex S x h fun u =>
+    ∑ i,
+      (zeta * omega ^ (modeOf S i % numSlots))⁻¹ * slaterMatTwist S x h i (embInv S x h hz (u + 1)) *
+        cofG (slaterMatTwist S x h) i (embInv S x h hz (u + 1))
+the argument
+  fun u =>
+    ∑ i,
+      (zeta * omega ^ (modeOf S i % numSlots))⁻¹ * slaterMatTwist S x h i (embInv S x h hz (u + 1)) *
+        cofG (slaterMatTwist S x h) i (embInv S x h hz (u + 1))
+has type
+  Slot → ℂ : Type
+but is expected to have type
+  0 < #S : Prop
+error: SeptinalYM/Stage4d.lean:2054:42: unsolved goals
+S : Finset Slot
+x : Cfg
+h : #(supp x) = #S
+hz : 0 < #S
+⊢ (∑ s,
+      if x s = 0 ∧ x (s + 1) = 1 then
+        ∑ i,
+          (zeta * omega ^ (modeOf S i % numSlots))⁻¹ * slaterMatTwist S x h i (embInv S x h hz (s + 1)) *
+            cofG (slaterMatTwist S x h) i (embInv S x h hz (s + 1))
+      else 0) =
+    (∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹) * (slaterMatTwist S x h).det
+error: SeptinalYM/Stage4d.lean:2123:8: function expected at
+  sum_erase_add univ ?m.83786 (mem_univ ?m.83791)
+term has type
+  ∑ x ∈ univ.erase ?m.83791, ?m.83786 x + ?m.83786 ?m.83791 = ∑ x, ?m.83786 x
+error: SeptinalYM/Stage4d.lean:2122:21: unsolved goals
+S : Finset Slot
+x : Cfg
+h : #(supp x) = #S
+hz : 0 < #S
+hEven : Even #S
+⊢ ∑ s, (bondTerm s *ᵥ fun y => slaterTwist S y) x =
+    (↑2 *
+        ∑ s,
+          if x s = 1 ∧ x (s + 1) = 0 then
+            ∑ i,
+              zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h i (embInv S x h hz s) *
+                cofG (slaterMatTwist S x h) i (embInv S x h hz s)
+          else 0) +
+      ↑2 *
+        ∑ s,
+          if x s = 0 ∧ x (s + 1) = 1 then
+            ∑ i,
+              (zeta * omega ^ (modeOf S i % numSlots))⁻¹ * slaterMatTwist S x h i (embInv S x h hz (s + 1)) *
+                cofG (slaterMatTwist S x h) i (embInv S x h hz (s + 1))
+          else 0
+error: SeptinalYM/Stage4d.lean:2164:15: tactic 'subst' failed, invalid equality proof, it is not of the form (x = t) or (t = x)
+  #S = m + m
+case intro
+S : Finset Slot
+x : Cfg
+h : #(supp x) = #S
+m : ℕ
+h✝ : #S = m + m
+⊢ 0 < #S
+error: SeptinalYM/Stage4d.lean:2168:6: tactic 'rewrite' failed, did not find instance of the pattern in the target expression
+  (?a • ?f) ?i
+S : Finset Slot
+x : Cfg
+h : #(supp x) = #S
+hEven : Even #S
+hz : 0 < #S
+⊢ ↑2 * ((∑ i, zeta * omega ^ (modeOf S i % numSlots)) * (slaterMatTwist S x h).det) +
+      ↑2 * ((∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹) * (slaterMatTwist S x h).det) =
+    (∑ i, epsTwist (modeOf S i)) * slaterTwist S x
+error: SeptinalYM/Stage4d.lean:2185:37: unknown identifier 'bondTerm_mulVec_zero_hcard_twist'
+error: SeptinalYM/Stage4d.lean:2196:29: Application type mismatch: In the application
+  hxz (Eq.trans (supp_card_flipTwo_suc x s hP) hc)
+the argument
+  Eq.trans (supp_card_flipTwo_suc x s hP) hc
+has type
+  #(supp (flipTwo s (s + 1) x)) = ?m.86240 : Prop
+but is expected to have type
+  #(supp x) = #S : Prop
+error: SeptinalYM/Stage4d.lean:2205:2: no goals to be solved
+error: SeptinalYM/Stage4d.lean:2214:6: tactic 'rewrite' failed, did not find instance of the pattern in the target expression
+  ?Mᵀ.det
+k n : ℕ
+A B : Matrix (Fin k) (Fin n) ℂ
+⊢ (A * Bᵀ).det = ∑ f, (∏ i, A i (f i)) * (B.submatrix id f).det
+warning: SeptinalYM/Stage4d.lean:2232:8: declaration uses 'sorry'
+error: Lean exited with code 1
+Some required builds logged failures:
+- SeptinalYM.Stage4d
