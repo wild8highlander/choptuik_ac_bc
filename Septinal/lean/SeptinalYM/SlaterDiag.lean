@@ -1,1578 +1,1098 @@
 /-
-Copyright (c) 2025. All rights reserved.
+Septinal YM · Этап 4d: сборка `slater_diag_odd`.
+
+Схема: mulVec-расщепление суммы операторов; разбор рёбер `s` по типу
+(заблокированное / succ-активное / pred-активное); вклад succ-ребра —
+`2·D⁺(j_s)` (через `cofG_det_updateCol`), pred-ребра — `2·D⁻(j_{s+1})`;
+«недостающие» члены занятых соседних пар обнуляются (два равных столбца);
+свёртка `Σ_j Σ_i d_i·M_{ij}·C_{ij} = (Σ_i d_i)·det M`; связка с `eps`.
 -/
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
-import Mathlib.LinearAlgebra.Matrix.Adjugate
-import Mathlib.LinearAlgebra.Matrix.Permutation
-import Mathlib.GroupTheory.Perm.Fin
-import SeptinalYM.Slater
-
-/-!
-# Фрагмент 3 (часть 1): кофакторная механика для диагональности A·Ψ_S
-
-Ключевая структура доказательства диагональности
-`A·Ψ_S = (Σ_{k∈S} ε_k)·Ψ_S` (Кондон–Слейтер для однотелого оператора прыжка
-на 22-цикле):
-
-* каждый нетривиальный член `(bondTerm s *ᵥ Ψ_S)(x)` — определитель матрицы
-  Слейтера `M(x)` с одним столбцом (столбцом прыгающей частицы), поточечно
-  умноженным на `ω^{±k}` по строкам-модам: `ψ_k(u±1) = ω^{±k}·ψ_k(u)`;
-* разложение такого определителя по этому столбцу (`scaled_column_det`) даёт
-  `Σ_τ ω^{±k_τ}·M_{τ,j₀}·C_{τ,j₀}`;
-* группировка по строкам-модам и разложение Лапласа по строке
-  (`row_cofactor_sum`: `Σ_j M_{i,j}·C_{i,j} = det M`) сводит всё к
-  `(Σ_{k∈S} (ω^k + ω^{-k}))·det M = (Σ_{k∈S} ε_k)·Ψ_S(x)`;
-* слагаемые с заблокированными прыжками (сосед занят) сокращаются попарно:
-  для занятой пары `(j, j+1)` столбцы пропорциональны
-  (`M_{·,j+1} = ω^k·M_{·,j}`), и сумма «неправильных кофакторов»
-  `Σ_τ [M_{τ,j+1}·C_{τ,j} + M_{τ,j}·C_{τ,j+1}] = 0` — определитель матрицы
-  с двумя равными столбцами (`wrong_cofactor_zero`).
-
-Здесь собраны чисто алгебраические блоки: `cof`, `scaled_column_det`,
-`wrong_cofactor_zero`, `row_cofactor_sum`, `psi_shift`. Сборка диагональности
-(перекладка индексов сортированных носителей) — следующий шаг.
--/
+import Mathlib.Data.Finset.SDiff
+import SeptinalYM.Stage4c
+import SeptinalYM.Ortho
 
 namespace Septinal
-
-open Matrix
-
-/-! ## Кофакторы -/
-
-/-- Кофактор: знаковый минор (совпадает с членами разложения Лапласа
-`Matrix.det_succ_row` / `det_succ_column`). -/
-noncomputable def cof {n : ℕ} (M : Matrix (Fin n.succ) (Fin n.succ) ℂ)
-    (i j : Fin n.succ) : ℂ :=
-  (-1) ^ ((i : ℕ) + (j : ℕ)) * (M.submatrix i.succAbove j.succAbove).det
-
-/-- Определитель матрицы, у которой столбец `j₀` поточечно умножен на `d`,
-равен `Σ_i d_i · M_{i,j₀} · C_{i,j₀}` (разложение по этому столбцу). -/
-theorem scaled_column_det {n : ℕ} (M : Matrix (Fin n.succ) (Fin n.succ) ℂ)
-    (j₀ : Fin n.succ) (d : Fin n.succ → ℂ) :
-    (Matrix.of fun i j => if j = j₀ then d i * M i j else M i j).det
-      = ∑ i, d i * M i j₀ * cof M i j₀ := by
-  rw [Matrix.det_succ_column (Matrix.of fun i j => if j = j₀ then d i * M i j else M i j) j₀]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  have hsub : (Matrix.of fun i j => if j = j₀ then d i * M i j else M i j).submatrix
-        i.succAbove j₀.succAbove
-      = M.submatrix i.succAbove j₀.succAbove := by
-    ext a b
-    simp only [Matrix.submatrix_apply, Matrix.of_apply]
-    rw [if_neg (Fin.succAbove_ne j₀ b)]
-  rw [hsub, Matrix.of_apply, if_pos rfl, cof]
-  ring
-
-/-- «Неправильное» разложение по кофакторам чужого столбца равно нулю:
-столбец `j` против кофакторов столбца `j' ≠ j` — определитель матрицы
-с двумя равными столбцами. -/
-theorem wrong_cofactor_zero {n : ℕ} (M : Matrix (Fin n.succ) (Fin n.succ) ℂ)
-    (j j' : Fin n.succ) (hjj : j ≠ j') :
-    ∑ i, M i j * cof M i j' = 0 := by
-  have hsub : ∀ i : Fin n.succ, (Matrix.of fun i k => if k = j' then M i j else M i k).submatrix
-        i.succAbove j'.succAbove
-      = M.submatrix i.succAbove j'.succAbove := by
-    intro i
-    ext a b
-    simp only [Matrix.submatrix_apply, Matrix.of_apply]
-    rw [if_neg (Fin.succAbove_ne j' b)]
-  have hcol : ∀ i, (Matrix.of fun i k => if k = j' then M i j else M i k) i j
-      = (Matrix.of fun i k => if k = j' then M i j else M i k) i j' := by
-    intro i
-    simp [hjj]
-  have hdet : (Matrix.of fun i k => if k = j' then M i j else M i k).det = 0 := by
-    rw [← Matrix.det_transpose]
-    exact Matrix.det_zero_of_row_eq (i := j) (j := j') hjj (by
-      funext i
-      simp only [Matrix.transpose_apply]
-      exact hcol i)
-  have hexp : ∑ i, M i j * cof M i j'
-      = (Matrix.of fun i k => if k = j' then M i j else M i k).det := by
-    rw [Matrix.det_succ_column (Matrix.of fun i k => if k = j' then M i j else M i k) j']
-    exact Finset.sum_congr rfl fun i _ => by
-      have h2 : (Matrix.of fun i k => if k = j' then M i j else M i k) i j' = M i j := by simp
-      rw [h2, hsub i, cof]
-      ring
-  rw [hexp, hdet]
-
-/-- Разложение Лапласа по строке `i` в кофакторной форме:
-`Σ_j M_{i,j} · C_{i,j} = det M`. -/
-theorem row_cofactor_sum {n : ℕ} (M : Matrix (Fin n.succ) (Fin n.succ) ℂ)
-    (i : Fin n.succ) : ∑ j, M i j * cof M i j = M.det := by
-  rw [Matrix.det_succ_row M i]
-  exact Finset.sum_congr rfl fun j _ => by rw [cof]; ring
-
-/-! ## Сдвиг мод Фурье -/
-
-/-- Ключевое свойство мод: сдвиг занятого сайта на +1 умножает столбец
-поточечно на `ω^k`: `ψ_k(u+1) = ω^{k mod 22} · ψ_k(u)`. -/
-theorem psi_shift (k : ℕ) (u : Slot) :
-    psi k (u + 1) = omega ^ (k % numSlots) * psi k u := by
-  unfold psi
-  rw [val_suc]
-  have hmod : (k * ((Fin.val u + 1) % numSlots)) % numSlots
-      = ((k * Fin.val u) % numSlots + k % numSlots) % numSlots := by
-    have e1 : (k * ((Fin.val u + 1) % numSlots)) % numSlots
-        = (k * (Fin.val u + 1)) % numSlots :=
-      Nat.ModEq.mul_left k (Nat.mod_modEq (Fin.val u + 1) numSlots)
-    have e2 : (k * (Fin.val u + 1)) % numSlots
-        = ((k * Fin.val u) % numSlots + k % numSlots) % numSlots := by
-      rw [Nat.mul_add, Nat.add_mod, Nat.mul_one]
-    exact e1.trans e2
-  rw [hmod, omega_pow_mod ((k * Fin.val u) % numSlots + k % numSlots), pow_add]
-  ring
-
-
-
-/-! ## Перекладка сортированных носителей -/
-
-/-- Связь `.get`-формы сортированного списка (как в определении `slater`)
-с `orderEmbOfFin`. -/
-theorem sort_get_eq_orderEmbOfFin (U : Finset Slot) {k : ℕ} (h : U.card = k) (j : Fin k) :
-    (U.sort (· ≤ ·)).get (Fin.cast (h.symm.trans (Finset.length_sort (· ≤ ·)).symm) j)
-      = (U.orderEmbOfFin h j : Slot) := by
-  rw [List.get_eq_getElem, Finset.orderEmbOfFin_apply]
-  simp
-
-/-- Мощность конечного множества при замене элемента `u₀ ↦ v` сохраняется. -/
-theorem card_replace (U : Finset Slot) (u₀ : Slot) (hu : u₀ ∈ U) (v : Slot) (hv : v ∉ U) :
-    ((U \ {u₀} : Finset Slot) ∪ {v}).card = U.card := by
-  have hpos : 1 ≤ U.card := by
-    have h5 := Finset.card_le_card (Finset.singleton_subset_iff.mpr hu)
-    rwa [Finset.card_singleton] at h5
-  rw [Finset.card_union_of_disjoint (Finset.disjoint_singleton_right.mpr (by simp [hv])),
-    Finset.card_sdiff (Finset.singleton_subset_iff.mpr hu),
-    Finset.card_singleton, Finset.card_singleton]
-  exact Nat.sub_add_cancel hpos
-
-/-- Замена элемента монотонного перечисления, направление `+1`
-(сайт `u₀` заменяется свободным соседом `u₀ + 1`; случай `v = 0`, т.е.
-циклический переход `21 ↦ 0`, здесь не покрывается). -/
-theorem orderEmb_replace_succ (U : Finset Slot) (u₀ : Slot) (hu : u₀ ∈ U)
-    (v : Slot) (hv : v ∉ U) (hadj : v = u₀ + 1) (hnb : (v : ℕ) ≠ 0) :
-    (fun j : Fin U.card =>
-        if (U.orderEmbOfFin rfl j : Slot) = u₀ then v else (U.orderEmbOfFin rfl j : Slot))
-      = (U \ {u₀} ∪ {v}).orderEmbOfFin (card_replace U u₀ hu v hv) := by
-  refine Finset.orderEmbOfFin_unique (card_replace U u₀ hu v hv) ?_ ?_
-  · intro j
-    by_cases hj : (U.orderEmbOfFin rfl j : Slot) = u₀
-    · rw [if_pos hj]
-      simp
-    · rw [if_neg hj]
-      have hmem : (U.orderEmbOfFin rfl j : Slot) ∈ U := Finset.orderEmbOfFin_mem U rfl j
-      simp [hmem, hj, hv]
-  · intro a b hab
-    dsimp only
-    by_cases ha : (U.orderEmbOfFin rfl a : Slot) = u₀
-    · by_cases hb : (U.orderEmbOfFin rfl b : Slot) = u₀
-      · exfalso
-        have hEq : (U.orderEmbOfFin rfl a : Slot) = (U.orderEmbOfFin rfl b : Slot) := by
-          rw [ha, hb]
-        exact hab.ne ((U.orderEmbOfFin rfl).injective hEq)
-      · rw [if_pos ha, if_neg hb]
-        subst hadj
-        have hmon : ((U.orderEmbOfFin rfl a : Slot) : ℕ) <
-            ((U.orderEmbOfFin rfl b : Slot) : ℕ) :=
-          (U.orderEmbOfFin rfl).strictMono hab
-        have hmem : ((U.orderEmbOfFin rfl b : Slot) : Slot) ∈ U :=
-          Finset.orderEmbOfFin_mem U rfl b
-        have hne : ((U.orderEmbOfFin rfl b : Slot) : Slot) ≠ (u₀ + 1 : Slot) := by
-          intro hc
-          exact hv (hc ▸ hmem)
-        have ha1 : ((U.orderEmbOfFin rfl a : Slot) : ℕ) = (u₀ : ℕ) := congrArg Fin.val ha
-        have hne1 : ((U.orderEmbOfFin rfl b : Slot) : ℕ) ≠ ((u₀ + 1 : Slot) : ℕ) := by
-          intro hc
-          exact hne (Fin.val_injective hc)
-        have hsuc : ((u₀ + 1 : Slot) : ℕ) = (u₀.val + 1) % 22 := by
-          rw [val_suc u₀]
-        have hg : ((u₀ + 1 : Slot) : ℕ) < ((U.orderEmbOfFin rfl b : Slot) : ℕ) := by omega
-        exact hg
-    · by_cases hb : (U.orderEmbOfFin rfl b : Slot) = u₀
-      · rw [if_neg ha, if_pos hb]
-        subst hadj
-        have hmon : ((U.orderEmbOfFin rfl a : Slot) : ℕ) <
-            ((U.orderEmbOfFin rfl b : Slot) : ℕ) :=
-          (U.orderEmbOfFin rfl).strictMono hab
-        have hb1 : ((U.orderEmbOfFin rfl b : Slot) : ℕ) = (u₀ : ℕ) := congrArg Fin.val hb
-        have hsuc : ((u₀ + 1 : Slot) : ℕ) = (u₀.val + 1) % 22 := by
-          rw [val_suc u₀]
-        have hns : numSlots = 22 := rfl
-        have h20 : (u₀ : ℕ) ≤ 20 := by
-          by_contra hc
-          have h21 : (u₀ : ℕ) = 21 := by have := u₀.isLt; omega
-          have h22 : (u₀.val + 1) % numSlots = 0 := by omega
-          rw [val_suc u₀] at hnb
-          exact hnb h22
-        have hg : ((U.orderEmbOfFin rfl a : Slot) : ℕ) < ((u₀ + 1 : Slot) : ℕ) := by
-          rw [hsuc]
-          omega
-        exact hg
-      · rw [if_neg ha, if_neg hb]
-        simpa using (U.orderEmbOfFin rfl).strictMono hab
-
-/-- Замена элемента монотонного перечисления, направление `−1`
-(сайт `u₀` заменяется свободным соседом `u₀ − 1`; случай `u₀ = 0`, т.е.
-циклический переход `0 ↦ 21`, здесь не покрывается). -/
-theorem orderEmb_replace_pred (U : Finset Slot) (u₀ : Slot) (hu : u₀ ∈ U)
-    (v : Slot) (hv : v ∉ U) (hadj : v = u₀ - 1) (hnb : (u₀ : ℕ) ≠ 0) :
-    (fun j : Fin U.card =>
-        if (U.orderEmbOfFin rfl j : Slot) = u₀ then v else (U.orderEmbOfFin rfl j : Slot))
-      = (U \ {u₀} ∪ {v}).orderEmbOfFin (card_replace U u₀ hu v hv) := by
-  refine Finset.orderEmbOfFin_unique (card_replace U u₀ hu v hv) ?_ ?_
-  · intro j
-    by_cases hj : (U.orderEmbOfFin rfl j : Slot) = u₀
-    · rw [if_pos hj]
-      simp
-    · rw [if_neg hj]
-      have hmem : (U.orderEmbOfFin rfl j : Slot) ∈ U := Finset.orderEmbOfFin_mem U rfl j
-      simp [hmem, hj, hv]
-  · intro a b hab
-    dsimp only
-    by_cases ha : (U.orderEmbOfFin rfl a : Slot) = u₀
-    · by_cases hb : (U.orderEmbOfFin rfl b : Slot) = u₀
-      · exfalso
-        have hEq : (U.orderEmbOfFin rfl a : Slot) = (U.orderEmbOfFin rfl b : Slot) := by
-          rw [ha, hb]
-        exact hab.ne ((U.orderEmbOfFin rfl).injective hEq)
-      · rw [if_pos ha, if_neg hb]
-        subst hadj
-        have hmon : ((U.orderEmbOfFin rfl a : Slot) : ℕ) <
-            ((U.orderEmbOfFin rfl b : Slot) : ℕ) :=
-          (U.orderEmbOfFin rfl).strictMono hab
-        have ha1 : ((U.orderEmbOfFin rfl a : Slot) : ℕ) = (u₀ : ℕ) := congrArg Fin.val ha
-        have hspr : ((u₀ - 1 : Slot) : ℕ) = (u₀.val + 21) % 22 := by
-          rw [val_pred u₀]
-        have hg : ((u₀ - 1 : Slot) : ℕ) < ((U.orderEmbOfFin rfl b : Slot) : ℕ) := by omega
-        exact hg
-    · by_cases hb : (U.orderEmbOfFin rfl b : Slot) = u₀
-      · rw [if_neg ha, if_pos hb]
-        subst hadj
-        have hmon : ((U.orderEmbOfFin rfl a : Slot) : ℕ) <
-            ((U.orderEmbOfFin rfl b : Slot) : ℕ) :=
-          (U.orderEmbOfFin rfl).strictMono hab
-        have hb1 : ((U.orderEmbOfFin rfl b : Slot) : ℕ) = (u₀ : ℕ) := congrArg Fin.val hb
-        have hmem : ((U.orderEmbOfFin rfl a : Slot) : Slot) ∈ U :=
-          Finset.orderEmbOfFin_mem U rfl a
-        have hne : ((U.orderEmbOfFin rfl a : Slot) : Slot) ≠ (u₀ - 1 : Slot) := by
-          intro hc
-          exact hv (hc ▸ hmem)
-        have hne1 : ((U.orderEmbOfFin rfl a : Slot) : ℕ) ≠ ((u₀ - 1 : Slot) : ℕ) := by
-          intro hc
-          exact hne (Fin.val_injective hc)
-        have hspr : ((u₀ - 1 : Slot) : ℕ) = (u₀.val + 21) % 22 := by
-          rw [val_pred u₀]
-        have hns : numSlots = 22 := rfl
-        have hg : ((U.orderEmbOfFin rfl a : Slot) : ℕ) < ((u₀ - 1 : Slot) : ℕ) := by omega
-        exact hg
-      · rw [if_neg ha, if_neg hb]
-        simpa using (U.orderEmbOfFin rfl).strictMono hab
-
-
-
-/-! ## Матрица Слейтера и её определитель -/
-
-/-- Частота `i`-й моды набора `S` (в порядке возрастания). -/
-noncomputable def modeOf (S : Finset Slot) (i : Fin S.card) : ℕ :=
-  ((S.sort (· ≤ ·)).get (Fin.cast (Finset.length_sort (· ≤ ·)).symm i)).toNat
-
-/-- Матрица Слейтера: строка `i` — мода `modeOf S i`, столбец `j` — сайт —
-`j`-й (по возрастанию) элемент носителя `supp x`. -/
-noncomputable def slaterMat (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card) :
-    Matrix (Fin S.card) (Fin S.card) ℂ :=
-  Matrix.of fun i j =>
-    psi (modeOf S i)
-      (((supp x).sort (· ≤ ·)).get
-        (Fin.cast (h.symm.trans (Finset.length_sort (· ≤ ·)).symm) j))
-
-/-- Определитель Слейтера — определитель матрицы `slaterMat`. -/
-theorem slater_eq_det (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card) :
-    slater S x = (slaterMat S x h).det := by
-  rw [slater, dif_pos h]
-  congr 1
-
-
-
-/-! ## Столбец прыжка -/
-
-/-- Столбцовая форма матрицы Слейтера через `orderEmbOfFin`. -/
-theorem slaterMat_entry_emb (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
-    (i j : Fin S.card) :
-    slaterMat S x h i j = psi (modeOf S i) ((supp x).orderEmbOfFin h j) := by
-  simp only [slaterMat, Matrix.of_apply, modeOf]
-  rw [sort_get_eq_orderEmbOfFin (supp x) h j]
-
-/-- Перечисление носителя с заменой `u₀ ↦ v = u₀ + 1` (без цикла 21 ↦ 0)
-в покардинальной форме: позиция `j₀` даёт `v`, остальные позиции — как в `U`. -/
-theorem orderEmb_replace_succ_index (U : Finset Slot) (u₀ : Slot) (hu : u₀ ∈ U)
-    (v : Slot) (hv : v ∉ U) (hadj : v = u₀ + 1) (hnb : (v : ℕ) ≠ 0)
-    {k : ℕ} (hk : U.card = k) (j₀ : Fin k) (hj₀ : (U.orderEmbOfFin hk j₀ : Slot) = u₀)
-    (j : Fin k) :
-    ((U \ {u₀} ∪ {v}).orderEmbOfFin ((card_replace U u₀ hu v hv).trans hk) j : Slot)
-      = if j = j₀ then v else (U.orderEmbOfFin hk j : Slot) := by
-  have hfun : (fun j : Fin k => if j = j₀ then v else (U.orderEmbOfFin hk j : Slot))
-      = (U \ {u₀} ∪ {v}).orderEmbOfFin ((card_replace U u₀ hu v hv).trans hk) := by
-    refine Finset.orderEmbOfFin_unique ((card_replace U u₀ hu v hv).trans hk) ?_ ?_
-    · intro j
-      by_cases hj : j = j₀
-      · subst hj
-        rw [if_pos rfl]
-        simp
-      · rw [if_neg hj]
-        have hmem : (U.orderEmbOfFin hk j : Slot) ∈ U := Finset.orderEmbOfFin_mem U hk j
-        have hne : (U.orderEmbOfFin hk j : Slot) ≠ u₀ := by
-          intro hcc
-          exact hj ((U.orderEmbOfFin hk).injective (by rw [hcc, hj₀]))
-        simp [hmem, hne, hv]
-    · intro a b hab
-      dsimp only
-      by_cases ha : a = j₀
-      · by_cases hb : b = j₀
-        · exfalso
-          subst ha
-          subst hb
-          exact hab.ne rfl
-        · rw [if_pos ha, if_neg hb]
-          subst hadj
-          have hmon : ((U.orderEmbOfFin hk a : Slot) : ℕ) <
-            ((U.orderEmbOfFin hk b : Slot) : ℕ) :=
-            (U.orderEmbOfFin hk).strictMono hab
-          have haE : (U.orderEmbOfFin hk a : Slot) = u₀ := by rw [ha, hj₀]
-          have ha1 : ((U.orderEmbOfFin hk a : Slot) : ℕ) = (u₀ : ℕ) := congrArg Fin.val haE
-          have hmem : (U.orderEmbOfFin hk b : Slot) ∈ U := Finset.orderEmbOfFin_mem U hk b
-          have hne : (U.orderEmbOfFin hk b : Slot) ≠ (u₀ + 1 : Slot) := by
-            intro hcc
-            exact hv (hcc ▸ hmem)
-          have hne1 : ((U.orderEmbOfFin hk b : Slot) : ℕ) ≠ ((u₀ + 1 : Slot) : ℕ) := by
-            intro hc
-            exact hne (Fin.val_injective hc)
-          have hsuc : ((u₀ + 1 : Slot) : ℕ) = (u₀.val + 1) % 22 := by
-            rw [val_suc u₀]
-          have hg : ((u₀ + 1 : Slot) : ℕ) < ((U.orderEmbOfFin hk b : Slot) : ℕ) := by omega
-          exact hg
-      · by_cases hb : b = j₀
-        · rw [if_neg ha, if_pos hb]
-          subst hadj
-          have hmon : ((U.orderEmbOfFin hk a : Slot) : ℕ) <
-            ((U.orderEmbOfFin hk b : Slot) : ℕ) :=
-            (U.orderEmbOfFin hk).strictMono hab
-          have hbE : (U.orderEmbOfFin hk b : Slot) = u₀ := by rw [hb, hj₀]
-          have hb1 : ((U.orderEmbOfFin hk b : Slot) : ℕ) = (u₀ : ℕ) := congrArg Fin.val hbE
-          have hsuc : ((u₀ + 1 : Slot) : ℕ) = (u₀.val + 1) % 22 := by
-            rw [val_suc u₀]
-          have hns : numSlots = 22 := rfl
-          have h20 : (u₀ : ℕ) ≤ 20 := by
-            by_contra hc
-            have h21 : (u₀ : ℕ) = 21 := by have := u₀.isLt; omega
-            have h22 : (u₀.val + 1) % numSlots = 0 := by omega
-            rw [val_suc u₀] at hnb
-            exact hnb h22
-          have hg : ((U.orderEmbOfFin hk a : Slot) : ℕ) < ((u₀ + 1 : Slot) : ℕ) := by
-            rw [hsuc]
-            omega
-          exact hg
-        · rw [if_neg ha, if_neg hb]
-          exact (U.orderEmbOfFin hk).strictMono hab
-  rw [← hfun]
-
-/-- Столбец прыжка (матричная форма): при замене занятого сайта
-`u₀ ↦ v = u₀ + 1` (без цикла 21 ↦ 0) матрица с носителем
-`supp x \ {u₀} ∪ {v}` равна `slaterMat S x h` со столбцом `j₀`
-(позиция `u₀`), поточечно умноженным на `ω^{k_i}` по строкам-модам. -/
-theorem slaterMat_replace_succ_matrix (S : Finset Slot) (x : Cfg)
-    (h : (supp x).card = S.card)
-    (u₀ : Slot) (hU₀mem : u₀ ∈ supp x) (v : Slot) (hvnot : v ∉ supp x)
-    (hadj : v = u₀ + 1) (hnb : (v : ℕ) ≠ 0) (j₀ : Fin S.card)
-    (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = u₀) :
-    (Matrix.of fun i j =>
-        psi (modeOf S i)
-          (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
-            ((card_replace (supp x) u₀ hU₀mem v hvnot).trans h) j))
-      = Matrix.of fun i j =>
-          if j = j₀ then omega ^ (modeOf S i % numSlots) * slaterMat S x h i j₀
-          else slaterMat S x h i j := by
-  ext i j
-  simp only [Matrix.of_apply, slaterMat_entry_emb]
-  by_cases hj : j = j₀
-  · rw [hj, if_pos rfl,
-      orderEmb_replace_succ_index (supp x) u₀ hU₀mem v hvnot hadj hnb h j₀ hj₀ j₀,
-      if_pos rfl, hadj, psi_shift, hj₀]
-  · rw [if_neg hj,
-      orderEmb_replace_succ_index (supp x) u₀ hU₀mem v hvnot hadj hnb h j₀ hj₀ j,
-      if_neg hj]
-
-/-- Транспорт заменённого столбца в определитель (форма `n.succ` для
-разложения Лапласа). -/
-theorem det_replace_column {n : ℕ} (M : Matrix (Fin n.succ) (Fin n.succ) ℂ)
-    (j₀ : Fin n.succ) (d : Fin n.succ → ℂ)
-    (M' : Matrix (Fin n.succ) (Fin n.succ) ℂ)
-    (h : ∀ i j, M' i j = if j = j₀ then d i * M i j else M i j) :
-    M'.det = ∑ i, d i * M i j₀ * cof M i j₀ := by
-  have hmeq : M' = Matrix.of fun i j => if j = j₀ then d i * M i j else M i j := by
-    ext i j
-    exact h i j
-  rw [hmeq, scaled_column_det]
-
-
-/-! ## Сдвиг фазы влево и транспорт определителя -/
-
-/-- Сдвиг фазы влево: `ψ_k(u−1) = ω^{−k}·ψ_k(u)`; равномерно по `u`
-(включая цикл `0 ↦ 21`), так как `val_pred` — модульное равенство. -/
-theorem psi_pred_shift (k : ℕ) (u : Slot) :
-    psi k (u - 1) = omega ^ (numSlots - k % numSlots) * psi k u := by
-  have h1 := psi_shift k (u - 1)
-  rw [pred_add_one] at h1
-  have hpow : (omega ^ (k % numSlots)) * omega ^ (numSlots - k % numSlots) = 1 := by
-    have hsum : k % numSlots + (numSlots - k % numSlots) = numSlots := by
-      rw [show numSlots = 22 from rfl]
-      omega
-    rw [← pow_add, hsum, omega_pow_numSlots]
-  have hne : omega ^ (k % numSlots) ≠ 0 := by
-    intro hc
-    rw [hc, zero_mul] at hpow
-    exact zero_ne_one hpow
-  have hinv : (omega ^ (k % numSlots))⁻¹ = omega ^ (numSlots - k % numSlots) := by
-    calc (omega ^ (k % numSlots))⁻¹
-        = (omega ^ (k % numSlots))⁻¹
-            * (omega ^ (k % numSlots) * omega ^ (numSlots - k % numSlots)) := by
-          rw [hpow, mul_one]
-      _ = ((omega ^ (k % numSlots))⁻¹ * omega ^ (k % numSlots))
-            * omega ^ (numSlots - k % numSlots) := (mul_assoc _ _ _).symm
-      _ = omega ^ (numSlots - k % numSlots) := by
-          rw [inv_mul_cancel₀ hne, one_mul]
-  calc psi k (u - 1) = (omega ^ (k % numSlots))⁻¹ * psi k u := by
-        rw [h1, inv_mul_cancel_left₀ hne]
-    _ = omega ^ (numSlots - k % numSlots) * psi k u := by rw [hinv]
-
-/-- Перечисление носителя с заменой `u₀ ↦ v = u₀ − 1` (без цикла 0 ↦ 21)
-в покардинальной форме: позиция `j₀` даёт `v`, остальные — как в `U`. -/
-theorem orderEmb_replace_pred_index (U : Finset Slot) (u₀ : Slot) (hu : u₀ ∈ U)
-    (v : Slot) (hv : v ∉ U) (hadj : v = u₀ - 1) (hnb : (u₀ : ℕ) ≠ 0)
-    {k : ℕ} (hk : U.card = k) (j₀ : Fin k) (hj₀ : (U.orderEmbOfFin hk j₀ : Slot) = u₀)
-    (j : Fin k) :
-    ((U \ {u₀} ∪ {v}).orderEmbOfFin ((card_replace U u₀ hu v hv).trans hk) j : Slot)
-      = if j = j₀ then v else (U.orderEmbOfFin hk j : Slot) := by
-  have hfun : (fun j : Fin k => if j = j₀ then v else (U.orderEmbOfFin hk j : Slot))
-      = (U \ {u₀} ∪ {v}).orderEmbOfFin ((card_replace U u₀ hu v hv).trans hk) := by
-    refine Finset.orderEmbOfFin_unique ((card_replace U u₀ hu v hv).trans hk) ?_ ?_
-    · intro j
-      by_cases hj : j = j₀
-      · subst hj
-        rw [if_pos rfl]
-        simp
-      · rw [if_neg hj]
-        have hmem : (U.orderEmbOfFin hk j : Slot) ∈ U := Finset.orderEmbOfFin_mem U hk j
-        have hne : (U.orderEmbOfFin hk j : Slot) ≠ u₀ := by
-          intro hcc
-          exact hj ((U.orderEmbOfFin hk).injective (by rw [hcc, hj₀]))
-        simp [hmem, hne, hv]
-    · intro a b hab
-      dsimp only
-      by_cases ha : a = j₀
-      · by_cases hb : b = j₀
-        · exfalso
-          subst ha
-          subst hb
-          exact hab.ne rfl
-        · rw [if_pos ha, if_neg hb]
-          subst hadj
-          have hmon : ((U.orderEmbOfFin hk a : Slot) : ℕ) <
-              ((U.orderEmbOfFin hk b : Slot) : ℕ) :=
-            (U.orderEmbOfFin hk).strictMono hab
-          have haE : (U.orderEmbOfFin hk a : Slot) = u₀ := by rw [ha, hj₀]
-          have ha1 : ((U.orderEmbOfFin hk a : Slot) : ℕ) = (u₀ : ℕ) := congrArg Fin.val haE
-          have hspr : ((u₀ - 1 : Slot) : ℕ) = (u₀.val + 21) % 22 := by
-            rw [val_pred u₀]
-          have hg : ((u₀ - 1 : Slot) : ℕ) < ((U.orderEmbOfFin hk b : Slot) : ℕ) := by omega
-          exact hg
-      · by_cases hb : b = j₀
-        · rw [if_neg ha, if_pos hb]
-          subst hadj
-          have hmon : ((U.orderEmbOfFin hk a : Slot) : ℕ) <
-              ((U.orderEmbOfFin hk b : Slot) : ℕ) :=
-            (U.orderEmbOfFin hk).strictMono hab
-          have hbE : (U.orderEmbOfFin hk b : Slot) = u₀ := by rw [hb, hj₀]
-          have hb1 : ((U.orderEmbOfFin hk b : Slot) : ℕ) = (u₀ : ℕ) := congrArg Fin.val hbE
-          have hmem : ((U.orderEmbOfFin hk a : Slot) : Slot) ∈ U :=
-            Finset.orderEmbOfFin_mem U hk a
-          have hne : ((U.orderEmbOfFin hk a : Slot) : Slot) ≠ (u₀ - 1 : Slot) := by
-            intro hc
-            exact hv (hc ▸ hmem)
-          have hne1 : ((U.orderEmbOfFin hk a : Slot) : ℕ) ≠ ((u₀ - 1 : Slot) : ℕ) := by
-            intro hc
-            exact hne (Fin.val_injective hc)
-          have hspr : ((u₀ - 1 : Slot) : ℕ) = (u₀.val + 21) % 22 := by
-            rw [val_pred u₀]
-          have hns : numSlots = 22 := rfl
-          have hg : ((U.orderEmbOfFin hk a : Slot) : ℕ) < ((u₀ - 1 : Slot) : ℕ) := by omega
-          exact hg
-        · rw [if_neg ha, if_neg hb]
-          exact (U.orderEmbOfFin hk).strictMono hab
-  rw [← hfun]
-
-/-- Столбец прыжка влево (без цикла): при замене занятого сайта `u₀ ↦
-v = u₀ − 1` (без цикла 0 ↦ 21) матрица с носителем `supp x \ {u₀} ∪ {v}`
-равна `slaterMat S x h` со столбцом `j₀`, поточечно умноженным на
-`ω^{−k_i}` по строкам-модам. -/
-theorem slaterMat_replace_pred_matrix (S : Finset Slot) (x : Cfg)
-    (h : (supp x).card = S.card)
-    (u₀ : Slot) (hU₀mem : u₀ ∈ supp x) (v : Slot) (hvnot : v ∉ supp x)
-    (hadj : v = u₀ - 1) (hnb : (u₀ : ℕ) ≠ 0) (j₀ : Fin S.card)
-    (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = u₀) :
-    (Matrix.of fun i j =>
-        psi (modeOf S i)
-          (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
-            ((card_replace (supp x) u₀ hU₀mem v hvnot).trans h) j))
-      = Matrix.of fun i j =>
-          if j = j₀ then omega ^ (numSlots - modeOf S i % numSlots) * slaterMat S x h i j₀
-          else slaterMat S x h i j := by
-  ext i j
-  simp only [Matrix.of_apply, slaterMat_entry_emb]
-  by_cases hj : j = j₀
-  · rw [hj, if_pos rfl,
-      orderEmb_replace_pred_index (supp x) u₀ hU₀mem v hvnot hadj hnb h j₀ hj₀ j₀,
-      if_pos rfl, hadj, psi_pred_shift, hj₀]
-  · rw [if_neg hj,
-      orderEmb_replace_pred_index (supp x) u₀ hU₀mem v hvnot hadj hnb h j₀ hj₀ j,
-      if_neg hj]
-
-
-
-/-! ## Позиции экстремумов в перечислении носителя -/
-
-/-- Позиция максимума `21` в перечислении носителя — последняя, и единственна. -/
-theorem orderEmbOfFin_max21 (U : Finset Slot) (hu : (21 : Slot) ∈ U) {k : ℕ}
-    (hk : U.card = k) :
-    (U.orderEmbOfFin hk (Fin.mk (k - 1) (by
-        have h1 : 0 < U.card := Finset.card_pos.mpr ⟨21, hu⟩
-        rw [hk] at h1; omega)) : Slot)
-      = 21 ∧ ∀ i : Fin k, (U.orderEmbOfFin hk i : Slot) = 21 → (i : ℕ) = k - 1 := by
-  have hbound : ∀ i : Fin k, ((U.orderEmbOfFin hk i : Slot) : ℕ) ≤ 21 := by
-    intro i
-    have hns : numSlots = 22 := rfl
-    have := (U.orderEmbOfFin hk i).isLt
-    omega
-  have hrange : (21 : Slot) ∈ Set.range ⇑(U.orderEmbOfFin hk) := by
-    rw [Finset.range_orderEmbOfFin]
-    exact hu
-  obtain ⟨i₀, hi₀⟩ := Set.mem_range.mp hrange
-  set jmax : Fin k := Fin.mk (k - 1) (by
-    have h1 : 0 < U.card := Finset.card_pos.mpr ⟨21, hu⟩
-    rw [hk] at h1; omega) with hjmax
-  have hjmaxv : (jmax : ℕ) = k - 1 := rfl
-  constructor
-  · by_cases hcase : (i₀ : ℕ) = k - 1
-    · have hEq : jmax = i₀ := Fin.ext (by rw [hjmaxv, hcase])
-      rw [hEq]
-      exact hi₀
-    · have hlt : (i₀ : ℕ) < k - 1 := by have := i₀.isLt; omega
-      have hnat : ((U.orderEmbOfFin hk i₀ : Slot) : ℕ) <
-          ((U.orderEmbOfFin hk jmax : Slot) : ℕ) :=
-        Fin.lt_def.mp ((U.orderEmbOfFin hk).strictMono
-          (Fin.lt_def.2 (by rw [hjmaxv]; exact hlt)))
-      rw [hi₀] at hnat
-      have h21 : ((21 : Slot) : ℕ) = 21 := rfl
-      rw [h21] at hnat
-      have hb := hbound jmax
-      omega
-  · intro i hi
-    by_contra hc
-    have hilt : (i : ℕ) < k - 1 := by have := i.isLt; omega
-    have hlt2 : (i : ℕ) + 1 < k := by omega
-    have hnat : ((U.orderEmbOfFin hk i : Slot) : ℕ) <
-        ((U.orderEmbOfFin hk (⟨(i : ℕ) + 1, hlt2⟩ : Fin k) : Slot) : ℕ) :=
-      Fin.lt_def.mp ((U.orderEmbOfFin hk).strictMono
-        (Fin.lt_def.2 (by show (i : ℕ) < (i : ℕ) + 1; exact Nat.lt_succ_self _)))
-    rw [hi] at hnat
-    have h21 : ((21 : Slot) : ℕ) = 21 := rfl
-    rw [h21] at hnat
-    have hb := hbound (⟨(i : ℕ) + 1, hlt2⟩ : Fin k)
-    omega
-
-/-- Позиция минимума `0` в перечислении носителя — первая, и единственна. -/
-theorem orderEmbOfFin_min0 (U : Finset Slot) (hu : (0 : Slot) ∈ U) {k : ℕ}
-    (hk : U.card = k) :
-    (U.orderEmbOfFin hk (Fin.mk 0 (by
-        have h1 : 0 < U.card := Finset.card_pos.mpr ⟨0, hu⟩
-        rw [hk] at h1; omega)) : Slot)
-      = 0 ∧ ∀ i : Fin k, (U.orderEmbOfFin hk i : Slot) = 0 → (i : ℕ) = 0 := by
-  have hrange : (0 : Slot) ∈ Set.range ⇑(U.orderEmbOfFin hk) := by
-    rw [Finset.range_orderEmbOfFin]
-    exact hu
-  obtain ⟨i₀, hi₀⟩ := Set.mem_range.mp hrange
-  set jmin : Fin k := Fin.mk 0 (by
-    have h1 : 0 < U.card := Finset.card_pos.mpr ⟨0, hu⟩
-    rw [hk] at h1; omega) with hjmin
-  have hjminv : (jmin : ℕ) = 0 := rfl
-  constructor
-  · by_cases hcase : (i₀ : ℕ) = 0
-    · have hEq : jmin = i₀ := Fin.ext (by rw [hjminv, hcase])
-      rw [hEq]
-      exact hi₀
-    · have hpos : 0 < (i₀ : ℕ) := by omega
-      have hnat : ((U.orderEmbOfFin hk jmin : Slot) : ℕ) <
-          ((U.orderEmbOfFin hk i₀ : Slot) : ℕ) :=
-        Fin.lt_def.mp ((U.orderEmbOfFin hk).strictMono
-          (Fin.lt_def.2 (by rw [hjminv]; exact hpos)))
-      rw [hi₀] at hnat
-      have h0 : ((0 : Slot) : ℕ) = 0 := rfl
-      rw [h0] at hnat
-      omega
-  · intro i hi
-    by_contra hc
-    have hipos : 0 < (i : ℕ) := by omega
-    have hnat : ((U.orderEmbOfFin hk jmin : Slot) : ℕ) <
-        ((U.orderEmbOfFin hk i : Slot) : ℕ) :=
-      Fin.lt_def.mp ((U.orderEmbOfFin hk).strictMono
-        (Fin.lt_def.2 (by rw [hjminv]; exact hipos)))
-    rw [hi] at hnat
-    have h0 : ((0 : Slot) : ℕ) = 0 := rfl
-    rw [h0] at hnat
-    omega
-
-/-! ## Циклические прыжки: перечисление носителя при `21 ↦ 0` и `0 ↦ 21` -/
-
-/-- Циклическая замена `21 ↦ 0` (прыжок через границу вправо): позиция `0`
-нового перечисления даёт `0`, позиция `j ≥ 1` — элемент старой позиции
-`j − 1`; занятая позиция `21` выпадает (она последняя по
-`orderEmbOfFin_max21`). -/
-theorem orderEmb_wrap21_index (U : Finset Slot) (hu : (21 : Slot) ∈ U)
-    (hv : (0 : Slot) ∉ U) {k : ℕ} (hk : U.card = k) (j : Fin k) :
-    ((U \ {21} ∪ {0}).orderEmbOfFin ((card_replace U 21 hu 0 hv).trans hk) j : Slot)
-      = if (j : ℕ) = 0 then (0 : Slot)
-        else (U.orderEmbOfFin hk
-          (Fin.mk ((j : ℕ) - 1) (by have := j.isLt; omega)) : Slot) := by
-  have hfun : (fun j : Fin k => if (j : ℕ) = 0 then (0 : Slot)
-        else (U.orderEmbOfFin hk
-          (Fin.mk ((j : ℕ) - 1) (by have := j.isLt; omega)) : Slot))
-      = (U \ {21} ∪ {0}).orderEmbOfFin ((card_replace U 21 hu 0 hv).trans hk) := by
-    refine Finset.orderEmbOfFin_unique ((card_replace U 21 hu 0 hv).trans hk) ?_ ?_
-    · intro j
-      by_cases hj : (j : ℕ) = 0
-      · rw [if_pos hj]
-        simp
-      · rw [if_neg hj]
-        have hmem : (U.orderEmbOfFin hk
-            (Fin.mk ((j : ℕ) - 1) (by have := j.isLt; omega)) : Slot) ∈ U :=
-          Finset.orderEmbOfFin_mem U hk _
-        have hne21 : (U.orderEmbOfFin hk
-            (Fin.mk ((j : ℕ) - 1) (by have := j.isLt; omega)) : Slot) ≠ (21 : Slot) := by
-          intro hcc
-          have hpos := (orderEmbOfFin_max21 U hu hk).2 _ hcc
-          have hval : (((Fin.mk ((j : ℕ) - 1) (by have := j.isLt; omega) : Fin k) : ℕ))
-              = (j : ℕ) - 1 := rfl
-          have := j.isLt
-          omega
-        simp only [Finset.mem_union, Finset.mem_sdiff, Finset.mem_singleton]
-        exact Or.inl ⟨hmem, hne21⟩
-    · intro a b hab
-      dsimp only
-      have hval : (a : ℕ) < (b : ℕ) := hab
-      by_cases hb0 : (b : ℕ) = 0
-      · exfalso
-        have := b.isLt
-        omega
-      · by_cases ha0 : (a : ℕ) = 0
-        · rw [if_pos ha0, if_neg hb0]
-          have hmem : (U.orderEmbOfFin hk
-              (Fin.mk ((b : ℕ) - 1) (by have := b.isLt; omega)) : Slot) ∈ U :=
-            Finset.orderEmbOfFin_mem U hk _
-          have hne0 : (U.orderEmbOfFin hk
-              (Fin.mk ((b : ℕ) - 1) (by have := b.isLt; omega)) : Slot) ≠ (0 : Slot) := by
-            intro hcc
-            exact hv (hcc ▸ hmem)
-          have hb1 : ((U.orderEmbOfFin hk
-              (Fin.mk ((b : ℕ) - 1) (by have := b.isLt; omega)) : Slot) : ℕ) ≠ 0 :=
-            fun hc => hne0 (Fin.val_injective hc)
-          have hg : (0 : ℕ) < ((U.orderEmbOfFin hk
-              (Fin.mk ((b : ℕ) - 1) (by have := b.isLt; omega)) : Slot) : ℕ) := by omega
-          exact hg
-        · rw [if_neg ha0, if_neg hb0]
-          exact (U.orderEmbOfFin hk).strictMono
-            (Fin.lt_def.2 (by show ((a : ℕ) - 1) < ((b : ℕ) - 1); omega))
-  rw [← hfun]
-
-/-- Циклическая замена `0 ↦ 21` (прыжок через границу влево): позиция
-`j < k−1` нового перечисления даёт элемент старой позиции `j + 1`,
-последняя позиция `k−1` даёт `21`; занятая позиция `0` выпадает (первая по
-`orderEmbOfFin_min0`). -/
-theorem orderEmb_wrap01_index (U : Finset Slot) (hu : (0 : Slot) ∈ U)
-    (hv : (21 : Slot) ∉ U) {k : ℕ} (hk : U.card = k) (j : Fin k) :
-    ((U \ {0} ∪ {21}).orderEmbOfFin ((card_replace U 0 hu 21 hv).trans hk) j : Slot)
-      = if h : (j : ℕ) = k - 1 then (21 : Slot)
-        else (U.orderEmbOfFin hk
-          (Fin.mk ((j : ℕ) + 1) (by have := j.isLt; omega)) : Slot) := by
-  have hfun : (fun j : Fin k => if h : (j : ℕ) = k - 1 then (21 : Slot)
-        else (U.orderEmbOfFin hk
-          (Fin.mk ((j : ℕ) + 1) (by have := j.isLt; omega)) : Slot))
-      = (U \ {0} ∪ {21}).orderEmbOfFin ((card_replace U 0 hu 21 hv).trans hk) := by
-    refine Finset.orderEmbOfFin_unique ((card_replace U 0 hu 21 hv).trans hk) ?_ ?_
-    · intro j
-      by_cases hj : (j : ℕ) = k - 1
-      · rw [dif_pos hj]
-        simp
-      · rw [dif_neg hj]
-        have hmem : (U.orderEmbOfFin hk
-            (Fin.mk ((j : ℕ) + 1) (by have := j.isLt; omega)) : Slot) ∈ U :=
-          Finset.orderEmbOfFin_mem U hk _
-        have hne0 : (U.orderEmbOfFin hk
-            (Fin.mk ((j : ℕ) + 1) (by have := j.isLt; omega)) : Slot) ≠ (0 : Slot) := by
-          intro hcc
-          have hpos2 := (orderEmbOfFin_min0 U hu hk).2 _ hcc
-          have hval : (((Fin.mk ((j : ℕ) + 1) (by have := j.isLt; omega) : Fin k) : ℕ))
-              = (j : ℕ) + 1 := rfl
-          have := j.isLt
-          omega
-        simp only [Finset.mem_union, Finset.mem_sdiff, Finset.mem_singleton]
-        exact Or.inl ⟨hmem, hne0⟩
-    · intro a b hab
-      dsimp only
-      have hval : (a : ℕ) < (b : ℕ) := hab
-      by_cases haL : (a : ℕ) = k - 1
-      · exfalso
-        have := b.isLt
-        omega
-      · by_cases hbL : (b : ℕ) = k - 1
-        · rw [dif_neg haL, dif_pos hbL]
-          have hmem : (U.orderEmbOfFin hk
-              (Fin.mk ((a : ℕ) + 1) (by have := a.isLt; omega)) : Slot) ∈ U :=
-            Finset.orderEmbOfFin_mem U hk _
-          have hne21 : (U.orderEmbOfFin hk
-              (Fin.mk ((a : ℕ) + 1) (by have := a.isLt; omega)) : Slot) ≠ (21 : Slot) := by
-            intro hcc
-            exact hv (hcc ▸ hmem)
-          have hns : numSlots = 22 := rfl
-          have hL1 : ((U.orderEmbOfFin hk
-              (Fin.mk ((a : ℕ) + 1) (by have := a.isLt; omega)) : Slot) : ℕ) ≠ 21 :=
-            fun hc => hne21 (Fin.val_injective hc)
-          have his := (U.orderEmbOfFin hk
-              (Fin.mk ((a : ℕ) + 1) (by have := a.isLt; omega)) : Slot).isLt
-          have hg : ((U.orderEmbOfFin hk
-              (Fin.mk ((a : ℕ) + 1) (by have := a.isLt; omega)) : Slot) : ℕ) < 21 := by omega
-          exact hg
-        · rw [dif_neg haL, dif_neg hbL]
-          exact (U.orderEmbOfFin hk).strictMono
-            (Fin.lt_def.2 (by show ((a : ℕ) + 1) < ((b : ℕ) + 1); omega))
-  rw [← hfun]
-
-/-- Столбец циклического прыжка вправо `21 ↦ 0`: матрица с носителем
-`supp x \ {21} ∪ {0}` равна матрице Слейтера с заменённым последним
-столбцом (позиция `21`): на месте `0` — столбец сайта `0` (фаза
-`ω^{k_i}` от столбца `21`), остальные столбцы сдвинуты на одну позицию
-вправо. -/
-theorem slaterMat_wrap21_matrix (S : Finset Slot) (x : Cfg)
-    (h : (supp x).card = S.card) (hu : (21 : Slot) ∈ supp x)
-    (hv : (0 : Slot) ∉ supp x) :
-    (Matrix.of fun (i : Fin S.card) (j : Fin S.card) =>
-        psi (modeOf S i)
-          (((supp x \ {21} : Finset Slot) ∪ {0}).orderEmbOfFin
-            ((card_replace (supp x) 21 hu 0 hv).trans h) j))
-      = Matrix.of fun (i : Fin S.card) (j : Fin S.card) =>
-          if (j : ℕ) = 0
-          then omega ^ (modeOf S i % numSlots)
-              * slaterMat S x h i (Fin.mk (S.card - 1) (by
-                  have h1 : 0 < S.card := by
-                    rw [← h]; exact Finset.card_pos.mpr ⟨21, hu⟩
-                  omega))
-          else slaterMat S x h i (Fin.mk ((j : ℕ) - 1) (by
-                  have := j.isLt; omega)) := by
-  ext i j
-  simp only [Matrix.of_apply, slaterMat_entry_emb]
-  rw [orderEmb_wrap21_index (supp x) hu hv h j]
-  by_cases hj : (j : ℕ) = 0
-  · rw [if_pos hj, if_pos hj]
-    have hlast : ((supp x).orderEmbOfFin h (Fin.mk (S.card - 1) (by
-        have h1 : 0 < S.card := by
-          rw [← h]; exact Finset.card_pos.mpr ⟨21, hu⟩
-        omega)) : Slot) = 21 :=
-      (orderEmbOfFin_max21 (supp x) hu h).1
-    rw [hlast]
-    have heq : ((21 : Slot) + 1) = (0 : Slot) := rfl
-    rw [← heq, psi_shift]
-  · rw [if_neg hj, if_neg hj]
-
-/-- Столбец циклического прыжка влево `0 ↦ 21`: матрица с носителем
-`supp x \ {0} ∪ {21}` равна матрице Слейтера с заменённым первым столбцом
-(позиция `0`): на последнем месте `k−1` — столбец сайта `21` (фаза
-`ω^{−k_i}` от столбца `0`), остальные столбцы сдвинуты на одну позицию
-влево. -/
-theorem slaterMat_wrap01_matrix (S : Finset Slot) (x : Cfg)
-    (h : (supp x).card = S.card) (hu : (0 : Slot) ∈ supp x)
-    (hv : (21 : Slot) ∉ supp x) :
-    (Matrix.of fun (i : Fin S.card) (j : Fin S.card) =>
-        psi (modeOf S i)
-          (((supp x \ {0} : Finset Slot) ∪ {21}).orderEmbOfFin
-            ((card_replace (supp x) 0 hu 21 hv).trans h) j))
-      = Matrix.of fun (i : Fin S.card) (j : Fin S.card) =>
-          if hj : (j : ℕ) = S.card - 1
-          then omega ^ (numSlots - modeOf S i % numSlots)
-              * slaterMat S x h i (Fin.mk 0 (by
-                  have h1 : 0 < S.card := by
-                    rw [← h]; exact Finset.card_pos.mpr ⟨0, hu⟩
-                  exact h1))
-          else slaterMat S x h i (Fin.mk ((j : ℕ) + 1) (by
-                  have := j.isLt; omega)) := by
-  ext i j
-  simp only [Matrix.of_apply, slaterMat_entry_emb]
-  rw [orderEmb_wrap01_index (supp x) hu hv h j]
-  by_cases hj : (j : ℕ) = S.card - 1
-  · rw [dif_pos hj, dif_pos hj]
-    have hzero : ((supp x).orderEmbOfFin h (Fin.mk 0 (by
-        have h1 : 0 < S.card := by
-          rw [← h]; exact Finset.card_pos.mpr ⟨0, hu⟩
-        exact h1)) : Slot) = 0 :=
-      (orderEmbOfFin_min0 (supp x) hu h).1
-    rw [hzero]
-    have heq : ((0 : Slot) - 1) = (21 : Slot) := rfl
-    rw [← heq, psi_pred_shift]
-  · rw [dif_neg hj, dif_neg hj]
-
-/-! ## Циклические det-леммы: знак перестановки столбцов -/
-
-private theorem neg_one_pow_two_mul (n : ℕ) : ((-1 : ℂ) ^ (2 * n)) = 1 := by
-  rw [pow_mul, pow_two]
-  norm_num
-
-/-- Циклический прыжок вправо `21 ↦ 0` (определитель): если `M'` получена
-из `M` заменой последнего столбца масштабированным столбцом сайта `0`,
-поставленным на позицию `0` (остальные столбцы сдвинуты вправо), то
-`det M' = (−1)^n · Σ_i d_i · M_{i,last} · C_{i,last}` — знак циклической
-перестановки столбцов. -/
-theorem det_wrap_right {n : ℕ} (M M' : Matrix (Fin n.succ) (Fin n.succ) ℂ)
-    (d : Fin n.succ → ℂ)
-    (h : ∀ i j, M' i j = if j = 0 then d i * M i (Fin.last n)
-      else M i (Fin.mk ((j : ℕ) - 1) (by have := j.isLt; omega))) :
-    M'.det = (-1) ^ n * ∑ i, d i * M i (Fin.last n) * cof M i (Fin.last n) := by
-  have hdet : M'.det = ∑ i, M' i 0 * cof M' i 0 := by
-    rw [Matrix.det_succ_column M' 0]
-    exact Finset.sum_congr rfl fun i _ => by rw [cof]; ring
-  have hcol : ∀ i : Fin n.succ, M' i 0 = d i * M i (Fin.last n) := by
-    intro i
-    rw [h i 0, if_pos rfl]
-  have hcof : ∀ i : Fin n.succ, cof M' i 0 = (-1) ^ n * cof M i (Fin.last n) := by
-    intro i
-    rw [cof, cof]
-    have hsub : M'.submatrix i.succAbove (0 : Fin n.succ).succAbove
-        = M.submatrix i.succAbove (Fin.last n).succAbove := by
-      ext a b
-      simp only [Matrix.submatrix_apply]
-      rw [Fin.succAbove_zero, Fin.succAbove_last]
-      rw [h _ (Fin.succ b), if_neg (Fin.succ_ne_zero b)]
-      rfl
-    rw [hsub]
-    have hzero : ((0 : Fin n.succ) : ℕ) = 0 := rfl
-    have hlastv : ((Fin.last n : Fin n.succ) : ℕ) = n := rfl
-    have hpexp : n + ((i : ℕ) + n) = (i : ℕ) + (n + n) := by omega
-    have hsign : ((-1 : ℂ) ^ ((i : ℕ) + ((0 : Fin n.succ) : ℕ)))
-        = (-1 : ℂ) ^ n * ((-1 : ℂ) ^ ((i : ℕ) + ((Fin.last n : Fin n.succ) : ℕ))) := by
-      rw [hzero, Nat.add_zero, hlastv, ← pow_add, hpexp, ← Nat.two_mul, pow_add,
-        neg_one_pow_two_mul, mul_one]
-    rw [hsign]
-    ring
-  rw [hdet, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [hcol i, hcof i]
-  ring
-
-/-- Циклический прыжок влево `0 ↦ 21` (определитель): если `M'` получена
-из `M` заменой первого столбца масштабированным столбцом сайта `21`,
-поставленным на последнюю позицию (остальные столбцы сдвинуты влево), то
-`det M' = (−1)^n · Σ_i d_i · M_{i,0} · C_{i,0}` — знак циклической
-перестановки столбцов. -/
-theorem det_wrap_left {n : ℕ} (M M' : Matrix (Fin n.succ) (Fin n.succ) ℂ)
-    (d : Fin n.succ → ℂ)
-    (h : ∀ i j, M' i j = if hj : j = Fin.last n then d i * M i 0
-      else M i (Fin.mk ((j : ℕ) + 1) (by
-              have hn : ¬((j : ℕ) = n) := fun hc =>
-                hj (Fin.ext (by
-                  rw [show ((Fin.last n : Fin n.succ) : ℕ) = n from rfl]
-                  exact hc))
-              have := j.isLt; omega))) :
-    M'.det = (-1) ^ n * ∑ i, d i * M i 0 * cof M i 0 := by
-  have hdet : M'.det = ∑ i, M' i (Fin.last n) * cof M' i (Fin.last n) := by
-    rw [Matrix.det_succ_column M' (Fin.last n)]
-    exact Finset.sum_congr rfl fun i _ => by rw [cof]; ring
-  have hcol : ∀ i : Fin n.succ, M' i (Fin.last n) = d i * M i 0 := by
-    intro i
-    rw [h i (Fin.last n), dif_pos rfl]
-  have hcof : ∀ i : Fin n.succ, cof M' i (Fin.last n) = (-1) ^ n * cof M i 0 := by
-    intro i
-    rw [cof, cof]
-    have hsub : M'.submatrix i.succAbove (Fin.last n).succAbove
-        = M.submatrix i.succAbove (0 : Fin n.succ).succAbove := by
-      ext a b
-      simp only [Matrix.submatrix_apply]
-      rw [Fin.succAbove_last, Fin.succAbove_zero]
-      rw [h _ (Fin.castSucc b)]
-      rw [dif_neg (by
-        intro hc
-        have hcs : ((Fin.castSucc b : Fin n.succ) : ℕ) = (b : ℕ) := rfl
-        have hlv : ((Fin.last n : Fin n.succ) : ℕ) = n := rfl
-        have hvc := congrArg Fin.val hc
-        have := b.isLt
-        omega)]
-      rfl
-    rw [hsub]
-    have hlastv : ((Fin.last n : Fin n.succ) : ℕ) = n := rfl
-    have hzero : ((0 : Fin n.succ) : ℕ) = 0 := rfl
-    have hsign : ((-1 : ℂ) ^ ((i : ℕ) + ((Fin.last n : Fin n.succ) : ℕ)))
-        = (-1 : ℂ) ^ n * ((-1 : ℂ) ^ ((i : ℕ) + ((0 : Fin n.succ) : ℕ))) := by
-      rw [hlastv, hzero, pow_add, Nat.add_zero]
-      ring
-    rw [hsign]
-    ring
-  rw [hdet, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [hcol i, hcof i]
-  ring
-
-/-! ## Stage 3: цели — диагональность A·Ψ_S, чётные секторы, Коши–Бине -/
-
-/-- Скалярное произведение состояний: `⟨f, g⟩ = Σ_x conj(f x)·g x`. -/
-noncomputable def slaterIP (f g : Cfg → ℂ) : ℂ := ∑ x, star (f x) * g x
-
-/-- Антипериодическая фаза твиста: `ζ = exp(πi/22)`, `ζ^{22} = −1`. -/
-noncomputable def zeta : ℂ := Complex.exp (Real.pi * Complex.I / numSlots)
-
-/-- Твистованые моды: `ψ̃_k(u) = ζ^u·ψ_k(u)` — делают оператор цепочки
-диагональным во ВСЕХ секторах, включая чётные (дополнительный множитель
-`ζ^{±1}` на границе 21↦0 / 0↦21 компенсирует знак `(−1)^{k−1}`). -/
-noncomputable def psiTwist (k : ℕ) (u : Slot) : ℂ := zeta ^ (u : ℕ) * psi k u
-
-/-! ### Твист: три базовые леммы (антипериодичность, сдвиг, граничный сдвиг) -/
-
-/-- Антипериодичность твиста: `ζ^{22} = −1` (антипериодическое условие
-на замыкании цикла; именно оно даёт механизм паритета в чётных секторах). -/
-theorem zeta_pow_numSlots : zeta ^ numSlots = -1 := by
-  unfold zeta
-  rw [show numSlots = 22 from rfl, ← Complex.exp_nat_mul]
-  have heq : ((22 : ℕ) : ℂ) * (Real.pi * Complex.I / (22 : ℕ)) = Real.pi * Complex.I := by
-    field_simp
-  rw [heq]
-  exact Complex.exp_pi_mul_I
-
-/-- Сдвиг твистованных мод вдали от замыкания (`u ≠ 21`):
-`ψ̃_k(u+1) = ζ · ω^k · ψ̃_k(u)` — фаза `ζ` накапливается равномерно. -/
-theorem psiTwist_shift (k : ℕ) (u : Slot) (hu : (u : ℕ) + 1 < numSlots) :
-    psiTwist k (u + 1) = zeta * omega ^ (k % numSlots) * psiTwist k u := by
-  unfold psiTwist
-  rw [val_suc, Nat.mod_eq_of_lt hu, psi_shift, pow_succ]
-  ring
-
-/-- Сдвиг твистованных мод через границу `21 ↦ 0`: лишний знак `−1`
-(из-за антипериодичности `ζ^{22} = −1` сдвиг `ψ̃` НЕ равномерен по циклу:
-`ψ̃_k(0) = −ζ · ω^k · ψ̃_k(21)`). Именно этот минус и есть механизм
-паритета: у нетвистованных мод знак границы `(−1)^{k−1}`, у твистованных
-он умножается на `−1` и становится `(−1)^k`. -/
-theorem psiTwist_shift_wrap (k : ℕ) :
-    psiTwist k ((21 : Slot) + 1)
-      = -zeta * omega ^ (k % numSlots) * psiTwist k (21 : Slot) := by
-  unfold psiTwist
-  have hnew : ((21 : Slot) + 1 : Slot) = 0 := by decide
-  have h21v : ((21 : Slot) : ℕ) = 21 := rfl
-  have h0v : ((0 : Slot) : ℕ) = 0 := rfl
-  rw [hnew, h0v, h21v, pow_zero, one_mul]
-  have hshift0 : psi k (0 : Slot) = omega ^ (k % numSlots) * psi k (21 : Slot) := by
-    rw [← hnew]
-    exact psi_shift k 21
-  rw [hshift0]
-  have hz21 : zeta * zeta ^ 21 = -1 := by
-    rw [← pow_succ', show ((21 : ℕ) + 1) = numSlots from rfl]
-    exact zeta_pow_numSlots
-  have hz : (-zeta) * zeta ^ 21 = 1 := by rw [neg_mul, hz21, neg_neg]
-  calc omega ^ (k % numSlots) * psi k (21 : Slot)
-      = ((-zeta) * zeta ^ 21) * (omega ^ (k % numSlots) * psi k (21 : Slot)) := by
-        rw [hz, one_mul]
-    _ = -zeta * omega ^ (k % numSlots) * (zeta ^ 21 * psi k (21 : Slot)) := by ring
-
-/-! ## Hop-вклады: носитель при перескоке и разложения определителя -/
-
-/-- Версия `det_wrap_right` с условием на натуральное значение индекса
-(удобна для склейки с матричными леммами, использующими `(j : ℕ) = 0`):
-знак циклической перестановки `(−1)^n`. -/
-theorem det_wrap_right_fin {n : ℕ} (M M' : Matrix (Fin n.succ) (Fin n.succ) ℂ)
-    (d : Fin n.succ → ℂ)
-    (h : ∀ i j, M' i j = if (j : ℕ) = 0 then d i * M i (Fin.mk n (by omega))
-      else M i (Fin.mk ((j : ℕ) - 1) (by have := j.isLt; omega))) :
-    M'.det = (-1) ^ n * ∑ i, d i * M i (Fin.mk n (by omega))
-      * cof M i (Fin.mk n (by omega)) := by
-  refine det_wrap_right M M' d ?_
-  intro i j
-  by_cases hj : (j : ℕ) = 0
-  · rw [if_pos (show (j : Fin n.succ) = 0 from Fin.val_injective hj)]
-    have h1 := h i j
-    rw [if_pos hj] at h1
-    exact h1
-  · rw [if_neg (show ¬((j : Fin n.succ) = 0) from fun hc => hj (congrArg Fin.val hc))]
-    have h1 := h i j
-    rw [if_neg hj] at h1
-    exact h1
-
-/-- Версия `det_wrap_left` с условием на натуральное значение индекса
-(удобна для склейки с матричными леммами, использующими `(j : ℕ) = n`):
-знак циклической перестановки `(−1)^n`. -/
-theorem det_wrap_left_fin {n : ℕ} (M M' : Matrix (Fin n.succ) (Fin n.succ) ℂ)
-    (d : Fin n.succ → ℂ)
-    (h : ∀ i j, M' i j = if hj : (j : ℕ) = n then d i * M i (Fin.mk 0 (by omega))
-      else M i (Fin.mk ((j : ℕ) + 1) (by have := j.isLt; omega))) :
-    M'.det = (-1) ^ n * ∑ i, d i * M i (Fin.mk 0 (by omega))
-      * cof M i (Fin.mk 0 (by omega)) := by
-  refine det_wrap_left M M' d ?_
-  intro i j
-  by_cases hj : (j : ℕ) = n
-  · rw [dif_pos (show (j : Fin n.succ) = Fin.last n from Fin.ext hj)]
-    have h1 := h i j
-    rw [dif_pos hj] at h1
-    exact h1
-  · rw [dif_neg (show ¬((j : Fin n.succ) = Fin.last n) from fun hc => hj (congrArg Fin.val hc))]
-    have h1 := h i j
-    rw [dif_neg hj] at h1
-    exact h1
-
-/-! ## Общая кофакторная механика (мост к сборке, без `n.succ`)
-
-Ключевое наблюдение: разложение Лапласа в общем виде следует из
-`Matrix.mul_adjugate` (mathlib-`adjugate` определён для произвольного
-`Fintype` через `updateRow`), поэтому succ-форма не нужна. -/
-
-/-- Общий кофактор: `cofG M i j = det(M со строкой `i`, заменённой на `e_j`)`
-— то же определение, что у mathlib-`adjugate`, для произвольного `Fin k`. -/
-noncomputable def cofG {k : ℕ} (M : Matrix (Fin k) (Fin k) ℂ) (i j : Fin k) : ℂ :=
-  (M.updateRow i (Pi.single j 1)).det
-
-theorem cofG_eq_adjugate {k : ℕ} (M : Matrix (Fin k) (Fin k) ℂ) (i j : Fin k) :
-    cofG M i j = Matrix.adjugate M j i := by
-  rw [Matrix.adjugate_apply, cofG]
-
-/-- Общее разложение Лапласа по строке: определитель матрицы с заменённой
-строкой `j` равен сумме по элементам новой строки с кофакторами. -/
-theorem cofG_det_updateRow {k : ℕ} (A : Matrix (Fin k) (Fin k) ℂ) (j : Fin k)
-    (v : Fin k → ℂ) :
-    (A.updateRow j v).det = ∑ b, v b * cofG A j b := by
-  have hkey := Matrix.mul_adjugate (A.updateRow j v)
-  have hjj := congrArg (fun M : Matrix (Fin k) (Fin k) ℂ => M j j) hkey
-  simp only [Matrix.mul_apply, Matrix.one_apply, Matrix.smul_apply, smul_eq_mul,
-    Matrix.updateRow_apply, if_pos rfl, reduceIte, mul_one] at hjj
-  rw [← hjj]
-  refine Finset.sum_congr rfl fun b _ => ?_
-  have hsame : ((A.updateRow j v).updateRow j (Pi.single b 1))
-      = A.updateRow j (Pi.single b 1) := by
-    ext a b'
-    by_cases ha : a = j
-    · subst ha
-      simp only [Matrix.updateRow_apply, Pi.single_apply, if_pos rfl, reduceIte]
-    · simp only [Matrix.updateRow_apply, if_neg ha, if_neg (Ne.symm ha), reduceIte]
-  rw [Matrix.adjugate_apply, hsame]
-  simp only [cofG]
-
-/-- Свёртка по строке: `Σ_j A_{ij}·C_{ij} = det A` (общий вид). -/
-theorem cofG_sum_row {k : ℕ} (A : Matrix (Fin k) (Fin k) ℂ) (i : Fin k) :
-    ∑ j, A i j * cofG A i j = A.det := by
-  have := cofG_det_updateRow A i (A i)
-  rw [Matrix.updateRow_eq_self] at this
-  exact this.symm
-
-/-- Свёртка с «чужими» кофакторами: `Σ_j A_{ij}·C_{i'j} = 0` при `i ≠ i'`
-(общий вид `wrong_cofactor_zero`). -/
-theorem cofG_sum_row_ne {k : ℕ} (A : Matrix (Fin k) (Fin k) ℂ) {i i' : Fin k} (h : i ≠ i') :
-    ∑ j, A i j * cofG A i' j = 0 := by
-  have hB : (A.updateRow i' (A i)).det = 0 := by
-    refine Matrix.det_zero_of_row_eq (Ne.symm h) ?_
-    rw [Matrix.updateRow_self, Matrix.updateRow_ne h]
-  have := cofG_det_updateRow A i' (A i)
-  rw [← this, ← hB]
-
-/-- Общее разложение по столбцу: определитель матрицы с заменённым столбцом
-`j₀` на `d ⊙ col j₀` равен `Σ_i d_i·M_{i,j₀}·C_{i,j₀}`. -/
-theorem cofG_det_updateCol {k : ℕ} (M : Matrix (Fin k) (Fin k) ℂ) (j₀ : Fin k)
-    (d : Fin k → ℂ) :
-    (M.updateCol j₀ fun i => d i * M i j₀).det
-      = ∑ i, d i * M i j₀ * cofG M i j₀ := by
-  rw [← Matrix.det_transpose, ← Matrix.updateRow_transpose, cofG_det_updateRow]
-  refine Finset.sum_congr rfl fun b _ => ?_
-  have hcof : cofG Mᵀ j₀ b = cofG M b j₀ := by
-    rw [cofG_eq_adjugate, cofG_eq_adjugate, ← Matrix.adjugate_transpose,
-      Matrix.transpose_apply]
-  rw [hcof]
-
-/-- Разложение определителя **циклически сдвинутой** матрицы (правый wrap):
-`det M' = (−1)^{k−1}·Σ_i d_i·M_{i,k−1}·C_{i,k−1}` — знак циклической
-перестановки столбцов получается через матрицу перестановки
-(`Matrix.det_permutation` + `Fin.sign_cycleRange`). -/
-theorem cofG_det_cyclic_right {k : ℕ} (M : Matrix (Fin k) (Fin k) ℂ) (hk : 0 < k)
-    (d : Fin k → ℂ) :
-    (Matrix.of fun (i j : Fin k) =>
-        if (j : ℕ) = 0 then d i * M i (Fin.mk (k - 1) (by omega))
-        else M i (Fin.mk ((j : ℕ) - 1) (by have := j.isLt; omega))).det
-      = (-1 : ℂ) ^ (k - 1)
-        * ∑ i, d i * M i (Fin.mk (k - 1) (by omega))
-            * cofG M i (Fin.mk (k - 1) (by omega)) := by
-  -- TODO(seance-2): доказательство через перестановочную матрицу готово на 90%: hsucc/hzero/hco1/cofG_det_updateCol скомпилированы, затык — Fin.mk (k-1) (by omega) elaboration в if_neg/симметричных фактах (см. отчёт)
-  sorry
-
-/-- Разложение определителя циклически сдвинутой влево матрицы (левый wrap):
-`det M'' = (−1)^{k−1}·Σ_i d_i·M_{i,0}·C_{i,0}`. -/
-theorem cofG_det_cyclic_left {k : ℕ} (M : Matrix (Fin k) (Fin k) ℂ) (hk : 0 < k)
-    (d : Fin k → ℂ) :
-    (Matrix.of fun (i j : Fin k) =>
-        if hj : (j : ℕ) = k - 1 then d i * M i (Fin.mk 0 (by omega))
-        else M i (Fin.mk ((j : ℕ) + 1) (by have := j.isLt; omega))).det
-      = (-1 : ℂ) ^ (k - 1)
-        * ∑ i, d i * M i (Fin.mk 0 (by omega)) * cofG M i (Fin.mk 0 (by omega)) := by
-  -- TODO(seance-2): аналогично правой
-  sorry
-
-/-- Симметричность переворота пары: `flipTwo s t x = flipTwo t s x`. -/
-theorem flipTwo_comm (s t : Slot) (x : Cfg) : flipTwo s t x = flipTwo t s x := by
-  funext u
-  by_cases hu : u = s
-  · simp [flipTwo, hu]
-  · by_cases hu2 : u = t
-    · simp [flipTwo, hu2]
-    · simp [flipTwo, hu, hu2]
-
-/-- Носитель при перевороте пары битов `(s, t)`: если `x s = 1`, `x t = 0`,
-`s ≠ t`, то занятый сайт `s` заменяется свободным `t`. -/
-theorem supp_flipTwo_swap (s t : Slot) (hst : s ≠ t) (x : Cfg) (hs : x s = 1)
-    (ht : x t = 0) :
-    supp (flipTwo s t x) = (supp x \ {s} : Finset Slot) ∪ {t} := by
-  unfold supp
-  ext u
-  simp only [Finset.mem_filter, Finset.mem_univ, Finset.mem_union, Finset.mem_sdiff,
-    Finset.mem_singleton]
-  by_cases hu : u = s
-  · have hfl : flipTwo s t x s = 1 - x s := by simp [flipTwo]
-    rw [hu, hfl, hs]
-    simp [hst]
-  · by_cases hu2 : u = t
-    · have hfl : flipTwo s t x t = 1 - x t := by simp [flipTwo]
-      rw [hu2, hfl, ht]
-      simp
-    · have hsame : flipTwo s t x u = x u := by
-        simp only [flipTwo, if_neg (not_or.mpr ⟨hu, hu2⟩)]
-      rw [hsame]
-      simp [hu, hu2]
-
-/-- Занятость бита из принадлежности носителю. -/
-theorem mem_supp (x : Cfg) (u : Slot) (hu : u ∈ supp x) : x u = 1 := by
-  unfold supp at hu
-  simpa using hu
-
-/-- Свободность бита из непринадлежности носителю. -/
-theorem not_mem_supp (x : Cfg) (u : Slot) (hu : u ∉ supp x) : x u = 0 := by
-  rcases bit_cases (x u) with hb | hb
-  · exact hb
-  · exact absurd (by unfold supp; simpa using hb) hu
-
-/-- **Значение Ψ_S на конфигурации с перескоком вправо** `u₀ ↦ v = u₀+1`
-(без цикла 21 ↦ 0): разложение по столбцу `j₀` (позиция `u₀`),
-коэффициент `ω^{k_i}`. -/
-theorem slater_hop_succ (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
-    (u₀ : Slot) (hU₀ : u₀ ∈ supp x) (v : Slot) (hv : v ∉ supp x) (hadj : v = u₀ + 1)
-    (hnb : (v : ℕ) ≠ 0) (j₀ : Fin S.card)
-    (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = u₀) :
-    slater S (flipTwo u₀ v x)
-      = (Matrix.of fun (i j : Fin S.card) =>
-          if j = j₀ then omega ^ (modeOf S i % numSlots) * slaterMat S x h i j₀
-          else slaterMat S x h i j).det := by
-  have hsupp : supp (flipTwo u₀ v x) = ((supp x \ {u₀} : Finset Slot) ∪ {v}) :=
-    supp_flipTwo_swap u₀ v (by intro hc; exact hv (hc ▸ hU₀)) x (mem_supp _ _ hU₀)
-      (not_mem_supp _ _ hv)
-  have hc : (supp (flipTwo u₀ v x)).card = S.card := by
-    rw [hsupp]
-    exact (card_replace (supp x) u₀ hU₀ v hv).trans h
-  have hproj : ∀ j : Fin S.card,
-      ((supp (flipTwo u₀ v x)).orderEmbOfFin hc j : Slot)
-        = (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
-            ((card_replace (supp x) u₀ hU₀ v hv).trans h) j : Slot) := by
-    intro j
-    have hf : (fun j' : Fin S.card =>
-          ((supp (flipTwo u₀ v x)).orderEmbOfFin hc j' : Slot))
-        = ((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
-            ((card_replace (supp x) u₀ hU₀ v hv).trans h) := by
-      refine Finset.orderEmbOfFin_unique
-        ((card_replace (supp x) u₀ hU₀ v hv).trans h) ?_ ?_
-      · intro j'
-        rw [← hsupp]
-        exact Finset.orderEmbOfFin_mem _ _ _
-      · intro a b hab
-        exact ((supp (flipTwo u₀ v x)).orderEmbOfFin hc).strictMono hab
-    exact congrFun hf j
-  have hmat' : slaterMat S (flipTwo u₀ v x) hc
-      = (Matrix.of fun (i j : Fin S.card) =>
-          psi (modeOf S i)
-            (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
-              ((card_replace (supp x) u₀ hU₀ v hv).trans h) j)) := by
-    ext i j
-    simp only [Matrix.of_apply, slaterMat_entry_emb]
-    rw [hproj j]
-  calc slater S (flipTwo u₀ v x)
-      = (slaterMat S (flipTwo u₀ v x) hc).det := slater_eq_det S _ hc
-    _ = (Matrix.of fun (i j : Fin S.card) =>
-          psi (modeOf S i)
-            (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
-              ((card_replace (supp x) u₀ hU₀ v hv).trans h) j)).det := by
-        rw [hmat']
-    _ = (Matrix.of fun (i j : Fin S.card) =>
-          if j = j₀ then omega ^ (modeOf S i % numSlots) * slaterMat S x h i j₀
-          else slaterMat S x h i j).det :=
-        congrArg Matrix.det
-          (slaterMat_replace_succ_matrix S x h u₀ hU₀ v hv hadj hnb j₀ hj₀)
-
-/-- **Значение Ψ_S на конфигурации с перескоком влево** `u₀ ↦ v = u₀−1`
-(без цикла 0 ↦ 21): коэффициент `ω^{−k_i}`. -/
-theorem slater_hop_pred (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
-    (u₀ : Slot) (hU₀ : u₀ ∈ supp x) (v : Slot) (hv : v ∉ supp x) (hadj : v = u₀ - 1)
-    (hnb : (u₀ : ℕ) ≠ 0) (j₀ : Fin S.card)
-    (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = u₀) :
-    slater S (flipTwo u₀ v x)
-      = (Matrix.of fun (i j : Fin S.card) =>
-          if j = j₀ then omega ^ (numSlots - modeOf S i % numSlots) * slaterMat S x h i j₀
-          else slaterMat S x h i j).det := by
-  have hsupp : supp (flipTwo u₀ v x) = ((supp x \ {u₀} : Finset Slot) ∪ {v}) :=
-    supp_flipTwo_swap u₀ v (by intro hc; exact hv (hc ▸ hU₀)) x (mem_supp _ _ hU₀)
-      (not_mem_supp _ _ hv)
-  have hc : (supp (flipTwo u₀ v x)).card = S.card := by
-    rw [hsupp]
-    exact (card_replace (supp x) u₀ hU₀ v hv).trans h
-  have hproj : ∀ j : Fin S.card,
-      ((supp (flipTwo u₀ v x)).orderEmbOfFin hc j : Slot)
-        = (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
-            ((card_replace (supp x) u₀ hU₀ v hv).trans h) j : Slot) := by
-    intro j
-    have hf : (fun j' : Fin S.card =>
-          ((supp (flipTwo u₀ v x)).orderEmbOfFin hc j' : Slot))
-        = ((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
-            ((card_replace (supp x) u₀ hU₀ v hv).trans h) := by
-      refine Finset.orderEmbOfFin_unique
-        ((card_replace (supp x) u₀ hU₀ v hv).trans h) ?_ ?_
-      · intro j'
-        rw [← hsupp]
-        exact Finset.orderEmbOfFin_mem _ _ _
-      · intro a b hab
-        exact ((supp (flipTwo u₀ v x)).orderEmbOfFin hc).strictMono hab
-    exact congrFun hf j
-  have hmat' : slaterMat S (flipTwo u₀ v x) hc
-      = (Matrix.of fun (i j : Fin S.card) =>
-          psi (modeOf S i)
-            (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
-              ((card_replace (supp x) u₀ hU₀ v hv).trans h) j)) := by
-    ext i j
-    simp only [Matrix.of_apply, slaterMat_entry_emb]
-    rw [hproj j]
-  calc slater S (flipTwo u₀ v x)
-      = (slaterMat S (flipTwo u₀ v x) hc).det := slater_eq_det S _ hc
-    _ = (Matrix.of fun (i j : Fin S.card) =>
-          psi (modeOf S i)
-            (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
-              ((card_replace (supp x) u₀ hU₀ v hv).trans h) j)).det := by
-        rw [hmat']
-    _ = (Matrix.of fun (i j : Fin S.card) =>
-          if j = j₀ then omega ^ (numSlots - modeOf S i % numSlots) * slaterMat S x h i j₀
-          else slaterMat S x h i j).det :=
-        congrArg Matrix.det
-          (slaterMat_replace_pred_matrix S x h u₀ hU₀ v hv hadj hnb j₀ hj₀)
-
-/-- Вклад ребра `s` (перескок вправо `s ↦ s+1`, без цикла 21 ↦ 0):
-`(bondTerm s · Ψ_S)(x) = 2·det M(j₀ ← ω^k·M_{·,j₀})` — определитель матрицы
-Слейтера со столбцом `j₀` (позиция `s`), поточечно умноженным на `ω^{k_i}`,
-при `x s = 1`, `x (s+1) = 0`. -/
-theorem bondTerm_hop_succ (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+open Finset BigOperators Matrix
+
+/-! ## 4d-0: mulVec-расщепление суммы -/
+
+/-- Перестановка порядка суммирования для матричных двойных сумм. -/
+theorem matrix_sum_comm {m n : Type*} [Fintype m] [Fintype n] {α : Type*}
+    [AddCommMonoid α] (s : Finset n) (M : m → n → α) :
+    (∑ j : m, ∑ i ∈ s, M j i) = ∑ i ∈ s, ∑ j : m, M j i :=
+  Finset.sum_comm
+
+/-- Расщепление mulVec по конечной сумме операторов. -/
+theorem mulVec_sum {m n : Type*} [Fintype n] [DecidableEq n] {α : Type*}
+    [NonUnitalNonAssocSemiring α] [Fintype m] {ι : Type*} [Fintype ι] (s : Finset ι)
+    (M : ι → Matrix m n α) (v : n → α) :
+    ((∑ i ∈ s, M i) *ᵥ v) = ∑ i ∈ s, (M i *ᵥ v) := by
+  funext x
+  have hl : ((∑ i ∈ s, M i) *ᵥ v) x = ∑ j, ∑ i ∈ s, M i x j * v j := by
+    simp only [Matrix.mulVec, dotProduct, Matrix.sum_apply, Finset.sum_mul]
+  have hr : (∑ i ∈ s, M i *ᵥ v) x = ∑ i ∈ s, ∑ j, M i x j * v j := by
+    simp [Matrix.mulVec, dotProduct, Finset.sum_mul]
+  rw [hl, hr]
+  exact matrix_sum_comm s (fun j i => M i x j * v j)
+
+/-! ## 4d-1: вклады рёбер в кофакторной форме -/
+
+/-- Вклад succ-активного ребра (`x s = 1`, `x (s+1) = 0`, без цикла):
+`2·Σ_i ω^{k_i}·M_{i,j₀}·C_{i,j₀}` — разложение по столбцу `j₀`. -/
+theorem bondTerm_succ_Dplus (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
     (s : Slot) (h1 : x s = 1) (h0 : x (s + 1) = 0) (hnb : ((s + 1 : Slot) : ℕ) ≠ 0)
     (j₀ : Fin S.card) (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = s) :
     (bondTerm s *ᵥ (fun y => slater S y)) x
-      = ((2 : ℝ) : ℂ) * (Matrix.of fun (i j : Fin S.card) =>
-          if j = j₀ then omega ^ (modeOf S i % numSlots) * slaterMat S x h i j₀
-          else slaterMat S x h i j).det := by
-  rw [mulVec_bondTerm, if_pos (show x s ≠ x (s + 1) from by rw [h1, h0]; exact one_ne_zero),
-    slater_hop_succ S x h s (by unfold supp; simpa [h1] using Finset.mem_univ s)
-      (s + 1 : Slot)
-      (by intro hc
-          have hmem := mem_supp _ _ hc
-          rw [h0] at hmem
-          exact zero_ne_one hmem)
-      rfl hnb j₀ hj₀]
+      = ((2 : ℝ) : ℂ) * ∑ i, omega ^ (modeOf S i % numSlots)
+          * slaterMat S x h i j₀ * cofG (slaterMat S x h) i j₀ := by
+  have heq : (Matrix.of fun (i j : Fin S.card) =>
+      if j = j₀ then omega ^ (modeOf S i % numSlots) * slaterMat S x h i j₀
+      else slaterMat S x h i j)
+      = (slaterMat S x h).updateCol j₀
+          (fun i => omega ^ (modeOf S i % numSlots) * slaterMat S x h i j₀) := by
+    ext i j
+    by_cases hj : j = j₀
+    · subst hj; simp [Matrix.updateCol_apply, Matrix.of_apply]
+    · simp [Matrix.updateCol_apply, Matrix.of_apply, hj]
+  rw [bondTerm_hop_succ S x h s h1 h0 hnb j₀ hj₀, heq, cofG_det_updateCol]
 
-/-- Для внутреннего ребра (`s + 1 < 22`) сосед слева от `s+1` — это `s`:
-`(s+1) − 1 = s`. -/
-theorem slot_pred_suc (s : Slot) (hs : (s : ℕ) + 1 < numSlots) :
-    ((s + 1 : Slot) - 1 : Slot) = s := by
-  apply Fin.val_injective
-  have h22 : numSlots = 22 := rfl
-  have hv1 : (((s + 1 : Slot) - 1 : Slot) : ℕ) = (((s + 1 : Slot) : ℕ) + 21) % numSlots :=
-    val_pred (s + 1 : Slot)
-  have hv2 : ((s + 1 : Slot) : ℕ) = ((s : ℕ) + 1) % numSlots := val_suc s
-  have e1 : (s : ℕ) + 1 + 21 = (s : ℕ) + numSlots := by
-    show (s : ℕ) + 22 = (s : ℕ) + 22
-    omega
-  rw [hv1, hv2, Nat.mod_eq_of_lt hs, e1,
-    Nat.add_mod_right (s : ℕ) numSlots, Nat.mod_eq_of_lt s.isLt]
-
-/-- Вклад ребра `s` (перескок влево `s+1 ↦ s`, без цикла 0 ↦ 21):
-`(bondTerm s · Ψ_S)(x) = 2·det M(j₁ ← ω^{−k}·M_{·,j₁})` при
-`x (s+1) = 1`, `x s = 0`, где `j₁` — позиция `s+1`. -/
-theorem bondTerm_hop_pred (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+/-- Вклад pred-активного ребра (`x (s+1) = 1`, `x s = 0`, без цикла):
+`2·Σ_i ω^{−k_i}·M_{i,j₁}·C_{i,j₁}` — разложение по столбцу `j₁`. -/
+theorem bondTerm_pred_Dminus (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
     (s : Slot) (h1 : x (s + 1) = 1) (h0 : x s = 0) (hnb : ((s + 1 : Slot) : ℕ) ≠ 0)
     (j₁ : Fin S.card) (hj₁ : ((supp x).orderEmbOfFin h j₁ : Slot) = s + 1) :
     (bondTerm s *ᵥ (fun y => slater S y)) x
-      = ((2 : ℝ) : ℂ) * (Matrix.of fun (i j : Fin S.card) =>
-          if j = j₁ then omega ^ (numSlots - modeOf S i % numSlots) * slaterMat S x h i j₁
-          else slaterMat S x h i j).det := by
-  have hs21 : (s : ℕ) + 1 < numSlots := by
-    by_contra hcon
+      = ((2 : ℝ) : ℂ) * ∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+          * slaterMat S x h i j₁ * cofG (slaterMat S x h) i j₁ := by
+  have heq : (Matrix.of fun (i j : Fin S.card) =>
+      if j = j₁ then omega ^ (numSlots - modeOf S i % numSlots) * slaterMat S x h i j₁
+      else slaterMat S x h i j)
+      = (slaterMat S x h).updateCol j₁
+          (fun i => omega ^ (numSlots - modeOf S i % numSlots) * slaterMat S x h i j₁) := by
+    ext i j
+    by_cases hj : j = j₁
+    · subst hj; simp [Matrix.updateCol_apply, Matrix.of_apply]
+    · simp [Matrix.updateCol_apply, Matrix.of_apply, hj]
+  rw [bondTerm_hop_pred S x h s h1 h0 hnb j₁ hj₁, heq, cofG_det_updateCol]
+
+/-! ## 4d-2: обнуление занятых пар -/
+
+/-- `ω^{22−k} · ω^{k} = 1` в мостовой форме pred-вкладов (без внешнего `%`). -/
+theorem omega_mul_inv_bridge (k : ℕ) :
+    omega ^ (numSlots - k % numSlots) * omega ^ (k % numSlots) = 1 := by
+  have h22 : numSlots = 22 := rfl
+  have hlt : k % numSlots < numSlots := by
+    rw [h22]; exact Nat.mod_lt k (by norm_num)
+  rw [← pow_add]
+  have hsum : (numSlots - k % numSlots) + k % numSlots = numSlots := by
+    rw [h22]; omega
+  rw [hsum, omega_pow_numSlots]
+
+/-- Занятая succ-пара (`x s = 1`, `x (s+1) = 1`, без цикла): масштабированный
+столбец `j₀` совпадает со столбцом `j₁` — `D⁺(j₀) = 0`. -/
+theorem dplus_zero_of_pair (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (s : Slot) (h1 : x s = 1) (h2 : x (s + 1) = 1) (hnb : ((s + 1 : Slot) : ℕ) ≠ 0)
+    (j₀ j₁ : Fin S.card) (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = s)
+    (hj₁ : ((supp x).orderEmbOfFin h j₁ : Slot) = s + 1) :
+    (∑ i, omega ^ (modeOf S i % numSlots)
+        * slaterMat S x h i j₀ * cofG (slaterMat S x h) i j₀) = 0 := by
+  have hs : s ∈ supp x := by rw [← hj₀]; exact Finset.orderEmbOfFin_mem _ _ _
+  have hs1 : (s + 1 : Slot) ∈ supp x := by
+    rw [← hj₁]; exact Finset.orderEmbOfFin_mem _ _ _
+  have hne : j₀ ≠ j₁ := by
+    intro hc
+    exfalso
+    have h22 : numSlots = 22 := rfl
+    have hlt : (s : ℕ) < 22 := by
+      have := s.isLt
+      omega
+    have hmod : ((s : ℕ) + 1) % numSlots = ((s : ℕ) + 1) % 22 := by
+      congr 1
+    have hpos : (s : ℕ) ≠ ((s : ℕ) + 1) % numSlots := by
+      have hlink : ((s : ℕ) + 1) % numSlots = ((s : ℕ) + 1) % 22 := hmod
+      omega
+    have hslot : ((supp x).orderEmbOfFin h j₀ : Slot)
+        = ((supp x).orderEmbOfFin h j₁ : Slot) := by
+      rw [hc]
+    rw [hj₀, hj₁] at hslot
+    have hcon : ((s : Slot) : ℕ) = ((s : ℕ) + 1) % numSlots :=
+      (congrArg (fun u : Slot => (u : ℕ)) hslot).trans (val_suc s)
+    exact hpos hcon
+  rw [← cofG_det_updateCol]
+  refine det_updateCol_eq_col_zero _ j₀ j₁ _ hne ?_
+  intro i
+  rw [slaterMat_cols_succ_prop S x h s (s + 1 : Slot) hs hs1 rfl j₀ j₁ hj₀ hj₁ i]
+
+/-! ## 4d-3: разбор вклада внутреннего ребра -/
+
+/-- Биты конфигурации: `x s ∈ {0, 1}`. -/
+theorem cfg_bit (x : Cfg) (s : Slot) : x s = 0 ∨ x s = 1 := by
+  have hval : (x s : ℕ) = 0 ∨ (x s : ℕ) = 1 := by
+    have hlt : (x s : ℕ) < 2 := (x s).isLt
+    omega
+  rcases hval with h | h
+  · exact Or.inl (Fin.val_injective h)
+  · exact Or.inr (Fin.val_injective h)
+
+/-! ## 4d-4: вклад внутреннего ребра в if-форме -/
+
+/-- Для внутреннего ребра `s` (без цикла) вклад равен `2·D⁺(j_s)`, если
+`s` занят и `s+1` свободен; `2·D⁻(j_{s+1})`, если `s` свободен и `s+1`
+занят; нулю в противном случае. -/
+theorem bondTerm_inner_if (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (s : Slot) (hs21 : ((s : ℕ) + 1 < numSlots))
+    (j_s j_n : Fin S.card) (hj_s : ((supp x).orderEmbOfFin h j_s : Slot) = s)
+    (hj_n : ((supp x).orderEmbOfFin h j_n : Slot) = (s + 1 : Slot)) :
+    (bondTerm s *ᵥ (fun y => slater S y)) x
+      = ((2 : ℝ) : ℂ) * (if x s = 1 ∧ x (s + 1 : Slot) = 0
+          then ∑ i, omega ^ (modeOf S i % numSlots)
+              * slaterMat S x h i j_s * cofG (slaterMat S x h) i j_s
+          else 0)
+        + ((2 : ℝ) : ℂ) * (if x s = 0 ∧ x (s + 1 : Slot) = 1
+          then ∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+              * slaterMat S x h i j_n * cofG (slaterMat S x h) i j_n
+          else 0) := by
+  have hnb : ((s + 1 : Slot) : ℕ) ≠ 0 := by
     have hlt := s.isLt
-    have heq : (s : ℕ) + 1 = numSlots := by omega
-    have hv : ((s + 1 : Slot) : ℕ) = ((s : ℕ) + 1) % numSlots := val_suc s
-    rw [heq, Nat.mod_self] at hv
-    exact hnb hv
-  rw [mulVec_bondTerm,
-    if_pos (show x s ≠ x (s + 1) from by rw [h0, h1]; exact fun hc => one_ne_zero hc.symm),
-    flipTwo_comm s (s + 1) x,
-    slater_hop_pred S x h (s + 1 : Slot)
-      (by unfold supp; simpa [h1] using Finset.mem_univ (s + 1 : Slot))
-      s
-      (by intro hc
-          have hmem := mem_supp _ _ hc
-          rw [h0] at hmem
-          exact zero_ne_one hmem)
-      (slot_pred_suc s hs21).symm hnb j₁ hj₁]
+    have hv := val_suc s
+    rcases Nat.lt_or_ge ((s : ℕ) + 1) 22 with h1 | h2
+    · have hmod : ((s : ℕ) + 1) % numSlots = (s : ℕ) + 1 :=
+        Nat.mod_eq_of_lt (by
+          have h22 : numSlots = 22 := rfl
+          omega)
+      omega
+    · have h22 : numSlots = 22 := rfl
+      omega
+  by_cases hs1 : x s = 1
+  · by_cases hs2 : x (s + 1 : Slot) = 0
+    · rw [bondTerm_succ_Dplus S x h s hs1 hs2 hnb j_s hj_s,
+        if_pos (⟨hs1, hs2⟩ : x s = 1 ∧ x (s + 1 : Slot) = 0),
+        if_neg (fun hc : x s = 0 ∧ x (s + 1 : Slot) = 1 => zero_ne_one (hs1.symm.trans hc.1).symm)]
+      simp
+    · have hs2' : x (s + 1 : Slot) = 1 := by
+        rcases cfg_bit x (s + 1 : Slot) with h0 | h1
+        · exact absurd h0 hs2
+        · exact h1
+      rw [bondTerm_blocked s (fun y => slater S y) x (by rw [hs1, hs2']),
+        if_neg (fun hc : x s = 1 ∧ x (s + 1 : Slot) = 0 => zero_ne_one (hs2'.symm.trans hc.2).symm),
+        if_neg (fun hc : x s = 0 ∧ x (s + 1 : Slot) = 1 => zero_ne_one (hs1.symm.trans hc.1).symm)]
+      ring
+  · have hs0 : x s = 0 := by
+      rcases cfg_bit x s with h0 | h1
+      · exact h0
+      · exact absurd h1 hs1
+    by_cases hs2 : x (s + 1 : Slot) = 1
+    · rw [bondTerm_pred_Dminus S x h s hs2 hs0 hnb j_n hj_n,
+        if_neg (fun hc : x s = 1 ∧ x (s + 1 : Slot) = 0 => hs1 hc.1),
+        if_pos (⟨hs0, hs2⟩ : x s = 0 ∧ x (s + 1 : Slot) = 1)]
+      simp
+    · have hs2' : x (s + 1 : Slot) = 0 := by
+        rcases cfg_bit x (s + 1 : Slot) with h0 | h1
+        · exact h0
+        · exact absurd h1 hs2
+      rw [bondTerm_blocked s (fun y => slater S y) x (by rw [hs0, hs2']),
+        if_neg (fun hc : x s = 1 ∧ x (s + 1 : Slot) = 0 => hs1 hc.1),
+        if_neg (fun hc : x s = 0 ∧ x (s + 1 : Slot) = 1 => hs2 hc.2)]
+      ring
 
-/-- На заблокированном ребре (`x s = x (s+1)`) вклад нулевой:
-`bondTerm` — чистый XX-хоппинг, без диагонали (шаг #0 разбора). -/
-theorem bondTerm_blocked (s : Slot) (v : Vec) (x : Cfg) (hs : x s = x (s + 1)) :
-    (bondTerm s *ᵥ v) x = 0 := by
-  rw [mulVec_bondTerm, if_neg (by rw [hs]; exact fun hc => hc rfl)]
+/-! ## 4d-5: обнуление wrap-пары (21, 0) -/
 
-/-- Значение Ψ_S на конфигурации с циклическим перескоком вправо
-`21 ↦ 0`: определитель циклически сдвинутой матрицы (на месте `0` —
-`ω^{k_i}`-масштабированный столбец сайта `21`, остальные сдвинуты вправо). -/
-theorem slater_hop_wrap_right (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
-    (hU₀ : (21 : Slot) ∈ supp x) (hv : (0 : Slot) ∉ supp x) :
-    slater S (flipTwo (21 : Slot) (0 : Slot) x)
-      = (Matrix.of fun (i j : Fin S.card) =>
-          if (j : ℕ) = 0
-          then omega ^ (modeOf S i % numSlots)
-              * slaterMat S x h i (Fin.mk (S.card - 1) (by
-                  have h1 : 0 < S.card := by
-                    rw [← h]; exact Finset.card_pos.mpr ⟨21, hU₀⟩
-                  omega))
-          else slaterMat S x h i (Fin.mk ((j : ℕ) - 1) (by
-                  have := j.isLt; omega))).det := by
-  have hsupp : supp (flipTwo (21 : Slot) (0 : Slot) x)
-      = ((supp x \ {21} : Finset Slot) ∪ {0}) :=
-    supp_flipTwo_swap (21 : Slot) (0 : Slot) (by intro hc; exact hv (hc ▸ hU₀)) x
-      (mem_supp _ _ hU₀) (not_mem_supp _ _ hv)
-  have hc : (supp (flipTwo (21 : Slot) (0 : Slot) x)).card = S.card := by
-    rw [hsupp]
-    exact (card_replace (supp x) 21 hU₀ 0 hv).trans h
-  have hproj : ∀ j : Fin S.card,
-      ((supp (flipTwo (21 : Slot) (0 : Slot) x)).orderEmbOfFin hc j : Slot)
-        = (((supp x \ {21} : Finset Slot) ∪ {0}).orderEmbOfFin
-            ((card_replace (supp x) 21 hU₀ 0 hv).trans h) j : Slot) := by
-    intro j
-    have hf : (fun j' : Fin S.card =>
-          ((supp (flipTwo (21 : Slot) (0 : Slot) x)).orderEmbOfFin hc j' : Slot))
-        = ((supp x \ {21} : Finset Slot) ∪ {0}).orderEmbOfFin
-            ((card_replace (supp x) 21 hU₀ 0 hv).trans h) := by
-      refine Finset.orderEmbOfFin_unique
-        ((card_replace (supp x) 21 hU₀ 0 hv).trans h) ?_ ?_
-      · intro j'
-        rw [← hsupp]
-        exact Finset.orderEmbOfFin_mem _ _ _
-      · intro a b hab
-        exact ((supp (flipTwo (21 : Slot) (0 : Slot) x)).orderEmbOfFin hc).strictMono hab
-    exact congrFun hf j
-  have hmat' : slaterMat S (flipTwo (21 : Slot) (0 : Slot) x) hc
-      = (Matrix.of fun (i j : Fin S.card) =>
-          psi (modeOf S i)
-            (((supp x \ {21} : Finset Slot) ∪ {0}).orderEmbOfFin
-              ((card_replace (supp x) 21 hU₀ 0 hv).trans h) j)) := by
-    ext i j
-    simp only [Matrix.of_apply, slaterMat_entry_emb]
-    rw [hproj j]
-  calc slater S (flipTwo (21 : Slot) (0 : Slot) x)
-      = (slaterMat S (flipTwo (21 : Slot) (0 : Slot) x) hc).det := slater_eq_det S _ hc
-    _ = (Matrix.of fun (i j : Fin S.card) =>
-          psi (modeOf S i)
-            (((supp x \ {21} : Finset Slot) ∪ {0}).orderEmbOfFin
-              ((card_replace (supp x) 21 hU₀ 0 hv).trans h) j)).det := by
-        rw [hmat']
-    _ = (Matrix.of fun (i j : Fin S.card) =>
-          if (j : ℕ) = 0
-          then omega ^ (modeOf S i % numSlots)
-              * slaterMat S x h i (Fin.mk (S.card - 1) (by
-                  have h1 : 0 < S.card := by
-                    rw [← h]; exact Finset.card_pos.mpr ⟨21, hU₀⟩
-                  omega))
-          else slaterMat S x h i (Fin.mk ((j : ℕ) - 1) (by
-                  have := j.isLt; omega))).det :=
-        congrArg Matrix.det (slaterMat_wrap21_matrix S x h hU₀ hv)
-
-/-- Вклад ребра 21 (циклический прыжок вправо `21 ↦ 0`) при
-`x 21 = 1`, `x 0 = 0`: `2·det(циклически сдвинутой матрицы)`. -/
-theorem bondTerm_hop_wrap_right (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
-    (h1 : x (21 : Slot) = 1) (h0 : x (0 : Slot) = 0) :
-    (bondTerm (21 : Slot) *ᵥ (fun y => slater S y)) x
-      = ((2 : ℝ) : ℂ) * (Matrix.of fun (i j : Fin S.card) =>
-          if (j : ℕ) = 0
-          then omega ^ (modeOf S i % numSlots)
-              * slaterMat S x h i (Fin.mk (S.card - 1) (by
-                  have h1' : 0 < S.card := by
-                    rw [← h]; exact Finset.card_pos.mpr ⟨21, by
-                      unfold supp; simpa [h1] using Finset.mem_univ (21 : Slot)⟩
-                  omega))
-          else slaterMat S x h i (Fin.mk ((j : ℕ) - 1) (by
-                  have := j.isLt; omega))).det := by
-  have hu : (21 : Slot) ∈ supp x := by unfold supp; simpa [h1] using Finset.mem_univ (21 : Slot)
-  have hv : (0 : Slot) ∉ supp x := by
+/-- Занятая wrap-пара (сайты 21 и 0 оба заняты): `D⁺(j₂₁) = 0`. -/
+theorem dplus_zero_wrap (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (h21 : (21 : Slot) ∈ supp x) (h0 : (0 : Slot) ∈ supp x)
+    (j21 j0 : Fin S.card) (hj21 : ((supp x).orderEmbOfFin h j21 : Slot) = 21)
+    (hj0 : ((supp x).orderEmbOfFin h j0 : Slot) = 0) :
+    (∑ i, omega ^ (modeOf S i % numSlots)
+        * slaterMat S x h i j21 * cofG (slaterMat S x h) i j21) = 0 := by
+  rw [← cofG_det_updateCol]
+  have hne : j21 ≠ j0 := by
     intro hc
-    have hmem := mem_supp _ _ hc
-    rw [h0] at hmem
-    exact zero_ne_one hmem
-  rw [mulVec_bondTerm,
-    if_pos (show x (21 : Slot) ≠ x ((21 : Slot) + 1) from by
-      intro hc
-      rw [show ((21 : Slot) + 1) = (0 : Slot) from rfl, h1, h0] at hc
-      exact one_ne_zero hc),
-    show ((21 : Slot) + 1) = (0 : Slot) from rfl,
-    slater_hop_wrap_right S x h hu hv]
+    have h1 : ((21 : Slot) : ℕ) = ((0 : Slot) : ℕ) := by
+      rw [← hj21, ← hj0, hc]
+    norm_num at h1
+  refine det_updateCol_eq_col_zero _ j21 j0 _ hne ?_
+  intro i
+  rw [slaterMat_cols_wrap_prop S x h h0 h21 j0 j21 hj0 hj21 i]
 
-/-- Значение Ψ_S на конфигурации с циклическим перескоком влево
-`0 ↦ 21`: определитель циклически сдвинутой матрицы (на последнем месте —
-`ω^{−k_i}`-масштабированный столбец сайта `0`, остальные сдвинуты влево). -/
-theorem slater_hop_wrap_left (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
-    (hU₀ : (0 : Slot) ∈ supp x) (hv : (21 : Slot) ∉ supp x) :
-    slater S (flipTwo (0 : Slot) (21 : Slot) x)
-      = (Matrix.of fun (i j : Fin S.card) =>
-          if hj : (j : ℕ) = S.card - 1
-          then omega ^ (numSlots - modeOf S i % numSlots)
-              * slaterMat S x h i (Fin.mk 0 (by
-                  have h1 : 0 < S.card := by
-                    rw [← h]; exact Finset.card_pos.mpr ⟨0, hU₀⟩
-                  exact h1))
-          else slaterMat S x h i (Fin.mk ((j : ℕ) + 1) (by
-                  have := j.isLt; omega))).det := by
-  have hsupp : supp (flipTwo (0 : Slot) (21 : Slot) x)
-      = ((supp x \ {0} : Finset Slot) ∪ {21}) :=
-    supp_flipTwo_swap (0 : Slot) (21 : Slot) (by intro hc; exact hv (hc ▸ hU₀)) x
-      (mem_supp _ _ hU₀) (not_mem_supp _ _ hv)
-  have hc : (supp (flipTwo (0 : Slot) (21 : Slot) x)).card = S.card := by
-    rw [hsupp]
-    exact (card_replace (supp x) 0 hU₀ 21 hv).trans h
-  have hproj : ∀ j : Fin S.card,
-      ((supp (flipTwo (0 : Slot) (21 : Slot) x)).orderEmbOfFin hc j : Slot)
-        = (((supp x \ {0} : Finset Slot) ∪ {21}).orderEmbOfFin
-            ((card_replace (supp x) 0 hU₀ 21 hv).trans h) j : Slot) := by
-    intro j
-    have hf : (fun j' : Fin S.card =>
-          ((supp (flipTwo (0 : Slot) (21 : Slot) x)).orderEmbOfFin hc j' : Slot))
-        = ((supp x \ {0} : Finset Slot) ∪ {21}).orderEmbOfFin
-            ((card_replace (supp x) 0 hU₀ 21 hv).trans h) := by
-      refine Finset.orderEmbOfFin_unique
-        ((card_replace (supp x) 0 hU₀ 21 hv).trans h) ?_ ?_
-      · intro j'
-        rw [← hsupp]
-        exact Finset.orderEmbOfFin_mem _ _ _
-      · intro a b hab
-        exact ((supp (flipTwo (0 : Slot) (21 : Slot) x)).orderEmbOfFin hc).strictMono hab
-    exact congrFun hf j
-  have hmat' : slaterMat S (flipTwo (0 : Slot) (21 : Slot) x) hc
-      = (Matrix.of fun (i j : Fin S.card) =>
-          psi (modeOf S i)
-            (((supp x \ {0} : Finset Slot) ∪ {21}).orderEmbOfFin
-              ((card_replace (supp x) 0 hU₀ 21 hv).trans h) j)) := by
-    ext i j
-    simp only [Matrix.of_apply, slaterMat_entry_emb]
-    rw [hproj j]
-  calc slater S (flipTwo (0 : Slot) (21 : Slot) x)
-      = (slaterMat S (flipTwo (0 : Slot) (21 : Slot) x) hc).det := slater_eq_det S _ hc
-    _ = (Matrix.of fun (i j : Fin S.card) =>
-          psi (modeOf S i)
-            (((supp x \ {0} : Finset Slot) ∪ {21}).orderEmbOfFin
-              ((card_replace (supp x) 0 hU₀ 21 hv).trans h) j)).det := by
-        rw [hmat']
-    _ = (Matrix.of fun (i j : Fin S.card) =>
-          if hj : (j : ℕ) = S.card - 1
-          then omega ^ (numSlots - modeOf S i % numSlots)
-              * slaterMat S x h i (Fin.mk 0 (by
-                  have h1 : 0 < S.card := by
-                    rw [← h]; exact Finset.card_pos.mpr ⟨0, hU₀⟩
-                  exact h1))
-          else slaterMat S x h i (Fin.mk ((j : ℕ) + 1) (by
-                  have := j.isLt; omega))).det :=
-        congrArg Matrix.det (slaterMat_wrap01_matrix S x h hU₀ hv)
-
-/-- Вклад ребра 21 (циклический прыжок влево `0 ↦ 21`) при
-`x 0 = 1`, `x 21 = 0`: `2·det(циклически сдвинутой матрицы)`. -/
-theorem bondTerm_hop_wrap_left (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
-    (h1 : x (0 : Slot) = 1) (h0 : x (21 : Slot) = 0) :
-    (bondTerm (21 : Slot) *ᵥ (fun y => slater S y)) x
-      = ((2 : ℝ) : ℂ) * (Matrix.of fun (i j : Fin S.card) =>
-          if hj : (j : ℕ) = S.card - 1
-          then omega ^ (numSlots - modeOf S i % numSlots)
-              * slaterMat S x h i (Fin.mk 0 (by
-                  have h1' : 0 < S.card := by
-                    rw [← h]; exact Finset.card_pos.mpr ⟨0, by
-                      unfold supp; simpa [h1] using Finset.mem_univ (0 : Slot)⟩
-                  exact h1'))
-          else slaterMat S x h i (Fin.mk ((j : ℕ) + 1) (by
-                  have := j.isLt; omega))).det := by
-  have hu : (0 : Slot) ∈ supp x := by unfold supp; simpa [h1] using Finset.mem_univ (0 : Slot)
-  have hv : (21 : Slot) ∉ supp x := by
+/-- Занятая wrap-пара (сайты 21 и 0 оба заняты): `D⁻(j₀) = 0`. -/
+theorem dminus_zero_wrap (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (h21 : (21 : Slot) ∈ supp x) (h0 : (0 : Slot) ∈ supp x)
+    (j21 j0 : Fin S.card) (hj21 : ((supp x).orderEmbOfFin h j21 : Slot) = 21)
+    (hj0 : ((supp x).orderEmbOfFin h j0 : Slot) = 0) :
+    (∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+        * slaterMat S x h i j0 * cofG (slaterMat S x h) i j0) = 0 := by
+  rw [← cofG_det_updateCol]
+  have hne : j0 ≠ j21 := by
     intro hc
-    have hmem := mem_supp _ _ hc
-    rw [h0] at hmem
-    exact zero_ne_one hmem
-  rw [mulVec_bondTerm,
-    if_pos (show x (21 : Slot) ≠ x ((21 : Slot) + 1) from by
-      intro hc
-      rw [show ((21 : Slot) + 1) = (0 : Slot) from rfl, h0, h1] at hc
-      exact zero_ne_one hc),
-    show ((21 : Slot) + 1) = (0 : Slot) from rfl,
-    flipTwo_comm (21 : Slot) (0 : Slot) x,
-    slater_hop_wrap_left S x h hu hv]
+    have h1 : ((21 : Slot) : ℕ) = ((0 : Slot) : ℕ) := by
+      rw [← hj21, ← hj0, ← hc]
+    norm_num at h1
+  refine det_updateCol_eq_col_zero _ j0 j21 _ hne ?_
+  intro i
+  rw [slaterMat_cols_wrap_prop S x h h0 h21 j0 j21 hj0 hj21 i]
+  rw [← mul_assoc, omega_mul_inv_bridge, one_mul]
 
-/-! ## Твист: граничные леммы для чётных секторов -/
+/-! ## 4d-6: сумма по носителю через столбцы -/
 
-/-- Сдвиг твистованной моды влево через границу `0 ↦ 21`: лишний знак `−1`
-(обратная форма `psiTwist_shift_wrap`). -/
-theorem psiTwist_pred_wrap (k : ℕ) :
-    psiTwist k (21 : Slot)
-      = (-zeta)⁻¹ * (omega ^ (k % numSlots))⁻¹ * psiTwist k (0 : Slot) := by
-  have h := psiTwist_shift_wrap k
-  have hz : (-zeta) * omega ^ (k % numSlots) ≠ 0 := by
-    refine mul_ne_zero ?_ ?_
-    · intro hc
-      rw [neg_eq_zero] at hc
-      unfold zeta at hc
-      exact Complex.exp_ne_zero _ hc
-    · intro hc
-      have hpow : omega ^ (k % numSlots) * omega ^ (numSlots - k % numSlots) = 1 := by
-        have hlt : k % numSlots < numSlots := Nat.mod_lt _ (by norm_num [numSlots])
-        rw [← pow_add, Nat.add_sub_cancel' hlt.le, omega_pow_numSlots]
-      rw [hc, zero_mul] at hpow
-      exact zero_ne_one hpow
-  calc psiTwist k (21 : Slot)
-      = ((-zeta) * omega ^ (k % numSlots))⁻¹
-          * ((-zeta) * omega ^ (k % numSlots)) * psiTwist k (21 : Slot) := by
-        rw [inv_mul_cancel₀ hz, one_mul]
-    _ = ((-zeta) * omega ^ (k % numSlots))⁻¹ * psiTwist k ((21 : Slot) + 1) := by
-        rw [h, mul_assoc]
-    _ = ((-zeta) * omega ^ (k % numSlots))⁻¹ * psiTwist k (0 : Slot) := by
-        rw [show ((21 : Slot) + 1) = (0 : Slot) from rfl]
-    _ = (-zeta)⁻¹ * (omega ^ (k % numSlots))⁻¹ * psiTwist k (0 : Slot) := by
-        rw [mul_inv]
+/-- Сюръективность перечисления носителя: каждый занятый сайт отвечает
+некоторому столбцу Слейтеровской матрицы. -/
+theorem pos_surj (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (u : Slot) (hu : u ∈ supp x) :
+    ∃ j : Fin S.card, ((supp x).orderEmbOfFin h j : Slot) = u := by
+  have hmem : u ∈ (supp x).sort (· ≤ ·) := by
+    rw [Finset.mem_sort]; exact hu
+  have hlen : ((supp x).sort (· ≤ ·)).length = S.card := by
+    rw [Finset.length_sort]; exact h
+  obtain ⟨n, hn⟩ := List.mem_iff_get.mp hmem
+  refine ⟨Fin.cast hlen n, ?_⟩
+  have hidx : Fin.cast (h.symm.trans (Finset.length_sort (· ≤ ·)).symm)
+      (Fin.cast hlen n) = n := Fin.ext (by simp)
+  have hget := sort_get_eq_orderEmbOfFin (supp x) h (Fin.cast hlen n)
+  rw [hidx] at hget
+  rw [← hget, hn]
 
-/-- **Цель Stage 3 (гипотеза Odd).** Оператор прыжков цепочки
-`A = Σ_s bondTerm s` диагонализуется слейтеровскими определителями:
-при нечётном `|S|`
-`A·Ψ_S = (Σ_{k∈S} ε_k)·Ψ_S` на всех конфигурациях веса `|S|`
-(без требования `supp x = S`). Все детерминантные кирпичи готовы:
-scaled_column_det, wrong_cofactor_zero, row_cofactor_sum,
-slaterMat_replace_succ/pred_matrix, det_replace_column,
-det_wrap_right/left (знак `(−1)^n = +1` при нечётных). -/
+/-- Сумма по занятым сайтам равна сумме по столбцам (перечисление
+`orderEmbOfFin` — биекция столбцов и носителя). -/
+theorem sum_supp_emb (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (F : Slot → ℂ) :
+    (∑ u ∈ supp x, F u) = ∑ j : Fin S.card, F ((supp x).orderEmbOfFin h j) := by
+  set fcols : Fin S.card → ↥(supp x) := fun j =>
+    ⟨(supp x).orderEmbOfFin h j, Finset.orderEmbOfFin_mem _ _ _⟩ with hfcols
+  have hinj : Function.Injective fcols := by
+    intro a b hab
+    exact StrictMono.injective ((supp x).orderEmbOfFin h).strictMono
+      (congrArg Subtype.val hab)
+  have hsurj : Function.Surjective fcols := by
+    intro b
+    obtain ⟨u, hu⟩ := b
+    obtain ⟨j, hj⟩ := pos_surj S x h u hu
+    exact ⟨j, Subtype.ext hj⟩
+  have hmem : ∀ (j : Fin S.card), j ∈ (Finset.univ : Finset (Fin S.card)) ↔
+      fcols j ∈ (Finset.univ : Finset ↥(supp x)) := by
+    intro j
+    exact ⟨fun _ => Finset.mem_univ _, fun _ => Finset.mem_univ _⟩
+  have hval : ∀ j ∈ (Finset.univ : Finset (Fin S.card)),
+      F ((supp x).orderEmbOfFin h j) = (fun b : ↥(supp x) => F b.val) (fcols j) :=
+    fun j _ => rfl
+  rw [Finset.sum_bijective fcols ⟨hinj, hsurj⟩ hmem hval
+    (s := Finset.univ) (t := Finset.univ)
+    (f := fun j => F ((supp x).orderEmbOfFin h j))
+    (g := fun b : ↥(supp x) => F b.val)]
+  exact (Finset.sum_attach (supp x) F).symm
+
+/-! ## 4d-7: связка eps и омег -/
+
+/-- Энергия моды через омегу: `ε_k = 2·(ω^{k mod 22} + ω^{22 − k mod 22})`
+(мост между спектром `4·cos` и свёрткой кофакторов). -/
+theorem eps_omega (k : ℕ) :
+    (eps k : ℂ) = 2 * (omega ^ (k % numSlots) + omega ^ (numSlots - k % numSlots)) := by
+  have h22 : numSlots = 22 := rfl
+  have hm : k % numSlots < numSlots := Nat.mod_lt _ (by rw [h22]; norm_num)
+  rw [h22] at hm
+  have hk0 : 22 * (k / 22) + k % 22 = k := Nat.div_add_mod k 22
+  have hk : ((k : ℝ)) = (22 : ℝ) * ((k / 22 : ℕ) : ℝ) + ((k % 22 : ℕ) : ℝ) := by
+    have hk0' : (((22 * (k / 22) + k % 22 : ℕ)) : ℝ) = ((k : ℕ) : ℝ) := by rw [hk0]
+    push_cast at hk0'
+    linarith
+  -- Периодичность косинуса: cos(2πk/22) = cos(2π(k mod 22)/22)
+  have hsplit : (2 : ℝ) * Real.pi * (k : ℝ) / numSlots
+      = 2 * Real.pi * (((k % numSlots : ℕ) : ℝ) / numSlots)
+        + 2 * Real.pi * ((k / numSlots : ℕ) : ℝ) := by
+    rw [h22, hk]
+    ring
+  have hsin0 : Real.sin (((k / numSlots : ℕ) : ℝ) * (2 * Real.pi)) = 0 := by
+    have h := Real.sin_nat_mul_two_pi_sub 0 ((k / numSlots : ℕ) : ℕ)
+    rw [sub_zero, Real.sin_zero, neg_zero] at h
+    exact h
+  have hper : Real.cos (2 * Real.pi * (k : ℝ) / numSlots)
+      = Real.cos (2 * Real.pi * (((k % numSlots : ℕ) : ℝ) / numSlots)) := by
+    rw [hsplit, Real.cos_add, mul_comm (2 * Real.pi) ((k / numSlots : ℕ) : ℝ),
+      Real.cos_nat_mul_two_pi, hsin0]
+    ring
+  -- Омега через экспоненту (в форме, совместимой с разложением cos)
+  have hdef : (omega : ℂ) = Complex.exp ((2 : ℝ) * Real.pi * Complex.I / numSlots) := rfl
+  have hwR : (omega ^ (k % numSlots) : ℂ)
+      = Complex.exp
+          ((2 : ℝ) * Real.pi * (((k % numSlots : ℕ) : ℝ) / numSlots) * Complex.I) := by
+    have h1 : (omega ^ (k % numSlots) : ℂ)
+        = Complex.exp
+            (((k % numSlots : ℕ) : ℂ) * ((2 : ℝ) * Real.pi * Complex.I / numSlots)) := by
+      rw [hdef, ← Complex.exp_nat_mul]
+    rw [h1]
+    congr 1
+    push_cast
+    ring
+  have hwL : (omega ^ (numSlots - k % numSlots) : ℂ)
+      = Complex.exp
+          ((2 : ℝ) * Real.pi
+            * (((numSlots - k % numSlots : ℕ) : ℝ) / numSlots) * Complex.I) := by
+    have h1 : (omega ^ (numSlots - k % numSlots) : ℂ)
+        = Complex.exp
+            (((numSlots - k % numSlots : ℕ) : ℂ)
+              * ((2 : ℝ) * Real.pi * Complex.I / numSlots)) := by
+      rw [hdef, ← Complex.exp_nat_mul]
+    rw [h1]
+    congr 1
+    push_cast
+    ring
+  -- Склейка: 4·cos θ = 2·(exp(iθ) + exp(−iθ))
+  have hexp2pi : Complex.exp ((2 : ℝ) * Real.pi * Complex.I) = 1 := by
+    have hkey : ((2 : ℝ) * Real.pi * Complex.I)
+        = ((numSlots : ℕ) : ℂ) * ((2 : ℝ) * Real.pi * Complex.I / numSlots) := by
+      rw [h22]
+      ring
+    have hform : Complex.exp ((2 : ℝ) * Real.pi * Complex.I)
+        = (omega : ℂ) ^ numSlots := by
+      rw [hkey, Complex.exp_nat_mul, ← hdef, omega_pow_numSlots]
+    rw [hform, omega_pow_numSlots]
+  -- Правый член: exp(2πi·(22−m)/22) = exp(−2πi·m/22) через exp(2πi) = 1
+  have hright : Complex.exp ((2 : ℝ) * Real.pi
+        * (((numSlots - k % numSlots : ℕ) : ℝ) / numSlots) * Complex.I)
+      = Complex.exp (-((2 : ℝ) * Real.pi
+        * (((k % numSlots : ℕ) : ℝ) / numSlots) * Complex.I)) := by
+    have h2 : Complex.exp ((2 : ℝ) * Real.pi
+          * (((numSlots - k % numSlots : ℕ) : ℝ) / numSlots) * Complex.I)
+        = Complex.exp (((numSlots - k % numSlots : ℕ) : ℂ)
+          * ((2 : ℝ) * Real.pi * Complex.I / numSlots)) := by
+      congr 1
+      push_cast
+      ring
+    have h3 : Complex.exp (-((2 : ℝ) * Real.pi
+          * (((k % numSlots : ℕ) : ℝ) / numSlots) * Complex.I))
+        = Complex.exp ((-((k % numSlots : ℕ) : ℂ))
+          * ((2 : ℝ) * Real.pi * Complex.I / numSlots)) := by
+      congr 1
+      push_cast
+      ring
+    have hs2 : ((numSlots - k % numSlots : ℕ) : ℂ)
+        * ((2 : ℝ) * Real.pi * Complex.I / numSlots)
+        = ((numSlots : ℕ) : ℂ) * ((2 : ℝ) * Real.pi * Complex.I / numSlots)
+          + (-((k % numSlots : ℕ) : ℂ)
+            * ((2 : ℝ) * Real.pi * Complex.I / numSlots)) := by
+      rw [h22]
+      have hrel : k % 22 ≤ 22 := by omega
+      rw [Nat.cast_sub hrel]
+      push_cast
+      ring
+    have hsum : Complex.exp (((numSlots : ℕ) : ℂ)
+          * ((2 : ℝ) * Real.pi * Complex.I / numSlots))
+        = 1 := by
+      rw [← hexp2pi]
+      have hz : ((numSlots : ℕ) : ℂ) * ((2 : ℝ) * Real.pi * Complex.I / numSlots)
+          = (2 : ℝ) * Real.pi * Complex.I := by
+        rw [h22]
+        push_cast
+        ring
+      rw [hz]
+    rw [h2, hs2, Complex.exp_add, hsum, one_mul, ← h3]
+
+  -- Склейка: 4·cos θ = 2·(exp(iθ) + exp(−iθ))
+  unfold eps
+  rw [hper, hwR, hwL, hright]
+  push_cast
+  unfold Complex.cos
+  ring
+
+
+/-! ## 4d-8: различие столбцов и pred-обнуление занятых пар -/
+
+/-- Различие слотов в цикле: `s ≠ s+1`. -/
+theorem slot_ne_suc (s : Slot) : (s : Slot) ≠ (s + 1 : Slot) := by
+  intro hc
+  have hval : ((s : Slot) : ℕ) = ((s + 1 : Slot) : ℕ) :=
+    congrArg (fun u : Slot => (u : ℕ)) hc
+  rw [val_suc s] at hval
+  have h22 : numSlots = 22 := rfl
+  have hlt : (s : ℕ) < 22 := by
+    have := s.isLt
+    omega
+  have hlink : ((s : ℕ) + 1) % numSlots = ((s : ℕ) + 1) % 22 := by
+    congr 1
+  omega
+
+/-- Разные занятые сайты — разные столбцы (инъективность перечисления). -/
+theorem pos_ne_of_ne (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    {s t : Slot} (hst : s ≠ t)
+    {j₀ j₁ : Fin S.card} (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = s)
+    (hj₁ : ((supp x).orderEmbOfFin h j₁ : Slot) = t) : j₀ ≠ j₁ := by
+  intro hc
+  have hslot : ((supp x).orderEmbOfFin h j₀ : Slot)
+      = ((supp x).orderEmbOfFin h j₁ : Slot) := by rw [hc]
+  rw [hj₀, hj₁] at hslot
+  exact hst hslot
+
+/-- Занятая succ-пара (`x s = 1`, `x (s+1) = 1`, без цикла): pred-
+масштабированный столбец `j₁` совпадает со столбцом `j₀` — `D⁻(j₁) = 0`. -/
+theorem dminus_zero_of_pair (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (s : Slot) (h1 : x s = 1) (h2 : x (s + 1 : Slot) = 1) (hnb : ((s + 1 : Slot) : ℕ) ≠ 0)
+    (j₀ j₁ : Fin S.card) (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = s)
+    (hj₁ : ((supp x).orderEmbOfFin h j₁ : Slot) = s + 1) :
+    (∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+        * slaterMat S x h i j₁ * cofG (slaterMat S x h) i j₁) = 0 := by
+  have hs : s ∈ supp x := by rw [← hj₀]; exact Finset.orderEmbOfFin_mem _ _ _
+  have hs1 : (s + 1 : Slot) ∈ supp x := by
+    rw [← hj₁]; exact Finset.orderEmbOfFin_mem _ _ _
+  rw [← cofG_det_updateCol]
+  refine det_updateCol_eq_col_zero _ j₁ j₀ _
+    (pos_ne_of_ne S x h (slot_ne_suc s).symm hj₁ hj₀) ?_
+  intro i
+  rw [slaterMat_cols_succ_prop S x h s (s + 1 : Slot) hs hs1 rfl j₀ j₁ hj₀ hj₁ i]
+  rw [← mul_assoc, omega_mul_inv_bridge, one_mul]
+
+/-! ## 4d-9: позиция сайта 21 — крайний столбец -/
+
+/-- При занятом сайте 21 его позиция в сортировке носителя — последний
+столбец (21 — максимальный слот). -/
+theorem pos_last_max (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (hu21 : (21 : Slot) ∈ supp x)
+    (j21 : Fin S.card) (hj21 : ((supp x).orderEmbOfFin h j21 : Slot) = (21 : Slot)) :
+    ((supp x).orderEmbOfFin h (Fin.mk (S.card - 1) (by
+        have hp : 0 < #(supp x) := Finset.card_pos.mpr ⟨21, hu21⟩
+        omega)) : Slot) = (21 : Slot) := by
+  have hle1 : ((supp x).orderEmbOfFin h j21 : Slot)
+      ≤ ((supp x).orderEmbOfFin h (Fin.mk (S.card - 1) (by
+        have hp : 0 < #(supp x) := Finset.card_pos.mpr ⟨21, hu21⟩
+        omega)) : Slot) :=
+    ((supp x).orderEmbOfFin h).monotone (by
+      have hval := j21.isLt
+      show (j21 : ℕ) ≤ S.card - 1
+      omega)
+  have hmem : ((supp x).orderEmbOfFin h (Fin.mk (S.card - 1) (by
+        have hp : 0 < #(supp x) := Finset.card_pos.mpr ⟨21, hu21⟩
+        omega)) : Slot)
+      ∈ supp x := Finset.orderEmbOfFin_mem _ _ _
+  have hle2 : ((supp x).orderEmbOfFin h (Fin.mk (S.card - 1) (by
+        have hp : 0 < #(supp x) := Finset.card_pos.mpr ⟨21, hu21⟩
+        omega)) : Slot)
+      ≤ (21 : Slot) := Fin.le_last _
+  rw [hj21] at hle1
+  exact le_antisymm hle2 hle1
+
+/-! ## 4d-10: вклад wrap-ребра 21 в кофакторной форме -/
+
+/-- Столбцы Слейтеровской матрицы с одинаковыми позициями совпадают
+(поточечно). -/
+theorem slaterMat_col_congr (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    {j j' : Fin S.card}
+    (hj : ((supp x).orderEmbOfFin h j : Slot)
+        = ((supp x).orderEmbOfFin h j' : Slot))
+    (i : Fin S.card) :
+    slaterMat S x h i j = slaterMat S x h i j' := by
+  rw [slaterMat_entry_emb, slaterMat_entry_emb, hj]
+
+/-- Вклад wrap-ребра `21` при `x 21 = 1`, `x 0 = 0` (циклический сдвиг
+вправо): `(−1)^{k−1}·D⁺(j₂₁)` в столбце `j₂₁`. -/
+theorem bondTerm_21_right (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (h1 : x (21 : Slot) = 1) (h0 : x (0 : Slot) = 0)
+    (j21 : Fin S.card) (hj21 : ((supp x).orderEmbOfFin h j21 : Slot) = (21 : Slot)) :
+    (bondTerm (21 : Slot) *ᵥ (fun y => slater S y)) x
+      = ((2 : ℝ) : ℂ) * (((-1 : ℂ) ^ (S.card - 1))
+          * ∑ i, omega ^ (modeOf S i % numSlots)
+          * slaterMat S x h i j21 * cofG (slaterMat S x h) i j21) := by
+  have hu21 : (21 : Slot) ∈ supp x := by
+    unfold supp; simpa [h1] using Finset.mem_univ (21 : Slot)
+  have hpos0 : 0 < S.card := by
+    rw [← h]
+    exact Finset.card_pos.mpr ⟨(21 : Slot), hu21⟩
+  have hje : j21 = Fin.mk (S.card - 1) (by
+      have hp : 0 < #(supp x) := Finset.card_pos.mpr ⟨(21 : Slot), hu21⟩
+      omega) := by
+    refine ((supp x).orderEmbOfFin h).injective ?_
+    rw [hj21, pos_last_max S x h hu21 j21 hj21]
+  rw [hje, bondTerm_hop_wrap_right S x h h1 h0,
+    cofG_det_cyclic_right (slaterMat S x h) hpos0
+      (fun i => omega ^ (modeOf S i % numSlots))]
+
+/-! ## 4d-2в: сборка slater_diag_odd — переносные леммы -/
+
+/-- Занятый сайт лежит в носителе. -/
+theorem supp_mem_of_one (x : Cfg) (u : Slot) (h : x u = 1) : u ∈ supp x := by
+  unfold supp; simp [h]
+
+/-- Свободный сайт не лежит в носителе. -/
+theorem supp_not_mem_of_zero (x : Cfg) (u : Slot) (h : x u = 0) : u ∉ supp x := by
+  unfold supp; simp [h]
+
+/-- Вклад wrap-ребра `21` при `x 0 = 1`, `x 21 = 0` (циклический сдвиг
+влево): `(−1)^{k−1}·D⁻(j₀)` в столбце `j₀`. -/
+theorem bondTerm_21_pred_left (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (h1 : x (0 : Slot) = 1) (h0 : x (21 : Slot) = 0)
+    (j₀ : Fin S.card) (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = (0 : Slot)) :
+    (bondTerm (21 : Slot) *ᵥ (fun y => slater S y)) x
+      = ((2 : ℝ) : ℂ) * (((-1 : ℂ) ^ (S.card - 1))
+          * ∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+          * slaterMat S x h i j₀ * cofG (slaterMat S x h) i j₀) := by
+  have hu0 : (0 : Slot) ∈ supp x := supp_mem_of_one x (0 : Slot) h1
+  have hpos0 : 0 < S.card := by
+    rw [← h]; exact Finset.card_pos.mpr ⟨(0 : Slot), hu0⟩
+  have hje : j₀ = Fin.mk 0 (by
+      have hp : 0 < S.card := by omega
+      omega) := by
+    refine ((supp x).orderEmbOfFin h).injective ?_
+    rw [hj₀, ((orderEmbOfFin_min0 (supp x) hu0 h).1).symm]
+  rw [hje, bondTerm_hop_wrap_left S x h h1 h0,
+    cofG_det_cyclic_left (slaterMat S x h) hpos0
+      (fun i => omega ^ (numSlots - modeOf S i % numSlots))]
+
+/-! ## 4d-2г: инфраструктура пере-индексации -/
+
+/-- Обратное соответствие «позиция ↦ столбец»: занятый сайт `s`
+получает свой столбец через сюръективность `pos_surj`. -/
+noncomputable def embInv (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (hz : 0 < S.card) (s : Slot) : Fin S.card :=
+  if hs : s ∈ supp x then (pos_surj S x h s hs).choose
+  else Fin.mk 0 (by omega)
+
+/-- Столбец, выбранный для занятого сайта, имеет эту позицию. -/
+theorem embInv_spec (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (hz : 0 < S.card) (s : Slot) (hs : s ∈ supp x) :
+    ((supp x).orderEmbOfFin h (embInv S x h hz s) : Slot) = s := by
+  rw [embInv, dif_pos hs]
+  exact (pos_surj S x h s hs).choose_spec
+
+/-- Обратное к перечислению: `embInv (emb j) = j`. -/
+theorem embInv_emb (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (hz : 0 < S.card) (j : Fin S.card) :
+    embInv S x h hz ((supp x).orderEmbOfFin h j) = j :=
+  ((supp x).orderEmbOfFin h).injective
+    (by rw [embInv_spec S x h hz _ (Finset.orderEmbOfFin_mem _ _ _)])
+
+/-- `s + 21 + 1 = s` в `Slot` (предшественник). -/
+theorem slot_pred_suc_eq (s : Slot) : ((s + 21 : Slot) + 1 : Slot) = s := by
+  refine Fin.ext ?_
+  have h22 : numSlots = 22 := rfl
+  rw [Fin.val_add, Fin.val_add]
+  have hv : ((s : Slot) : ℕ) < numSlots := s.isLt
+  simp only [h22] at hv ⊢
+  rw [Nat.mod_add_mod]
+  show (↑s + 22) % 22 = ↑s
+  rw [Nat.add_mod_right, Nat.mod_eq_of_lt hv]
+
+/-- Фильтр-перенос: сумма по всем слотам с условием «в носителе и `Q`»
+равна сумме по столбцам с условием `Q` на позициях. -/
+theorem sum_supp_filter (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (Q : Slot → Prop) [DecidablePred Q] (F : Slot → ℂ) :
+    (∑ s : Slot, if s ∈ supp x ∧ Q s then F s else 0)
+      = ∑ j : Fin S.card,
+        (if Q ((supp x).orderEmbOfFin h j) then
+          F ((supp x).orderEmbOfFin h j) else 0) := by
+  have hzero : ∀ s ∈ (supp x)ᶜ, (if s ∈ supp x ∧ Q s then F s else 0) = 0 := by
+    intro s hsc
+    have hs : s ∉ supp x := Finset.mem_compl.mp hsc
+    rw [if_neg (fun hc => hs hc.1)]
+  have hsplit : (∑ s : Slot, if s ∈ supp x ∧ Q s then F s else 0)
+      = ∑ s ∈ supp x, (if Q s then F s else 0) := by
+    rw [← Finset.sum_add_sum_compl (s := supp x)
+      (f := fun s => if s ∈ supp x ∧ Q s then F s else 0),
+      Finset.sum_eq_zero hzero, add_zero]
+    refine Finset.sum_congr rfl fun s hs => ?_
+    by_cases hQ : Q s
+    · rw [if_pos (⟨hs, hQ⟩ : s ∈ supp x ∧ Q s), if_pos hQ]
+    · rw [if_neg (fun hc => hQ hc.2), if_neg hQ]
+  rw [hsplit]
+  exact sum_supp_emb S x h (fun u => if Q u then F u else 0)
+
+/-- Пере-индексация succ-части: сумма по рёбрам переходит в сумму по
+столбцам; столбец `j` срабатывает, когда его succ-сосед `emb j + 1`
+свободен. -/
+theorem succ_sum_reindex (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (hz : 0 < S.card) (F : Slot → ℂ) :
+    (∑ s : Slot, if x s = 1 ∧ x (s + 1) = 0 then F s else 0)
+      = ∑ j : Fin S.card,
+        (if x ((supp x).orderEmbOfFin h j + 1) = 0 then
+          F ((supp x).orderEmbOfFin h j) else 0) := by
+  have hstep : (∑ s : Slot, if x s = 1 ∧ x (s + 1) = 0 then F s else 0)
+      = ∑ s : Slot, if s ∈ supp x ∧ x (s + 1) = 0 then F s else 0 := by
+    refine Finset.sum_congr rfl fun s _ => ?_
+    by_cases hs : s ∈ supp x
+    · by_cases hQ : x (s + 1) = 0
+      · rw [if_pos (⟨mem_supp x s hs, hQ⟩ : x s = 1 ∧ x (s + 1) = 0),
+          if_pos (⟨hs, hQ⟩ : s ∈ supp x ∧ x (s + 1) = 0)]
+      · rw [if_neg (fun hc => hQ hc.2), if_neg (fun hc => hQ hc.2)]
+    · rw [if_neg (fun hc => hs (supp_mem_of_one x s hc.1)),
+        if_neg (fun hc => hs hc.1)]
+  rw [hstep, sum_supp_filter S x h (fun s => x (s + 1) = 0)]
+
+/-- Пере-индексация pred-части: сумма по рёбрам `s` переходит в сумму по
+столбцам-целям `emb j`; аргумент `F` остаётся ребром-предшественником
+`emb j + 21`. -/
+theorem pred_sum_reindex (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (hz : 0 < S.card) (F : Slot → ℂ) :
+    (∑ s : Slot, if x s = 0 ∧ x (s + 1) = 1 then F s else 0)
+      = ∑ j : Fin S.card,
+        (if x ((supp x).orderEmbOfFin h j + 21) = 0 then
+          F ((supp x).orderEmbOfFin h j + 21) else 0) := by
+  have hshift : (∑ s : Slot, if x s = 0 ∧ x (s + 1) = 1 then F s else 0)
+      = ∑ u : Slot,
+        (if x (u + 21) = 0 ∧ x u = 1 then F (u + 21) else 0) := by
+    have hsucc : Function.Bijective (fun s : Slot => s + 1) := by
+      constructor
+      · intro a b hab
+        refine Fin.ext ?_
+        have hab2 : ((a + 1 : Slot) : ℕ) = ((b + 1 : Slot) : ℕ) :=
+          congrArg Fin.val hab
+        have h1 : ((a + 1 : Slot) : ℕ) = ((a : ℕ) + 1) % numSlots := val_suc a
+        have h2 : ((b + 1 : Slot) : ℕ) = ((b : ℕ) + 1) % numSlots := val_suc b
+        rw [h1, h2] at hab2
+        have hlt1 : (a : ℕ) < numSlots := a.isLt
+        have hlt2 : (b : ℕ) < numSlots := b.isLt
+        have h22 : numSlots = 22 := rfl
+        simp only [h22] at hlt1 hlt2
+        have h22 : numSlots = 22 := rfl
+        simp only [h22] at hab2
+        omega
+      · intro u
+        exact ⟨u + 21, slot_pred_suc_eq u⟩
+    have hmem : ∀ s : Slot, s ∈ (Finset.univ : Finset Slot) ↔
+        (s + 1 : Slot) ∈ (Finset.univ : Finset Slot) := fun s =>
+      ⟨fun _ => Finset.mem_univ _, fun _ => Finset.mem_univ _⟩
+    have hval : ∀ s ∈ (Finset.univ : Finset Slot),
+        (if x s = 0 ∧ x (s + 1) = 1 then F s else 0)
+          = (fun u : Slot =>
+              if x (u + 21) = 0 ∧ x u = 1 then F (u + 21) else 0) (s + 1) := by
+      intro s _
+      show (if x s = 0 ∧ x (s + 1) = 1 then F s else 0)
+          = if x ((s + 1 : Slot) + 21) = 0 ∧ x (s + 1) = 1
+            then F ((s + 1 : Slot) + 21) else 0
+      have hsf : ((s + 1 : Slot) + 21 : Slot) = s := by
+        fin_cases s <;> decide
+      rw [hsf]
+    rw [Finset.sum_bijective (fun s : Slot => s + 1) hsucc hmem hval
+      (g := fun u => if x (u + 21) = 0 ∧ x u = 1 then F (u + 21) else 0)]
+  have hsplit : (∑ u : Slot,
+        if x (u + 21) = 0 ∧ x u = 1 then F (u + 21) else 0)
+      = ∑ u : Slot,
+        (if u ∈ supp x ∧ x (u + 21) = 0 then F (u + 21) else 0) := by
+    refine Finset.sum_congr rfl fun u _ => ?_
+    by_cases hs : u ∈ supp x
+    · by_cases hQ : x (u + 21) = 0 <;> simp [hs, hQ, mem_supp x u hs]
+    · have hx0 : x u = 0 := by
+        rcases cfg_bit x u with h0 | h1
+        · exact h0
+        · exact absurd (supp_mem_of_one x u h1) hs
+      by_cases hQ : x (u + 21) = 0 <;> simp [hs, hQ, hx0]
+  rw [hshift, hsplit, sum_supp_filter S x h (fun s => x (s + 21) = 0)]
+
+
+/-! ## 4d-3: сборка slater_diag_odd -/
+
+/-- `s ∪ {a} = insert a s` (локальная версия: в mathlib v4.21.0
+`Finset.union_singleton` отсутствует). -/
+theorem finset_union_singleton_eq_insert {α : Type*} [DecidableEq α]
+    (s : Finset α) (a : α) : s ∪ {a} = insert a s := by
+  ext u
+  simp only [Finset.mem_union, Finset.mem_singleton, Finset.mem_insert] <;> tauto
+
+/-- `s \ {a} = s.erase a` (мост между sdiff-синглтоном и erase). -/
+theorem finset_sdiff_singleton_eq_erase {α : Type*} [DecidableEq α]
+    (s : Finset α) (a : α) : s \ {a} = s.erase a := by
+  ext u
+  by_cases h : u = a <;> simp [h]
+
+/-- Мощность носителя сохраняется при активном прыжке `s ↦ s+1`
+(частица перемещается, число занятых сайтов не меняется). -/
+theorem supp_card_flipTwo_suc (x : Cfg) (s : Slot) (hP : x s ≠ x (s + 1 : Slot)) :
+    (supp (flipTwo s (s + 1 : Slot) x)).card = (supp x).card := by
+  rcases cfg_bit x s with hs0 | hs1
+  · rcases cfg_bit x (s + 1 : Slot) with ht0 | ht1
+    · exact absurd (hs0.trans ht0.symm) hP
+    · -- (0, 1): прыжок `s+1 ↦ s`
+      rw [flipTwo_comm, supp_flipTwo_swap (s + 1 : Slot) s (slot_ne_suc s).symm x ht1 hs0,
+        finset_sdiff_singleton_eq_erase _ _,
+        finset_union_singleton_eq_insert _ _,
+        Finset.card_insert_of_notMem (by
+          refine fun hc => ?_
+          rcases Finset.mem_erase.mp hc with ⟨h0, h1⟩
+          exact supp_not_mem_of_zero x s hs0 (by simp [h0, h1])),
+        Finset.card_erase_of_mem (supp_mem_of_one x (s + 1 : Slot) ht1)]
+      have hmem1 : (s + 1 : Slot) ∈ supp x :=
+        supp_mem_of_one x (s + 1 : Slot) ht1
+      have hp1 : 1 ≤ (supp x).card := by
+        have hp := Finset.card_pos.mpr ⟨_, hmem1⟩
+        omega
+      omega
+  · rcases cfg_bit x (s + 1 : Slot) with ht0 | ht1
+    · -- (1, 0): прыжок `s ↦ s+1`
+      rw [supp_flipTwo_swap s (s + 1 : Slot) (slot_ne_suc s) x hs1 ht0,
+        finset_sdiff_singleton_eq_erase _ _,
+        finset_union_singleton_eq_insert _ _,
+        Finset.card_insert_of_notMem (by
+          refine fun hc => ?_
+          rcases Finset.mem_erase.mp hc with ⟨h0, h1⟩
+          exact supp_not_mem_of_zero x (s + 1 : Slot) ht0 (by simp [h0, h1])),
+        Finset.card_erase_of_mem (supp_mem_of_one x s hs1)]
+      have hmem1 : s ∈ supp x := supp_mem_of_one x s hs1
+      have hp1 : 1 ≤ (supp x).card := by
+        have hp := Finset.card_pos.mpr ⟨_, hmem1⟩
+        omega
+      omega
+    · exact absurd (hs1.trans ht1.symm) hP
+
+/-- При несовпадающей мощности носителя вклад каждого ребра нулевой:
+прыжок сохраняет мощность, а Ψ на чужих секторах равна нулю. -/
+theorem bondTerm_mulVec_zero_hcard (S : Finset Slot) (x : Cfg)
+    (hxz : (supp x).card ≠ S.card) (s : Slot) :
+    (bondTerm s *ᵥ (fun y => slater S y)) x = 0 := by
+  rw [mulVec_bondTerm]
+  by_cases hP : x s ≠ x (s + 1 : Slot)
+  · rw [if_pos hP, slater]
+    split
+    · next hc =>
+        exact absurd ((supp_card_flipTwo_suc x s hP).symm.trans hc) hxz
+    · rw [mul_zero]
+  · rw [if_neg hP]
+
+/-- Знак циклической перестановки столбцов при нечётной мощности:
+`(-1)^(k-1) = 1`. -/
+theorem neg_one_pow_pred_even {k : ℕ} (hOdd : Odd k) : ((-1 : ℂ) ^ (k - 1)) = 1 := by
+  obtain ⟨m, rfl⟩ := hOdd
+  rw [Nat.add_sub_cancel, pow_mul, pow_two, neg_mul, one_mul, neg_neg, one_pow]
+
+/-- Вклад внутреннего ребра (без цикла) в if-форме через `embInv`. -/
+theorem bondTerm_edge_if (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (hz : 0 < S.card) (s : Slot) (hnb : ((s + 1 : Slot) : ℕ) ≠ 0) :
+    (bondTerm s *ᵥ (fun y => slater S y)) x
+      = ((2 : ℝ) : ℂ) * (if x s = 1 ∧ x (s + 1 : Slot) = 0 then
+          ∑ i, omega ^ (modeOf S i % numSlots)
+            * slaterMat S x h i (embInv S x h hz s)
+            * cofG (slaterMat S x h) i (embInv S x h hz s)
+        else 0)
+        + ((2 : ℝ) : ℂ) * (if x s = 0 ∧ x (s + 1 : Slot) = 1 then
+          ∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+            * slaterMat S x h i (embInv S x h hz (s + 1 : Slot))
+            * cofG (slaterMat S x h) i (embInv S x h hz (s + 1 : Slot))
+        else 0) := by
+  rcases cfg_bit x s with hs0 | hs1
+  · rcases cfg_bit x (s + 1 : Slot) with ht0 | ht1
+    · -- (0, 0)
+      rw [bondTerm_blocked s _ x (show x s = x (s + 1 : Slot) from hs0.trans ht0.symm),
+        if_neg (fun hc => absurd (hc.1.symm.trans hs0) (by decide)),
+        if_neg (fun hc => absurd (hc.2.symm.trans ht0) (by decide))]
+      norm_num
+    · -- (0, 1): pred-активное ребро
+      rw [if_neg (fun hc => absurd (hc.1.symm.trans hs0) (by decide)),
+        if_pos (⟨hs0, ht1⟩ : x s = 0 ∧ x (s + 1 : Slot) = 1)]
+      rw [bondTerm_pred_Dminus S x h s ht1 hs0 hnb (embInv S x h hz (s + 1 : Slot))
+        (embInv_spec S x h hz (s + 1 : Slot) (supp_mem_of_one x (s + 1 : Slot) ht1))]
+      rw [mul_zero, zero_add]
+  · rcases cfg_bit x (s + 1 : Slot) with ht0 | ht1
+    · -- (1, 0): succ-активное ребро
+      rw [if_pos (⟨hs1, ht0⟩ : x s = 1 ∧ x (s + 1 : Slot) = 0),
+        if_neg (fun hc => absurd (hc.1.symm.trans hs1) (by decide))]
+      rw [bondTerm_succ_Dplus S x h s hs1 ht0 hnb (embInv S x h hz s)
+        (embInv_spec S x h hz s (supp_mem_of_one x s hs1))]
+      rw [mul_zero, add_zero]
+    · -- (1, 1)
+      rw [bondTerm_blocked s _ x (show x s = x (s + 1 : Slot) from hs1.trans ht1.symm),
+        if_neg (fun hc => absurd (hc.2.symm.trans ht1) (by decide)),
+        if_neg (fun hc => absurd (hc.1.symm.trans hs1) (by decide))]
+      norm_num
+
+/-- Вклад wrap-ребра `21` в if-форме (знак `(−1)^(k−1) = 1` при нечётной
+мощности; сосед `21 + 1 = 0`). -/
+theorem bondTerm_wrap_if (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (hz : 0 < S.card) (hOdd : Odd S.card) :
+    (bondTerm (21 : Slot) *ᵥ (fun y => slater S y)) x
+      = ((2 : ℝ) : ℂ) * (if x (21 : Slot) = 1 ∧ x ((21 : Slot) + 1 : Slot) = 0 then
+          ∑ i, omega ^ (modeOf S i % numSlots)
+            * slaterMat S x h i (embInv S x h hz (21 : Slot))
+            * cofG (slaterMat S x h) i (embInv S x h hz (21 : Slot))
+        else 0)
+        + ((2 : ℝ) : ℂ) * (if x (21 : Slot) = 0 ∧ x ((21 : Slot) + 1 : Slot) = 1 then
+          ∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+            * slaterMat S x h i (embInv S x h hz ((21 : Slot) + 1 : Slot))
+            * cofG (slaterMat S x h) i (embInv S x h hz ((21 : Slot) + 1 : Slot))
+        else 0) := by
+  rcases cfg_bit x (21 : Slot) with hs0 | hs1
+  · rcases cfg_bit x (0 : Slot) with ht0 | ht1
+    · -- (0, 0)
+      rw [bondTerm_blocked (21 : Slot) _ x
+        (show x (21 : Slot) = x ((21 : Slot) + 1 : Slot) from hs0.trans ht0.symm),
+        if_neg (fun hc => absurd (hc.1.symm.trans hs0) (by decide)),
+        if_neg (fun hc => absurd (hc.2.symm.trans ht0) (by decide))]
+      norm_num
+    · -- (0, 1): wrap-прыжок влево `0 ↦ 21`
+      rw [if_neg (fun hc => absurd (hc.1.symm.trans hs0) (by decide)),
+        if_pos (⟨hs0, ht1⟩ : x (21 : Slot) = 0 ∧ x ((21 : Slot) + 1 : Slot) = 1)]
+      rw [bondTerm_21_pred_left S x h ht1 hs0
+        (embInv S x h hz ((21 : Slot) + 1 : Slot))
+        (show ((supp x).orderEmbOfFin h
+            (embInv S x h hz ((21 : Slot) + 1 : Slot)) : Slot) = (0 : Slot) from
+          embInv_spec S x h hz ((21 : Slot) + 1 : Slot)
+            (show ((21 : Slot) + 1 : Slot) ∈ supp x from
+              supp_mem_of_one x (0 : Slot) ht1)),
+        neg_one_pow_pred_even hOdd, one_mul]
+      rw [mul_zero, zero_add]
+  · rcases cfg_bit x (0 : Slot) with ht0 | ht1
+    · -- (1, 0): wrap-прыжок вправо `21 ↦ 0`
+      rw [if_pos (⟨hs1, ht0⟩ : x (21 : Slot) = 1 ∧ x ((21 : Slot) + 1 : Slot) = 0),
+        if_neg (fun hc => absurd (hc.1.symm.trans hs1) (by decide))]
+      rw [bondTerm_21_right S x h hs1 ht0 (embInv S x h hz (21 : Slot))
+        (embInv_spec S x h hz (21 : Slot) (supp_mem_of_one x (21 : Slot) hs1)),
+        neg_one_pow_pred_even hOdd, one_mul]
+      rw [mul_zero, add_zero]
+    · -- (1, 1)
+      rw [bondTerm_blocked (21 : Slot) _ x
+        (show x (21 : Slot) = x ((21 : Slot) + 1 : Slot) from hs1.trans ht1.symm),
+        if_neg (fun hc => absurd (hc.2.symm.trans ht1) (by decide)),
+        if_neg (fun hc => absurd (hc.1.symm.trans hs1) (by decide))]
+      norm_num
+
+
+/-- Succ-сумма сворачивается в `ω^{k}`-скалированный определитель:
+сумма по столбцам с условием «succ-сосед свободен» дополняется нулями
+занятых пар (внутренних и wrap) до полной суммы, затем `sum_scaled_row`. -/
+theorem succ_part_scaled (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (hz : 0 < S.card) :
+    (∑ s : Slot, (if x s = 1 ∧ x (s + 1 : Slot) = 0 then
+        ∑ i, omega ^ (modeOf S i % numSlots)
+          * slaterMat S x h i (embInv S x h hz s)
+          * cofG (slaterMat S x h) i (embInv S x h hz s)
+      else 0))
+      = (∑ i, omega ^ (modeOf S i % numSlots)) * (slaterMat S x h).det := by
+  rw [succ_sum_reindex S x h hz]
+  have hFull : (∑ j : Fin S.card,
+      (if x ((supp x).orderEmbOfFin h j + 1 : Slot) = 0 then
+        ∑ i, omega ^ (modeOf S i % numSlots)
+          * slaterMat S x h i (embInv S x h hz ((supp x).orderEmbOfFin h j : Slot))
+          * cofG (slaterMat S x h) i
+            (embInv S x h hz ((supp x).orderEmbOfFin h j : Slot))
+      else 0))
+      = ∑ j : Fin S.card,
+        ∑ i, omega ^ (modeOf S i % numSlots)
+          * slaterMat S x h i j * cofG (slaterMat S x h) i j := by
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [embInv_emb S x h hz j]
+    by_cases hQ : x ((supp x).orderEmbOfFin h j + 1 : Slot) = 0
+    · rw [if_pos hQ]
+    · rw [if_neg hQ]
+      symm
+      have h1 : x ((supp x).orderEmbOfFin h j : Slot) = 1 :=
+        mem_supp x _ (Finset.orderEmbOfFin_mem _ _ _)
+      have h2 : x ((supp x).orderEmbOfFin h j + 1 : Slot) = 1 := by
+        rcases cfg_bit x _ with hb | hb
+        · exact absurd hb hQ
+        · exact hb
+      by_cases hemb21 : ((supp x).orderEmbOfFin h j : Slot) = (21 : Slot)
+      · -- wrap-пара (21, 0)
+        rw [dplus_zero_wrap S x h
+          (show (21 : Slot) ∈ supp x by
+            rw [← hemb21]; exact Finset.orderEmbOfFin_mem _ _ _)
+          (show (0 : Slot) ∈ supp x from
+            supp_mem_of_one x (0 : Slot)
+              (by
+                rw [hemb21, show ((21 : Slot) + 1 : Slot) = (0 : Slot) from rfl] at h2
+                exact h2))
+          j (embInv S x h hz ((supp x).orderEmbOfFin h j + 1 : Slot))
+          (show ((supp x).orderEmbOfFin h j : Slot) = (21 : Slot) from hemb21)
+          (by
+            rw [hemb21]
+            exact embInv_spec S x h hz ((21 : Slot) + 1 : Slot)
+              (supp_mem_of_one x (0 : Slot)
+                (show x ((21 : Slot) + 1 : Slot) = 1 by rw [← hemb21]; exact h2)))]
+      · -- внутренняя занятая пара
+        have hnb : ((((supp x).orderEmbOfFin h j : Slot) + 1 : Slot) : ℕ) ≠ 0 := by
+          intro hc
+          apply hemb21
+          have hval : ((supp x).orderEmbOfFin h j : ℕ) = 21 := by
+            have hv0 : ((supp x).orderEmbOfFin h j : ℕ) < 22 :=
+              (supp x).orderEmbOfFin h j |>.isLt
+            have h22 : numSlots = 22 := rfl
+            have hv2 : ((((supp x).orderEmbOfFin h j : Slot) + 1 : Slot) : ℕ)
+                = (((supp x).orderEmbOfFin h j : ℕ) + 1) % numSlots :=
+              val_suc ((supp x).orderEmbOfFin h j)
+            rw [hc] at hv2
+            simp only [h22] at hv2
+            omega
+          exact Fin.ext hval
+        exact dplus_zero_of_pair S x h _ h1 h2 hnb j
+          (embInv S x h hz ((supp x).orderEmbOfFin h j + 1 : Slot))
+          rfl
+          (embInv_spec S x h hz _ (supp_mem_of_one x _ h2))
+  rw [hFull]
+  exact sum_scaled_row (slaterMat S x h) (fun i => omega ^ (modeOf S i % numSlots))
+
+/-- Pred-сумма сворачивается в `ω^{−k}`-скалированный определитель. -/
+theorem pred_part_scaled (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (hz : 0 < S.card) :
+    (∑ s : Slot, (if x s = 0 ∧ x (s + 1 : Slot) = 1 then
+        ∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+          * slaterMat S x h i (embInv S x h hz (s + 1 : Slot))
+          * cofG (slaterMat S x h) i (embInv S x h hz (s + 1 : Slot))
+      else 0))
+      = (∑ i, omega ^ (numSlots - modeOf S i % numSlots)) * (slaterMat S x h).det := by
+  rw [pred_sum_reindex S x h hz]
+  have hFull : (∑ j : Fin S.card,
+      (if x ((supp x).orderEmbOfFin h j + 21 : Slot) = 0 then
+        ∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+          * slaterMat S x h i
+            (embInv S x h hz (((supp x).orderEmbOfFin h j + 21 : Slot) + 1 : Slot))
+          * cofG (slaterMat S x h) i
+            (embInv S x h hz (((supp x).orderEmbOfFin h j + 21 : Slot) + 1 : Slot))
+      else 0))
+      = ∑ j : Fin S.card,
+        ∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+          * slaterMat S x h i j * cofG (slaterMat S x h) i j := by
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [slot_pred_suc_eq ((supp x).orderEmbOfFin h j), embInv_emb S x h hz j]
+    by_cases hQ : x ((supp x).orderEmbOfFin h j + 21 : Slot) = 0
+    · rw [if_pos hQ]
+    · rw [if_neg hQ]
+      symm
+      have hs1 : x ((supp x).orderEmbOfFin h j : Slot) = 1 :=
+        mem_supp x _ (Finset.orderEmbOfFin_mem _ _ _)
+      have h1 : x ((supp x).orderEmbOfFin h j + 21 : Slot) = 1 := by
+        rcases cfg_bit x _ with hb | hb
+        · exact absurd hb hQ
+        · exact hb
+      by_cases hz0 : ((supp x).orderEmbOfFin h j : Slot) = (0 : Slot)
+      · -- wrap-пара (21, 0)
+        rw [dminus_zero_wrap S x h
+          (show (21 : Slot) ∈ supp x from
+            supp_mem_of_one x (21 : Slot)
+              (by
+                rw [hz0, show ((0 : Slot) + 21 : Slot) = (21 : Slot) from rfl] at h1
+                exact h1))
+          (show (0 : Slot) ∈ supp x by
+            rw [← hz0]; exact Finset.orderEmbOfFin_mem _ _ _)
+          (embInv S x h hz ((supp x).orderEmbOfFin h j + 21 : Slot)) j
+          (by
+            rw [hz0]
+            exact embInv_spec S x h hz ((0 : Slot) + 21 : Slot)
+              (supp_mem_of_one x (21 : Slot)
+                (show x ((0 : Slot) + 21 : Slot) = 1 by rw [← hz0]; exact h1)))
+          (show ((supp x).orderEmbOfFin h j : Slot) = (0 : Slot) from hz0)]
+      · -- внутренняя занятая pred-пара
+        have hnb : ((((supp x).orderEmbOfFin h j + 21 : Slot) + 1 : Slot) : ℕ) ≠ 0 := by
+          intro hc
+          rw [slot_pred_suc_eq ((supp x).orderEmbOfFin h j)] at hc
+          exact hz0 (Fin.ext hc)
+        exact dminus_zero_of_pair S x h ((supp x).orderEmbOfFin h j + 21 : Slot)
+          h1 (by rw [slot_pred_suc_eq _]; exact hs1) hnb
+          (embInv S x h hz ((supp x).orderEmbOfFin h j + 21 : Slot)) j
+          (embInv_spec S x h hz _ (supp_mem_of_one x _ h1))
+          (show ((supp x).orderEmbOfFin h j : Slot)
+              = (supp x).orderEmbOfFin h j + 21 + 1 from
+            (slot_pred_suc_eq ((supp x).orderEmbOfFin h j)).symm)
+  rw [hFull]
+  exact sum_scaled_row (slaterMat S x h)
+    (fun i => omega ^ (numSlots - modeOf S i % numSlots))
+
+
+/-- У не-21 ребра прыжок не обёрнут. -/
+theorem hnb_of_ne21 (s : Slot) (hs : s ≠ (21 : Slot)) :
+    ((s + 1 : Slot) : ℕ) ≠ 0 := by
+  intro hc
+  have hlt : (s : ℕ) < 22 := by
+    have := s.isLt
+    have h22 : numSlots = 22 := rfl
+    simp only [h22] at this
+    exact this
+  have hv : ((s + 1 : Slot) : ℕ) = ((s : ℕ) + 1) % numSlots := val_suc s
+  have h22 : numSlots = 22 := rfl
+  simp only [h22] at hv
+  rw [hc] at hv
+  have hsn : (s : ℕ) ≠ 21 := fun hq => hs (Fin.ext hq)
+  omega
+
+/-- Сумма вкладов всех рёбер через if-формы succ/pred-частей
+(wrap-ребро 21 включено; знак `(−1)^(k−1) = 1` при нечётной мощности). -/
+theorem bondTerm_sum_if (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (hz : 0 < S.card) (hOdd : Odd S.card) :
+    (∑ s : Slot, (bondTerm s *ᵥ (fun y => slater S y)) x)
+      = ((2 : ℝ) : ℂ) * ∑ s : Slot,
+          (if x s = 1 ∧ x (s + 1 : Slot) = 0 then
+            ∑ i, omega ^ (modeOf S i % numSlots)
+              * slaterMat S x h i (embInv S x h hz s)
+              * cofG (slaterMat S x h) i (embInv S x h hz s)
+          else 0)
+        + ((2 : ℝ) : ℂ) * ∑ s : Slot,
+          (if x s = 0 ∧ x (s + 1 : Slot) = 1 then
+            ∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+              * slaterMat S x h i (embInv S x h hz (s + 1 : Slot))
+              * cofG (slaterMat S x h) i (embInv S x h hz (s + 1 : Slot))
+          else 0) := by
+  rw [← Finset.sum_erase_add (Finset.univ : Finset Slot)
+    (fun s => (bondTerm s *ᵥ (fun y => slater S y)) x) (Finset.mem_univ (21 : Slot))]
+  rw [Finset.sum_congr rfl
+    (fun s hs => bondTerm_edge_if S x h hz s (hnb_of_ne21 s (Finset.ne_of_mem_erase hs))),
+    bondTerm_wrap_if S x h hz hOdd]
+  rw [sum_add_distrib' (Finset.univ.erase (21 : Slot))]
+  rw [← Finset.mul_sum (s := Finset.univ.erase (21 : Slot))
+      (f := fun s => (if x s = 1 ∧ x (s + 1 : Slot) = 0 then
+        ∑ i, omega ^ (modeOf S i % numSlots)
+          * slaterMat S x h i (embInv S x h hz s)
+          * cofG (slaterMat S x h) i (embInv S x h hz s)
+      else 0)),
+    ← Finset.mul_sum (s := Finset.univ.erase (21 : Slot))
+      (f := fun s => (if x s = 0 ∧ x (s + 1 : Slot) = 1 then
+        ∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+          * slaterMat S x h i (embInv S x h hz (s + 1 : Slot))
+          * cofG (slaterMat S x h) i (embInv S x h hz (s + 1 : Slot))
+      else 0))]
+  rw [← Finset.sum_erase_add (Finset.univ : Finset Slot)
+      (fun s => (if x s = 1 ∧ x (s + 1 : Slot) = 0 then
+        ∑ i, omega ^ (modeOf S i % numSlots)
+          * slaterMat S x h i (embInv S x h hz s)
+          * cofG (slaterMat S x h) i (embInv S x h hz s)
+      else 0)) (Finset.mem_univ (21 : Slot)),
+    ← Finset.sum_erase_add (Finset.univ : Finset Slot)
+      (fun s => (if x s = 0 ∧ x (s + 1 : Slot) = 1 then
+        ∑ i, omega ^ (numSlots - modeOf S i % numSlots)
+          * slaterMat S x h i (embInv S x h hz (s + 1 : Slot))
+          * cofG (slaterMat S x h) i (embInv S x h hz (s + 1 : Slot))
+      else 0)) (Finset.mem_univ (21 : Slot))]
+  rw [mul_add, mul_add]
+  ring
+
+/-- **Этап 4d, главный случай: диагонализация на нечётном секторе.** -/
+theorem slater_diag_sector (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (hOdd : Odd S.card) :
+    (∑ s : Slot, bondTerm s).mulVec (fun y => slater S y) x
+      = (∑ i : Fin S.card, (eps (modeOf S i) : ℂ)) * slater S x := by
+  have hz : 0 < S.card := by
+    obtain ⟨m, hm⟩ := hOdd
+    omega
+  rw [mulVec_sum, Finset.sum_apply, bondTerm_sum_if S x h hz hOdd,
+    succ_part_scaled S x h hz, pred_part_scaled S x h hz]
+  rw [slater_eq_det S x h, Finset.sum_mul]
+  have e1 : ((2 : ℝ) : ℂ) * ∑ i, omega ^ (modeOf S i % numSlots) * (slaterMat S x h).det
+      = ∑ i, ((2 : ℝ) : ℂ) * omega ^ (modeOf S i % numSlots) * (slaterMat S x h).det := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    ring
+  have e2 : ((2 : ℝ) : ℂ) * ((∑ i, omega ^ (numSlots - modeOf S i % numSlots)) * (slaterMat S x h).det)
+      = ∑ i, ((2 : ℝ) : ℂ) * omega ^ (numSlots - modeOf S i % numSlots) * (slaterMat S x h).det := by
+    rw [← mul_assoc, Finset.mul_sum, Finset.sum_mul]
+  have hsum : ∑ i : Fin S.card,
+      (((2 : ℝ) : ℂ) * omega ^ (modeOf S i % numSlots) * (slaterMat S x h).det +
+        ((2 : ℝ) : ℂ) * omega ^ (numSlots - modeOf S i % numSlots) * (slaterMat S x h).det)
+    = ∑ i : Fin S.card, ((2 : ℝ) : ℂ) * omega ^ (modeOf S i % numSlots) * (slaterMat S x h).det
+      + ∑ i : Fin S.card, ((2 : ℝ) : ℂ) * omega ^ (numSlots - modeOf S i % numSlots) * (slaterMat S x h).det :=
+    sum_add_distrib' Finset.univ
+      (fun i : Fin S.card => ((2 : ℝ) : ℂ) * omega ^ (modeOf S i % numSlots) * (slaterMat S x h).det)
+      (fun i : Fin S.card => ((2 : ℝ) : ℂ) * omega ^ (numSlots - modeOf S i % numSlots) * (slaterMat S x h).det)
+  rw [e1, e2, ← hsum, Finset.sum_mul]
+  refine Finset.sum_congr (M := ℂ) rfl (fun i _ => ?_)
+  have he := eps_omega (modeOf S i)
+  rw [he]
+  push_cast
+  ring
+
+/-- **Цель Stage 4 (гипотеза Odd): диагонализация.** Оператор прыжков
+`A = Σ_s bondTerm s` диагонализуется слейтеровскими определителями при
+нечётном `|S|`: `A·Ψ_S = (Σ_{k∈S} ε_k)·Ψ_S` на всех конфигурациях.
+Основной случай — `slater_diag_sector`, чужой сектор — обнуление
+(`bondTerm_mulVec_zero_hcard`). -/
 theorem slater_diag_odd (S : Finset Slot) (hOdd : Odd S.card) :
     (∑ s : Slot, bondTerm s).mulVec (fun y => slater S y)
       = (∑ i : Fin S.card, (eps (modeOf S i) : ℂ)) • (fun y => slater S y) := by
-  sorry
+  funext x
+  by_cases hxz : (supp x).card = S.card
+  · exact slater_diag_sector S x hxz hOdd
+  · rw [mulVec_sum, Finset.sum_apply,
+      Finset.sum_eq_zero (fun s _ => bondTerm_mulVec_zero_hcard S x hxz s)]
+    simp [Pi.smul_apply, slater, dif_neg hxz]
 
 /-- Слейтеровские определители с твистованными модами. -/
 noncomputable def slaterTwist (S : Finset Slot) (x : Cfg) : ℂ :=
@@ -1594,6 +1114,262 @@ theorem slaterTwist_eq_det (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.ca
     slaterTwist S x = (slaterMatTwist S x h).det := by
   rw [slaterTwist, dif_pos h]
   rfl
+
+/-- Общая форма разложения Лапласа по столбцу (произвольный новый
+столбец `v`). -/
+theorem det_updateCol_laplace {k : ℕ} (M : Matrix (Fin k) (Fin k) ℂ) (j₀ : Fin k)
+    (v : Fin k → ℂ) :
+    (M.updateCol j₀ v).det = ∑ i, v i * cofG M i j₀ := by
+  rw [← Matrix.det_transpose, ← Matrix.updateRow_transpose, cofG_det_updateRow]
+  refine Finset.sum_congr rfl fun b _ => ?_
+  have hcof : cofG Mᵀ j₀ b = cofG M b j₀ := by
+    rw [cofG_eq_adjugate, cofG_eq_adjugate, ← Matrix.adjugate_transpose,
+      Matrix.transpose_apply]
+  rw [hcof]
+
+/-- Линейность определителя по заменяемому столбцу. -/
+theorem det_updateCol_smul_gen {k : ℕ} (M : Matrix (Fin k) (Fin k) ℂ) (j₀ : Fin k)
+    (v : Fin k → ℂ) (c : ℂ) :
+    (M.updateCol j₀ (fun i => c * v i)).det
+      = c * (M.updateCol j₀ v).det := by
+  rw [det_updateCol_laplace, det_updateCol_laplace, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun i _ => mul_assoc c (v i) (cofG M i j₀)
+
+/-- Фаза моды `ζ` отлична от нуля. -/
+theorem zeta_ne_zero : zeta ≠ 0 := by
+  unfold zeta
+  exact Complex.exp_ne_zero _
+
+/-- Произведение `ζ·ω^{k}` отлично от нуля. -/
+theorem zeta_omega_ne_zero (k : ℕ) : zeta * omega ^ (k % numSlots) ≠ 0 := by
+  refine mul_ne_zero zeta_ne_zero ?_
+  exact pow_ne_zero _ omega_ne_zero
+
+/-- У внутреннего прыжка (не wrap) исходный сайт не равен 21, значит
+`↑u₀ + 1 < 22` и `psiTwist_shift` применим. -/
+theorem hu_of_hnb (u₀ : Slot) (hnb : ((u₀ + 1 : Slot) : ℕ) ≠ 0) :
+    (u₀ : ℕ) + 1 < numSlots := by
+  have hlt : (u₀ : ℕ) < 22 := by
+    have := u₀.isLt
+    have h22 : numSlots = 22 := rfl
+    simp only [h22] at this
+    exact this
+  have hv : ((u₀ + 1 : Slot) : ℕ) = ((u₀ : ℕ) + 1) % numSlots := val_suc u₀
+  have h22 : numSlots = 22 := rfl
+  simp only [h22] at hv ⊢
+  omega
+
+/-- Столбцы занятых соседей `u₀, u₀+1` твистованной матрицы пропорциональны
+с фазой `ζ·ω^{k_i}` (`psiTwist_shift`). -/
+theorem slaterMatTwist_cols_succ_prop (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (u₀ u₁ : Slot) (hu₀ : u₀ ∈ supp x) (hu₁ : u₁ ∈ supp x) (hadj : u₁ = u₀ + 1)
+    (hu : (u₀ : ℕ) + 1 < numSlots)
+    (j₀ j₁ : Fin S.card) (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = u₀)
+    (hj₁ : ((supp x).orderEmbOfFin h j₁ : Slot) = u₁) (i : Fin S.card) :
+    slaterMatTwist S x h i j₁
+      = zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h i j₀ := by
+  show psiTwist (modeOf S i) (((supp x).orderEmbOfFin h j₁ : Slot))
+      = zeta * omega ^ (modeOf S i % numSlots)
+        * psiTwist (modeOf S i) ((supp x).orderEmbOfFin h j₀)
+  rw [hj₁, hadj, hj₀, psiTwist_shift (modeOf S i) u₀ hu]
+
+/-- Столбцы занятых сайтов `0` и `21` твистованной матрицы пропорциональны
+с фазой `−ζ·ω^{k_i}` (антипериодичность, `psiTwist_shift_wrap`). -/
+theorem slaterMatTwist_cols_wrap_prop (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (hu0 : (0 : Slot) ∈ supp x) (hu21 : (21 : Slot) ∈ supp x)
+    (j0 j21 : Fin S.card) (hj0 : ((supp x).orderEmbOfFin h j0 : Slot) = 0)
+    (hj21 : ((supp x).orderEmbOfFin h j21 : Slot) = 21) (i : Fin S.card) :
+    slaterMatTwist S x h i j0
+      = -zeta * omega ^ (modeOf S i % numSlots) * slaterMatTwist S x h i j21 := by
+  show psiTwist (modeOf S i) ((supp x).orderEmbOfFin h j0)
+      = -zeta * omega ^ (modeOf S i % numSlots)
+        * psiTwist (modeOf S i) ((supp x).orderEmbOfFin h j21)
+  rw [hj0, hj21, show ((0 : Slot) : Slot) = ((21 : Slot) + 1 : Slot) from rfl]
+  exact psiTwist_shift_wrap (modeOf S i)
+
+/-- Сдвиг твистованной моды влево `u ↦ u−1`: фаза `(ζ·ω^{k})⁻¹`. -/
+theorem psiTwist_pred_shift (k : ℕ) (u : Slot) (hu0 : (u : ℕ) ≠ 0) :
+    psiTwist k (u - 1)
+      = (zeta * omega ^ (k % numSlots))⁻¹ * psiTwist k u := by
+  have hz : zeta * omega ^ (k % numSlots) ≠ 0 := zeta_omega_ne_zero k
+  have hval : (((u - 1 : Slot) + 1 : Slot) : ℕ) = ((u : Slot) : ℕ) := by
+    rw [pred_add_one u]
+  have hup : ((u - 1 : Slot) : ℕ) + 1 < numSlots := by
+    have hu : ((u : Slot) : ℕ) < numSlots := u.isLt
+    have hup1 : ((u - 1 : Slot) : ℕ) < numSlots := (u - 1).isLt
+    have h22 : numSlots = 22 := rfl
+    have hv2 : (((u - 1 : Slot) + 1 : Slot) : ℕ)
+        = (((u - 1 : Slot) : ℕ) + 1) % numSlots := val_suc (u - 1)
+    rw [pred_add_one u] at hv2
+    simp only [h22] at hv2 ⊢
+    omega
+  have h1 := psiTwist_shift k (u - 1) hup
+  rw [pred_add_one u] at h1
+  rw [h1, ← mul_assoc, inv_mul_cancel₀ hz, one_mul]
+
+/-- Замена столбца сайта `v = u₀+1` в твистованной матрице: фаза `ζ·ω^{k_i}`. -/
+theorem slaterMatTwist_replace_succ_matrix (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (u₀ : Slot) (hU₀mem : u₀ ∈ supp x) (v : Slot) (hvnot : v ∉ supp x)
+    (hadj : v = u₀ + 1) (hnb : (v : ℕ) ≠ 0) (j₀ : Fin S.card)
+    (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = u₀) :
+    (Matrix.of fun i j =>
+        psiTwist (modeOf S i)
+          (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
+            ((card_replace (supp x) u₀ hU₀mem v hvnot).trans h) j))
+      = Matrix.of fun i j =>
+          if j = j₀ then zeta * omega ^ (modeOf S i % numSlots)
+              * slaterMatTwist S x h i j₀
+          else slaterMatTwist S x h i j := by
+  ext i j
+  simp only [Matrix.of_apply, slaterMatTwist]
+  by_cases hj : j = j₀
+  · rw [hj, if_pos rfl,
+      orderEmb_replace_succ_index (supp x) u₀ hU₀mem v hvnot hadj hnb h j₀ hj₀ j₀,
+      if_pos rfl, hadj, psiTwist_shift (modeOf S i) u₀
+        (hu_of_hnb u₀ (by rw [← hadj]; exact hnb)), hj₀]
+  · rw [if_neg hj,
+      orderEmb_replace_succ_index (supp x) u₀ hU₀mem v hvnot hadj hnb h j₀ hj₀ j,
+      if_neg hj]
+
+/-- Замена столбца сайта `v = u₀−1` в твистованной матрице: фаза
+`(ζ·ω^{k_i})⁻¹`. -/
+theorem slaterMatTwist_replace_pred_matrix (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (u₀ : Slot) (hU₀mem : u₀ ∈ supp x) (v : Slot) (hvnot : v ∉ supp x)
+    (hadj : v = u₀ - 1) (hnb : (u₀ : ℕ) ≠ 0) (j₀ : Fin S.card)
+    (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = u₀) :
+    (Matrix.of fun i j =>
+        psiTwist (modeOf S i)
+          (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
+            ((card_replace (supp x) u₀ hU₀mem v hvnot).trans h) j))
+      = Matrix.of fun i j =>
+          if j = j₀ then (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+              * slaterMatTwist S x h i j₀
+          else slaterMatTwist S x h i j := by
+  ext i j
+  simp only [Matrix.of_apply, slaterMatTwist]
+  by_cases hj : j = j₀
+  · rw [hj, if_pos rfl,
+      orderEmb_replace_pred_index (supp x) u₀ hU₀mem v hvnot hadj hnb h j₀ hj₀ j₀,
+      if_pos rfl, hadj, psiTwist_pred_shift (modeOf S i) u₀ hnb, hj₀]
+  · rw [if_neg hj,
+      orderEmb_replace_pred_index (supp x) u₀ hU₀mem v hvnot hadj hnb h j₀ hj₀ j,
+      if_neg hj]
+
+/-- Значение Ψ̃_S на конфигурации с перескоком вправо (без цикла):
+определитель матрицы со столбцом `j₀`, скалированным фазой `ζ·ω^{k_i}`. -/
+theorem slaterTwist_hop_succ (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (u₀ : Slot) (hU₀ : u₀ ∈ supp x) (v : Slot) (hv : v ∉ supp x) (hadj : v = u₀ + 1)
+    (hnb : (v : ℕ) ≠ 0) (j₀ : Fin S.card)
+    (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = u₀) :
+    slaterTwist S (flipTwo u₀ v x)
+      = (Matrix.of fun (i j : Fin S.card) =>
+          if j = j₀ then zeta * omega ^ (modeOf S i % numSlots)
+              * slaterMatTwist S x h i j₀
+          else slaterMatTwist S x h i j).det := by
+  have hsupp : supp (flipTwo u₀ v x) = ((supp x \ {u₀} : Finset Slot) ∪ {v}) :=
+    supp_flipTwo_swap u₀ v (by intro hc; exact hv (hc ▸ hU₀)) x (mem_supp _ _ hU₀)
+      (not_mem_supp _ _ hv)
+  have hc : (supp (flipTwo u₀ v x)).card = S.card := by
+    rw [hsupp]
+    exact (card_replace (supp x) u₀ hU₀ v hv).trans h
+  have hproj : ∀ j : Fin S.card,
+      ((supp (flipTwo u₀ v x)).orderEmbOfFin hc j : Slot)
+        = (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
+            ((card_replace (supp x) u₀ hU₀ v hv).trans h) j : Slot) := by
+    intro j
+    have hf : (fun j' : Fin S.card =>
+          ((supp (flipTwo u₀ v x)).orderEmbOfFin hc j' : Slot))
+        = ((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
+            ((card_replace (supp x) u₀ hU₀ v hv).trans h) := by
+      refine Finset.orderEmbOfFin_unique
+        ((card_replace (supp x) u₀ hU₀ v hv).trans h) ?_ ?_
+      · intro j'
+        rw [← hsupp]
+        exact Finset.orderEmbOfFin_mem _ _ _
+      · intro a b hab
+        exact ((supp (flipTwo u₀ v x)).orderEmbOfFin hc).strictMono hab
+    exact congrFun hf j
+  have hmat' : slaterMatTwist S (flipTwo u₀ v x) hc
+      = (Matrix.of fun (i j : Fin S.card) =>
+          psiTwist (modeOf S i)
+            (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
+              ((card_replace (supp x) u₀ hU₀ v hv).trans h) j)) := by
+    ext i j
+    simp only [Matrix.of_apply, slaterMatTwist]
+    rw [hproj j]
+  calc slaterTwist S (flipTwo u₀ v x)
+      = (slaterMatTwist S (flipTwo u₀ v x) hc).det := slaterTwist_eq_det S _ hc
+    _ = (Matrix.of fun (i j : Fin S.card) =>
+          psiTwist (modeOf S i)
+            (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
+              ((card_replace (supp x) u₀ hU₀ v hv).trans h) j)).det := by
+        rw [hmat']
+    _ = (Matrix.of fun (i j : Fin S.card) =>
+          if j = j₀ then zeta * omega ^ (modeOf S i % numSlots)
+              * slaterMatTwist S x h i j₀
+          else slaterMatTwist S x h i j).det :=
+        congrArg Matrix.det
+          (slaterMatTwist_replace_succ_matrix S x h u₀ hU₀ v hv hadj hnb j₀ hj₀)
+
+/-- Значение Ψ̃_S на конфигурации с перескоком влево (без цикла):
+определитель матрицы со столбцом `j₀`, скалированным фазой `(ζ·ω^{k_i})⁻¹`. -/
+theorem slaterTwist_hop_pred (S : Finset Slot) (x : Cfg) (h : (supp x).card = S.card)
+    (u₀ : Slot) (hU₀ : u₀ ∈ supp x) (v : Slot) (hv : v ∉ supp x) (hadj : v = u₀ - 1)
+    (hnb : (u₀ : ℕ) ≠ 0) (j₀ : Fin S.card)
+    (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = u₀) :
+    slaterTwist S (flipTwo u₀ v x)
+      = (Matrix.of fun (i j : Fin S.card) =>
+          if j = j₀ then (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+              * slaterMatTwist S x h i j₀
+          else slaterMatTwist S x h i j).det := by
+  have hsupp : supp (flipTwo u₀ v x) = ((supp x \ {u₀} : Finset Slot) ∪ {v}) :=
+    supp_flipTwo_swap u₀ v (by intro hc; exact hv (hc ▸ hU₀)) x (mem_supp _ _ hU₀)
+      (not_mem_supp _ _ hv)
+  have hc : (supp (flipTwo u₀ v x)).card = S.card := by
+    rw [hsupp]
+    exact (card_replace (supp x) u₀ hU₀ v hv).trans h
+  have hproj : ∀ j : Fin S.card,
+      ((supp (flipTwo u₀ v x)).orderEmbOfFin hc j : Slot)
+        = (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
+            ((card_replace (supp x) u₀ hU₀ v hv).trans h) j : Slot) := by
+    intro j
+    have hf : (fun j' : Fin S.card =>
+          ((supp (flipTwo u₀ v x)).orderEmbOfFin hc j' : Slot))
+        = ((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
+            ((card_replace (supp x) u₀ hU₀ v hv).trans h) := by
+      refine Finset.orderEmbOfFin_unique
+        ((card_replace (supp x) u₀ hU₀ v hv).trans h) ?_ ?_
+      · intro j'
+        rw [← hsupp]
+        exact Finset.orderEmbOfFin_mem _ _ _
+      · intro a b hab
+        exact ((supp (flipTwo u₀ v x)).orderEmbOfFin hc).strictMono hab
+    exact congrFun hf j
+  have hmat' : slaterMatTwist S (flipTwo u₀ v x) hc
+      = (Matrix.of fun (i j : Fin S.card) =>
+          psiTwist (modeOf S i)
+            (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
+              ((card_replace (supp x) u₀ hU₀ v hv).trans h) j)) := by
+    ext i j
+    simp only [Matrix.of_apply, slaterMatTwist]
+    rw [hproj j]
+  calc slaterTwist S (flipTwo u₀ v x)
+      = (slaterMatTwist S (flipTwo u₀ v x) hc).det := slaterTwist_eq_det S _ hc
+    _ = (Matrix.of fun (i j : Fin S.card) =>
+          psiTwist (modeOf S i)
+            (((supp x \ {u₀} : Finset Slot) ∪ {v}).orderEmbOfFin
+              ((card_replace (supp x) u₀ hU₀ v hv).trans h) j)).det := by
+        rw [hmat']
+    _ = (Matrix.of fun (i j : Fin S.card) =>
+          if j = j₀ then (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+              * slaterMatTwist S x h i j₀
+          else slaterMatTwist S x h i j).det :=
+        congrArg Matrix.det
+          (slaterMatTwist_replace_pred_matrix S x h u₀ hU₀ v hv hadj hnb j₀ hj₀)
 
 /-- Столбец циклического прыжка вправо `21 ↦ 0` в твистованном базисе:
 на месте `0` — столбец сайта `0 = ζ^{0}ψ(0)`, равный `(−ζ)·ω^{k_i}·ψ̃_{k_i}(21)`
@@ -1664,6 +1440,465 @@ theorem slaterMatTwist_wrap01_matrix (S : Finset Slot) (x : Cfg)
     exact psiTwist_pred_wrap (modeOf S i)
   · rw [dif_neg hj, dif_neg hj]
 
+/-- Вклад ребра `s` (перескок вправо, без цикла) в твистованном секторе. -/
+theorem bondTerm_hop_succ_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (s : Slot) (h1 : x s = 1) (h0 : x (s + 1 : Slot) = 0)
+    (hnb : ((s + 1 : Slot) : ℕ) ≠ 0)
+    (j₀ : Fin S.card) (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = s) :
+    (bondTerm s *ᵥ (fun y => slaterTwist S y)) x
+      = ((2 : ℝ) : ℂ) * (Matrix.of fun (i j : Fin S.card) =>
+          if j = j₀ then zeta * omega ^ (modeOf S i % numSlots)
+              * slaterMatTwist S x h i j₀
+          else slaterMatTwist S x h i j).det := by
+  rw [mulVec_bondTerm,
+    if_pos (show x s ≠ x (s + 1) from by rw [h1, h0]; exact one_ne_zero),
+    slaterTwist_hop_succ S x h s
+      (by unfold supp; simpa [h1] using Finset.mem_univ s)
+      (s + 1 : Slot)
+      (by intro hc
+          have hmem := mem_supp _ _ hc
+          rw [h0] at hmem
+          exact zero_ne_one hmem)
+      rfl hnb j₀ hj₀]
+
+/-- Вклад succ-активного ребра в твистованном секторе:
+`2·Σ_i ζ·ω^{k_i}·M̃_{i,j₀}·C̃_{i,j₀}`. -/
+theorem bondTerm_succ_Dplus_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (s : Slot) (h1 : x s = 1) (h0 : x (s + 1 : Slot) = 0)
+    (hnb : ((s + 1 : Slot) : ℕ) ≠ 0)
+    (j₀ : Fin S.card) (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = s) :
+    (bondTerm s *ᵥ (fun y => slaterTwist S y)) x
+      = ((2 : ℝ) : ℂ) * ∑ i, zeta * omega ^ (modeOf S i % numSlots)
+          * slaterMatTwist S x h i j₀ * cofG (slaterMatTwist S x h) i j₀ := by
+  have heq : (Matrix.of fun (i j : Fin S.card) =>
+      if j = j₀ then zeta * omega ^ (modeOf S i % numSlots)
+          * slaterMatTwist S x h i j₀
+      else slaterMatTwist S x h i j)
+      = (slaterMatTwist S x h).updateCol j₀
+          (fun i => zeta * omega ^ (modeOf S i % numSlots)
+              * slaterMatTwist S x h i j₀) := by
+    ext i j
+    by_cases hj : j = j₀
+    · subst hj; simp [Matrix.updateCol_apply, Matrix.of_apply]
+    · simp [Matrix.updateCol_apply, Matrix.of_apply, hj]
+  rw [bondTerm_hop_succ_twist S x h s h1 h0 hnb j₀ hj₀, heq, cofG_det_updateCol]
+
+/-- Вклад ребра `s` (перескок влево, без цикла) в твистованном секторе. -/
+theorem bondTerm_hop_pred_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (s : Slot) (h1 : x (s + 1 : Slot) = 1) (h0 : x s = 0)
+    (hnb : ((s + 1 : Slot) : ℕ) ≠ 0)
+    (j₁ : Fin S.card) (hj₁ : ((supp x).orderEmbOfFin h j₁ : Slot) = s + 1) :
+    (bondTerm s *ᵥ (fun y => slaterTwist S y)) x
+      = ((2 : ℝ) : ℂ) * (Matrix.of fun (i j : Fin S.card) =>
+          if j = j₁ then (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+              * slaterMatTwist S x h i j₁
+          else slaterMatTwist S x h i j).det := by
+  have hs21 : (s : ℕ) + 1 < numSlots := by
+    by_contra hcon
+    have hlt := s.isLt
+    have heq : (s : ℕ) + 1 = numSlots := by omega
+    have hv : ((s + 1 : Slot) : ℕ) = ((s : ℕ) + 1) % numSlots := val_suc s
+    rw [heq, Nat.mod_self] at hv
+    exact hnb hv
+  rw [mulVec_bondTerm,
+    if_pos (show x s ≠ x (s + 1) from by rw [h0, h1]; exact fun hc => one_ne_zero hc.symm),
+    flipTwo_comm s (s + 1) x,
+    slaterTwist_hop_pred S x h (s + 1 : Slot)
+      (by unfold supp; simpa [h1] using Finset.mem_univ (s + 1 : Slot))
+      s
+      (by intro hc
+          have hmem := mem_supp _ _ hc
+          rw [h0] at hmem
+          exact zero_ne_one hmem)
+      (slot_pred_suc s hs21).symm hnb j₁ hj₁]
+
+/-- Вклад pred-активного ребра в твистованном секторе:
+`2·Σ_i (ζ·ω^{k_i})⁻¹·M̃_{i,j₁}·C̃_{i,j₁}`. -/
+theorem bondTerm_pred_Dminus_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (s : Slot) (h1 : x (s + 1 : Slot) = 1) (h0 : x s = 0)
+    (hnb : ((s + 1 : Slot) : ℕ) ≠ 0)
+    (j₁ : Fin S.card) (hj₁ : ((supp x).orderEmbOfFin h j₁ : Slot) = s + 1) :
+    (bondTerm s *ᵥ (fun y => slaterTwist S y)) x
+      = ((2 : ℝ) : ℂ) * ∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+          * slaterMatTwist S x h i j₁ * cofG (slaterMatTwist S x h) i j₁ := by
+  have heq : (Matrix.of fun (i j : Fin S.card) =>
+      if j = j₁ then (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+          * slaterMatTwist S x h i j₁
+      else slaterMatTwist S x h i j)
+      = (slaterMatTwist S x h).updateCol j₁
+          (fun i => (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+              * slaterMatTwist S x h i j₁) := by
+    ext i j
+    by_cases hj : j = j₁
+    · subst hj; simp [Matrix.updateCol_apply, Matrix.of_apply]
+    · simp [Matrix.updateCol_apply, Matrix.of_apply, hj]
+  rw [bondTerm_hop_pred_twist S x h s h1 h0 hnb j₁ hj₁, heq, cofG_det_updateCol]
+
+/-- Значение Ψ̃_S на конфигурации с циклическим перескоком вправо
+`21 ↦ 0`: определитель циклически сдвинутой твистованной матрицы. -/
+theorem slaterTwist_hop_wrap_right (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (hU₀ : (21 : Slot) ∈ supp x) (hv : (0 : Slot) ∉ supp x) :
+    slaterTwist S (flipTwo (21 : Slot) (0 : Slot) x)
+      = (Matrix.of fun (i j : Fin S.card) =>
+          if (j : ℕ) = 0
+          then (-zeta) * omega ^ (modeOf S i % numSlots)
+              * slaterMatTwist S x h i (Fin.mk (S.card - 1) (by
+                  have h1 : 0 < S.card := by
+                    rw [← h]; exact Finset.card_pos.mpr ⟨21, hU₀⟩
+                  omega))
+          else slaterMatTwist S x h i (Fin.mk ((j : ℕ) - 1) (by
+                  have := j.isLt; omega))).det := by
+  have hsupp : supp (flipTwo (21 : Slot) (0 : Slot) x)
+      = ((supp x \ {21} : Finset Slot) ∪ {0}) :=
+    supp_flipTwo_swap (21 : Slot) (0 : Slot) (by intro hc; exact hv (hc ▸ hU₀)) x
+      (mem_supp _ _ hU₀) (not_mem_supp _ _ hv)
+  have hc : (supp (flipTwo (21 : Slot) (0 : Slot) x)).card = S.card := by
+    rw [hsupp]
+    exact (card_replace (supp x) 21 hU₀ 0 hv).trans h
+  have hproj : ∀ j : Fin S.card,
+      ((supp (flipTwo (21 : Slot) (0 : Slot) x)).orderEmbOfFin hc j : Slot)
+        = (((supp x \ {21} : Finset Slot) ∪ {0}).orderEmbOfFin
+            ((card_replace (supp x) 21 hU₀ 0 hv).trans h) j : Slot) := by
+    intro j
+    have hf : (fun j' : Fin S.card =>
+          ((supp (flipTwo (21 : Slot) (0 : Slot) x)).orderEmbOfFin hc j' : Slot))
+        = ((supp x \ {21} : Finset Slot) ∪ {0}).orderEmbOfFin
+            ((card_replace (supp x) 21 hU₀ 0 hv).trans h) := by
+      refine Finset.orderEmbOfFin_unique
+        ((card_replace (supp x) 21 hU₀ 0 hv).trans h) ?_ ?_
+      · intro j'
+        rw [← hsupp]
+        exact Finset.orderEmbOfFin_mem _ _ _
+      · intro a b hab
+        exact ((supp (flipTwo (21 : Slot) (0 : Slot) x)).orderEmbOfFin hc).strictMono hab
+    exact congrFun hf j
+  have hmat' : slaterMatTwist S (flipTwo (21 : Slot) (0 : Slot) x) hc
+      = (Matrix.of fun (i j : Fin S.card) =>
+          psiTwist (modeOf S i)
+            (((supp x \ {21} : Finset Slot) ∪ {0}).orderEmbOfFin
+              ((card_replace (supp x) 21 hU₀ 0 hv).trans h) j)) := by
+    ext i j
+    simp only [Matrix.of_apply, slaterMatTwist]
+    rw [hproj j]
+  calc slaterTwist S (flipTwo (21 : Slot) (0 : Slot) x)
+      = (slaterMatTwist S (flipTwo (21 : Slot) (0 : Slot) x) hc).det :=
+        slaterTwist_eq_det S _ hc
+    _ = (Matrix.of fun (i j : Fin S.card) =>
+          psiTwist (modeOf S i)
+            (((supp x \ {21} : Finset Slot) ∪ {0}).orderEmbOfFin
+              ((card_replace (supp x) 21 hU₀ 0 hv).trans h) j)).det := by
+        rw [hmat']
+    _ = (Matrix.of fun (i j : Fin S.card) =>
+          if (j : ℕ) = 0
+          then (-zeta) * omega ^ (modeOf S i % numSlots)
+              * slaterMatTwist S x h i (Fin.mk (S.card - 1) (by
+                  have h1 : 0 < S.card := by
+                    rw [← h]; exact Finset.card_pos.mpr ⟨21, hU₀⟩
+                  omega))
+          else slaterMatTwist S x h i (Fin.mk ((j : ℕ) - 1) (by
+                  have := j.isLt; omega))).det :=
+        congrArg Matrix.det (slaterMatTwist_wrap21_matrix S x h hU₀ hv)
+
+/-- Вклад wrap-ребра `21` (прыжок вправо) в твистованном секторе. -/
+theorem bondTerm_hop_wrap_right_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card) (h1 : x (21 : Slot) = 1) (h0 : x (0 : Slot) = 0) :
+    (bondTerm (21 : Slot) *ᵥ (fun y => slaterTwist S y)) x
+      = ((2 : ℝ) : ℂ) * (Matrix.of fun (i j : Fin S.card) =>
+          if (j : ℕ) = 0
+          then (-zeta) * omega ^ (modeOf S i % numSlots)
+              * slaterMatTwist S x h i (Fin.mk (S.card - 1) (by
+                  have h1' : 0 < S.card := by
+                    rw [← h]; exact Finset.card_pos.mpr ⟨21, by
+                      unfold supp; simpa [h1] using Finset.mem_univ (21 : Slot)⟩
+                  omega))
+          else slaterMatTwist S x h i (Fin.mk ((j : ℕ) - 1) (by
+                  have := j.isLt; omega))).det := by
+  have hu : (21 : Slot) ∈ supp x := by
+    unfold supp; simpa [h1] using Finset.mem_univ (21 : Slot)
+  have hv : (0 : Slot) ∉ supp x := by
+    intro hc
+    have hmem := mem_supp _ _ hc
+    rw [h0] at hmem
+    exact zero_ne_one hmem
+  rw [mulVec_bondTerm,
+    if_pos (show x (21 : Slot) ≠ x ((21 : Slot) + 1) from by
+      intro hc
+      rw [show ((21 : Slot) + 1) = (0 : Slot) from rfl, h1, h0] at hc
+      exact one_ne_zero hc),
+    show ((21 : Slot) + 1) = (0 : Slot) from rfl,
+    slaterTwist_hop_wrap_right S x h hu hv]
+
+/-- Значение Ψ̃_S на конфигурации с циклическим перескоком влево
+`0 ↦ 21`. -/
+theorem slaterTwist_hop_wrap_left (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (hU₀ : (0 : Slot) ∈ supp x) (hv : (21 : Slot) ∉ supp x) :
+    slaterTwist S (flipTwo (21 : Slot) (0 : Slot) x)
+      = (Matrix.of fun (i j : Fin S.card) =>
+          if hj : (j : ℕ) = S.card - 1
+          then (-zeta)⁻¹ * (omega ^ (modeOf S i % numSlots))⁻¹
+              * slaterMatTwist S x h i (Fin.mk 0 (by
+                  have h1 : 0 < S.card := by
+                    rw [← h]; exact Finset.card_pos.mpr ⟨0, hU₀⟩
+                  omega))
+          else slaterMatTwist S x h i (Fin.mk ((j : ℕ) + 1) (by
+                  have := j.isLt; omega))).det := by
+  have hsupp : supp (flipTwo (21 : Slot) (0 : Slot) x)
+      = ((supp x \ {0} : Finset Slot) ∪ {21}) :=
+    supp_flipTwo_swap (0 : Slot) (21 : Slot) (by intro hc; exact hv (hc ▸ hU₀)) x
+      (mem_supp _ _ hU₀) (not_mem_supp _ _ hv)
+  have hc : (supp (flipTwo (21 : Slot) (0 : Slot) x)).card = S.card := by
+    rw [hsupp]
+    exact (card_replace (supp x) 0 hU₀ 21 hv).trans h
+  have hproj : ∀ j : Fin S.card,
+      ((supp (flipTwo (21 : Slot) (0 : Slot) x)).orderEmbOfFin hc j : Slot)
+        = (((supp x \ {0} : Finset Slot) ∪ {21}).orderEmbOfFin
+            ((card_replace (supp x) 0 hU₀ 21 hv).trans h) j : Slot) := by
+    intro j
+    have hf : (fun j' : Fin S.card =>
+          ((supp (flipTwo (21 : Slot) (0 : Slot) x)).orderEmbOfFin hc j' : Slot))
+        = ((supp x \ {0} : Finset Slot) ∪ {21}).orderEmbOfFin
+            ((card_replace (supp x) 0 hU₀ 21 hv).trans h) := by
+      refine Finset.orderEmbOfFin_unique
+        ((card_replace (supp x) 0 hU₀ 21 hv).trans h) ?_ ?_
+      · intro j'
+        rw [← hsupp]
+        exact Finset.orderEmbOfFin_mem _ _ _
+      · intro a b hab
+        exact ((supp (flipTwo (21 : Slot) (0 : Slot) x)).orderEmbOfFin hc).strictMono hab
+    exact congrFun hf j
+  have hmat' : slaterMatTwist S (flipTwo (21 : Slot) (0 : Slot) x) hc
+      = (Matrix.of fun (i j : Fin S.card) =>
+          psiTwist (modeOf S i)
+            (((supp x \ {0} : Finset Slot) ∪ {21}).orderEmbOfFin
+              ((card_replace (supp x) 0 hU₀ 21 hv).trans h) j)) := by
+    ext i j
+    simp only [Matrix.of_apply, slaterMatTwist]
+    rw [hproj j]
+  calc slaterTwist S (flipTwo (21 : Slot) (0 : Slot) x)
+      = (slaterMatTwist S (flipTwo (21 : Slot) (0 : Slot) x) hc).det :=
+        slaterTwist_eq_det S _ hc
+    _ = (Matrix.of fun (i j : Fin S.card) =>
+          psiTwist (modeOf S i)
+            (((supp x \ {0} : Finset Slot) ∪ {21}).orderEmbOfFin
+              ((card_replace (supp x) 0 hU₀ 21 hv).trans h) j)).det := by
+        rw [hmat']
+    _ = (Matrix.of fun (i j : Fin S.card) =>
+          if hj : (j : ℕ) = S.card - 1
+          then (-zeta)⁻¹ * (omega ^ (modeOf S i % numSlots))⁻¹
+              * slaterMatTwist S x h i (Fin.mk 0 (by
+                  have h1 : 0 < S.card := by
+                    rw [← h]; exact Finset.card_pos.mpr ⟨0, hU₀⟩
+                  omega))
+          else slaterMatTwist S x h i (Fin.mk ((j : ℕ) + 1) (by
+                  have := j.isLt; omega))).det :=
+        congrArg Matrix.det (slaterMatTwist_wrap01_matrix S x h hU₀ hv)
+
+/-- Вклад wrap-ребра `21` (прыжок влево) в твистованном секторе. -/
+theorem bondTerm_hop_wrap_left_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card) (h1 : x (0 : Slot) = 1) (h0 : x (21 : Slot) = 0) :
+    (bondTerm (21 : Slot) *ᵥ (fun y => slaterTwist S y)) x
+      = ((2 : ℝ) : ℂ) * (Matrix.of fun (i j : Fin S.card) =>
+          if hj : (j : ℕ) = S.card - 1
+          then (-zeta)⁻¹ * (omega ^ (modeOf S i % numSlots))⁻¹
+              * slaterMatTwist S x h i (Fin.mk 0 (by
+                  have h1' : 0 < S.card := by
+                    rw [← h]; exact Finset.card_pos.mpr ⟨0, by
+                      unfold supp; simpa [h1] using Finset.mem_univ (0 : Slot)⟩
+                  exact h1'))
+          else slaterMatTwist S x h i (Fin.mk ((j : ℕ) + 1) (by
+                  have := j.isLt; omega))).det := by
+  have hu : (0 : Slot) ∈ supp x := by
+    unfold supp; simpa [h1] using Finset.mem_univ (0 : Slot)
+  have hv : (21 : Slot) ∉ supp x := by
+    intro hc
+    have hmem := mem_supp _ _ hc
+    rw [h0] at hmem
+    exact zero_ne_one hmem
+  rw [mulVec_bondTerm,
+    if_pos (show x (21 : Slot) ≠ x ((21 : Slot) + 1) from by
+      intro hc
+      rw [show ((21 : Slot) + 1) = (0 : Slot) from rfl, h0, h1] at hc
+      exact zero_ne_one hc),
+    show ((21 : Slot) + 1) = (0 : Slot) from rfl,
+    slaterTwist_hop_wrap_left S x h hu hv]
+
+/-- Занятая succ-пара в твистованном секторе: `D⁺(j₀) = 0`. -/
+theorem dplus_zero_of_pair_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (s : Slot) (h1 : x s = 1) (h2 : x (s + 1 : Slot) = 1)
+    (hnb : ((s + 1 : Slot) : ℕ) ≠ 0)
+    (j₀ j₁ : Fin S.card) (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = s)
+    (hj₁ : ((supp x).orderEmbOfFin h j₁ : Slot) = s + 1) :
+    (∑ i, zeta * omega ^ (modeOf S i % numSlots)
+        * slaterMatTwist S x h i j₀ * cofG (slaterMatTwist S x h) i j₀) = 0 := by
+  have hs : s ∈ supp x := by rw [← hj₀]; exact Finset.orderEmbOfFin_mem _ _ _
+  have hs1 : (s + 1 : Slot) ∈ supp x := by
+    rw [← hj₁]; exact Finset.orderEmbOfFin_mem _ _ _
+  have hne : j₀ ≠ j₁ := by
+    intro hc
+    exfalso
+    have h22 : numSlots = 22 := rfl
+    have hlt : (s : ℕ) < 22 := by
+      have := s.isLt
+      omega
+    have hpos : (s : ℕ) ≠ ((s : ℕ) + 1) % numSlots := by
+      have hlink : ((s : ℕ) + 1) % numSlots = ((s : ℕ) + 1) % 22 := by congr 1
+      omega
+    have hslot : ((supp x).orderEmbOfFin h j₀ : Slot)
+        = ((supp x).orderEmbOfFin h j₁ : Slot) := by
+      rw [hc]
+    rw [hj₀, hj₁] at hslot
+    have hcon : ((s : Slot) : ℕ) = ((s : ℕ) + 1) % numSlots :=
+      (congrArg (fun u : Slot => (u : ℕ)) hslot).trans (val_suc s)
+    exact hpos hcon
+  rw [← cofG_det_updateCol]
+  refine det_updateCol_eq_col_zero _ j₀ j₁ _ hne ?_
+  intro i
+  rw [slaterMatTwist_cols_succ_prop S x h s (s + 1 : Slot) hs hs1 rfl
+    (hu_of_hnb s hnb) j₀ j₁ hj₀ hj₁ i]
+
+/-- Занятая succ-пара в твистованном секторе: `D⁻(j₁) = 0`. -/
+theorem dminus_zero_of_pair_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (s : Slot) (h1 : x s = 1) (h2 : x (s + 1 : Slot) = 1)
+    (hnb : ((s + 1 : Slot) : ℕ) ≠ 0)
+    (j₀ j₁ : Fin S.card) (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = s)
+    (hj₁ : ((supp x).orderEmbOfFin h j₁ : Slot) = s + 1) :
+    (∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+        * slaterMatTwist S x h i j₁ * cofG (slaterMatTwist S x h) i j₁) = 0 := by
+  have hs : s ∈ supp x := by rw [← hj₀]; exact Finset.orderEmbOfFin_mem _ _ _
+  have hs1 : (s + 1 : Slot) ∈ supp x := by
+    rw [← hj₁]; exact Finset.orderEmbOfFin_mem _ _ _
+  rw [← cofG_det_updateCol]
+  refine det_updateCol_eq_col_zero _ j₁ j₀ _
+    (pos_ne_of_ne S x h (slot_ne_suc s).symm hj₁ hj₀) ?_
+  intro i
+  rw [slaterMatTwist_cols_succ_prop S x h s (s + 1 : Slot) hs hs1 rfl
+    (hu_of_hnb s hnb) j₀ j₁ hj₀ hj₁ i]
+  rw [← mul_assoc, inv_mul_cancel₀ (zeta_omega_ne_zero (modeOf S i)), one_mul]
+
+/-- Собственная копия (в mathlib 308445d `Finset.sum_neg_distrib` удалена):
+сумма противоположных равна противоположному суммы. -/
+theorem sum_neg_distrib' {ι M : Type*} [AddCommGroup M] (u : Finset ι) (f : ι → M) :
+    ∑ i ∈ u, (-f i) = -∑ i ∈ u, f i := by
+  simpa using (map_sum (AddMonoidHom.neg : M →+ M) u f).symm
+
+/-- Wrap-пара в твистованном секторе, `(−ζ)`-форма: `D⁺(j₂₁) = 0`. -/
+theorem dplus_zero_wrap_twist_neg (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (h21 : (21 : Slot) ∈ supp x) (h0 : (0 : Slot) ∈ supp x)
+    (j21 j0 : Fin S.card) (hj21 : ((supp x).orderEmbOfFin h j21 : Slot) = 21)
+    (hj0 : ((supp x).orderEmbOfFin h j0 : Slot) = 0) :
+    (∑ i, -zeta * omega ^ (modeOf S i % numSlots)
+        * slaterMatTwist S x h i j21 * cofG (slaterMatTwist S x h) i j21) = 0 := by
+  rw [← cofG_det_updateCol]
+  have hne : j21 ≠ j0 := by
+    intro hc
+    have h1 : ((21 : Slot) : ℕ) = ((0 : Slot) : ℕ) := by
+      rw [← hj21, ← hj0, hc]
+    norm_num at h1
+  refine det_updateCol_eq_col_zero _ j21 j0 _ hne ?_
+  intro i
+  rw [slaterMatTwist_cols_wrap_prop S x h h0 h21 j0 j21 hj0 hj21 i]
+
+/-- Wrap-пара в твистованном секторе: `D⁺(j₂₁) = 0` (знак через neg-мост). -/
+theorem dplus_zero_wrap_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (h21 : (21 : Slot) ∈ supp x) (h0 : (0 : Slot) ∈ supp x)
+    (j21 j0 : Fin S.card) (hj21 : ((supp x).orderEmbOfFin h j21 : Slot) = 21)
+    (hj0 : ((supp x).orderEmbOfFin h j0 : Slot) = 0) :
+    (∑ i, zeta * omega ^ (modeOf S i % numSlots)
+        * slaterMatTwist S x h i j21 * cofG (slaterMatTwist S x h) i j21) = 0 := by
+  have h := dplus_zero_wrap_twist_neg S x h h21 h0 j21 j0 hj21 hj0
+  simp only [neg_mul] at h
+  rw [← neg_eq_zero, ← sum_neg_distrib' Finset.univ]
+  exact h
+
+/-- Wrap-пара в твистованном секторе, `(−ζ)`-форма: `D⁻(j₀) = 0`. -/
+theorem dminus_zero_wrap_twist_neg (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (h21 : (21 : Slot) ∈ supp x) (h0 : (0 : Slot) ∈ supp x)
+    (j21 j0 : Fin S.card) (hj21 : ((supp x).orderEmbOfFin h j21 : Slot) = 21)
+    (hj0 : ((supp x).orderEmbOfFin h j0 : Slot) = 0) :
+    (∑ i, (-zeta)⁻¹ * (omega ^ (modeOf S i % numSlots))⁻¹
+        * slaterMatTwist S x h i j0 * cofG (slaterMatTwist S x h) i j0) = 0 := by
+  rw [← cofG_det_updateCol]
+  have hne : j0 ≠ j21 := by
+    intro hc
+    have h1 : ((21 : Slot) : ℕ) = ((0 : Slot) : ℕ) := by
+      rw [← hj21, ← hj0, ← hc]
+    norm_num at h1
+  refine det_updateCol_eq_col_zero _ j0 j21 _ hne ?_
+  intro i
+  simp only [slaterMatTwist, Matrix.of_apply, hj0, hj21]
+  exact (psiTwist_pred_wrap (modeOf S i)).symm
+
+/-- Wrap-пара в твистованном секторе: `D⁻(j₀) = 0` (знак через neg-мост). -/
+theorem dminus_zero_wrap_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (h21 : (21 : Slot) ∈ supp x) (h0 : (0 : Slot) ∈ supp x)
+    (j21 j0 : Fin S.card) (hj21 : ((supp x).orderEmbOfFin h j21 : Slot) = 21)
+    (hj0 : ((supp x).orderEmbOfFin h j0 : Slot) = 0) :
+    (∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+        * slaterMatTwist S x h i j0 * cofG (slaterMatTwist S x h) i j0) = 0 := by
+  have h := dminus_zero_wrap_twist_neg S x h h21 h0 j21 j0 hj21 hj0
+  simp only [inv_neg, mul_inv, neg_mul] at h
+  rw [← neg_eq_zero, ← sum_neg_distrib' Finset.univ]
+  simp only [mul_inv]
+  exact h
+
+/-- Вклад wrap-ребра `21` (прыжок вправо) в твистованном секторе:
+`2·(−1)^{k−1}·Σ_i (−ζ)·ω^{k_i}·M̃_{i,j₂₁}·C̃_{i,j₂₁}`. -/
+theorem bondTerm_21_right_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (h1 : x (21 : Slot) = 1) (h0 : x (0 : Slot) = 0)
+    (j21 : Fin S.card) (hj21 : ((supp x).orderEmbOfFin h j21 : Slot) = (21 : Slot)) :
+    (bondTerm (21 : Slot) *ᵥ (fun y => slaterTwist S y)) x
+      = ((2 : ℝ) : ℂ) * (((-1 : ℂ) ^ (S.card - 1))
+          * ∑ i, -zeta * omega ^ (modeOf S i % numSlots)
+          * slaterMatTwist S x h i j21 * cofG (slaterMatTwist S x h) i j21) := by
+  have hu21 : (21 : Slot) ∈ supp x := by
+    unfold supp; simpa [h1] using Finset.mem_univ (21 : Slot)
+  have hpos0 : 0 < S.card := by
+    rw [← h]
+    exact Finset.card_pos.mpr ⟨(21 : Slot), hu21⟩
+  have hje : j21 = Fin.mk (S.card - 1) (by
+      have hp : 0 < #(supp x) := Finset.card_pos.mpr ⟨(21 : Slot), hu21⟩
+      omega) := by
+    refine ((supp x).orderEmbOfFin h).injective ?_
+    rw [hj21, pos_last_max S x h hu21 j21 hj21]
+  rw [hje, bondTerm_hop_wrap_right_twist S x h h1 h0,
+    cofG_det_cyclic_right (slaterMatTwist S x h) hpos0
+      (fun i => -zeta * omega ^ (modeOf S i % numSlots))]
+
+/-- Вклад wrap-ребра `21` (прыжок влево) в твистованном секторе:
+`2·(−1)^{k−1}·Σ_i (−ζ)⁻¹·(ω^{k_i})⁻¹·M̃_{i,j₀}·C̃_{i,j₀}`. -/
+theorem bondTerm_21_pred_left_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (h1 : x (0 : Slot) = 1) (h0 : x (21 : Slot) = 0)
+    (j₀ : Fin S.card) (hj₀ : ((supp x).orderEmbOfFin h j₀ : Slot) = (0 : Slot)) :
+    (bondTerm (21 : Slot) *ᵥ (fun y => slaterTwist S y)) x
+      = ((2 : ℝ) : ℂ) * (((-1 : ℂ) ^ (S.card - 1))
+          * ∑ i, (-zeta)⁻¹ * (omega ^ (modeOf S i % numSlots))⁻¹
+          * slaterMatTwist S x h i j₀ * cofG (slaterMatTwist S x h) i j₀) := by
+  have hu0 : (0 : Slot) ∈ supp x := supp_mem_of_one x (0 : Slot) h1
+  have hpos0 : 0 < S.card := by
+    rw [← h]; exact Finset.card_pos.mpr ⟨(0 : Slot), hu0⟩
+  have hje : j₀ = Fin.mk 0 (by
+      have hp : 0 < S.card := by omega
+      omega) := by
+    refine ((supp x).orderEmbOfFin h).injective ?_
+    rw [hj₀, ((orderEmbOfFin_min0 (supp x) hu0 h).1).symm]
+  rw [hje, bondTerm_hop_wrap_left_twist S x h h1 h0,
+    cofG_det_cyclic_left (slaterMatTwist S x h) hpos0
+      (fun i => (-zeta)⁻¹ * (omega ^ (modeOf S i % numSlots))⁻¹)]
+
 /-- Спектр кольца в **чётных** секторах (граничные условия Либа–Шульца–Маттиса):
 твистованная мода `ψ̃_k(u) = ζ^u·ω^{ku}` — собственная функция прыжкового
 оператора с собственным значением `2(ζω^k + ζ^{−1}ω^{−k})
@@ -1673,24 +1908,803 @@ theorem slaterMatTwist_wrap01_matrix (S : Finset Slot) (x : Cfg)
 noncomputable def epsTwist (k : ℕ) : ℂ :=
   2 * (zeta * omega ^ (k % numSlots) + (zeta * omega ^ (k % numSlots))⁻¹)
 
+/-- Знак циклической перестановки при чётной ненулевой мощности:
+`(-1)^(k-1) = −1`. -/
+theorem neg_one_pow_pred_odd {k : ℕ} (hEven : Even k) (hk : 0 < k) :
+    ((-1 : ℂ) ^ (k - 1)) = -1 := by
+  obtain ⟨m, rfl⟩ := hEven
+  have hm : 1 ≤ m := by omega
+  rw [show m + m - 1 = 2 * (m - 1) + 1 from by omega, pow_add, pow_mul, pow_two,
+    neg_mul, one_mul, neg_neg, one_pow, one_mul, pow_one]
+
+/-- Вклад внутреннего ребра (без цикла) в твистованном секторе, if-форма. -/
+theorem bondTerm_edge_if_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (hz : 0 < S.card) (s : Slot) (hnb : ((s + 1 : Slot) : ℕ) ≠ 0) :
+    (bondTerm s *ᵥ (fun y => slaterTwist S y)) x
+      = ((2 : ℝ) : ℂ) * (if x s = 1 ∧ x (s + 1 : Slot) = 0 then
+          ∑ i, zeta * omega ^ (modeOf S i % numSlots)
+            * slaterMatTwist S x h i (embInv S x h hz s)
+            * cofG (slaterMatTwist S x h) i (embInv S x h hz s)
+        else 0)
+        + ((2 : ℝ) : ℂ) * (if x s = 0 ∧ x (s + 1 : Slot) = 1 then
+          ∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+            * slaterMatTwist S x h i (embInv S x h hz (s + 1 : Slot))
+            * cofG (slaterMatTwist S x h) i (embInv S x h hz (s + 1 : Slot))
+        else 0) := by
+  rcases cfg_bit x s with hs0 | hs1
+  · rcases cfg_bit x (s + 1 : Slot) with ht0 | ht1
+    · rw [bondTerm_blocked s _ x (show x s = x (s + 1 : Slot) from hs0.trans ht0.symm),
+        if_neg (fun hc => zero_ne_one (hs0.symm.trans hc.1)),
+        if_neg (fun hc => zero_ne_one (ht0.symm.trans hc.2))]
+      norm_num
+    · rw [if_neg (fun hc => zero_ne_one (hs0.symm.trans hc.1)),
+        if_pos (⟨hs0, ht1⟩ : x s = 0 ∧ x (s + 1 : Slot) = 1)]
+      rw [bondTerm_pred_Dminus_twist S x h s ht1 hs0 hnb
+        (embInv S x h hz (s + 1 : Slot))
+        (embInv_spec S x h hz (s + 1 : Slot) (supp_mem_of_one x (s + 1 : Slot) ht1))]
+      rw [mul_zero, zero_add]
+  · rcases cfg_bit x (s + 1 : Slot) with ht0 | ht1
+    · rw [if_pos (⟨hs1, ht0⟩ : x s = 1 ∧ x (s + 1 : Slot) = 0),
+        if_neg (fun hc => one_ne_zero (hs1.symm.trans hc.1))]
+      rw [bondTerm_succ_Dplus_twist S x h s hs1 ht0 hnb (embInv S x h hz s)
+        (embInv_spec S x h hz s (supp_mem_of_one x s hs1))]
+      rw [mul_zero, add_zero]
+    · rw [bondTerm_blocked s _ x (show x s = x (s + 1 : Slot) from hs1.trans ht1.symm),
+        if_neg (fun hc => zero_ne_one (ht1.symm.trans hc.2).symm),
+        if_neg (fun hc => zero_ne_one (hs1.symm.trans hc.1).symm)]
+      norm_num
+
+/-- Вклад wrap-ребра `21` в твистованном секторе, if-форма (знак
+`(-1)^(k−1) = −1` при чётной ненулевой мощности компенсирует лишний минус
+границы). -/
+theorem bondTerm_wrap_if_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card)
+    (hz : 0 < S.card) (hEven : Even S.card) :
+    (bondTerm (21 : Slot) *ᵥ (fun y => slaterTwist S y)) x
+      = ((2 : ℝ) : ℂ) * (if x (21 : Slot) = 1 ∧ x ((21 : Slot) + 1 : Slot) = 0 then
+          ∑ i, zeta * omega ^ (modeOf S i % numSlots)
+            * slaterMatTwist S x h i (embInv S x h hz (21 : Slot))
+            * cofG (slaterMatTwist S x h) i (embInv S x h hz (21 : Slot))
+        else 0)
+        + ((2 : ℝ) : ℂ) * (if x (21 : Slot) = 0 ∧ x ((21 : Slot) + 1 : Slot) = 1 then
+          ∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+            * slaterMatTwist S x h i (embInv S x h hz ((21 : Slot) + 1 : Slot))
+            * cofG (slaterMatTwist S x h) i (embInv S x h hz ((21 : Slot) + 1 : Slot))
+        else 0) := by
+  rcases cfg_bit x (21 : Slot) with hs0 | hs1
+  · rcases cfg_bit x (0 : Slot) with ht0 | ht1
+    · rw [bondTerm_blocked (21 : Slot) _ x
+        (show x (21 : Slot) = x ((21 : Slot) + 1 : Slot) from hs0.trans ht0.symm),
+        if_neg (fun hc => zero_ne_one (hs0.symm.trans hc.1)),
+        if_neg (fun hc => zero_ne_one (ht0.symm.trans hc.2))]
+      norm_num
+    · rw [if_neg (fun hc => zero_ne_one (hs0.symm.trans hc.1)),
+        if_pos (⟨hs0, ht1⟩ : x (21 : Slot) = 0 ∧ x ((21 : Slot) + 1 : Slot) = 1)]
+      rw [bondTerm_21_pred_left_twist S x h ht1 hs0
+        (embInv S x h hz ((21 : Slot) + 1 : Slot))
+        (show ((supp x).orderEmbOfFin h
+            (embInv S x h hz ((21 : Slot) + 1 : Slot)) : Slot) = (0 : Slot) from
+          embInv_spec S x h hz ((21 : Slot) + 1 : Slot)
+            (show ((21 : Slot) + 1 : Slot) ∈ supp x from
+              supp_mem_of_one x (0 : Slot) ht1)),
+        neg_one_pow_pred_odd hEven hz, neg_mul, one_mul, ← sum_neg_distrib' Finset.univ]
+      simp only [inv_neg, neg_mul, neg_neg, mul_inv, mul_assoc]
+      rw [mul_zero, zero_add]
+  · rcases cfg_bit x (0 : Slot) with ht0 | ht1
+    · rw [if_pos (⟨hs1, ht0⟩ : x (21 : Slot) = 1 ∧ x ((21 : Slot) + 1 : Slot) = 0),
+        if_neg (fun hc => one_ne_zero (hs1.symm.trans hc.1))]
+      rw [bondTerm_21_right_twist S x h hs1 ht0 (embInv S x h hz (21 : Slot))
+        (embInv_spec S x h hz (21 : Slot) (supp_mem_of_one x (21 : Slot) hs1)),
+        neg_one_pow_pred_odd hEven hz, neg_mul, one_mul, ← sum_neg_distrib' Finset.univ]
+      simp only [neg_mul, neg_neg]
+      rw [mul_zero, add_zero]
+    · rw [bondTerm_blocked (21 : Slot) _ x
+        (show x (21 : Slot) = x ((21 : Slot) + 1 : Slot) from hs1.trans ht1.symm),
+        if_neg (fun hc => zero_ne_one (ht1.symm.trans hc.2).symm),
+        if_neg (fun hc => zero_ne_one (hs1.symm.trans hc.1).symm)]
+      norm_num
+
+/-- Succ-сумма твистованного сектора сворачивается в `ζ·ω^{k}`-скалированный
+определитель. -/
+theorem succ_part_scaled_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card) (hz : 0 < S.card) :
+    (∑ s : Slot, (if x s = 1 ∧ x (s + 1 : Slot) = 0 then
+        ∑ i, zeta * omega ^ (modeOf S i % numSlots)
+          * slaterMatTwist S x h i (embInv S x h hz s)
+          * cofG (slaterMatTwist S x h) i (embInv S x h hz s)
+      else 0))
+      = (∑ i, zeta * omega ^ (modeOf S i % numSlots))
+          * (slaterMatTwist S x h).det := by
+  rw [succ_sum_reindex S x h hz (fun u => ∑ i, zeta * omega ^ (modeOf S i % numSlots)
+      * slaterMatTwist S x h i (embInv S x h hz u)
+      * cofG (slaterMatTwist S x h) i (embInv S x h hz u))]
+  have hFull : (∑ j : Fin S.card,
+      (if x ((supp x).orderEmbOfFin h j + 1 : Slot) = 0 then
+        ∑ i, zeta * omega ^ (modeOf S i % numSlots)
+          * slaterMatTwist S x h i
+            (embInv S x h hz ((supp x).orderEmbOfFin h j : Slot))
+          * cofG (slaterMatTwist S x h) i
+            (embInv S x h hz ((supp x).orderEmbOfFin h j : Slot))
+      else 0))
+      = ∑ j : Fin S.card,
+        ∑ i, zeta * omega ^ (modeOf S i % numSlots)
+          * slaterMatTwist S x h i j * cofG (slaterMatTwist S x h) i j := by
+    refine Finset.sum_congr (M := ℂ) rfl fun j _ => ?_
+    rw [embInv_emb S x h hz j]
+    by_cases hQ : x ((supp x).orderEmbOfFin h j + 1 : Slot) = 0
+    · rw [if_pos hQ]
+    · rw [if_neg hQ]
+      symm
+      have h1 : x ((supp x).orderEmbOfFin h j : Slot) = 1 :=
+        mem_supp x _ (Finset.orderEmbOfFin_mem _ _ _)
+      have h2 : x ((supp x).orderEmbOfFin h j + 1 : Slot) = 1 := by
+        rcases cfg_bit x _ with hb | hb
+        · exact absurd hb hQ
+        · exact hb
+      by_cases hemb21 : ((supp x).orderEmbOfFin h j : Slot) = (21 : Slot)
+      · rw [dplus_zero_wrap_twist S x h
+          (show (21 : Slot) ∈ supp x by
+            rw [← hemb21]; exact Finset.orderEmbOfFin_mem _ _ _)
+          (show (0 : Slot) ∈ supp x from
+            supp_mem_of_one x (0 : Slot)
+              (by
+                rw [hemb21, show ((21 : Slot) + 1 : Slot) = (0 : Slot) from rfl] at h2
+                exact h2))
+          j (embInv S x h hz ((supp x).orderEmbOfFin h j + 1 : Slot))
+          (show ((supp x).orderEmbOfFin h j : Slot) = (21 : Slot) from hemb21)
+          (by
+            rw [hemb21]
+            exact embInv_spec S x h hz ((21 : Slot) + 1 : Slot)
+              (supp_mem_of_one x (0 : Slot)
+                (show x ((21 : Slot) + 1 : Slot) = 1 by rw [← hemb21]; exact h2)))]
+      · have hnb : ((((supp x).orderEmbOfFin h j : Slot) + 1 : Slot) : ℕ) ≠ 0 := by
+          intro hc
+          apply hemb21
+          have hval : ((supp x).orderEmbOfFin h j : ℕ) = 21 := by
+            have hv0 : ((supp x).orderEmbOfFin h j : ℕ) < 22 :=
+              (supp x).orderEmbOfFin h j |>.isLt
+            have h22 : numSlots = 22 := rfl
+            have hv2 : ((((supp x).orderEmbOfFin h j : Slot) + 1 : Slot) : ℕ)
+                = (((supp x).orderEmbOfFin h j : ℕ) + 1) % numSlots :=
+              val_suc ((supp x).orderEmbOfFin h j)
+            rw [hc] at hv2
+            simp only [h22] at hv2
+            omega
+          exact Fin.ext hval
+        exact dplus_zero_of_pair_twist S x h _ h1 h2 hnb j
+          (embInv S x h hz ((supp x).orderEmbOfFin h j + 1 : Slot))
+          rfl
+          (embInv_spec S x h hz _ (supp_mem_of_one x _ h2))
+  rw [hFull]
+  exact sum_scaled_row (slaterMatTwist S x h)
+    (fun i => zeta * omega ^ (modeOf S i % numSlots))
+
+/-- Pred-сумма твистованного сектора сворачивается в `(ζ·ω^{k})⁻¹`-скалированный
+определитель. -/
+theorem pred_part_scaled_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card) (hz : 0 < S.card) :
+    (∑ s : Slot, (if x s = 0 ∧ x (s + 1 : Slot) = 1 then
+        ∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+          * slaterMatTwist S x h i (embInv S x h hz (s + 1 : Slot))
+          * cofG (slaterMatTwist S x h) i (embInv S x h hz (s + 1 : Slot))
+      else 0))
+      = (∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹)
+          * (slaterMatTwist S x h).det := by
+  rw [pred_sum_reindex S x h hz (fun u => ∑ i,
+      (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+      * slaterMatTwist S x h i (embInv S x h hz (u + 1 : Slot))
+      * cofG (slaterMatTwist S x h) i (embInv S x h hz (u + 1 : Slot)))]
+  have hFull : (∑ j : Fin S.card,
+      (if x ((supp x).orderEmbOfFin h j + 21 : Slot) = 0 then
+        ∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+          * slaterMatTwist S x h i
+            (embInv S x h hz (((supp x).orderEmbOfFin h j + 21 : Slot) + 1 : Slot))
+          * cofG (slaterMatTwist S x h) i
+            (embInv S x h hz (((supp x).orderEmbOfFin h j + 21 : Slot) + 1 : Slot))
+      else 0))
+      = ∑ j : Fin S.card,
+        ∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+          * slaterMatTwist S x h i j * cofG (slaterMatTwist S x h) i j := by
+    refine Finset.sum_congr (M := ℂ) rfl fun j _ => ?_
+    rw [slot_pred_suc_eq ((supp x).orderEmbOfFin h j), embInv_emb S x h hz j]
+    by_cases hQ : x ((supp x).orderEmbOfFin h j + 21 : Slot) = 0
+    · rw [if_pos hQ]
+    · rw [if_neg hQ]
+      symm
+      have hs1 : x ((supp x).orderEmbOfFin h j : Slot) = 1 :=
+        mem_supp x _ (Finset.orderEmbOfFin_mem _ _ _)
+      have h1 : x ((supp x).orderEmbOfFin h j + 21 : Slot) = 1 := by
+        rcases cfg_bit x _ with hb | hb
+        · exact absurd hb hQ
+        · exact hb
+      by_cases hz0 : ((supp x).orderEmbOfFin h j : Slot) = (0 : Slot)
+      · rw [dminus_zero_wrap_twist S x h
+          (show (21 : Slot) ∈ supp x from
+            supp_mem_of_one x (21 : Slot)
+              (by
+                rw [hz0, show ((0 : Slot) + 21 : Slot) = (21 : Slot) from rfl] at h1
+                exact h1))
+          (show (0 : Slot) ∈ supp x by
+            rw [← hz0]; exact Finset.orderEmbOfFin_mem _ _ _)
+          (embInv S x h hz ((supp x).orderEmbOfFin h j + 21 : Slot)) j
+          (by
+            rw [hz0]
+            exact embInv_spec S x h hz ((0 : Slot) + 21 : Slot)
+              (supp_mem_of_one x (21 : Slot)
+                (show x ((0 : Slot) + 21 : Slot) = 1 by rw [← hz0]; exact h1)))
+          (show ((supp x).orderEmbOfFin h j : Slot) = (0 : Slot) from hz0)]
+      · -- внутренняя занятая pred-пара
+        have hnb : ((((supp x).orderEmbOfFin h j + 21 : Slot) + 1 : Slot) : ℕ) ≠ 0 := by
+          intro hc
+          rw [slot_pred_suc_eq ((supp x).orderEmbOfFin h j)] at hc
+          exact hz0 (Fin.ext hc)
+        exact dminus_zero_of_pair_twist S x h ((supp x).orderEmbOfFin h j + 21 : Slot)
+          h1 (by rw [slot_pred_suc_eq _]; exact hs1) hnb
+          (embInv S x h hz ((supp x).orderEmbOfFin h j + 21 : Slot)) j
+          (embInv_spec S x h hz _ (supp_mem_of_one x _ h1))
+          (show ((supp x).orderEmbOfFin h j : Slot)
+              = (supp x).orderEmbOfFin h j + 21 + 1 from
+            (slot_pred_suc_eq ((supp x).orderEmbOfFin h j)).symm)
+  rw [hFull]
+  exact sum_scaled_row (slaterMatTwist S x h)
+    (fun i => (zeta * omega ^ (modeOf S i % numSlots))⁻¹)
+
+/-- Сумма вкладов всех рёбер в твистованном секторе через if-формы. -/
+theorem bondTerm_sum_if_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card) (hz : 0 < S.card) (hEven : Even S.card) :
+    (∑ s : Slot, (bondTerm s *ᵥ (fun y => slaterTwist S y)) x)
+      = ((2 : ℝ) : ℂ) * ∑ s : Slot,
+          (if x s = 1 ∧ x (s + 1 : Slot) = 0 then
+            ∑ i, zeta * omega ^ (modeOf S i % numSlots)
+              * slaterMatTwist S x h i (embInv S x h hz s)
+              * cofG (slaterMatTwist S x h) i (embInv S x h hz s)
+          else 0)
+        + ((2 : ℝ) : ℂ) * ∑ s : Slot,
+          (if x s = 0 ∧ x (s + 1 : Slot) = 1 then
+            ∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+              * slaterMatTwist S x h i (embInv S x h hz (s + 1 : Slot))
+              * cofG (slaterMatTwist S x h) i (embInv S x h hz (s + 1 : Slot))
+          else 0) := by
+  rw [← Finset.sum_erase_add (Finset.univ : Finset Slot)
+    (fun s => (bondTerm s *ᵥ (fun y => slaterTwist S y)) x) (Finset.mem_univ (21 : Slot))]
+  rw [Finset.sum_congr rfl
+    (fun s hs => bondTerm_edge_if_twist S x h hz s (hnb_of_ne21 s (Finset.ne_of_mem_erase hs))),
+    bondTerm_wrap_if_twist S x h hz hEven]
+  rw [sum_add_distrib' (Finset.univ.erase (21 : Slot))]
+  rw [← Finset.mul_sum (s := Finset.univ.erase (21 : Slot))
+      (f := fun s => (if x s = 1 ∧ x (s + 1 : Slot) = 0 then
+        ∑ i, zeta * omega ^ (modeOf S i % numSlots)
+          * slaterMatTwist S x h i (embInv S x h hz s)
+          * cofG (slaterMatTwist S x h) i (embInv S x h hz s)
+      else 0)),
+    ← Finset.mul_sum (s := Finset.univ.erase (21 : Slot))
+      (f := fun s => (if x s = 0 ∧ x (s + 1 : Slot) = 1 then
+        ∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+          * slaterMatTwist S x h i (embInv S x h hz (s + 1 : Slot))
+          * cofG (slaterMatTwist S x h) i (embInv S x h hz (s + 1 : Slot))
+      else 0))]
+  rw [← Finset.sum_erase_add (Finset.univ : Finset Slot)
+      (fun s => (if x s = 1 ∧ x (s + 1 : Slot) = 0 then
+        ∑ i, zeta * omega ^ (modeOf S i % numSlots)
+          * slaterMatTwist S x h i (embInv S x h hz s)
+          * cofG (slaterMatTwist S x h) i (embInv S x h hz s)
+      else 0)) (Finset.mem_univ (21 : Slot)),
+    ← Finset.sum_erase_add (Finset.univ : Finset Slot)
+      (fun s => (if x s = 0 ∧ x (s + 1 : Slot) = 1 then
+        ∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+          * slaterMatTwist S x h i (embInv S x h hz (s + 1 : Slot))
+          * cofG (slaterMatTwist S x h) i (embInv S x h hz (s + 1 : Slot))
+      else 0)) (Finset.mem_univ (21 : Slot))]
+  rw [mul_add, mul_add]
+  ring
+
+/-- **Этап 4d, главный случай: диагонализация на чётном твистованном секторе.** -/
+theorem slater_diag_sector_twist (S : Finset Slot) (x : Cfg)
+    (h : (supp x).card = S.card) (hEven : Even S.card) (hpos : 0 < S.card) :
+    (∑ s : Slot, bondTerm s).mulVec (fun y => slaterTwist S y) x
+      = (∑ i : Fin S.card, epsTwist (modeOf S i)) * slaterTwist S x := by
+  rw [mulVec_sum, Finset.sum_apply, bondTerm_sum_if_twist S x h hpos hEven,
+    succ_part_scaled_twist S x h hpos, pred_part_scaled_twist S x h hpos]
+  rw [slaterTwist_eq_det S x h]
+  have e1 : ((2 : ℝ) : ℂ) * ((∑ i, zeta * omega ^ (modeOf S i % numSlots))
+      * (slaterMatTwist S x h).det)
+      = ∑ i, ((2 : ℝ) : ℂ) * zeta * omega ^ (modeOf S i % numSlots)
+        * (slaterMatTwist S x h).det := by
+    rw [Finset.sum_mul, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    ring
+  have e2 : ((2 : ℝ) : ℂ) * ((∑ i, (zeta * omega ^ (modeOf S i % numSlots))⁻¹)
+      * (slaterMatTwist S x h).det)
+      = ∑ i, ((2 : ℝ) : ℂ) * (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+        * (slaterMatTwist S x h).det := by
+    rw [Finset.sum_mul, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    ring
+  rw [e1, e2, Finset.sum_mul]
+  simp only [epsTwist, add_mul, mul_add]
+  rw [sum_add_distrib']
+  have h1 : ∑ i, ((2 : ℝ) : ℂ) * zeta * omega ^ (modeOf S i % numSlots)
+      * (slaterMatTwist S x h).det
+      = ∑ i, 2 * (zeta * omega ^ (modeOf S i % numSlots))
+        * (slaterMatTwist S x h).det := by
+    refine Finset.sum_congr rfl fun i _ => ?_
+    push_cast
+    ring
+  have h2 : ∑ i, ((2 : ℝ) : ℂ) * (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+      * (slaterMatTwist S x h).det
+      = ∑ i, 2 * (zeta * omega ^ (modeOf S i % numSlots))⁻¹
+        * (slaterMatTwist S x h).det := by
+    refine Finset.sum_congr rfl fun i _ => ?_
+    push_cast
+    ring
+  rw [h1, h2]
+
+/-- При несовпадающей мощности носителя вклад каждого ребра нулевой
+и в твистованном секторе. -/
+theorem bondTerm_mulVec_zero_hcard_twist (S : Finset Slot) (x : Cfg)
+    (hxz : (supp x).card ≠ S.card) (s : Slot) :
+    (bondTerm s *ᵥ (fun y => slaterTwist S y)) x = 0 := by
+  rw [mulVec_bondTerm]
+  by_cases hP : x s ≠ x (s + 1 : Slot)
+  · rw [if_pos hP, slaterTwist]
+    split
+    · next hc =>
+        exact absurd ((supp_card_flipTwo_suc x s hP).symm.trans hc) hxz
+    · rw [mul_zero]
+  · rw [if_neg hP]
+
 /-- **Цель для чётных секторов (твист).** С твистованными модами
 `ψ̃_k(u) = ζ^u·ψ_k(u)` (`ζ^{22} = −1`, антипериодическое условие) оператор
 прыжков диагонален и в чётных секторах: знак `(−1)^{k−1}` границы
 компенсируется фазой `ζ^{±1}`, а спектр задаёт `epsTwist` (эффект
-Либа–Шульца–Маттиса). -/
-theorem slater_diag_even_twist (S : Finset Slot) (hEven : Even S.card) :
+Либа–Шульца–Маттиса). Гипотеза `hS` — сектор непуст (как `hOdd` в
+нечётном случае; пустой сектор физически не возникает). -/
+theorem slater_diag_even_twist (S : Finset Slot) (hS : 0 < S.card) (hEven : Even S.card) :
     (∑ s : Slot, bondTerm s).mulVec (fun y => slaterTwist S y)
       = (∑ i : Fin S.card, (epsTwist (modeOf S i))) • (fun y => slaterTwist S y) := by
-  sorry
+  funext x
+  by_cases hxz : (supp x).card = S.card
+  · exact slater_diag_sector_twist S x hxz hEven hS
+  · rw [mulVec_sum, Finset.sum_apply,
+      Finset.sum_eq_zero (fun s _ => bondTerm_mulVec_zero_hcard_twist S x hxz s)]
+    simp [Pi.smul_apply, slaterTwist, dif_neg hxz]
 
-/-- **Цель: ортогональность Слейтера (Коши–Бине).** Для наборов мод
-одинаковой мощности `⟨Ψ_S, Ψ_T⟩ = δ_{S,T}`: при `S = T` норма 1, при
-`S ≠ T` — нуль. Сводится к Коши–Бине для прямоугольных матриц мод
-(ортонормальность строк `ψ_k` — Ortho.lean); леммы Коши–Бине в mathlib
-нет. -/
+/-- Развёртка произведения сумм по всем функциям: `∏_i Σ_u f(i,u) =
+Σ_{g : Fin k → Fin n} ∏_i f(i, g(i))`. -/
+theorem prod_univ_sum' {k n : ℕ} (f : Fin k → Fin n → ℂ) :
+    (∏ i, ∑ u, f i u) = ∑ g : Fin k → Fin n, ∏ i, f i (g i) := by
+  rw [Finset.prod_univ_sum, Fintype.piFinset_univ]
+
+/-- **Форма Мура для определителя произведения**: `det (A·Bᵀ) =
+Σ_{f : Fin k → Fin n} (∏_i A_{i,f(i)})·det(B_{·,f})`. При не-инъективном `f`
+второй множитель нулевой автоматически (два равных столбца в `B_{·,f}`);
+при инъективном — это Коши–Бине до группировки по образам `f`. -/
+theorem det_mul_transpose_sum {k n : ℕ} (A B : Matrix (Fin k) (Fin n) ℂ) :
+    (A * Bᵀ).det = ∑ f : Fin k → Fin n, (∏ i, A i (f i)) * (B.submatrix id f).det := by
+  rw [← Matrix.det_transpose, Matrix.transpose_mul, Matrix.transpose_transpose,
+    Matrix.det_apply']
+  simp only [Matrix.mul_apply, Matrix.transpose_apply, dotProduct]
+  have hexpand : ∀ σ : Equiv.Perm (Fin k),
+      Equiv.Perm.sign σ * ∏ i, ∑ u, B (σ i) u * A i u
+        = ∑ g : Fin k → Fin n,
+          Equiv.Perm.sign σ * ∏ i, B (σ i) (g i) * A i (g i) := by
+    intro σ
+    rw [prod_univ_sum' (f := fun (i : Fin k) (u : Fin n) => B (σ i) u * A i u),
+      Finset.mul_sum]
+  rw [Finset.sum_congr rfl (fun σ (_ : σ ∈ Finset.univ) => hexpand σ), Finset.sum_comm]
+  refine Finset.sum_congr rfl fun f _ => ?_
+  rw [Matrix.det_apply' (B.submatrix id f)]
+  simp only [Matrix.submatrix_apply, id_eq]
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun σ _ => ?_
+  rw [Finset.prod_mul_distrib]
+  ring
+
+/-! ### Ортогональность Слейтера (Коши–Бине): О2–О5 -/
+
+/-- Вспомогательное: определитель почленно-сопряжённой матрицы —
+сопряжение определителя. -/
+theorem det_map_star {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) :
+    (M.map star).det = star M.det := by
+  have h : M.map star = M.map (starRingEnd ℂ) := by
+    ext i j; simp
+  rw [h]
+  show ((starRingEnd ℂ).mapMatrix M).det = star M.det
+  rw [← RingHom.map_det]
+  rfl
+
+/-- О2: определитель подматрицы по не-инъективному набору столбцов равен
+нулю (два совпадающих столбца). -/
+theorem det_submatrix_noninj_zero {k n : ℕ} (B : Matrix (Fin k) (Fin n) ℂ)
+    {f : Fin k → Fin n} (hf : ¬Function.Injective f) : (B.submatrix id f).det = 0 := by
+  rw [Function.not_injective_iff] at hf
+  obtain ⟨i, j, hfeq, hij⟩ := hf
+  refine Matrix.det_zero_of_column_eq hij (fun x => ?_)
+  simp only [Matrix.submatrix_apply, id]
+  rw [hfeq]
+
+/-- Конфигурация ≃ конечное множество слотов: конфигурация — индикатор
+своего носителя (`x = 1_{supp x}`). -/
+def cfgEquivSet : Finset Slot ≃ Cfg where
+  toFun U := fun u => if u ∈ U then 1 else 0
+  invFun x := supp x
+  left_inv U := by
+    ext u
+    by_cases h : u ∈ U <;> simp [supp, Finset.mem_filter, h]
+  right_inv x := by
+    funext u
+    rcases cfg_bit x u with hb | hb
+    · have h0 : u ∉ supp x := by
+        intro hc
+        simp only [supp, Finset.mem_filter, Finset.mem_univ, true_and] at hc
+        rw [hc] at hb
+        simp at hb
+      simp [supp, Finset.mem_filter, hb, h0]
+    · have h1 : u ∈ supp x := supp_mem_of_one x u hb
+      simp [supp, Finset.mem_filter, hb, h1]
+
+theorem supp_cfgEquivSet (U : Finset Slot) : supp (cfgEquivSet U) = U :=
+  Equiv.injective cfgEquivSet (cfgEquivSet.right_inv (cfgEquivSet U))
+
+/-- О3: скалярное произведение пере-индексируется по носителям
+(конфигурации с данным носителем отвечают взаимно однозначно). -/
+theorem slaterIP_reindex (S T : Finset Slot) :
+    slaterIP (fun y => slater S y) (fun y => slater T y)
+      = ∑ U : Finset Slot, star (slater S (cfgEquivSet U))
+          * slater T (cfgEquivSet U) := by
+  rw [slaterIP]
+  exact Fintype.sum_equiv cfgEquivSet.symm
+    (fun x => star (slater S x) * slater T x)
+    (fun U => star (slater S (cfgEquivSet U)) * slater T (cfgEquivSet U))
+    (fun x => (congrArg (fun u => star (slater S u) * slater T u)
+      (cfgEquivSet.right_inv x)).symm)
+
+/-- Определители матриц с совпадающими поэлементно записями (при
+перенумерации `Fin m ≃ Fin n`) равны. -/
+theorem det_congr_entries {m n : ℕ} (hmn : m = n) {M : Matrix (Fin m) (Fin m) ℂ}
+    {N : Matrix (Fin n) (Fin n) ℂ}
+    (hEnt : ∀ (i j : Fin m), M i j = N (Fin.cast hmn i) (Fin.cast hmn j)) :
+    M.det = N.det := by
+  cases hmn
+  exact congrArg Matrix.det (Matrix.ext fun i j => by simpa using hEnt i j)
+
+/-- Матрица мод `S`: строка `i` — мода `S_i` (в порядке возрастания),
+столбцы — все слоты. -/
+noncomputable def psiMat (S : Finset Slot) : Matrix (Fin S.card) (Fin numSlots) ℂ :=
+  Matrix.of fun i u => psi (((S.sort (· ≤ ·)).get
+    (Fin.cast (Finset.length_sort (· ≤ ·)).symm i))).toNat u
+
+/-- О3.5: slater на индикаторе носителя — определитель подматрицы
+матрицы мод по столбцам-элементам `U` (в порядке возрастания). -/
+theorem slater_cfgEquivSet (S U : Finset Slot) (hU : U.card = S.card) :
+    slater S (cfgEquivSet U) = ((psiMat S).submatrix id (U.orderEmbOfFin hU)).det := by
+  have hsup : (supp (cfgEquivSet U)).card = S.card := by
+    rw [supp_cfgEquivSet]; exact hU
+  have hlist : ((supp (cfgEquivSet U)).sort (· ≤ ·)) = (U.sort (· ≤ ·)) :=
+    congrArg (fun l => l.sort (· ≤ ·)) (supp_cfgEquivSet U)
+  unfold slater
+  rw [dif_pos hsup]
+  refine det_congr_entries rfl (fun i j => ?_)
+  simp [psiMat, Matrix.of_apply, Matrix.submatrix_apply, hlist,
+    Finset.orderEmbOfFin_apply]
+
+/-- О4: подмножественная форма Коши–Бине: сумма по всем наборам столбцов
+совпадает с суммой по `k`-элементным подмножествам (не-инъективные наборы
+дают нуль, инъективные группируются по образу с учётом знака). -/
+theorem cauchy_binet_subset {k n : ℕ} (A B : Matrix (Fin k) (Fin n) ℂ) :
+    (∑ f : Fin k → Fin n, (∏ i, A i (f i)) * (B.submatrix id f).det)
+      = (∑ U : Finset (Fin n), if hU : U.card = k then
+            (A.submatrix id (U.orderEmbOfFin hU)).det
+              * (B.submatrix id (U.orderEmbOfFin hU)).det
+          else 0) := by
+  have hzero : ∀ f : Fin k → Fin n, ¬Function.Injective f →
+      (∏ i, A i (f i)) * (B.submatrix id f).det = 0 := fun f hf => by
+    rw [det_submatrix_noninj_zero B hf, mul_zero]
+  -- Шаг 1: не-инъективные наборы дают нуль.
+  have h1 : ∑ f ∈ (Finset.univ : Finset (Fin k → Fin n)).filter
+        (fun f => Function.Injective f),
+      ((∏ i, A i (f i)) * (B.submatrix id f).det)
+      = ∑ f : Fin k → Fin n, (∏ i, A i (f i)) * (B.submatrix id f).det := by
+    refine Finset.sum_subset (Finset.filter_subset _ _) (fun f _ hf => ?_)
+    rw [Finset.mem_filter] at hf
+    exact hzero f (fun hc => hf ⟨Finset.mem_univ f, hc⟩)
+  rw [← h1]
+  -- Шаг 2: группировка по образу.
+  rw [← Finset.sum_fiberwise ((Finset.univ : Finset (Fin k → Fin n)).filter
+    (fun f => Function.Injective f)) (fun f => Finset.image f Finset.univ)
+    (fun f => (∏ i, A i (f i)) * (B.submatrix id f).det)]
+  -- Шаг 3: образы инъективных наборов — в точности k-элементные подмножества.
+  have himage : ((Finset.univ : Finset (Fin k → Fin n)).filter
+        (fun f => Function.Injective f)).image
+      (fun f => Finset.image f Finset.univ)
+      = (Finset.univ (α := Finset (Fin n))).filter
+          (fun U : Finset (Fin n) => U.card = k) := by
+    ext U
+    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]
+    constructor
+    · rintro ⟨f, hinj, himg⟩
+      rw [← himg, Finset.card_image_of_injective Finset.univ hinj]
+      simp
+    · intro hcard
+      refine ⟨U.orderEmbOfFin hcard, (U.orderEmbOfFin hcard).injective, ?_⟩
+      · ext u
+        simp only [Finset.mem_image, Finset.mem_univ, true_and]
+        constructor
+        · rintro ⟨a, ha⟩
+          rw [← ha]
+          exact Finset.orderEmbOfFin_mem _ _ _
+        · intro hu
+          exact ⟨(U.orderIsoOfFin hcard).symm ⟨u, hu⟩, by
+            simp [Finset.orderEmbOfFin, RelEmbedding.coe_trans,
+              (U.orderIsoOfFin hcard).apply_symm_apply, Subtype.coe_eta]⟩
+  -- Внешний индекс у sum_fiberwise пробегает всё univ: вне образа волокна пусты.
+  have hrestrict : (∑ j : Finset (Fin n), ∑ g ∈ ((Finset.univ : Finset (Fin k → Fin n)).filter
+          (fun f => Function.Injective f)).filter (fun f => Finset.image f Finset.univ = j),
+          ((∏ i, A i (g i)) * (B.submatrix id g).det))
+      = ∑ j ∈ ((Finset.univ : Finset (Fin k → Fin n)).filter
+          (fun f => Function.Injective f)).image (fun f => Finset.image f Finset.univ),
+        ∑ g ∈ ((Finset.univ : Finset (Fin k → Fin n)).filter
+          (fun f => Function.Injective f)).filter (fun f => Finset.image f Finset.univ = j),
+          ((∏ i, A i (g i)) * (B.submatrix id g).det) := by
+    refine (Finset.sum_subset (Finset.subset_univ _) (fun j _ hj => ?_)).symm
+    refine Finset.sum_eq_zero fun g hg => ?_
+    rw [Finset.mem_filter] at hg
+    have him : j ∈ ((Finset.univ : Finset (Fin k → Fin n)).filter
+        (fun f => Function.Injective f)).image (fun f => Finset.image f Finset.univ) := by
+      rw [← hg.2]
+      exact Finset.mem_image_of_mem _ hg.1
+    exact absurd him hj
+  rw [hrestrict, himage]
+  -- Шаг 4: справа dite по U — сводим к сумме по фильтру.
+  have hrhs : (∑ U : Finset (Fin n), if hU : U.card = k then
+        (A.submatrix id (U.orderEmbOfFin hU)).det
+          * (B.submatrix id (U.orderEmbOfFin hU)).det
+      else 0)
+      = ∑ U ∈ (Finset.univ (α := Finset (Fin n))).filter
+          (fun U : Finset (Fin n) => U.card = k),
+        if hU : U.card = k then
+          (A.submatrix id (U.orderEmbOfFin hU)).det
+            * (B.submatrix id (U.orderEmbOfFin hU)).det
+        else 0 := by
+    refine (Finset.sum_subset (Finset.filter_subset _ _) (fun U _ hU => ?_)).symm
+    rw [dif_neg (by simpa only [Finset.mem_filter, Finset.mem_univ, true_and, not_and,
+      not_not] using hU)]
+  rw [hrhs, Finset.sum_congr rfl (fun U hU => ?_)]
+  · rw [dif_pos (Finset.mem_filter.mp hU).2]
+    -- фибра {f | инъективно, образ = U} пере-индексируется по Perm (Fin k)
+    have hfib : ∑ f ∈ ((Finset.univ : Finset (Fin k → Fin n)).filter
+          (fun f => Function.Injective f)).filter
+          (fun f => Finset.image f Finset.univ = U),
+        ((∏ i, A i (f i)) * (B.submatrix id f).det)
+        = (A.submatrix id (U.orderEmbOfFin (Finset.mem_filter.mp hU).2)).det
+            * (B.submatrix id (U.orderEmbOfFin (Finset.mem_filter.mp hU).2)).det := by
+      set e := U.orderEmbOfFin (Finset.mem_filter.mp hU).2 with he
+      set S₁ : Finset (Fin k → Fin n) := ((Finset.univ : Finset (Fin k → Fin n)).filter
+          (fun f => Function.Injective f)).filter
+          (fun f => Finset.image f Finset.univ = U) with hS₁
+      have hperm : ∀ σ : Equiv.Perm (Fin k),
+          (B.submatrix id (fun i => e (σ i))).det
+            = Equiv.Perm.sign σ * (B.submatrix id e).det := by
+        intro σ
+        have h1 : (B.submatrix id (fun i => e (σ i)))
+            = (B.submatrix id e).submatrix id σ := rfl
+        rw [h1, Matrix.det_permute']
+      have hAdet : ∑ σ : Equiv.Perm (Fin k),
+          Equiv.Perm.sign σ * ∏ i, A i (e (σ i)) = (A.submatrix id e).det := by
+        rw [← Matrix.det_transpose, Matrix.det_apply']
+        simp only [Matrix.transpose_apply, Matrix.submatrix_apply, id_eq]
+      have hmapimg : ∀ σ : Equiv.Perm (Fin k),
+          Finset.image (fun i => e (σ i)) Finset.univ = U := by
+        intro σ
+        ext u
+        simp only [Finset.mem_image, Finset.mem_univ, true_and]
+        constructor
+        · intro h
+          obtain ⟨a, ha⟩ := h
+          rw [← ha, he]
+          exact Finset.orderEmbOfFin_mem _ _ _
+        · intro hu
+          refine ⟨σ.symm ((U.orderIsoOfFin (Finset.mem_filter.mp hU).2).symm ⟨u, hu⟩), ?_⟩
+          rw [Equiv.apply_symm_apply, he]
+          exact congrArg Subtype.val
+            ((U.orderIsoOfFin (Finset.mem_filter.mp hU).2).toEquiv.apply_symm_apply _)
+      -- биекция Perm (Fin k) ↔ волокно: σ ↦ (i ↦ e (σ i))
+      have hsurj : ∀ (g : Fin k → Fin n), Function.Injective g → Finset.image g Finset.univ = U →
+          ∃ σ : Equiv.Perm (Fin k), (fun i => e (σ i)) = g := by
+        intro g ginj himg
+        have hmem : ∀ i, g i ∈ U := fun i => by
+          rw [← himg]; exact Finset.mem_image_of_mem _ (Finset.mem_univ i)
+        have hmem' : ∀ x : {x // x ∈ U}, ∃ i, g i = ↑x := by
+          intro x
+          have hx : ↑x ∈ Finset.image g Finset.univ := by rw [himg]; exact x.2
+          simpa only [Finset.mem_image, Finset.mem_univ, true_and] using hx
+        let gE : Fin k ≃ {x // x ∈ U} :=
+          Equiv.ofBijective (fun i => ⟨g i, hmem i⟩)
+            ⟨fun a b hab => ginj (congrArg Subtype.val hab), fun x => by
+              obtain ⟨i, hi⟩ := hmem' x
+              exact ⟨i, Subtype.ext hi⟩⟩
+        -- σ := gE ⋙ (orderIsoOfFin).symm : Fin k ≃ Fin k, тогда e (σ i) = g i
+        have hσ : ∀ x : {x // x ∈ U}, U.orderEmbOfFin (Finset.mem_filter.mp hU).2
+            ((U.orderIsoOfFin (Finset.mem_filter.mp hU).2).toEquiv.symm x) = ↑x := fun x =>
+          congrArg Subtype.val
+            ((U.orderIsoOfFin (Finset.mem_filter.mp hU).2).toEquiv.apply_symm_apply x)
+        exact ⟨gE.trans (U.orderIsoOfFin (Finset.mem_filter.mp hU).2).toEquiv.symm,
+          funext fun i => by
+            rw [he, Equiv.trans_apply]
+            have hgi : (gE i : {x // x ∈ U}) = ⟨g i, hmem i⟩ := Equiv.ofBijective_apply _ _ i
+            rw [hgi]
+            exact hσ ⟨g i, hmem i⟩⟩
+      have hmemσ : ∀ σ : Equiv.Perm (Fin k), (fun i => e (σ i)) ∈ S₁ := by
+        intro σ
+        rw [hS₁]
+        exact Finset.mem_filter.mpr ⟨Finset.mem_filter.mpr
+          ⟨Finset.mem_univ _, fun a b hab => σ.injective (e.injective hab)⟩, hmapimg σ⟩
+      have hsurj' : ∀ p : ↥S₁, ∃ σ : Equiv.Perm (Fin k),
+          (fun i => e (σ i)) = (↑p : Fin k → Fin n) := by
+        intro p
+        have hp := p.2
+        simp only [hS₁, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+        exact hsurj ↑p hp.1 hp.2
+      rw [← Finset.sum_coe_sort]
+      refine (Fintype.sum_equiv
+        (Equiv.ofBijective (fun σ => ⟨fun i => e (σ i), hmemσ σ⟩)
+          ⟨fun σ σ' h => Equiv.ext fun i => e.injective (congrFun (congrArg Subtype.val h) i),
+            fun p => by obtain ⟨σ, hσ⟩ := hsurj' p; exact ⟨σ, Subtype.ext hσ⟩⟩)
+        (fun σ : Equiv.Perm (Fin k) =>
+          (∏ i, A i (e (σ i))) * (B.submatrix id (fun i => e (σ i))).det)
+        (fun p : ↥S₁ => (∏ i, A i ((↑p : Fin k → Fin n) i)) * (B.submatrix id (↑p : Fin k → Fin n)).det)
+        (fun σ => by simp only [Equiv.ofBijective_apply]; try rfl)).symm.trans ?_
+      calc ∑ σ : Equiv.Perm (Fin k),
+            (∏ i, A i (e (σ i))) * (B.submatrix id (fun i => e (σ i))).det
+          = ∑ σ : Equiv.Perm (Fin k),
+              (Equiv.Perm.sign σ * ∏ i, A i (e (σ i))) * (B.submatrix id e).det := by
+            refine Finset.sum_congr rfl fun σ _ => ?_
+            rw [hperm σ]
+            ring
+        _ = (A.submatrix id e).det * (B.submatrix id e).det := by
+            rw [← Finset.sum_mul, hAdet]
+    exact hfib
+
+/-- **О5: ортогональность Слейтера через Коши–Бине**: скалярное произведение —
+определитель грам-матрицы, элементы которой даёт `psi_inner`; грам-матрица —
+«матрица частичного тождественного соответствия» между отсортированными
+наборами мод, её определитель равен `δ_{S,T}`. -/
 theorem slater_orth (S T : Finset Slot) (hST : S.card = T.card) :
     slaterIP (fun y => slater S y) (fun y => slater T y)
       = if S = T then 1 else 0 := by
-  sorry
+  rw [slaterIP_reindex S T]
+  have hmods : ∀ (R : Finset Slot) (a : Fin R.card),
+      (((R.sort (· ≤ ·)).get (Fin.cast (Finset.length_sort (· ≤ ·)).symm a) : Slot)).toNat
+        < numSlots := by
+    intro R a
+    have := ((R.sort (· ≤ ·)).get
+      (Fin.cast (Finset.length_sort (· ≤ ·)).symm a) : Slot).isLt
+    simpa using this
+  -- матрица мод T, строки перенумерованы в Fin S.card (мощности равны)
+  set BTM : Matrix (Fin S.card) (Fin numSlots) ℂ :=
+    Matrix.of fun i u => psi (((T.sort (· ≤ ·)).get
+      (Fin.cast (hST.trans (Finset.length_sort (· ≤ ·)).symm) i))).toNat u
+    with hBTMdef
+  -- перенос определителя T-матрицы на перенумерованные строки
+  have hBTM : ∀ (U : Finset Slot) (hUT : U.card = T.card) (hU : U.card = S.card),
+      ((psiMat T).submatrix id (U.orderEmbOfFin hUT)).det
+        = (BTM.submatrix id (U.orderEmbOfFin hU)).det := by
+    intro U hUT hU
+    refine det_congr_entries hST.symm (fun i j => ?_)
+    simp [psiMat, Matrix.of_apply, Matrix.submatrix_apply, Finset.orderEmbOfFin_apply,
+      hBTMdef]
+  have hUpos : ∀ (U : Finset Slot) (hU : U.card = S.card),
+      star (slater S (cfgEquivSet U)) * slater T (cfgEquivSet U)
+        = (((psiMat S).map star).submatrix id (U.orderEmbOfFin hU)).det
+          * (BTM.submatrix id (U.orderEmbOfFin hU)).det := by
+    intro U hU
+    have hUT : U.card = T.card := hU.trans hST
+    have hswap : ((psiMat S).submatrix id (U.orderEmbOfFin hU)).map star
+        = ((psiMat S).map star).submatrix id (U.orderEmbOfFin hU) := by
+      ext a b; simp [Matrix.map_apply]
+    rw [slater_cfgEquivSet S U hU, slater_cfgEquivSet T U hUT, ← det_map_star, hswap,
+      hBTM U hUT hU]
+  have hUneg : ∀ (U : Finset Slot) (hU : U.card ≠ S.card),
+      star (slater S (cfgEquivSet U)) * slater T (cfgEquivSet U) = 0 := by
+    intro U hU
+    have hUT : U.card ≠ T.card := fun hc => hU (hc.trans hST.symm)
+    have hA : ¬((supp (cfgEquivSet U)).card = S.card) := by
+      rw [supp_cfgEquivSet]; exact hU
+    have hB : ¬((supp (cfgEquivSet U)).card = T.card) := by
+      rw [supp_cfgEquivSet]; exact hUT
+    unfold slater
+    rw [dif_neg hA, star_zero, dif_neg hB, zero_mul]
+  have hper : ∀ U : Finset Slot, U ∈ (Finset.univ : Finset (Finset Slot)) →
+      star (slater S (cfgEquivSet U)) * slater T (cfgEquivSet U)
+        = if hU : U.card = S.card then
+            (((psiMat S).map star).submatrix id (U.orderEmbOfFin hU)).det
+              * (BTM.submatrix id (U.orderEmbOfFin hU)).det
+          else 0 := by
+    intro U _
+    by_cases hU : U.card = S.card
+    · rw [dif_pos hU]
+      exact hUpos U hU
+    · rw [dif_neg hU]
+      exact hUneg U hU
+  rw [Finset.sum_congr rfl hper,
+    ← cauchy_binet_subset (A := (psiMat S).map star) (B := BTM),
+    ← det_mul_transpose_sum (A := (psiMat S).map star) (B := BTM)]
+  -- грам-элементы: psi_inner
+  have hlt : ∀ s : Slot, s.toNat < numSlots := fun s => s.isLt
+  have hgram : ∀ a b : Fin S.card,
+      (((psiMat S).map star) * BTMᵀ) a b
+        = if ((S.sort (· ≤ ·)).get
+              (Fin.cast (Finset.length_sort (· ≤ ·)).symm a) : Slot).toNat
+            = ((T.sort (· ≤ ·)).get
+              (Fin.cast (hST.trans (Finset.length_sort (· ≤ ·)).symm) b)).toNat
+          then 1 else 0 := by
+    intro a b
+    simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply,
+      psiMat, hBTMdef, Matrix.of_apply]
+    rw [psi_inner _ _ (hlt _) (hlt _)]
+  by_cases hSET : S = T
+  · subst hSET
+    have hdiag : (((psiMat S).map star) * BTMᵀ)
+        = Matrix.diagonal (fun _ : Fin S.card => (1 : ℂ)) := by
+      have hemb : ∀ b : Fin S.card, ((S.sort (· ≤ ·)).get
+          (Fin.cast (hST.trans (Finset.length_sort (· ≤ ·)).symm) b) : Slot)
+          = (S.orderEmbOfFin rfl) b := by
+        intro b
+        rw [Finset.orderEmbOfFin_apply]
+        simp
+      have hinj : Function.Injective fun b : Fin S.card =>
+          ((S.sort (· ≤ ·)).get
+            (Fin.cast (hST.trans (Finset.length_sort (· ≤ ·)).symm) b) : Slot) := by
+        intro b b' hbb
+        simp only [hemb] at hbb
+        exact (S.orderEmbOfFin rfl).injective hbb
+      ext i j
+      rw [hgram i j]
+      by_cases h : i = j
+      · subst h; simp
+      · have hne : ((S.sort (· ≤ ·)).get
+            (Fin.cast (Finset.length_sort (· ≤ ·)).symm i) : Slot).toNat
+          ≠ ((S.sort (· ≤ ·)).get
+            (Fin.cast (Finset.length_sort (· ≤ ·)).symm j) : Slot).toNat := by
+          intro hc
+          exact h (hinj (Fin.ext hc))
+        rw [if_neg hne]
+        simp [Matrix.one_apply, h]
+    rw [hdiag, Matrix.det_diagonal, if_pos rfl]
+    simp
+  · rw [if_neg hSET]
+    -- S ≠ T при равных мощностях ⇒ есть мода в S \ T ⇒ нулевая строка грама
+    have hsne : S \ T ≠ ∅ := by
+      intro hc
+      rw [Finset.sdiff_eq_empty_iff_subset] at hc
+      exact hSET (Finset.eq_of_subset_of_card_le hc (le_of_eq hST.symm))
+    obtain ⟨k₀, hk₀⟩ := (Finset.nonempty_iff_ne_empty.mpr hsne).exists_mem
+    have hk₀S : k₀ ∈ S := (Finset.mem_sdiff.mp hk₀).1
+    have hk₀T : k₀ ∉ T := (Finset.mem_sdiff.mp hk₀).2
+    -- отсортированный список на позиции a — это orderEmbOfFin; он биективен на S
+    have hkey : ∀ a : Fin S.card, ((S.sort (· ≤ ·)).get
+        (Fin.cast (Finset.length_sort (· ≤ ·)).symm a) : Slot) = (S.orderEmbOfFin rfl) a := by
+      intro a
+      rw [Finset.orderEmbOfFin_apply]
+      simp
+    obtain ⟨a₀, ha₀⟩ : ∃ a₀ : Fin S.card, ((S.sort (· ≤ ·)).get
+        (Fin.cast (Finset.length_sort (· ≤ ·)).symm a₀) : Slot) = k₀ :=
+      ⟨(S.orderIsoOfFin rfl).symm ⟨k₀, hk₀S⟩, by
+        rw [hkey]
+        exact congrArg Subtype.val ((S.orderIsoOfFin rfl).toEquiv.apply_symm_apply _)⟩
+    have hrow : ∀ b : Fin S.card,
+        (((psiMat S).map star) * BTMᵀ) a₀ b = 0 := by
+      intro b
+      rw [hgram a₀ b, ha₀]
+      have hmem : ((T.sort (· ≤ ·)).get
+          (Fin.cast (hST.trans (Finset.length_sort (· ≤ ·)).symm) b) : Slot) ∈ T :=
+        (Finset.mem_sort (r := (· ≤ ·))).mp (List.get_mem _ _)
+      exact if_neg (fun hc => hk₀T (by
+        have hk₀in : k₀ = ((T.sort (· ≤ ·)).get
+            (Fin.cast (hST.trans (Finset.length_sort (· ≤ ·)).symm) b) : Slot) := Fin.ext hc
+        subst hk₀in
+        exact hmem))
+    rw [Matrix.det_eq_zero_of_row_eq_zero a₀ hrow]
 
 end Septinal
