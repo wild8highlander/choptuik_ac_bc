@@ -23,6 +23,7 @@ status — from *numerical evidence* into a **machine-checked proof**.
   <a href="blueprint/gap_registry.csv"><img alt="gaps" src="https://img.shields.io/badge/gap_registry-G1..G6-E86A6A?style=flat-square"></a>
   <a href="monographs/"><img alt="monographs" src="https://img.shields.io/badge/monographs-3×(RU·EN·DOCX·PDF)-B08A3E?style=flat-square"></a>
   <img alt="license" src="https://img.shields.io/badge/license-Isaev_Proprietary-8A8272?style=flat-square">
+  <a href="Septinal/lean/"><img alt="septinal" src="https://img.shields.io/badge/SEPTINAL-3_libraries·39_modules·sorry_free-4CC9F0?style=flat-square"></a>
 </p>
 <p align="center">
   <img alt="blocks" src="https://img.shields.io/badge/blockers-G1_existence·G2_stability-E86A6A?style=flat-square">&nbsp;
@@ -69,6 +70,7 @@ tooling decision record (`blueprint/`), the **three-phase roadmap**
 ## Table of contents
 
 - [Results at a glance](#results-at-a-glance-v041)
+- [SEPTINAL — the second-generation package](#septinal--the-second-generation-package)
 - [Folder map](#folder-map)
 - [Animations](#animations)
 - [Key figures](#key-figures)
@@ -97,6 +99,7 @@ from the files as they stand, not promised:
 | **Figures & animations** | **8 PNG figures @ 300 dpi** (dark/light × en/ru) + **4 GIFs** (24–72 frames) |
 | **Monographs** (`monographs/`) | **12 renditions** — 3 volumes × {RU, EN} × {DOCX, PDF}; Volumes I–II: 16–21 pages each, Volume III (the certificate channel): 54–62 pages |
 | **Governance** | gap ledger G1–G6 with per-gap status (2 resolved, 3 partial, bridge live); roadmap with 17 tasks and a 9-milestone ledger (M1.1, M1.2 done); CI template enforcing axiom audit + data byte-identity |
+| **SEPTINAL** (`Septinal/`) | the second-generation package: **3 Lean libraries — 39 modules / 12,145 lines in build targets, 643 kernel-checked declarations, 0 `sorry`, 0 project axioms**; the Stage4d diagonalisation chain axiom-audited 98/98; bilingual package README + a generated README factory in `Septinal/lean/scripts/` |
 
 Calibrated constants of the committed build — locked by the tests against the
 committed CSVs:
@@ -115,11 +118,44 @@ committed CSVs:
 
 ---
 
+## SEPTINAL — the second-generation package
+
+`Septinal/` is where the programme lives now: a complete, bilingual package
+([EN](Septinal/README.md) · [RU](Septinal/README_ru.md)) with its own lake
+project and **three Lean libraries** — `Choptuik` (critical phenomena),
+`SeptinalYM` (the septinal mass-gap programme, culminating in the
+Jordan–Wigner → Slater → Stage4d diagonalisation chain and the Cauchy–Binet
+orthogonality block **O2–O5**) and `Satellite` (the septinial dial reading,
+`k = 22 = b₂(K3)`, `γ₃ = 1 − cos(2π/7) − π/1200`) — plus data, 32 figures,
+10 animations, a typeset monograph and a documented audit trail.
+
+```mermaid
+flowchart LR
+  OLD["lean/<br>the v0.4.1 skeleton<br>12 modules"] --- NEW["Septinal/lean<br>the live lake project<br>3 libraries · 39 modules in targets<br>0 sorry · 0 project axioms"]
+  NEW --> R1["Septinal/lean/README.md<br>EN · generated from the sources"]
+  NEW --> R2["Septinal/lean/README_ru.md<br>RU · generated from the sources"]
+  style OLD fill:#F8FAFC,stroke:#94A3B8
+  style NEW fill:#EFF6FF,stroke:#3B82F6
+  style R1 fill:#F0FDF4,stroke:#3AAFA9
+  style R2 fill:#F0FDF4,stroke:#3AAFA9
+```
+
+The `Septinal/lean` README is **generated**: `readme_stats.py` counts every
+module, declaration and `sorry` marker straight from the sources and resolves
+the lake build targets; `readme_gen.py` renders both language versions, the
+Mermaid graphs (from the real import graph), the tables and the charts — one
+command refreshes every number. Per-folder READMEs cover `Choptuik/`,
+`SeptinalYM/`, `Satellite/`, `scripts/` and the five `Choptuik/*` namespaces;
+a CI template for all three libraries sits in [`ci/septinal-lean-ci.yml`](ci/septinal-lean-ci.yml).
+
+---
+
 ## Folder map
 
 | Folder | Contents | Entry point |
 |---|---|---|
 | [`lean/`](lean/) | Lean 4 theory: `Choptuik.{Geometry,Analysis,Existence,Stability,Scaling,Bridge}` + lakefile | [`lean/README.md`](lean/README.md) |
+| [`Septinal/`](Septinal/) | **the SEPTINAL package** — the second-generation Lean tree: libraries `Choptuik` + `SeptinalYM` + `Satellite` on mathlib v4.21.0 (lake project in [`Septinal/lean/`](Septinal/lean/), with data · figures · animations · monograph alongside) | [`Septinal/README.md`](Septinal/README.md) · [`Septinal/lean/README.md`](Septinal/lean/README.md) |
 | [`python/`](python/) | numerical service (ZMQ v1.1), certificate producer, 65 pytests | [`python/README.md`](python/README.md) |
 | [`bridge/`](bridge/) | protocol v1.1 (7 methods) + 4 committed certificate JSONs + example client | [`bridge/README.md`](bridge/README.md) |
 | [`blueprint/`](blueprint/) | technical spec, axiomatic base, gap registry, tooling verdict, module map | [`blueprint/README.md`](blueprint/README.md) |

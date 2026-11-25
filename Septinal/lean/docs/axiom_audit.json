@@ -1,0 +1,25 @@
+{
+ "ok": true,
+ "axioms": [
+  "Classical.choice",
+  "Quot.sound",
+  "propext"
+ ],
+ "audited": 98,
+ "decls": 98,
+ "nonstandard": [],
+ "missing": [],
+ "modules": {
+  "SeptinalYM.Stage4d": {
+   "total": 98,
+   "clean": 98,
+   "no_axioms": 0
+  }
+ },
+ "roots": [
+  "Choptuik",
+  "Satellite",
+  "SeptinalYM_root",
+  "SeptinalYM.Stage4d"
+ ]
+}

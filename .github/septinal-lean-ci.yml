@@ -1,0 +1,76 @@
+name: septinal-lean CI
+
+# Template — install at the REPOSITORY ROOT as
+#   .github/workflows/septinal-lean-ci.yml
+# (GitHub only reads .github/ at the repo root.)
+#
+# Checks all three libraries of Septinal/lean and the axiom discipline:
+#   Choptuik (default target), Satellite, SeptinalYM core + Stage4d chain.
+# The axiom sweep uses the same parser as the README factory
+# (Septinal/lean/scripts/readme_stats.py + scripts/axcheck_all.py pattern):
+# every declaration of every built module is printed with #print axioms and
+# must depend on nothing beyond propext, Classical.choice, Quot.sound.
+
+on:
+  push:
+    paths: ['Septinal/**']
+  pull_request:
+    paths: ['Septinal/**']
+  workflow_dispatch:
+
+jobs:
+  lean:
+    name: Lean — build + axiom audit (3 libraries)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: Septinal/lean
+          build-args: "Choptuik Satellite SeptinalYM SeptinalYM_root SeptinalYM.Stage4d"
+      - name: Axiom audit — every headline theorem (Library I)
+        working-directory: Septinal/lean
+        run: lake env lean AxiomAudit.lean | tee audit_lib1.log
+      - name: Axiom audit — every headline theorem (Library III)
+        working-directory: Septinal/lean
+        run: lake env lean Satellite/AxiomAudit.lean | tee audit_lib3.log
+      - name: No sorryAx in the audit output
+        working-directory: Septinal/lean
+        run: |
+          if grep -q 'sorryAx' audit_lib1.log audit_lib3.log; then
+            echo "::error::sorryAx in the headline theorems"; exit 1
+          fi
+      - name: sorry-free grep over build targets
+        working-directory: Septinal/lean
+        run: |
+          bad=$(grep -RIn '\bsorry\b' Choptuik/ Satellite/ SeptinalYM/ \
+                --include='*.lean' \
+                --exclude='SlaterDiag_v1.lean' --exclude='*.bak8fix' || true)
+          if [ -n "$bad" ]; then
+            echo "::error::sorry inside a build target:"; echo "$bad"; exit 1
+          fi
+      - name: No project-specific axioms
+        working-directory: Septinal/lean
+        run: |
+          if grep -RInE '^[[:space:]]*axiom[[:space:]]' Choptuik/ Satellite/ SeptinalYM/ \
+              --include='*.lean'; then
+            echo "::error::project-specific axiom found"; exit 1
+          fi
+
+  twin:
+    name: Numerical twin — verify_septinal.py
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install numpy
+      - name: Run the numpy verification twin
+        working-directory: Septinal/lean
+        run: python3 scripts/verify_septinal.py
+      - name: README factory regenerates (statistics drift check)
+        working-directory: Septinal/lean
+        run: |
+          pip install pillow matplotlib
+          python3 scripts/readme_stats.py --json docs/source_stats.json --digest none
+          echo "statistics regenerated; diff against the committed snapshot on PRs"

@@ -724,6 +724,8 @@ Septinal/
 ├── README.md · README_ru.md            ← EN flagship + RU flagship
 ├── LICENSE · CITATION.cff · .gitignore
 ├── lean/                               ← the two Lean libraries (committed as-is)
+│   │                                     README: [lean/README.md](lean/README.md) · [lean/README_ru.md](lean/README_ru.md)
+│   │                                     (generated from the sources: scripts/readme_stats.py → readme_gen.py)
 │   ├── lakefile.toml · lake-manifest.json · lean-toolchain
 │   ├── Choptuik.lean · AxiomAudit.lean
 │   ├── Choptuik/{Geometry,Analysis,Existence,Stability,Bridge}/…
